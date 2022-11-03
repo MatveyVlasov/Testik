@@ -11,5 +11,5 @@ interface AuthRepository {
 
     suspend fun loginWithEmail(data: LoginDto): ApiResult<FirebaseUser?>
 
-    suspend fun getCurrentUser(): ApiResult<FirebaseUser?>
+    suspend fun getCurrentUser(): FirebaseUser?
 }

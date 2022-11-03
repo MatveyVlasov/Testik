@@ -2,6 +2,7 @@ package com.app.tests.data.repository
 
 import com.app.tests.data.model.ApiResult
 import com.app.tests.data.model.RegistrationDto
+import com.app.tests.data.model.UserDto
 import com.app.tests.domain.repository.FirestoreRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -23,6 +24,23 @@ class FirestoreRepositoryImpl @Inject constructor(
                     return if (it.isSuccessful) ApiResult.Success()
                     else ApiResult.Error(it.exception?.message)
                 }
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun getUserInfo(email: String?): ApiResult<UserDto> {
+        try {
+            if (email == null) return ApiResult.Error("No email provided")
+
+            firebaseFirestore.collection("users").document(email).get().also {
+                it.await()
+                return if (it.isSuccessful) {
+                    val user = it.result.toObject(UserDto::class.java) ?: return ApiResult.Error("No data found")
+                    ApiResult.Success(user)
+                }
+                else ApiResult.Error(it.exception?.message)
             }
         } catch (e: Exception) {
             return ApiResult.Error(e.message)

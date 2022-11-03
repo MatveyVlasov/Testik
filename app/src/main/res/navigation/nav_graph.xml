@@ -13,11 +13,21 @@
         <action
             android:id="@+id/toRegistration"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/toMain"
+            app:destination="@id/mainFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.app.tests.presentation.screen.registration.RegistrationFragment"
         android:label="RegistrationFragment"
         tools:layout="@layout/fragment_registration" />
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.app.tests.presentation.screen.main.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main" />
 
 </navigation>

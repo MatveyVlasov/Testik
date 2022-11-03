@@ -41,11 +41,5 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCurrentUser(): ApiResult<FirebaseUser?> {
-        return try {
-            ApiResult.Success(firebaseAuth.currentUser)
-        } catch (e: Exception) {
-            ApiResult.Error(e.message)
-        }
-    }
+    override suspend fun getCurrentUser(): FirebaseUser? = firebaseAuth.currentUser
 }

@@ -13,7 +13,7 @@ inline fun <reified T> Result<T>.onError(block: (error: String) -> Unit): Result
     return this
 }
 
-inline fun <reified T> Result<T>.onSuccess(block: (data: T?) -> Unit): Result<T> {
+inline fun <reified T> Result<T>.onSuccess(block: (data: T) -> Unit): Result<T> {
     if (this is Result.Success) {
         block(data)
     }

@@ -97,6 +97,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             is LoginScreenEvent.Loading -> setLoadingState(true)
             is LoginScreenEvent.SuccessLogin -> {
                 showSnackbar(message = "You successfully logged in")
+                navController.navigate(LoginFragmentDirections.toMain())
             }
         }
     }
