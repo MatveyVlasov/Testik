@@ -1,5 +1,7 @@
 package com.app.tests.util
 
+import android.app.Activity
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.annotation.*
 import androidx.core.content.res.ResourcesCompat
@@ -21,6 +23,13 @@ fun Fragment.getTypeface(@FontRes fontResId: Int) =
 
 fun Fragment.addBackPressedCallback(callback: () -> Unit) {
     requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) { callback() }
+}
+
+fun Fragment.hideKeyboard() {
+    activity?.currentFocus?.let { view ->
+        val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }
 
 fun Fragment.showSnackbar(

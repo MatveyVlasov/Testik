@@ -35,6 +35,10 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
 
     private fun initViews() {
         binding.apply {
+            toolbar.setNavigationOnClickListener {
+                navController.navigateUp()
+            }
+
             btnRegister.setOnClickListener { viewModel.createUser() }
         }
     }

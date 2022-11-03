@@ -1,6 +1,7 @@
 package com.app.tests.data.repository
 
 import com.app.tests.data.model.ApiResult
+import com.app.tests.data.model.LoginDto
 import com.app.tests.data.model.RegistrationDto
 import com.app.tests.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -22,6 +23,17 @@ class AuthRepositoryImpl @Inject constructor(
                         displayName = data.username
                     }
                 )?.await()
+                ApiResult.Success(currentUser)
+            }
+        } catch (e: Exception) {
+            ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun loginWithEmail(data: LoginDto): ApiResult<FirebaseUser?> {
+        return try {
+            with (firebaseAuth) {
+                signInWithEmailAndPassword(data.email, data.password).await()
                 ApiResult.Success(currentUser)
             }
         } catch (e: Exception) {
