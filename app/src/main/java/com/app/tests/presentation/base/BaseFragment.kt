@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseFragment<T: ViewBinding>: Fragment() {
+abstract class BaseFragment<T: ViewBinding> : Fragment() {
 
     protected val navController: NavController
         get() = findNavController()

@@ -8,7 +8,7 @@ import com.app.tests.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment: BaseFragment<FragmentLoginBinding>() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun createBinding(inflater: LayoutInflater) = FragmentLoginBinding.inflate(inflater)
 
@@ -20,5 +20,12 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>() {
 
     private fun initViews() {
 
+        binding.apply {
+            btnRegister.setOnClickListener {
+                navController.navigate(
+                    LoginFragmentDirections.toRegistration()
+                )
+            }
+        }
     }
 }
