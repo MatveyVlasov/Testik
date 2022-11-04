@@ -2,13 +2,16 @@ package com.app.tests.presentation.screen.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.tests.domain.model.RegistrationModel
 import com.app.tests.domain.model.onError
 import com.app.tests.domain.model.onSuccess
 import com.app.tests.domain.usecase.LoginWithEmailUseCase
+import com.app.tests.domain.usecase.LoginWithGoogleUseCase
 import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.login.model.LoginScreenEvent
 import com.app.tests.presentation.screen.login.model.LoginScreenUIState
 import com.app.tests.presentation.screen.login.mapper.toDomain
+import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginWithEmailUseCase: LoginWithEmailUseCase
+    private val loginWithEmailUseCase: LoginWithEmailUseCase,
+    private val loginWithGoogleUseCase: LoginWithGoogleUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<LoginScreenUIState>>
@@ -42,6 +46,18 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launch {
             loginWithEmailUseCase(screenUIState.toDomain()).onSuccess {
+                emitEvent(LoginScreenEvent.SuccessLogin)
+            }.onError {
+                emitEvent(LoginScreenEvent.ShowSnackbar(it))
+            }
+        }
+    }
+
+    fun loginWithGoogle(credential: AuthCredential, email: String, username: String) {
+        emitEvent(LoginScreenEvent.Loading)
+
+        viewModelScope.launch {
+            loginWithGoogleUseCase(credential, RegistrationModel(email = email, username = username)).onSuccess {
                 emitEvent(LoginScreenEvent.SuccessLogin)
             }.onError {
                 emitEvent(LoginScreenEvent.ShowSnackbar(it))
