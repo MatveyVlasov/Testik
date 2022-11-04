@@ -19,6 +19,10 @@ class FirestoreRepositoryImpl @Inject constructor(
                     "email" to email,
                     "username" to username
                 )
+                firebaseFirestore.collection("users").whereEqualTo("username", username).get().also {
+                    it.await()
+                    if (!it.result.isEmpty) return ApiResult.Error("Username already taken")
+                }
                 firebaseFirestore.collection("users").document(email).set(userData).also {
                     it.await()
                     return if (it.isSuccessful) ApiResult.Success()

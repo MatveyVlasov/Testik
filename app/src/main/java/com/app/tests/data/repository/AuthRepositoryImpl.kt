@@ -63,4 +63,13 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCurrentUser(): FirebaseUser? = firebaseAuth.currentUser
+
+    override suspend fun deleteCurrentUser(): ApiResult<Unit> {
+        return try {
+            firebaseAuth.currentUser?.delete()
+            ApiResult.Success()
+        } catch (e: Exception) {
+            ApiResult.Error(e.message)
+        }
+    }
 }

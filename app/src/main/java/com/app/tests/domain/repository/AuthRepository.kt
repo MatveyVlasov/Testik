@@ -15,4 +15,6 @@ interface AuthRepository {
     suspend fun loginWithGoogle(credential: AuthCredential): ApiResult<Boolean?>
 
     suspend fun getCurrentUser(): FirebaseUser?
+
+    suspend fun deleteCurrentUser(): ApiResult<Unit>
 }
