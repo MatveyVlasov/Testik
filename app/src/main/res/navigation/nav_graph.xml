@@ -16,6 +16,9 @@
         <action
             android:id="@+id/toMain"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/toPasswordReset"
+            app:destination="@id/passwordResetFragment" />
     </fragment>
 
     <fragment
@@ -29,5 +32,9 @@
         android:name="com.app.tests.presentation.screen.main.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/fragment_main" />
+    <fragment
+        android:id="@+id/passwordResetFragment"
+        android:name="com.app.tests.presentation.screen.passwordreset.PasswordResetFragment"
+        android:label="PasswordResetFragment" />
 
 </navigation>

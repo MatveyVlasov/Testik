@@ -100,6 +100,33 @@
             android:textColor="#ff0000" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/llResetPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/llNoAccount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tvForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot password?"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/tvResetPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="Reset"
+            android:textSize="22sp"
+            android:textColor="#ff0000" />
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"

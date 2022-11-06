@@ -70,6 +70,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                     LoginFragmentDirections.toRegistration()
                 )
             }
+
+            tvResetPassword.setOnClickListener {
+                navController.navigate(
+                    LoginFragmentDirections.toPasswordReset()
+                )
+            }
         }
     }
 
