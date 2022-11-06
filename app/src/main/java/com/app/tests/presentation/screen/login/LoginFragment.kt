@@ -17,6 +17,8 @@ import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.login.model.LoginScreenEvent
 import com.app.tests.presentation.screen.login.model.LoginScreenUIState
+import com.app.tests.util.Constants.USERNAME_GOOGLE_DELIMITER
+import com.app.tests.util.Constants.USERNAME_GOOGLE_ID_LENGTH
 import com.app.tests.util.hideKeyboard
 import com.app.tests.util.showSnackbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -148,13 +150,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         if (task.isSuccessful) {
             task.result?.let {
                 val credential = GoogleAuthProvider.getCredential(it.idToken, null)
-                val username = it.displayName + "#" + it.id!!.takeLast(USERNAME_ID_LENGTH)
+                val username = it.displayName + USERNAME_GOOGLE_DELIMITER + it.id!!.takeLast(USERNAME_GOOGLE_ID_LENGTH)
                 viewModel.loginWithGoogle(credential, it.email!!, username)
             }
         }
-    }
-
-    companion object {
-        private const val USERNAME_ID_LENGTH = 4
     }
 }
