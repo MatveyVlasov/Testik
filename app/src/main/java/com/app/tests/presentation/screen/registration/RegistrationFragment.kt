@@ -14,8 +14,7 @@ import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.registration.model.RegistrationScreenEvent
 import com.app.tests.presentation.screen.registration.model.RegistrationScreenUIState
-import com.app.tests.util.isDigitOrLatinLowercase
-import com.app.tests.util.showSnackbar
+import com.app.tests.util.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -52,7 +51,7 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
             etName.addTextChangedListener {
                 viewModel.onUsernameChanged(it.toString())
                 tilName.error =
-                    if (it == null || it.toString().isDigitOrLatinLowercase() ) null
+                    if (it == null || it.toString().isUsername() ) null
                     else "Only Latin lowercase letters and digits available"
             }
         }
