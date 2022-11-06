@@ -14,6 +14,7 @@ import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.registration.model.RegistrationScreenEvent
 import com.app.tests.presentation.screen.registration.model.RegistrationScreenUIState
+import com.app.tests.util.isDigitOrLatinLowercase
 import com.app.tests.util.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -48,7 +49,12 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
             etEmail.addTextChangedListener { viewModel.onEmailChanged(it.toString()) }
             etPassword.addTextChangedListener { viewModel.onPasswordChanged(it.toString()) }
             etPasswordRepeated.addTextChangedListener { viewModel.onPasswordRepeatedChanged(it.toString()) }
-            etName.addTextChangedListener { viewModel.onUsernameChanged(it.toString()) }
+            etName.addTextChangedListener {
+                viewModel.onUsernameChanged(it.toString())
+                tilName.error =
+                    if (it == null || it.toString().isDigitOrLatinLowercase() ) null
+                    else "Only Latin lowercase letters and digits available"
+            }
         }
     }
 
