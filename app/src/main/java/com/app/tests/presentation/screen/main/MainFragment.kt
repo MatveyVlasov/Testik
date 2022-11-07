@@ -11,6 +11,7 @@ import com.app.tests.databinding.FragmentMainBinding
 import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.main.model.MainScreenEvent
+import com.app.tests.util.setupBottomNavigation
 import com.app.tests.util.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -33,6 +34,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     private fun initViews() {
 
+        setupBottomNavigation(true)
         binding.apply {
 
         }

@@ -5,7 +5,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.annotation.*
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.app.tests.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
 fun Fragment.getDrawable(@DrawableRes drawableResId: Int) = ResourcesCompat.getDrawable(
@@ -23,6 +26,10 @@ fun Fragment.getTypeface(@FontRes fontResId: Int) =
 
 fun Fragment.addBackPressedCallback(callback: () -> Unit) {
     requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) { callback() }
+}
+
+fun Fragment.setupBottomNavigation(isVisible: Boolean) {
+    requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = isVisible
 }
 
 fun Fragment.hideKeyboard() {

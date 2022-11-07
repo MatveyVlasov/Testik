@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/mainFragment"
+        android:title="Main" />
+
+    <item android:id="@+id/testsTakenFragment"
+        android:title="Tests taken" />
+
+    <item android:id="@+id/testsCreatedFragment"
+        android:title="Tests created" />
+
+    <item android:id="@+id/profileFragment"
+        android:title="Profile" />
+
+</menu>
