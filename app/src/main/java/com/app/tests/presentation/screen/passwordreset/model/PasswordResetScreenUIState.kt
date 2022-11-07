@@ -1,8 +1,11 @@
 package com.app.tests.presentation.screen.passwordreset.model
 
+import androidx.annotation.StringRes
+
 data class PasswordResetScreenUIState(
-    val email: String = ""
+    val email: String = "",
+    @StringRes val emailError: Int? = null
 ) {
     val canReset: Boolean
-        get() = email.isNotEmpty()
+        get() = email.isNotEmpty() && emailError == null
 }

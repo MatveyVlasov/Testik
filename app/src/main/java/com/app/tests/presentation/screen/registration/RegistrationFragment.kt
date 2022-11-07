@@ -48,12 +48,7 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
             etEmail.addTextChangedListener { viewModel.onEmailChanged(it.toString()) }
             etPassword.addTextChangedListener { viewModel.onPasswordChanged(it.toString()) }
             etPasswordRepeated.addTextChangedListener { viewModel.onPasswordRepeatedChanged(it.toString()) }
-            etName.addTextChangedListener {
-                viewModel.onUsernameChanged(it.toString())
-                tilName.error =
-                    if (it == null || it.toString().isUsername() ) null
-                    else "Only Latin lowercase letters and digits available"
-            }
+            etName.addTextChangedListener { viewModel.onUsernameChanged(it.toString()) }
         }
     }
 
@@ -82,8 +77,14 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
             if (!etPasswordRepeated.isFocused) etPasswordRepeated.setText(data.passwordRepeated)
             if (!etName.isFocused) etName.setText(data.username)
 
+            tilEmail.error = getStringOrNull(data.emailError)
+            tilPassword.error = getStringOrNull(data.passwordError)
+            tilPasswordRepeated.error = getStringOrNull(data.passwordRepeatedError)
+            tilName.error = getStringOrNull(data.usernameError)
+
             btnRegister.isEnabled = data.canRegister
         }
+        setLoadingState(false)
     }
 
     private fun setLoadingState(isLoading: Boolean) {

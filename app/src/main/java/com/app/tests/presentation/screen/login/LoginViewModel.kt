@@ -2,6 +2,7 @@ package com.app.tests.presentation.screen.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.tests.R
 import com.app.tests.domain.model.RegistrationModel
 import com.app.tests.domain.model.onError
 import com.app.tests.domain.model.onSuccess
@@ -11,6 +12,8 @@ import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.login.model.LoginScreenEvent
 import com.app.tests.presentation.screen.login.model.LoginScreenUIState
 import com.app.tests.presentation.screen.login.mapper.toDomain
+import com.app.tests.presentation.screen.registration.model.RegistrationScreenEvent
+import com.app.tests.util.isEmail
 import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -37,18 +40,25 @@ class LoginViewModel @Inject constructor(
 
     private var screenUIState = LoginScreenUIState()
 
-    fun onEmailChanged(email: String) = updateScreenState(screenUIState.copy(email = email))
+    fun onEmailChanged(email: String) {
+        if (email == screenUIState.email) return
+        updateScreenState(screenUIState.copy(email = email, emailError = null))
+    }
 
-    fun onPasswordChanged(password: String) = updateScreenState(screenUIState.copy(password = password))
+    fun onPasswordChanged(password: String) {
+        if (password == screenUIState.password) return
+        updateScreenState(screenUIState.copy(password = password, passwordError = null))
+    }
 
     fun login() {
+        if (!validateData()) return
         emitEvent(LoginScreenEvent.Loading)
 
         viewModelScope.launch {
             loginWithEmailUseCase(screenUIState.toDomain()).onSuccess {
                 emitEvent(LoginScreenEvent.SuccessLogin)
             }.onError {
-                emitEvent(LoginScreenEvent.ShowSnackbar(it))
+                handleError(it)
             }
         }
     }
@@ -62,6 +72,33 @@ class LoginViewModel @Inject constructor(
             }.onError {
                 emitEvent(LoginScreenEvent.ShowSnackbar(it))
             }
+        }
+    }
+
+    private fun handleError(error: String) {
+        val msg = error.lowercase()
+        when {
+            msg.contains("no user record") -> {
+                updateScreenState(screenUIState.copy(emailError = R.string.no_user))
+            }
+            msg.contains("password is invalid") -> {
+                updateScreenState(screenUIState.copy(passwordError = R.string.incorrect_password))
+            }
+            msg.contains("unusual activity") -> {
+                emitEvent(LoginScreenEvent.ShowSnackbarByRes(R.string.too_many_requests))
+            }
+            else -> emitEvent(LoginScreenEvent.ShowSnackbar(error))
+        }
+    }
+
+    private fun validateData(): Boolean {
+        return checkEmail()
+    }
+
+    private fun checkEmail(): Boolean {
+        return (screenUIState.email.isEmail()).also {
+            val error = if (it) null else R.string.email_badly_formatted
+            updateScreenState(screenUIState.copy(emailError = error))
         }
     }
 

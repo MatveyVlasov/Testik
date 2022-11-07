@@ -14,6 +14,7 @@ import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.passwordreset.model.PasswordResetScreenEvent
 import com.app.tests.presentation.screen.passwordreset.model.PasswordResetScreenUIState
+import com.app.tests.util.getStringOrNull
 import com.app.tests.util.hideKeyboard
 import com.app.tests.util.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,8 +78,11 @@ class PasswordResetFragment : BaseFragment<FragmentPasswordResetBinding>() {
         binding.apply {
             if (!etEmail.isFocused) etEmail.setText(data.email)
 
+            tilEmail.error = getStringOrNull(data.emailError)
+
             btnReset.isEnabled = data.canReset
         }
+        setLoadingState(false)
     }
 
     private fun setLoadingState(isLoading: Boolean) {

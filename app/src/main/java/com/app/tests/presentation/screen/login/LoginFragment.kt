@@ -19,6 +19,7 @@ import com.app.tests.presentation.screen.login.model.LoginScreenEvent
 import com.app.tests.presentation.screen.login.model.LoginScreenUIState
 import com.app.tests.util.Constants.USERNAME_GOOGLE_DELIMITER
 import com.app.tests.util.Constants.USERNAME_GOOGLE_ID_LENGTH
+import com.app.tests.util.getStringOrNull
 import com.app.tests.util.hideKeyboard
 import com.app.tests.util.showSnackbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -111,8 +112,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             if (!etEmail.isFocused) etEmail.setText(data.email)
             if (!etPassword.isFocused) etPassword.setText(data.password)
 
+            tilEmail.error = getStringOrNull(data.emailError)
+            tilPassword.error = getStringOrNull(data.passwordError)
+
             btnLogin.isEnabled = data.canLogin
         }
+        setLoadingState(false)
     }
 
     private fun setLoadingState(isLoading: Boolean) {
@@ -122,6 +127,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private fun handleEvent(event: LoginScreenEvent) {
         when (event) {
             is LoginScreenEvent.ShowSnackbar -> {
+                setLoadingState(false)
+                showSnackbar(message = event.message)
+            }
+            is LoginScreenEvent.ShowSnackbarByRes -> {
                 setLoadingState(false)
                 showSnackbar(message = event.message)
             }

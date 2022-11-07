@@ -46,3 +46,5 @@ fun Fragment.showSnackbar(
     message = getString(message),
     duration = duration
 )
+
+fun Fragment.getStringOrNull(@StringRes res: Int?) = if (res == null) null else getString(res)
