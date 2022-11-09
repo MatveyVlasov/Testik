@@ -1,6 +1,6 @@
-package com.app.tests.data.model
+package com.app.tests.presentation.screen.profile.model
 
-data class UserDto(
+data class ProfileScreenUIState(
     val email: String = "",
     val username: String = "",
     val avatar: String = ""

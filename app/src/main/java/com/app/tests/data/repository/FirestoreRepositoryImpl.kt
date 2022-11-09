@@ -5,6 +5,7 @@ import com.app.tests.data.model.RegistrationDto
 import com.app.tests.data.model.UserDto
 import com.app.tests.domain.repository.FirestoreRepository
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -17,7 +18,8 @@ class FirestoreRepositoryImpl @Inject constructor(
             with(data) {
                 val userData = mapOf(
                     "email" to email,
-                    "username" to username
+                    "username" to username,
+                    "avatar" to avatar
                 )
                 firebaseFirestore.collection("users").whereEqualTo("username", username).get().also {
                     it.await()
@@ -45,6 +47,25 @@ class FirestoreRepositoryImpl @Inject constructor(
                     ApiResult.Success(user)
                 }
                 else ApiResult.Error(it.exception?.message)
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun updateUser(data: UserDto): ApiResult<Unit> {
+        try {
+            with(data) {
+                val userData = mapOf(
+                    "email" to email,
+                    "username" to username,
+                    "avatar" to avatar
+                )
+                firebaseFirestore.collection("users").document(email).set(userData).also {
+                    it.await()
+                    return if (it.isSuccessful) ApiResult.Success()
+                    else ApiResult.Error(it.exception?.message)
+                }
             }
         } catch (e: Exception) {
             return ApiResult.Error(e.message)

@@ -79,10 +79,14 @@ dependencies {
     // image picker
     implementation 'com.yanzhenjie:album:2.1.3'
 
+    // image crop
+    implementation 'com.vanniktech:android-image-cropper:4.5.0'
+
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:30.5.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
 
     // Coroutines

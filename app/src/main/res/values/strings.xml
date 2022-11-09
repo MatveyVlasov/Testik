@@ -10,4 +10,15 @@
     <string name="no_user">There is no user with this email</string>
     <string name="incorrect_password">The password is invalid</string>
     <string name="too_many_requests">You sent too many requests. Try again in a while</string>
+
+    <string name="avatar">Avatar</string>
+    <string name="change_avatar">Change avatar</string>
+    <string name="load_avatar">Load avatar</string>
+    <string name="crop_avatar">Crop avatar</string>
+    <string name="delete_avatar">Delete avatar</string>
+    <string name="save">Save</string>
+
+    <string name="error_occurred">An error occurred</string>
+
+    <string name="rotation_value">Click to change rotation: %1$s</string>
 </resources>

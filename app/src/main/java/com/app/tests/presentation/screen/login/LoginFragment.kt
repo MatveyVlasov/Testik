@@ -1,6 +1,7 @@
 package com.app.tests.presentation.screen.login
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import com.app.tests.util.Constants.USERNAME_GOOGLE_ID_LENGTH
 import com.app.tests.util.getStringOrNull
 import com.app.tests.util.hideKeyboard
 import com.app.tests.util.showSnackbar
+import com.app.tests.util.toAvatar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -136,7 +138,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             }
             is LoginScreenEvent.Loading -> setLoadingState(true)
             is LoginScreenEvent.SuccessLogin -> {
-                showSnackbar(message = "You successfully logged in")
                 navController.navigate(LoginFragmentDirections.toMain())
             }
         }
@@ -160,7 +161,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             task.result?.let {
                 val credential = GoogleAuthProvider.getCredential(it.idToken, null)
                 val username = it.displayName + USERNAME_GOOGLE_DELIMITER + it.id!!.takeLast(USERNAME_GOOGLE_ID_LENGTH)
-                viewModel.loginWithGoogle(credential, it.email!!, username)
+                val avatar = it.photoUrl.toAvatar()
+                viewModel.loginWithGoogle(credential, it.email!!, username, avatar)
             }
         }
     }

@@ -63,5 +63,4 @@ class MainViewModel @Inject constructor(
             _event.emit(event)
         }
     }
-
 }

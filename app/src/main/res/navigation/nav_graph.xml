@@ -28,13 +28,21 @@
         tools:layout="@layout/fragment_registration" />
 
     <fragment
+        android:id="@+id/passwordResetFragment"
+        android:name="com.app.tests.presentation.screen.passwordreset.PasswordResetFragment"
+        android:label="PasswordResetFragment"
+        tools:layout="@layout/fragment_password_reset" />
+
+    <fragment
         android:id="@+id/mainFragment"
         android:name="com.app.tests.presentation.screen.main.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/fragment_main" />
+
     <fragment
-        android:id="@+id/passwordResetFragment"
-        android:name="com.app.tests.presentation.screen.passwordreset.PasswordResetFragment"
-        android:label="PasswordResetFragment" />
+        android:id="@+id/profileFragment"
+        android:name="com.app.tests.presentation.screen.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>

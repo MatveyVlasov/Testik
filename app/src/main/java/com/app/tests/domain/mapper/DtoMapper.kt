@@ -6,5 +6,6 @@ import com.app.tests.domain.model.UserModel
 fun UserDto.toDomain() =
     UserModel(
         email = email,
-        username = username
+        username = username,
+        avatar = avatar
     )

@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Tests"
         tools:targetApi="33">
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.activity.MainActivity"
             android:screenOrientation="portrait"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
@@ -30,6 +30,8 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".presentation.activity.ImageViewActivity" />
+        <activity android:name=".presentation.activity.ImageCropActivity" />
     </application>
 
 </manifest>

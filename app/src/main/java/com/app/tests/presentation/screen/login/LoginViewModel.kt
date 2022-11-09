@@ -1,5 +1,6 @@
 package com.app.tests.presentation.screen.login
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.tests.R
@@ -63,11 +64,13 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun loginWithGoogle(credential: AuthCredential, email: String, username: String) {
+    fun loginWithGoogle(credential: AuthCredential, email: String, username: String, avatar: String) {
         emitEvent(LoginScreenEvent.Loading)
 
         viewModelScope.launch {
-            loginWithGoogleUseCase(credential, RegistrationModel(email = email, username = username)).onSuccess {
+            loginWithGoogleUseCase(
+                credential, RegistrationModel(email = email, username = username, avatar = avatar)
+            ).onSuccess {
                 emitEvent(LoginScreenEvent.SuccessLogin)
             }.onError {
                 emitEvent(LoginScreenEvent.ShowSnackbar(it))
