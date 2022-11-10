@@ -56,6 +56,9 @@ class PasswordResetViewModel @Inject constructor(
     private fun handleError(error: String) {
         val msg = error.lowercase()
         when {
+            msg.contains("badly formatted") -> {
+                updateScreenState(screenUIState.copy(emailError = R.string.email_badly_formatted))
+            }
             msg.contains("no user record") -> {
                 updateScreenState(screenUIState.copy(emailError = R.string.no_user))
             }
