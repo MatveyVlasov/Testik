@@ -56,6 +56,10 @@ class FirestoreRepositoryImpl @Inject constructor(
     override suspend fun updateUser(data: UserDto): ApiResult<Unit> {
         try {
             with(data) {
+                firebaseFirestore.collection("users").whereEqualTo("username", username).get().also {
+                    it.await()
+                    if (!it.result.isEmpty && it.result.documents.first().data?.get("email") != email) return ApiResult.Error("Username already taken")
+                }
                 firebaseFirestore.collection("users").document(email).set(data).also {
                     it.await()
                     return if (it.isSuccessful) ApiResult.Success()
