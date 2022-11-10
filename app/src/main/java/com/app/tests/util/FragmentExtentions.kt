@@ -93,4 +93,14 @@ fun Fragment.showAlert(
     )
 }
 
+fun Fragment.showExitAlert() {
+    showAlert(
+        title = R.string.exit_app,
+        message = R.string.exit_app_confirmation,
+        positive = R.string.exit_app,
+        negative = R.string.cancel,
+        onPositiveClick = { requireActivity().finish() }
+    )
+}
+
 fun Fragment.getStringOrNull(@StringRes res: Int?) = if (res == null) null else getString(res)

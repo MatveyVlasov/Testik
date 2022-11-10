@@ -13,6 +13,7 @@ import com.app.tests.databinding.ActivityImageCropBinding
 import com.app.tests.presentation.base.BaseActivity
 import com.app.tests.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_PATH
+import com.app.tests.util.loadedFromServer
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageView
 
@@ -33,7 +34,7 @@ class ImageCropActivity : BaseActivity<ActivityImageCropBinding>(), CropImageVie
 
         binding.ivImage.setOnCropImageCompleteListener(this)
 
-        if (imagePath.startsWith("http")) {
+        if (imagePath.loadedFromServer()) {
             Thread {
                 val bitmap = loadBitmap(imagePath)
                 binding.ivImage.setImageBitmap(bitmap)

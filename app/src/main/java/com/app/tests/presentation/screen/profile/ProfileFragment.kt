@@ -20,14 +20,11 @@ import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.profile.model.ProfileScreenEvent
 import com.app.tests.presentation.screen.profile.model.ProfileScreenUIState
+import com.app.tests.util.*
 import com.app.tests.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_TITLE
 import com.app.tests.util.Constants.UPDATE_AVATAR_RESULT_KEY
-import com.app.tests.util.getStringOrNull
-import com.app.tests.util.setupBottomNavigation
-import com.app.tests.util.showAlert
-import com.app.tests.util.showSnackbar
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yanzhenjie.album.Album
@@ -55,11 +52,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         initViews()
         initListeners()
         collectData()
+
+        addBackPressedCallback {
+            if (viewModel.screenUIState.canSave) confirmExitWithoutSaving()
+            else navController.navigateUp()
+        }
     }
 
     private fun initViews() {
 
-        setupBottomNavigation(true)
+        setupBottomNavigation(false)
         binding.apply {
             ivAvatar.clipToOutline = true
         }
@@ -129,6 +131,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             tilUsername.error = getStringOrNull(data.usernameError)
             tilFirstName.error = getStringOrNull(data.firstNameError)
             tilLastName.error = getStringOrNull(data.lastNameError)
+
+            btnSave.isEnabled = data.canSave
         }
         setResult(UPDATE_AVATAR_RESULT_KEY, data.avatarUpdated)
         loadAvatar(data.avatar)
@@ -216,6 +220,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             positive = R.string.confirm,
             negative = R.string.cancel,
             onPositiveClick = viewModel::deleteAccount
+        )
+    }
+
+    private fun confirmExitWithoutSaving() {
+        showAlert(
+            title = R.string.go_back,
+            message = R.string.go_back_confirmation,
+            positive = R.string.confirm,
+            negative = R.string.cancel,
+            onPositiveClick = navController::navigateUp
         )
     }
 }

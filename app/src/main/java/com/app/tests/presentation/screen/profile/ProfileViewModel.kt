@@ -14,6 +14,7 @@ import com.app.tests.presentation.screen.profile.mapper.toDomain
 import com.app.tests.presentation.screen.profile.model.ProfileScreenEvent
 import com.app.tests.presentation.screen.profile.model.ProfileScreenUIState
 import com.app.tests.util.isUsername
+import com.app.tests.util.loadedFromServer
 import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,6 +45,8 @@ class ProfileViewModel @Inject constructor(
     var screenUIState = ProfileScreenUIState()
         private set
 
+    private var oldScreenUIState: ProfileScreenUIState? = null
+
     init {
         getUserInfo(Source.CACHE)
     }
@@ -63,19 +67,19 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun getUserInfo(source: Source = Source.DEFAULT) {
-        //emitEvent(MainScreenEvent.Loading)
+        emitEvent(ProfileScreenEvent.Loading)
 
         viewModelScope.launch {
             getCurrentUserInfoUseCase(source).onSuccess {
-                updateScreenState(
-                    ProfileScreenUIState(
-                        email = it.email,
-                        username = it.username,
-                        firstName = it.firstName,
-                        lastName = it.lastName,
-                        avatar = it.avatar
-                    )
+                val screenState = ProfileScreenUIState(
+                    email = it.email,
+                    username = it.username,
+                    firstName = it.firstName,
+                    lastName = it.lastName,
+                    avatar = it.avatar
                 )
+                oldScreenUIState = screenState
+                updateScreenState(state = screenState)
             }.onError {
                 emitEvent(ProfileScreenEvent.ShowSnackbar(it))
             }
@@ -91,10 +95,15 @@ class ProfileViewModel @Inject constructor(
 
     fun save() {
         if (!validateData()) return
+        emitEvent(ProfileScreenEvent.Loading)
+
+        val avatarUpdated = !screenUIState.avatar.loadedFromServer()
 
         viewModelScope.launch {
             updateUserUseCase(screenUIState.toDomain()).onSuccess {
-                updateScreenState(screenUIState.copy(avatarUpdated = true))
+                val screenState = screenUIState.copy(avatarUpdated = avatarUpdated)
+                oldScreenUIState = screenState
+                updateScreenState(screenState)
                 emitEvent(ProfileScreenEvent.ShowSnackbar("Success"))
             }.onError {
                 emitEvent(ProfileScreenEvent.ShowSnackbar(it))
@@ -125,7 +134,7 @@ class ProfileViewModel @Inject constructor(
 
     fun deleteAccount() {
         viewModelScope.launch {
-            deleteUserUseCase(screenUIState.email).onSuccess { // change to oldScreen
+            deleteUserUseCase(screenUIState.email).onSuccess {
                 signOutUseCase().onSuccess {
                     emitEvent(ProfileScreenEvent.SuccessAccountDeletion)
                 }.onError {
@@ -138,7 +147,9 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun updateScreenState(state: ProfileScreenUIState) {
-        screenUIState = state
+        Timber.i("here state $state")
+        Timber.i("here old $oldScreenUIState")
+        screenUIState = state.copy(canSave = state != oldScreenUIState)
         _uiState.value = UIState.Success(screenUIState)
     }
 

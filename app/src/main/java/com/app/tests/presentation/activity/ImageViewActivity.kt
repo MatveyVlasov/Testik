@@ -9,6 +9,7 @@ import com.app.tests.databinding.ActivityImageViewBinding
 import com.app.tests.presentation.base.BaseActivity
 import com.app.tests.util.Constants.EXTRA_IMAGE_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_TITLE
+import com.app.tests.util.loadedFromServer
 import com.bumptech.glide.Glide
 
 class ImageViewActivity : BaseActivity<ActivityImageViewBinding>() {
@@ -27,7 +28,7 @@ class ImageViewActivity : BaseActivity<ActivityImageViewBinding>() {
             title = imageTitle
         }
 
-        if (imagePath.startsWith("http")) {
+        if (imagePath.loadedFromServer()) {
             Thread {
                 val bitmap = loadBitmap(imagePath)
                 binding.ivImage.setImageBitmap(bitmap)

@@ -13,7 +13,9 @@ import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.main.model.MainScreenEvent
 import com.app.tests.util.Constants.UPDATE_AVATAR_RESULT_KEY
+import com.app.tests.util.addBackPressedCallback
 import com.app.tests.util.setupBottomNavigation
+import com.app.tests.util.showExitAlert
 import com.app.tests.util.showSnackbar
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,6 +35,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         initViews()
         initListeners()
         collectData()
+
+        addBackPressedCallback { showExitAlert() }
     }
 
     private fun initViews() {

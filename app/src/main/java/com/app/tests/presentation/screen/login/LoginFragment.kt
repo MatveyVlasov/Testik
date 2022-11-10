@@ -53,6 +53,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         initListeners()
         collectData()
         createRequest()
+
+        addBackPressedCallback { showExitAlert() }
     }
 
     private fun initViews() {

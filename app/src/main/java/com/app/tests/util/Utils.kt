@@ -12,8 +12,10 @@ fun String.isUsername() = all { it.isDigitOrLatinLowercase() } && isNotBlank()
 
 fun String.toUsername() = filter { c -> c.isLetterOrDigit() || c == USERNAME_GOOGLE_DELIMITER }.lowercase()
 
-fun String.removeExtraSpaces() = trim().replace("\\s{2,}", " ")
+fun String.removeExtraSpaces() = trim().replace("\\s+".toRegex(), " ")
 
 fun String.isEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches() && isNotBlank()
 
 fun Uri?.toAvatar() = toString().takeWhile { it != '=' }
+
+fun String.loadedFromServer() = startsWith("http")

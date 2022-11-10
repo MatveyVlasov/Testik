@@ -24,6 +24,11 @@
     <string name="delete_account_confirmation">Do you really want to delete your account?</string>
     <string name="delete_account_success">You successfully deleted your account</string>
 
+    <string name="go_back">Go back</string>
+    <string name="go_back_confirmation">Do you really want to go back? All unsaved changes will be lost</string>
+    <string name="exit_app">Exit</string>
+    <string name="exit_app_confirmation">Are you sure you want to exit?</string>
+
     <string name="error_occurred">An error occurred</string>
     <string name="empty" />
     <string name="yes">Yes</string>
