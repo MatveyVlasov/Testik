@@ -94,6 +94,7 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
             updateUserUseCase(screenUIState.toDomain()).onSuccess {
+                updateScreenState(screenUIState.copy(avatarUpdated = true))
                 emitEvent(ProfileScreenEvent.ShowSnackbar("Success"))
             }.onError {
                 emitEvent(ProfileScreenEvent.ShowSnackbar(it))

@@ -20,10 +20,10 @@ import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.profile.model.ProfileScreenEvent
 import com.app.tests.presentation.screen.profile.model.ProfileScreenUIState
-import com.app.tests.presentation.screen.registration.model.RegistrationScreenUIState
 import com.app.tests.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_TITLE
+import com.app.tests.util.Constants.UPDATE_AVATAR_RESULT_KEY
 import com.app.tests.util.getStringOrNull
 import com.app.tests.util.setupBottomNavigation
 import com.app.tests.util.showAlert
@@ -130,6 +130,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             tilFirstName.error = getStringOrNull(data.firstNameError)
             tilLastName.error = getStringOrNull(data.lastNameError)
         }
+        setResult(UPDATE_AVATAR_RESULT_KEY, data.avatarUpdated)
         loadAvatar(data.avatar)
         setLoadingState(false)
     }

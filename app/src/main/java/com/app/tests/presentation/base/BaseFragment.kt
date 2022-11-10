@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
@@ -19,6 +20,10 @@ abstract class BaseFragment<T: ViewBinding> : Fragment() {
 
     private var _binding: T? = null
 
+    private val currentBackStackEntry: NavBackStackEntry by lazy {
+        checkNotNull(navController.currentBackStackEntry)
+    }
+
     abstract fun createBinding(inflater: LayoutInflater): T
 
     override fun onCreateView(
@@ -30,5 +35,20 @@ abstract class BaseFragment<T: ViewBinding> : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    protected fun <T> observeResult(key: String, resultHandler: (T) -> Unit) {
+        currentBackStackEntry.savedStateHandle
+            .getLiveData<T>(key)
+            .observe(viewLifecycleOwner) {
+                it?.let {
+                    resultHandler(it)
+                    currentBackStackEntry.savedStateHandle[key] = null
+                }
+            }
+    }
+
+    protected fun setResult(key: String, result: Any) {
+        navController.previousBackStackEntry?.savedStateHandle?.set(key, result)
     }
 }

@@ -7,12 +7,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.app.tests.R
 import com.app.tests.databinding.FragmentMainBinding
 import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.main.model.MainScreenEvent
+import com.app.tests.util.Constants.UPDATE_AVATAR_RESULT_KEY
 import com.app.tests.util.setupBottomNavigation
 import com.app.tests.util.showSnackbar
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,14 +39,20 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
         setupBottomNavigation(true)
         binding.apply {
-
+            ivAvatar.clipToOutline = true
         }
     }
 
     private fun initListeners() {
         binding.apply {
-
+            ivAvatar.setOnClickListener {
+                navController.navigate(
+                    MainFragmentDirections.toProfile()
+                )
+            }
         }
+
+        observeResult<Boolean>(UPDATE_AVATAR_RESULT_KEY) { if (it) viewModel.getUserInfo() }
     }
 
     private fun collectData() {
@@ -52,7 +61,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                 launch {
                     viewModel.uiState.collect { state ->
                         state.onSuccess {
-                            binding.tvInfo.text = "${it.username} (${it.email})"
+                            loadAvatar(it.avatar)
                         }
                     }
                 }
@@ -72,5 +81,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             }
             is MainScreenEvent.Loading -> Unit //setLoadingState(true)
         }
+    }
+
+    private fun loadAvatar(url: String) {
+        val avatar = url.ifBlank { R.drawable.ic_profile_avatar }
+
+        Glide.with(this)
+            .load(avatar)
+            .into(binding.ivAvatar)
     }
 }

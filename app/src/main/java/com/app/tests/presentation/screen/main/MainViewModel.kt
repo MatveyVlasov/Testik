@@ -43,8 +43,7 @@ class MainViewModel @Inject constructor(
             getCurrentUserInfoUseCase().onSuccess {
                 updateScreenState(
                     MainScreenUIState(
-                        email = it.email,
-                        username = it.username
+                        avatar = it.avatar
                     )
                 )
             }.onError {

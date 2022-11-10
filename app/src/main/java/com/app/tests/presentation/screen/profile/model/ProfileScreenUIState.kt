@@ -8,6 +8,7 @@ data class ProfileScreenUIState(
     val firstName: String = "",
     val lastName: String = "",
     val avatar: String = "",
+    val avatarUpdated: Boolean = false,
     @StringRes val usernameError: Int? = null,
     @StringRes val firstNameError: Int? = null,
     @StringRes val lastNameError: Int? = null

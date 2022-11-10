@@ -8,4 +8,6 @@ object Constants {
     const val EXTRA_IMAGE_TITLE = "com.app.tests.extras.EXTRA_IMAGE_TITLE"
     const val EXTRA_IMAGE_PATH = "com.app.tests.extras.EXTRA_IMAGE_PATH"
     const val EXTRA_IMAGE_CROPPED_PATH = "com.app.tests.extras.EXTRA_IMAGE_CROPPED_PATH"
+
+    const val UPDATE_AVATAR_RESULT_KEY = "UPDATE_AVATAR_RESULT_KEY"
 }
