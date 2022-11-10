@@ -1,19 +1,18 @@
 package com.app.tests.presentation.screen.login
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.tests.R
 import com.app.tests.domain.model.RegistrationModel
 import com.app.tests.domain.model.onError
 import com.app.tests.domain.model.onSuccess
+import com.app.tests.domain.usecase.GetCurrentUserUseCase
 import com.app.tests.domain.usecase.LoginWithEmailUseCase
 import com.app.tests.domain.usecase.LoginWithGoogleUseCase
 import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.login.model.LoginScreenEvent
 import com.app.tests.presentation.screen.login.model.LoginScreenUIState
 import com.app.tests.presentation.screen.login.mapper.toDomain
-import com.app.tests.presentation.screen.registration.model.RegistrationScreenEvent
 import com.app.tests.util.isEmail
 import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val loginWithEmailUseCase: LoginWithEmailUseCase,
     private val loginWithGoogleUseCase: LoginWithGoogleUseCase
 ) : ViewModel() {
@@ -40,6 +40,10 @@ class LoginViewModel @Inject constructor(
     private val _event = MutableSharedFlow<LoginScreenEvent>()
 
     private var screenUIState = LoginScreenUIState()
+
+    init {
+        getCurrentUser()
+    }
 
     fun onEmailChanged(email: String) {
         if (email == screenUIState.email) return
@@ -57,7 +61,7 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launch {
             loginWithEmailUseCase(screenUIState.toDomain()).onSuccess {
-                emitEvent(LoginScreenEvent.SuccessLogin)
+                emitEvent(LoginScreenEvent.NavigateToMain)
             }.onError {
                 handleError(it)
             }
@@ -71,9 +75,17 @@ class LoginViewModel @Inject constructor(
             loginWithGoogleUseCase(
                 credential, RegistrationModel(email = email, username = username, avatar = avatar)
             ).onSuccess {
-                emitEvent(LoginScreenEvent.SuccessLogin)
+                emitEvent(LoginScreenEvent.NavigateToMain)
             }.onError {
                 emitEvent(LoginScreenEvent.ShowSnackbar(it))
+            }
+        }
+    }
+
+    private fun getCurrentUser() {
+        viewModelScope.launch {
+            getCurrentUserUseCase()?.let {
+                emitEvent(LoginScreenEvent.NavigateToMain)
             }
         }
     }

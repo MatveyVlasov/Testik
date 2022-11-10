@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.tests.domain.model.onError
 import com.app.tests.domain.model.onSuccess
-import com.app.tests.domain.usecase.GetCurrentUserUseCase
+import com.app.tests.domain.usecase.GetCurrentUserInfoUseCase
 import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.main.model.MainScreenEvent
 import com.app.tests.presentation.screen.main.model.MainScreenUIState
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getCurrentUserUseCase: GetCurrentUserUseCase
+    private val getCurrentUserInfoUseCase: GetCurrentUserInfoUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<MainScreenUIState>>
@@ -40,7 +40,7 @@ class MainViewModel @Inject constructor(
         //emitEvent(MainScreenEvent.Loading)
 
         viewModelScope.launch {
-            getCurrentUserUseCase().onSuccess {
+            getCurrentUserInfoUseCase().onSuccess {
                 updateScreenState(
                     MainScreenUIState(
                         email = it.email,

@@ -1,22 +1,12 @@
 package com.app.tests.domain.usecase
 
-import com.app.tests.domain.mapper.toDomain
-import com.app.tests.domain.model.Result
-import com.app.tests.domain.model.UserModel
 import com.app.tests.domain.repository.AuthRepository
-import com.app.tests.domain.repository.FirestoreRepository
-import com.app.tests.domain.util.ResultWrapper
-import com.app.tests.domain.util.ResultWrapperImpl
+import com.google.firebase.auth.FirebaseUser
 import javax.inject.Inject
 
 class GetCurrentUserUseCase @Inject constructor(
-    private val authRepository: AuthRepository,
-    private val firestoreRepository: FirestoreRepository
-) : ResultWrapper by ResultWrapperImpl() {
+    private val authRepository: AuthRepository
+) {
 
-    suspend operator fun invoke(): Result<UserModel> =
-        wrap(
-            block = { firestoreRepository.getUserInfo(authRepository.getCurrentUser()?.email) },
-            mapper = { it!!.toDomain() }
-        )
+    suspend operator fun invoke(): FirebaseUser? = authRepository.getCurrentUser()
 }

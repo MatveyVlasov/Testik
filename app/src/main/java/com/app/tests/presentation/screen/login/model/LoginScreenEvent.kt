@@ -10,5 +10,5 @@ sealed class LoginScreenEvent {
 
     object Loading : LoginScreenEvent()
 
-    object SuccessLogin : LoginScreenEvent()
+    object NavigateToMain : LoginScreenEvent()
 }

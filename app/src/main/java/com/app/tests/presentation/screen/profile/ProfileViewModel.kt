@@ -1,11 +1,10 @@
 package com.app.tests.presentation.screen.profile
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.tests.domain.model.onError
 import com.app.tests.domain.model.onSuccess
-import com.app.tests.domain.usecase.GetCurrentUserUseCase
+import com.app.tests.domain.usecase.GetCurrentUserInfoUseCase
 import com.app.tests.domain.usecase.UpdateUserUseCase
 import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.profile.mapper.toDomain
@@ -21,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val getCurrentUserInfoUseCase: GetCurrentUserInfoUseCase,
     private val updateUserUseCase: UpdateUserUseCase
 ) : ViewModel() {
 
@@ -44,7 +43,7 @@ class ProfileViewModel @Inject constructor(
         //emitEvent(MainScreenEvent.Loading)
 
         viewModelScope.launch {
-            getCurrentUserUseCase().onSuccess {
+            getCurrentUserInfoUseCase().onSuccess {
                 updateScreenState(
                     ProfileScreenUIState(
                         email = it.email,
