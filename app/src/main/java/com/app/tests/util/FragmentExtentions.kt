@@ -1,6 +1,7 @@
 package com.app.tests.util
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.annotation.*
@@ -53,5 +54,43 @@ fun Fragment.showSnackbar(
     message = getString(message),
     duration = duration
 )
+
+fun Fragment.showAlert(
+    title: String,
+    message: String,
+    positive: String,
+    negative: String = "",
+    onPositiveClick: () -> Unit = {},
+    onNegativeClick: () -> Unit = {},
+    cancelable: Boolean = false
+) {
+    AlertDialog.Builder(requireContext())
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(positive) { _, _ -> onPositiveClick() }
+        .setNegativeButton(negative) { _, _ -> onNegativeClick() }
+        .setCancelable(cancelable)
+        .show()
+}
+
+fun Fragment.showAlert(
+    @StringRes title: Int,
+    @StringRes message: Int,
+    @StringRes positive: Int,
+    @StringRes negative: Int = R.string.empty,
+    onPositiveClick: () -> Unit = {},
+    onNegativeClick: () -> Unit = {},
+    cancelable: Boolean = false
+) {
+    showAlert(
+        title = getString(title),
+        message = getString(message),
+        positive = getString(positive),
+        negative = getString(negative),
+        onPositiveClick = onPositiveClick,
+        onNegativeClick = onNegativeClick,
+        cancelable = cancelable
+    )
+}
 
 fun Fragment.getStringOrNull(@StringRes res: Int?) = if (res == null) null else getString(res)

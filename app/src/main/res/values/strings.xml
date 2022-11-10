@@ -17,8 +17,18 @@
     <string name="crop_avatar">Crop avatar</string>
     <string name="delete_avatar">Delete avatar</string>
     <string name="save">Save</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_confirmation">Do you really want to sign out?</string>
+    <string name="sign_out_success">You successfully signed out</string>
+    <string name="delete_account">Delete account</string>
+    <string name="delete_account_confirmation">Do you really want to delete your account?</string>
+    <string name="delete_account_success">You successfully deleted your account</string>
 
     <string name="error_occurred">An error occurred</string>
-
-    <string name="rotation_value">Click to change rotation: %1$s</string>
+    <string name="empty" />
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>

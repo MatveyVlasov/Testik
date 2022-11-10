@@ -25,4 +25,16 @@ class StorageRepositoryImpl @Inject constructor(
             ApiResult.Error(e.message)
         }
     }
+
+    override suspend fun deleteAvatar(email: String): ApiResult<Unit> {
+         try {
+            firebaseStorage.reference.child("avatars").child(email).delete().also {
+                it.await()
+                return if (it.isSuccessful) ApiResult.Success()
+                else ApiResult.Error(it.exception?.message)
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
 }

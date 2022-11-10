@@ -12,4 +12,6 @@ interface FirestoreRepository {
     suspend fun getUserInfo(email: String?, source: Source): ApiResult<UserDto>
 
     suspend fun updateUser(data: UserDto): ApiResult<Unit>
+
+    suspend fun deleteUser(email: String?): ApiResult<Unit>
 }

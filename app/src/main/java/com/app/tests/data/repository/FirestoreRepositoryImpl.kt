@@ -71,4 +71,17 @@ class FirestoreRepositoryImpl @Inject constructor(
             return ApiResult.Error(e.message)
         }
     }
+
+    override suspend fun deleteUser(email: String?): ApiResult<Unit> {
+        try {
+            if (email == null) return ApiResult.Error("No email provided")
+            firebaseFirestore.collection("users").document(email).delete().also {
+                it.await()
+                return if (it.isSuccessful) ApiResult.Success()
+                else ApiResult.Error(it.exception?.message)
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
 }

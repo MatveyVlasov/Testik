@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.tests.domain.model.onError
 import com.app.tests.domain.model.onSuccess
+import com.app.tests.domain.usecase.DeleteUserUseCase
 import com.app.tests.domain.usecase.GetCurrentUserInfoUseCase
+import com.app.tests.domain.usecase.SignOutUseCase
 import com.app.tests.domain.usecase.UpdateUserUseCase
 import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.profile.mapper.toDomain
@@ -22,7 +24,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getCurrentUserInfoUseCase: GetCurrentUserInfoUseCase,
-    private val updateUserUseCase: UpdateUserUseCase
+    private val updateUserUseCase: UpdateUserUseCase,
+    private val signOutUseCase: SignOutUseCase,
+    private val deleteUserUseCase: DeleteUserUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<ProfileScreenUIState>>
@@ -35,6 +39,7 @@ class ProfileViewModel @Inject constructor(
     private val _event = MutableSharedFlow<ProfileScreenEvent>()
 
     var screenUIState = ProfileScreenUIState()
+        private set
 
     init {
         getUserInfo(Source.CACHE)
@@ -69,6 +74,30 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             updateUserUseCase(screenUIState.toDomain()).onSuccess {
                 emitEvent(ProfileScreenEvent.ShowSnackbar("Success"))
+            }.onError {
+                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
+            }
+        }
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            signOutUseCase().onSuccess {
+                emitEvent(ProfileScreenEvent.SuccessSignOut)
+            }.onError {
+                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
+            }
+        }
+    }
+
+    fun deleteAccount() {
+        viewModelScope.launch {
+            deleteUserUseCase(screenUIState.email).onSuccess { // change to oldScreen
+                signOutUseCase().onSuccess {
+                    emitEvent(ProfileScreenEvent.SuccessAccountDeletion)
+                }.onError {
+                    emitEvent(ProfileScreenEvent.ShowSnackbar(it))
+                }
             }.onError {
                 emitEvent(ProfileScreenEvent.ShowSnackbar(it))
             }

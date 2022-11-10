@@ -25,7 +25,6 @@
         android:layout_marginTop="15dp"
         android:text="@string/change_avatar"
         android:textAllCaps="false"
-        app:layout_constraintVertical_bias="0.3"
         app:layout_constraintTop_toBottomOf="@id/ivAvatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -37,8 +36,31 @@
         android:layout_marginTop="15dp"
         android:text="@string/save"
         android:textAllCaps="false"
-        app:layout_constraintVertical_bias="0.3"
         app:layout_constraintTop_toBottomOf="@id/btnChangeAvatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSignOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#FFFF6666"
+        android:text="@string/sign_out"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/btnSave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDeleteAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#FFFF6666"
+        android:text="@string/delete_account"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/btnSignOut"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

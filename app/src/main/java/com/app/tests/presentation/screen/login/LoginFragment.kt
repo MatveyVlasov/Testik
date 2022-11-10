@@ -18,12 +18,9 @@ import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.login.model.LoginScreenEvent
 import com.app.tests.presentation.screen.login.model.LoginScreenUIState
+import com.app.tests.util.*
 import com.app.tests.util.Constants.USERNAME_GOOGLE_DELIMITER
 import com.app.tests.util.Constants.USERNAME_GOOGLE_ID_LENGTH
-import com.app.tests.util.getStringOrNull
-import com.app.tests.util.hideKeyboard
-import com.app.tests.util.showSnackbar
-import com.app.tests.util.toAvatar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -60,6 +57,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun initViews() {
 
+        setupBottomNavigation(false)
         binding.apply {
             btnLogin.setOnClickListener {
                 viewModel.login()

@@ -21,6 +21,7 @@ import com.app.tests.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_TITLE
 import com.app.tests.util.setupBottomNavigation
+import com.app.tests.util.showAlert
 import com.app.tests.util.showSnackbar
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -59,6 +60,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             ivAvatar.setOnClickListener { viewAvatar() }
             btnChangeAvatar.setOnClickListener { onChangeAvatar() }
             btnSave.setOnClickListener { viewModel.save() }
+            btnSignOut.setOnClickListener { confirmSignOut() }
+            btnDeleteAccount.setOnClickListener { confirmDeleteAccount() }
         }
     }
 
@@ -93,6 +96,18 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 showSnackbar(message = event.message)
             }
             is ProfileScreenEvent.Loading -> Unit //setLoadingState(true)
+            is ProfileScreenEvent.SuccessSignOut -> {
+                showSnackbar(message = R.string.sign_out_success)
+                navController.navigate(
+                    ProfileFragmentDirections.toLogin()
+                )
+            }
+            is ProfileScreenEvent.SuccessAccountDeletion -> {
+                showSnackbar(message = R.string.delete_account_success)
+                navController.navigate(
+                    ProfileFragmentDirections.toLogin()
+                )
+            }
         }
     }
 
@@ -156,4 +171,23 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         viewModel.deleteAvatar()
     }
 
+    private fun confirmSignOut() {
+        showAlert(
+            title = R.string.sign_out,
+            message = R.string.sign_out_confirmation,
+            positive = R.string.confirm,
+            negative = R.string.cancel,
+            onPositiveClick = viewModel::signOut
+        )
+    }
+
+    private fun confirmDeleteAccount() {
+        showAlert(
+            title = R.string.delete_account,
+            message = R.string.delete_account_confirmation,
+            positive = R.string.confirm,
+            negative = R.string.cancel,
+            onPositiveClick = viewModel::deleteAccount
+        )
+    }
 }

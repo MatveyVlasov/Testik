@@ -7,4 +7,6 @@ import com.app.tests.data.model.UserDto
 interface StorageRepository {
 
     suspend fun uploadAvatar(data: UserDto): ApiResult<Uri>
+
+    suspend fun deleteAvatar(email: String): ApiResult<Unit>
 }

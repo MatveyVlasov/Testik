@@ -43,6 +43,10 @@
         android:id="@+id/profileFragment"
         android:name="com.app.tests.presentation.screen.profile.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/toLogin"
+            app:destination="@id/loginFragment" />
+    </fragment>
 
 </navigation>
