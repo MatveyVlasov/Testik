@@ -106,8 +106,18 @@ class ProfileViewModel @Inject constructor(
                 updateScreenState(screenState)
                 emitEvent(ProfileScreenEvent.ShowSnackbar("Success"))
             }.onError {
-                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
+                handleError(it)
             }
+        }
+    }
+
+    private fun handleError(error: String) {
+        val msg = error.lowercase()
+        when {
+            msg.contains("username already taken") -> {
+                updateScreenState(screenUIState.copy(usernameError = R.string.username_already_taken))
+            }
+            else -> emitEvent(ProfileScreenEvent.ShowSnackbar(error))
         }
     }
 

@@ -5,6 +5,7 @@
     <string name="email_already_taken">The email address is already taken</string>
     <string name="password_too_short">The password should contain at least 6 characters</string>
     <string name="no_passwords_match">Passwords do not match</string>
+    <string name="username_already_taken">The username is already taken</string>
     <string name="username_badly_formatted">The username should contain Latin lowercase letters and digits only</string>
 
     <string name="no_user">There is no user with this email</string>

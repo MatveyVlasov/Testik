@@ -75,6 +75,9 @@ class RegistrationViewModel @Inject constructor(
             msg.contains("email address is already in use") -> {
                 updateScreenState(screenUIState.copy(emailError = R.string.email_already_taken))
             }
+            msg.contains("username already taken") -> {
+                updateScreenState(screenUIState.copy(usernameError = R.string.username_already_taken))
+            }
             else -> emitEvent(RegistrationScreenEvent.ShowSnackbar(error))
         }
     }
