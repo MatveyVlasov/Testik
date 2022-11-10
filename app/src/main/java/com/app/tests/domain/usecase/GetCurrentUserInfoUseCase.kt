@@ -7,6 +7,7 @@ import com.app.tests.domain.repository.AuthRepository
 import com.app.tests.domain.repository.FirestoreRepository
 import com.app.tests.domain.util.ResultWrapper
 import com.app.tests.domain.util.ResultWrapperImpl
+import com.google.firebase.firestore.Source
 import javax.inject.Inject
 
 class GetCurrentUserInfoUseCase @Inject constructor(
@@ -14,9 +15,14 @@ class GetCurrentUserInfoUseCase @Inject constructor(
     private val firestoreRepository: FirestoreRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(): Result<UserModel> =
+    suspend operator fun invoke(source: Source = Source.DEFAULT): Result<UserModel> =
         wrap(
-            block = { firestoreRepository.getUserInfo(authRepository.getCurrentUser()?.email) },
+            block = {
+                firestoreRepository.getUserInfo(
+                    email = authRepository.getCurrentUser()?.email,
+                    source = source
+                )
+            },
             mapper = { it!!.toDomain() }
         )
 }

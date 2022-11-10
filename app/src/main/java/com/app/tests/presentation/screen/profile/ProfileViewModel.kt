@@ -10,6 +10,7 @@ import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.profile.mapper.toDomain
 import com.app.tests.presentation.screen.profile.model.ProfileScreenEvent
 import com.app.tests.presentation.screen.profile.model.ProfileScreenUIState
+import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,14 +37,14 @@ class ProfileViewModel @Inject constructor(
     var screenUIState = ProfileScreenUIState()
 
     init {
-        getUserInfo()
+        getUserInfo(Source.CACHE)
     }
 
-    fun getUserInfo() {
+    fun getUserInfo(source: Source = Source.DEFAULT) {
         //emitEvent(MainScreenEvent.Loading)
 
         viewModelScope.launch {
-            getCurrentUserInfoUseCase().onSuccess {
+            getCurrentUserInfoUseCase(source).onSuccess {
                 updateScreenState(
                     ProfileScreenUIState(
                         email = it.email,

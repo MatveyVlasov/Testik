@@ -5,7 +5,7 @@ import com.app.tests.data.model.RegistrationDto
 import com.app.tests.data.model.UserDto
 import com.app.tests.domain.repository.FirestoreRepository
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.firestore.Source
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -36,11 +36,11 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserInfo(email: String?): ApiResult<UserDto> {
+    override suspend fun getUserInfo(email: String?, source: Source): ApiResult<UserDto> {
         try {
             if (email == null) return ApiResult.Error("No email provided")
 
-            firebaseFirestore.collection("users").document(email).get().also {
+            firebaseFirestore.collection("users").document(email).get(source).also {
                 it.await()
                 return if (it.isSuccessful) {
                     val user = it.result.toObject(UserDto::class.java) ?: return ApiResult.Error("No data found")
