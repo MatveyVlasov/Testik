@@ -38,6 +38,12 @@ class PasswordResetFragment : BaseFragment<FragmentPasswordResetBinding>() {
     private fun initViews() {
 
         binding.apply {
+
+        }
+    }
+
+    private fun initListeners() {
+        binding.apply {
             toolbar.setNavigationOnClickListener {
                 navController.navigateUp()
             }
@@ -46,12 +52,7 @@ class PasswordResetFragment : BaseFragment<FragmentPasswordResetBinding>() {
                 viewModel.resetPassword()
                 hideKeyboard()
             }
-        }
 
-    }
-
-    private fun initListeners() {
-        binding.apply {
             etEmail.addTextChangedListener { viewModel.onEmailChanged(it.toString()) }
         }
     }

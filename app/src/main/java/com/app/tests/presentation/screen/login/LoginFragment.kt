@@ -59,6 +59,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
         setupBottomNavigation(false)
         binding.apply {
+
+        }
+    }
+
+    private fun initListeners() {
+        binding.apply {
             btnLogin.setOnClickListener {
                 viewModel.login()
                 hideKeyboard()
@@ -79,11 +85,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                     LoginFragmentDirections.toPasswordReset()
                 )
             }
-        }
-    }
 
-    private fun initListeners() {
-        binding.apply {
             etEmail.addTextChangedListener { viewModel.onEmailChanged(it.toString()) }
             etPassword.addTextChangedListener { viewModel.onPasswordChanged(it.toString()) }
         }
@@ -158,7 +160,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         if (task.isSuccessful) {
             task.result?.let {
                 val credential = GoogleAuthProvider.getCredential(it.idToken, null)
-                val username = it.displayName + USERNAME_GOOGLE_DELIMITER + it.id!!.takeLast(USERNAME_GOOGLE_ID_LENGTH)
+                val username =
+                    (it.displayName + USERNAME_GOOGLE_DELIMITER + it.id!!.takeLast(USERNAME_GOOGLE_ID_LENGTH)).toUsername()
                 val avatar = it.photoUrl.toAvatar()
                 viewModel.loginWithGoogle(credential, it.email!!, username, avatar)
             }

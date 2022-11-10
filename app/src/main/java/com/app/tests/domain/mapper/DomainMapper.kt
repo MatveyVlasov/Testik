@@ -12,7 +12,7 @@ fun RegistrationModel.toDto() =
     RegistrationDto(
         email = email,
         password = password,
-        username = username.toUsername(),
+        username = username,
         avatar = avatar
     )
 
@@ -26,5 +26,7 @@ fun UserModel.toDto() =
     UserDto(
         email = email,
         username = username,
+        firstName = firstName,
+        lastName = lastName,
         avatar = avatar
     )

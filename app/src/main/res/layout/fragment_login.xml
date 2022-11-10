@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/llRegForm"
+        android:id="@+id/llLoginForm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="170dp"
@@ -28,8 +28,7 @@
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                />
+                android:inputType="textEmailAddress" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,7 +59,7 @@
         android:text="Login"
         android:enabled="false"
         app:layout_constraintVertical_bias="0.3"
-        app:layout_constraintTop_toBottomOf="@id/llRegForm"
+        app:layout_constraintTop_toBottomOf="@id/llLoginForm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

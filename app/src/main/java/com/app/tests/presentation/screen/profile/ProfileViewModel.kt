@@ -2,6 +2,7 @@ package com.app.tests.presentation.screen.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.tests.R
 import com.app.tests.domain.model.onError
 import com.app.tests.domain.model.onSuccess
 import com.app.tests.domain.usecase.DeleteUserUseCase
@@ -12,6 +13,7 @@ import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.profile.mapper.toDomain
 import com.app.tests.presentation.screen.profile.model.ProfileScreenEvent
 import com.app.tests.presentation.screen.profile.model.ProfileScreenUIState
+import com.app.tests.util.isUsername
 import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -45,6 +47,21 @@ class ProfileViewModel @Inject constructor(
         getUserInfo(Source.CACHE)
     }
 
+    fun onUsernameChanged(username: String) {
+        if (username == screenUIState.username) return
+        updateScreenState(screenUIState.copy(username = username, usernameError = null))
+    }
+
+    fun onFirstNameChanged(firstName: String) {
+        if (firstName == screenUIState.firstName) return
+        updateScreenState(screenUIState.copy(firstName = firstName, firstNameError = null))
+    }
+
+    fun onLastNameChanged(lastName: String) {
+        if (lastName == screenUIState.lastName) return
+        updateScreenState(screenUIState.copy(lastName = lastName, lastNameError = null))
+    }
+
     fun getUserInfo(source: Source = Source.DEFAULT) {
         //emitEvent(MainScreenEvent.Loading)
 
@@ -54,6 +71,8 @@ class ProfileViewModel @Inject constructor(
                     ProfileScreenUIState(
                         email = it.email,
                         username = it.username,
+                        firstName = it.firstName,
+                        lastName = it.lastName,
                         avatar = it.avatar
                     )
                 )
@@ -71,12 +90,25 @@ class ProfileViewModel @Inject constructor(
     fun deleteAvatar() = loadAvatar("")
 
     fun save() {
+        if (!validateData()) return
+
         viewModelScope.launch {
             updateUserUseCase(screenUIState.toDomain()).onSuccess {
                 emitEvent(ProfileScreenEvent.ShowSnackbar("Success"))
             }.onError {
                 emitEvent(ProfileScreenEvent.ShowSnackbar(it))
             }
+        }
+    }
+
+    private fun validateData(): Boolean {
+        return checkUsername()
+    }
+
+    private fun checkUsername(): Boolean {
+        return (screenUIState.username.isUsername()).also {
+            val error = if (it) null else R.string.username_badly_formatted
+            updateScreenState(screenUIState.copy(usernameError = error))
         }
     }
 

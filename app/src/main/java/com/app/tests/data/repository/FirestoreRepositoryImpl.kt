@@ -56,12 +56,7 @@ class FirestoreRepositoryImpl @Inject constructor(
     override suspend fun updateUser(data: UserDto): ApiResult<Unit> {
         try {
             with(data) {
-                val userData = mapOf(
-                    "email" to email,
-                    "username" to username,
-                    "avatar" to avatar
-                )
-                firebaseFirestore.collection("users").document(email).set(userData).also {
+                firebaseFirestore.collection("users").document(email).set(data).also {
                     it.await()
                     return if (it.isSuccessful) ApiResult.Success()
                     else ApiResult.Error(it.exception?.message)

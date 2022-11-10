@@ -6,6 +6,7 @@ import com.app.tests.domain.repository.FirestoreRepository
 import com.app.tests.domain.repository.StorageRepository
 import com.app.tests.domain.util.ResultWrapper
 import com.app.tests.domain.util.ResultWrapperImpl
+import timber.log.Timber
 import javax.inject.Inject
 
 class UpdateUserUseCase @Inject constructor(
@@ -14,7 +15,7 @@ class UpdateUserUseCase @Inject constructor(
 ) : ResultWrapper by ResultWrapperImpl() {
 
     suspend operator fun invoke(data: UserModel): Result<Unit> {
-        if (data.avatar.isBlank()) return updateUser(data)
+        if (data.avatar.isBlank() || data.avatar.startsWith("http")) return updateUser(data)
 
         wrap(
             block = { storageRepository.uploadAvatar(data.toDto()) },

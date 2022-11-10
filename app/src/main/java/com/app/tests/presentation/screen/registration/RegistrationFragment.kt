@@ -48,7 +48,7 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
             etEmail.addTextChangedListener { viewModel.onEmailChanged(it.toString()) }
             etPassword.addTextChangedListener { viewModel.onPasswordChanged(it.toString()) }
             etPasswordRepeated.addTextChangedListener { viewModel.onPasswordRepeatedChanged(it.toString()) }
-            etName.addTextChangedListener { viewModel.onUsernameChanged(it.toString()) }
+            etUsername.addTextChangedListener { viewModel.onUsernameChanged(it.toString()) }
         }
     }
 
@@ -75,7 +75,7 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
             if (!etEmail.isFocused) etEmail.setText(data.email)
             if (!etPassword.isFocused) etPassword.setText(data.password)
             if (!etPasswordRepeated.isFocused) etPasswordRepeated.setText(data.passwordRepeated)
-            if (!etName.isFocused) etName.setText(data.username)
+            if (!etUsername.isFocused) etUsername.setText(data.username)
 
             tilEmail.error = getStringOrNull(data.emailError)
             tilPassword.error = getStringOrNull(data.passwordError)

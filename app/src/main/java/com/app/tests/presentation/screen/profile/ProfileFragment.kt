@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,9 +19,12 @@ import com.app.tests.presentation.activity.ImageViewActivity
 import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
 import com.app.tests.presentation.screen.profile.model.ProfileScreenEvent
+import com.app.tests.presentation.screen.profile.model.ProfileScreenUIState
+import com.app.tests.presentation.screen.registration.model.RegistrationScreenUIState
 import com.app.tests.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_TITLE
+import com.app.tests.util.getStringOrNull
 import com.app.tests.util.setupBottomNavigation
 import com.app.tests.util.showAlert
 import com.app.tests.util.showSnackbar
@@ -28,6 +33,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yanzhenjie.album.Album
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
@@ -56,18 +62,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         setupBottomNavigation(true)
         binding.apply {
             ivAvatar.clipToOutline = true
-
-            ivAvatar.setOnClickListener { viewAvatar() }
-            btnChangeAvatar.setOnClickListener { onChangeAvatar() }
-            btnSave.setOnClickListener { viewModel.save() }
-            btnSignOut.setOnClickListener { confirmSignOut() }
-            btnDeleteAccount.setOnClickListener { confirmDeleteAccount() }
         }
     }
 
     private fun initListeners() {
         binding.apply {
+            ivAvatar.setOnClickListener { viewAvatar() }
+            btnChangeAvatar.setOnClickListener { onChangeAvatar() }
+            btnSave.setOnClickListener { viewModel.save() }
+            btnSignOut.setOnClickListener { confirmSignOut() }
+            btnDeleteAccount.setOnClickListener { confirmDeleteAccount() }
 
+            etUsername.addTextChangedListener { viewModel.onUsernameChanged(it.toString()) }
+            etFirstName.addTextChangedListener { viewModel.onFirstNameChanged(it.toString()) }
+            etLastName.addTextChangedListener { viewModel.onLastNameChanged(it.toString()) }
         }
     }
 
@@ -77,7 +85,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 launch {
                     viewModel.uiState.collect { state ->
                         state.onSuccess {
-                            loadAvatar(it.avatar)
+                            renderUIState(it)
                         }
                     }
                 }
@@ -92,10 +100,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     private fun handleEvent(event: ProfileScreenEvent) {
         when (event) {
             is ProfileScreenEvent.ShowSnackbar -> {
-                //setLoadingState(false)
+                setLoadingState(false)
                 showSnackbar(message = event.message)
             }
-            is ProfileScreenEvent.Loading -> Unit //setLoadingState(true)
+            is ProfileScreenEvent.Loading -> setLoadingState(true)
             is ProfileScreenEvent.SuccessSignOut -> {
                 showSnackbar(message = R.string.sign_out_success)
                 navController.navigate(
@@ -109,6 +117,25 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 )
             }
         }
+    }
+
+    private fun renderUIState(data: ProfileScreenUIState) {
+        binding.apply {
+            if (!etEmail.isFocused) etEmail.setText(data.email)
+            if (!etUsername.isFocused) etUsername.setText(data.username)
+            if (!etFirstName.isFocused) etFirstName.setText(data.firstName)
+            if (!etLastName.isFocused) etLastName.setText(data.lastName)
+
+            tilUsername.error = getStringOrNull(data.usernameError)
+            tilFirstName.error = getStringOrNull(data.firstNameError)
+            tilLastName.error = getStringOrNull(data.lastNameError)
+        }
+        loadAvatar(data.avatar)
+        setLoadingState(false)
+    }
+
+    private fun setLoadingState(isLoading: Boolean) {
+        binding.progressBar.isVisible = isLoading
     }
 
     private fun loadAvatar(url: String) {
