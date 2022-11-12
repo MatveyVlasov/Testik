@@ -1,8 +1,11 @@
 package com.app.tests.util
 
+import android.content.res.Resources
 import android.net.Uri
 import android.util.Patterns
 import com.app.tests.util.Constants.USERNAME_GOOGLE_DELIMITER
+
+val Int.px get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 fun Int?.orZero() = this ?: 0
 

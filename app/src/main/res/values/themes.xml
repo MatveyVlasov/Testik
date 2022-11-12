@@ -1,7 +1,7 @@
 <resources>
 
     <style name="Theme.Tests" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/purple</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
 
@@ -10,6 +10,7 @@
         <item name="colorOnSecondary">@color/black</item>
 
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="toolbarStyle">@style/CustomToolbar</item>
     </style>
 
     <style name="Theme.ImageView" parent="Theme.MaterialComponents.Light.DarkActionBar">

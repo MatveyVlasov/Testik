@@ -1,10 +1,10 @@
 package com.app.tests.presentation.screen.login
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -29,6 +29,8 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.*
+
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
@@ -61,7 +63,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
         setupBottomNavigation(false)
         binding.apply {
+            toolbar.menu.getItem(0).apply {
+                setActionView(R.layout.item_language)
+                actionView?.findViewById<TextView>(R.id.tvLanguage)?.text = Locale.getDefault().language
+                actionView?.setOnClickListener {
 
+                }
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tests</string>
+    <string name="app_name">Testik</string>
 
     <string name="email_badly_formatted">The email address is badly formatted</string>
     <string name="email_already_taken">The email address is already taken</string>
@@ -37,4 +37,15 @@
     <string name="ok">OK</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+
+    <string name="account_login">Account Login</string>
+    <string name="language">Language</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="log_in_with_google">Log in with Google</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="reset">Reset</string>
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="account_login">Вход в аккаунт</string>
+    <string name="language">Язык</string>
+    <string name="email">Почта</string>
+    <string name="password">Пароль</string>
+    <string name="log_in">Войти</string>
+    <string name="log_in_with_google">Войти с помощью Google</string>
+    <string name="no_account">Нет аккаунта?</string>
+    <string name="register">Создать</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="reset">Восстановить</string>
+</resources>
