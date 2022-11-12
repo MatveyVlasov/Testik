@@ -2,19 +2,23 @@ package com.app.tests.presentation.activity
 
 import android.content.Context
 import android.content.ContextWrapper
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.app.tests.R
+import com.app.tests.data.repository.PreferencesRepositoryImpl
+import com.app.tests.di.UtilsModule
+import com.app.tests.util.setAppLocale
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    var lang = "ru"
+
+//    @Inject
+//    lateinit var preferencesUseCase: PreferencesUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,15 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun attachBaseContext(newBase: Context) {
+        val lang = PreferencesRepositoryImpl(UtilsModule.provideSharedPreferences(newBase)).getLanguage()
         super.attachBaseContext(ContextWrapper(newBase.setAppLocale(lang)))
     }
-}
-
-fun Context.setAppLocale(language: String): Context {
-    val locale = Locale(language)
-    Locale.setDefault(locale)
-    val config = resources.configuration
-    config.setLocale(locale)
-    config.setLayoutDirection(locale)
-    return createConfigurationContext(config)
 }

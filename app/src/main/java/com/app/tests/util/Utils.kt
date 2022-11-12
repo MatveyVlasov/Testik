@@ -1,9 +1,11 @@
 package com.app.tests.util
 
+import android.content.Context
 import android.content.res.Resources
 import android.net.Uri
 import android.util.Patterns
 import com.app.tests.util.Constants.USERNAME_GOOGLE_DELIMITER
+import java.util.*
 
 val Int.px get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
@@ -22,3 +24,12 @@ fun String.isEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches() && isNotBl
 fun Uri?.toAvatar() = toString().takeWhile { it != '=' }
 
 fun String.loadedFromServer() = startsWith("http")
+
+fun Context.setAppLocale(language: String): Context {
+    val locale = Locale(language)
+    Locale.setDefault(locale)
+    val config = resources.configuration
+    config.setLocale(locale)
+    config.setLayoutDirection(locale)
+    return createConfigurationContext(config)
+}

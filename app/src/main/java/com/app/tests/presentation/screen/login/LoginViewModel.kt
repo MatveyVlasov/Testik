@@ -9,6 +9,7 @@ import com.app.tests.domain.model.onSuccess
 import com.app.tests.domain.usecase.GetCurrentUserUseCase
 import com.app.tests.domain.usecase.LoginWithEmailUseCase
 import com.app.tests.domain.usecase.LoginWithGoogleUseCase
+import com.app.tests.domain.usecase.PreferencesUseCase
 import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.login.model.LoginScreenEvent
 import com.app.tests.presentation.screen.login.model.LoginScreenUIState
@@ -27,7 +28,8 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val loginWithEmailUseCase: LoginWithEmailUseCase,
-    private val loginWithGoogleUseCase: LoginWithGoogleUseCase
+    private val loginWithGoogleUseCase: LoginWithGoogleUseCase,
+    private val preferencesUseCase: PreferencesUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<LoginScreenUIState>>
@@ -80,6 +82,11 @@ class LoginViewModel @Inject constructor(
                 emitEvent(LoginScreenEvent.ShowSnackbar(it))
             }
         }
+    }
+
+    fun setLanguage(lang: String) {
+        preferencesUseCase.setLanguage(lang)
+        emitEvent(LoginScreenEvent.Restart)
     }
 
     private fun getCurrentUser() {

@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 
 
@@ -67,7 +68,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 setActionView(R.layout.item_language)
                 actionView?.findViewById<TextView>(R.id.tvLanguage)?.text = Locale.getDefault().language
                 actionView?.setOnClickListener {
-
+                    showChangeLanguageDialog { viewModel.setLanguage(it) }
                 }
             }
         }
@@ -149,6 +150,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             is LoginScreenEvent.Loading -> setLoadingState(true)
             is LoginScreenEvent.NavigateToMain -> {
                 navController.navigate(LoginFragmentDirections.toMain())
+            }
+            is LoginScreenEvent.Restart -> {
+                requireActivity().recreate()
             }
         }
     }

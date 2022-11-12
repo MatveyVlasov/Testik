@@ -103,4 +103,64 @@ fun Fragment.showExitAlert() {
     )
 }
 
+fun Fragment.showSingleChoiceDialog(
+    title: String,
+    positive: String,
+    negative: String,
+    items: List<String>,
+    selectedItem: Int = 0,
+    onPositiveClick: () -> Unit = {},
+    onNegativeClick: () -> Unit = {},
+    onItemClick: (Int) -> Unit = {}
+) {
+    AlertDialog.Builder(requireContext())
+        .setTitle(title)
+        .setSingleChoiceItems(items.toTypedArray(), selectedItem) { _, which ->
+            onItemClick(which)
+        }
+        .setPositiveButton(positive) { _, _ -> onPositiveClick() }
+        .setNegativeButton(negative) { _, _ -> onNegativeClick() }
+        .show()
+}
+
+fun Fragment.showSingleChoiceDialog(
+    @StringRes title: Int,
+    @StringRes positive: Int,
+    @StringRes negative: Int,
+    items: List<String>,
+    selectedItem: Int = 0,
+    onPositiveClick: () -> Unit = {},
+    onNegativeClick: () -> Unit = {},
+    onItemClick: (Int) -> Unit = {}
+) {
+    showSingleChoiceDialog(
+        title = getString(title),
+        positive = getString(positive),
+        negative = getString(negative),
+        items = items,
+        selectedItem = selectedItem,
+        onPositiveClick = onPositiveClick,
+        onNegativeClick = onNegativeClick,
+        onItemClick = onItemClick
+    )
+}
+
+fun Fragment.showChangeLanguageDialog(onSelected: (String) -> Unit) {
+    val languages = mapOf("English" to "en", "Русский" to "ru")
+
+    var selectedItem = -1
+
+    showSingleChoiceDialog(
+        title = R.string.select_language_translated,
+        positive = R.string.select_translated,
+        negative = R.string.cancel_translated,
+        items = languages.keys.toList(),
+        selectedItem = selectedItem,
+        onPositiveClick = {
+            if (selectedItem != -1) onSelected(languages.values.elementAt(selectedItem))
+        },
+        onItemClick = { selectedItem = it }
+    )
+}
+
 fun Fragment.getStringOrNull(@StringRes res: Int?) = if (res == null) null else getString(res)

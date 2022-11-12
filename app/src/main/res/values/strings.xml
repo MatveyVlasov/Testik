@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Testik</string>
+    <string name="app_name" translatable="false">Testik</string>
+    <string name="select_language_translated" translatable="false">Select language / Выберите язык</string>
+    <string name="select_translated" translatable="false">Select/Выбрать</string>
+    <string name="cancel_translated" translatable="false">Cancel/Отмена</string>
 
     <string name="email_badly_formatted">The email address is badly formatted</string>
     <string name="email_already_taken">The email address is already taken</string>
