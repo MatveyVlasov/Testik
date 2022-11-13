@@ -35,10 +35,8 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
 
     private fun initViews() {
         binding.apply {
-            toolbar.setNavigationOnClickListener {
-                navController.navigateUp()
-            }
-
+            toolbar.setNavigationOnClickListener { navController.navigateUp() }
+            tvLogin.setOnClickListener { navController.navigateUp() }
             btnRegister.setOnClickListener { viewModel.createUser() }
         }
     }
