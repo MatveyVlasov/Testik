@@ -16,10 +16,10 @@
 
     <TextView
         android:id="@+id/tvLanguage"
+        style="@style/CustomTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:textColor="@color/blue_dark"
         android:textSize="18sp"
         android:layout_toEndOf="@id/ivLanguage"
         tools:text="en" />

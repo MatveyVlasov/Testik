@@ -29,7 +29,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 
 
@@ -66,7 +65,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         binding.apply {
             toolbar.menu.getItem(0).apply {
                 setActionView(R.layout.item_language)
-                actionView?.findViewById<TextView>(R.id.tvLanguage)?.text = Locale.getDefault().language
+                actionView?.findViewById<TextView>(R.id.tvLanguage)?.text = Locale.getDefault().language.uppercase()
                 actionView?.setOnClickListener {
                     showChangeLanguageDialog { viewModel.setLanguage(it) }
                 }

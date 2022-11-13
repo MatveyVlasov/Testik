@@ -13,5 +13,6 @@
     <color name="purple_light">#D0CBFF</color>
     <color name="purple_dark">#7F0D90</color>
     <color name="gray_light">#EBEDF2</color>
+    <color name="gray_dark">#7C859C</color>
     <color name="blue_dark">#00008B</color>
 </resources>

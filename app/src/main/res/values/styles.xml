@@ -19,18 +19,41 @@
     <style name="CustomToolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:elevation">1dp</item>
         <item name="titleCentered">true</item>
+        <item name="titleTextAppearance">@style/CustomToolbarTitle</item>
         <item name="navigationIcon">@drawable/ic_arrow_back</item>
+    </style>
+
+    <style name="CustomToolbarTitle" parent="@style/TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/sourcesanspro_semibold</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="CustomTextInputEditText" parent="ThemeOverlay.Material3.TextInputEditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="boxBackgroundColor">@color/white</item>
         <item name="android:layout_marginBottom">@dimen/editText_margin_bottom</item>
+        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="boxBackgroundColor">@color/white</item>
     </style>
 
-    <style name="CustomTextInputLayout" parent="Widget.Design.TextInputLayout">
+    <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColorHint">@color/gray_dark</item>
+        <item name="boxBackgroundColor">@null</item>
+    </style>
+
+    <style name="CustomTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:textColor">@color/blue_dark</item>
+    </style>
+
+    <style name="CustomTextView.AutoSize">
+        <item name="android:layout_weight">1</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:autoSizeTextType">uniform</item>
     </style>
 </resources>
