@@ -53,27 +53,37 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         initListeners()
         collectData()
 
-        addBackPressedCallback {
-            if (viewModel.screenUIState.canSave) confirmExitWithoutSaving()
-            else navController.navigateUp()
-        }
+        addBackPressedCallback { onBackPressed() }
     }
+
 
     private fun initViews() {
 
         setupBottomNavigation(false)
         binding.apply {
+            toolbar.setupLanguageItem(getColor(R.color.black)) {
+                showChangeLanguageDialog { viewModel.setLanguage(it) }
+            }
+
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.deleteAccount -> confirmDeleteAccount()
+                    R.id.signOut -> confirmSignOut()
+                }
+                return@setOnMenuItemClickListener true
+            }
+
             ivAvatar.clipToOutline = true
         }
     }
 
     private fun initListeners() {
         binding.apply {
+            toolbar.setNavigationOnClickListener { onBackPressed() }
+
             ivAvatar.setOnClickListener { viewAvatar() }
-            btnChangeAvatar.setOnClickListener { onChangeAvatar() }
+            ivEditAvatar.setOnClickListener { onChangeAvatar() }
             btnSave.setOnClickListener { viewModel.save() }
-            btnSignOut.setOnClickListener { confirmSignOut() }
-            btnDeleteAccount.setOnClickListener { confirmDeleteAccount() }
 
             etUsername.addTextChangedListener { viewModel.onUsernameChanged(it.toString()) }
             etFirstName.addTextChangedListener { viewModel.onFirstNameChanged(it.toString()) }
@@ -105,6 +115,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 setLoadingState(false)
                 showSnackbar(message = event.message)
             }
+            is ProfileScreenEvent.ShowSnackbarByRes -> {
+                setLoadingState(false)
+                showSnackbar(message = event.message)
+            }
             is ProfileScreenEvent.Loading -> setLoadingState(true)
             is ProfileScreenEvent.SuccessSignOut -> {
                 showSnackbar(message = R.string.sign_out_success)
@@ -117,6 +131,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 navController.navigate(
                     ProfileFragmentDirections.toLogin()
                 )
+            }
+            is ProfileScreenEvent.Restart -> {
+                requireActivity().recreate()
             }
         }
     }
@@ -141,6 +158,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private fun setLoadingState(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
+    }
+
+    private fun onBackPressed() {
+        if (viewModel.screenUIState.canSave) confirmExitWithoutSaving()
+        else navController.navigateUp()
     }
 
     private fun loadAvatar(url: String) {

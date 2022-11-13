@@ -95,7 +95,7 @@ fun Fragment.showAlert(
 
 fun Fragment.showExitAlert() {
     showAlert(
-        title = R.string.exit_app,
+        title = R.string.app_exit,
         message = R.string.exit_app_confirmation,
         positive = R.string.exit_app,
         negative = R.string.cancel,

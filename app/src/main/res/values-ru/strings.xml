@@ -12,6 +12,31 @@
     <string name="forgot_password">Забыли пароль?</string>
     <string name="reset">Восстановить</string>
 
+    <string name="email_badly_formatted">Неправильный формат почты</string>
+    <string name="email_already_taken">Данная почта уже занята</string>
+    <string name="password_too_short">Пароль должен состоять как минимум из 6 символов</string>
+    <string name="no_passwords_match">Пароли не совпадают</string>
+    <string name="username_already_taken">Имя пользователя уже занято</string>
+    <string name="username_badly_formatted">Имя пользователя должно содержать только маленькие латинские буквы и цифры</string>
+
+    <string name="no_user">Пользователя с такой почтой не существует</string>
+    <string name="incorrect_password">Пароль неверный</string>
+    <string name="too_many_requests">Вы отправили слишком много запросов. Повторите попытку через минуту</string>
+
+    <string name="go_back">Назад</string>
+    <string name="go_back_confirmation">Вы действительно хотите перейти назад? Все несохранённые изменения будут потеряны</string>
+    <string name="app_exit">Выход</string>
+    <string name="exit_app_confirmation">Вы действительно хотите выйти?</string>
+    <string name="exit_app">Выйти</string>
+
+    <string name="error_occurred">Произошла ошибка</string>
+    <string name="empty" />
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="ok">OK</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="cancel">Отмена</string>
+
     <string name="registration">Регистрация</string>
     <string name="repeat_password">Повторите пароль</string>
     <string name="username">Имя пользователя</string>
@@ -21,4 +46,21 @@
     <string name="password_reset">Восстановление пароля</string>
     <string name="reset_password">Восстановить</string>
     <string name="follow_email_instructions">Следуйте инструкции, отправленной на почту\nВ случае отсутствия письма проверьте папку со спамом</string>
+    <string name="profile">Профиль</string>
+    <string name="first_name">Имя</string>
+    <string name="last_name">Фамилия</string>
+
+    <string name="avatar">Аватар</string>
+    <string name="change_avatar">Изменить аватар</string>
+    <string name="load_avatar">Загрузить аватар</string>
+    <string name="crop_avatar">Обрезать аватар</string>
+    <string name="delete_avatar">Удалить аватар</string>
+    <string name="save">Сохранить</string>
+    <string name="saved">Данные успешно сохранены</string>
+    <string name="sign_out">Выйти</string>
+    <string name="sign_out_confirmation">Вы действительно хотите выйти из аккаунта?</string>
+    <string name="sign_out_success">Вы успешно вышли из аккаунта</string>
+    <string name="delete_account">Удалить аккаунт</string>
+    <string name="delete_account_confirmation">Вы действительно хотите удалить аккаунт?</string>
+    <string name="delete_account_success">Вы успешно удалили аккаунт</string>
 </resources>

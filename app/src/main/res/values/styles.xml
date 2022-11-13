@@ -16,17 +16,21 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="CustomButton.PurpleDark">
+        <item name="android:backgroundTint">@color/button_purple_dark_background_selector</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="CustomToolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:elevation">1dp</item>
-        <item name="titleCentered">true</item>
         <item name="titleTextColor">@color/blue_dark</item>
         <item name="titleTextAppearance">@style/CustomToolbarTitle</item>
         <item name="navigationIcon">@drawable/ic_arrow_back</item>
     </style>
 
     <style name="CustomToolbarTitle" parent="@style/TextAppearance.MaterialComponents.Headline6">
-        <item name="fontFamily">@font/sourcesanspro_semibold</item>
-        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/merriweather_regular</item>
+        <item name="android:textSize">21sp</item>
     </style>
 
     <style name="CustomTextInputEditText" parent="ThemeOverlay.Material3.TextInputEditText">
@@ -42,7 +46,18 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">@dimen/editText_margin_bottom</item>
         <item name="android:textColorHint">@color/gray_dark</item>
+        <item name="hintTextColor">@color/gray_dark</item>
         <item name="boxBackgroundColor">@null</item>
+    </style>
+
+    <style name="CustomTextInputEditText.LightGray">
+        <item name="boxBackgroundColor">#EBEDF2</item>
+    </style>
+
+    <style name="CustomTextInputLayout.LightGray">
+        <item name="android:textColorHint">@color/purple_dark</item>
+        <item name="hintTextColor">@color/purple_dark</item>
+        <item name="boxBackgroundColor">@color/gray_light</item>
     </style>
 
     <style name="CustomTextView" parent="Widget.AppCompat.TextView">

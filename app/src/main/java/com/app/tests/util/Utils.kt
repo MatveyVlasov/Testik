@@ -4,7 +4,11 @@ import android.content.Context
 import android.content.res.Resources
 import android.net.Uri
 import android.util.Patterns
+import android.widget.ImageView
+import android.widget.TextView
+import com.app.tests.R
 import com.app.tests.util.Constants.USERNAME_GOOGLE_DELIMITER
+import com.google.android.material.appbar.MaterialToolbar
 import java.util.*
 
 val Int.px get() = (this * Resources.getSystem().displayMetrics.density).toInt()
@@ -32,4 +36,22 @@ fun Context.setAppLocale(language: String): Context {
     config.setLocale(locale)
     config.setLayoutDirection(locale)
     return createConfigurationContext(config)
+}
+
+fun MaterialToolbar.setupLanguageItem(
+    color: Int? = null,
+    onClick: () -> Unit = {},
+) {
+    menu.findItem(R.id.language).apply {
+        setActionView(R.layout.item_language)
+
+        actionView?.apply {
+            findViewById<TextView>(R.id.tvLanguage).apply {
+                text = Locale.getDefault().language.uppercase()
+                if (color != null) setTextColor(color)
+            }
+            if (color != null) findViewById<ImageView>(R.id.ivLanguage).setColorFilter(color)
+            setOnClickListener { onClick() }
+        }
+    }
 }

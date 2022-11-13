@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -63,12 +62,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
         setupBottomNavigation(false)
         binding.apply {
-            toolbar.menu.getItem(0).apply {
-                setActionView(R.layout.item_language)
-                actionView?.findViewById<TextView>(R.id.tvLanguage)?.text = Locale.getDefault().language.uppercase()
-                actionView?.setOnClickListener {
-                    showChangeLanguageDialog { viewModel.setLanguage(it) }
-                }
+            toolbar.setupLanguageItem (getColor(R.color.blue_dark)) {
+                showChangeLanguageDialog { viewModel.setLanguage(it) }
             }
         }
     }

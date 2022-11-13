@@ -15,23 +15,11 @@
     <string name="incorrect_password">The password is invalid</string>
     <string name="too_many_requests">You sent too many requests. Try again in a while</string>
 
-    <string name="avatar">Avatar</string>
-    <string name="change_avatar">Change avatar</string>
-    <string name="load_avatar">Load avatar</string>
-    <string name="crop_avatar">Crop avatar</string>
-    <string name="delete_avatar">Delete avatar</string>
-    <string name="save">Save</string>
-    <string name="sign_out">Sign Out</string>
-    <string name="sign_out_confirmation">Do you really want to sign out?</string>
-    <string name="sign_out_success">You successfully signed out</string>
-    <string name="delete_account">Delete account</string>
-    <string name="delete_account_confirmation">Do you really want to delete your account?</string>
-    <string name="delete_account_success">You successfully deleted your account</string>
-
     <string name="go_back">Go back</string>
     <string name="go_back_confirmation">Do you really want to go back? All unsaved changes will be lost</string>
-    <string name="exit_app">Exit</string>
+    <string name="app_exit">Exit</string>
     <string name="exit_app_confirmation">Are you sure you want to exit?</string>
+    <string name="exit_app">Exit</string>
 
     <string name="error_occurred">An error occurred</string>
     <string name="empty" />
@@ -61,4 +49,21 @@
     <string name="password_reset">Password Reset</string>
     <string name="reset_password">Reset</string>
     <string name="follow_email_instructions">Follow the instructions sent to your email.\nif there\'s no mail, check your spam folder</string>
+    <string name="profile">Profile</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+
+    <string name="avatar">Avatar</string>
+    <string name="change_avatar">Change avatar</string>
+    <string name="load_avatar">Load avatar</string>
+    <string name="crop_avatar">Crop avatar</string>
+    <string name="delete_avatar">Delete avatar</string>
+    <string name="save">Save</string>
+    <string name="saved">Data successfully saved</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_confirmation">Do you really want to sign out?</string>
+    <string name="sign_out_success">You successfully signed out</string>
+    <string name="delete_account">Delete account</string>
+    <string name="delete_account_confirmation">Do you really want to delete your account?</string>
+    <string name="delete_account_success">You successfully deleted your account</string>
 </resources>

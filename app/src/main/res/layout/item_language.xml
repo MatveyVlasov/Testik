@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:fontFamily="@font/merriweather_regular"
         android:textSize="18sp"
         android:layout_toEndOf="@id/ivLanguage"
         tools:text="en" />

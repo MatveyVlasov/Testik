@@ -5,10 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.app.tests.R
 import com.app.tests.domain.model.onError
 import com.app.tests.domain.model.onSuccess
-import com.app.tests.domain.usecase.DeleteUserUseCase
-import com.app.tests.domain.usecase.GetCurrentUserInfoUseCase
-import com.app.tests.domain.usecase.SignOutUseCase
-import com.app.tests.domain.usecase.UpdateUserUseCase
+import com.app.tests.domain.usecase.*
 import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.profile.mapper.toDomain
 import com.app.tests.presentation.screen.profile.model.ProfileScreenEvent
@@ -30,7 +27,8 @@ class ProfileViewModel @Inject constructor(
     private val getCurrentUserInfoUseCase: GetCurrentUserInfoUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val deleteUserUseCase: DeleteUserUseCase
+    private val deleteUserUseCase: DeleteUserUseCase,
+    private val preferencesUseCase: PreferencesUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<ProfileScreenUIState>>
@@ -104,11 +102,16 @@ class ProfileViewModel @Inject constructor(
                 val screenState = screenUIState.copy(avatarUpdated = avatarUpdated)
                 oldScreenUIState = screenState
                 updateScreenState(screenState)
-                emitEvent(ProfileScreenEvent.ShowSnackbar("Success"))
+                emitEvent(ProfileScreenEvent.ShowSnackbarByRes(R.string.saved))
             }.onError {
                 handleError(it)
             }
         }
+    }
+
+    fun setLanguage(lang: String) {
+        preferencesUseCase.setLanguage(lang)
+        emitEvent(ProfileScreenEvent.Restart)
     }
 
     private fun handleError(error: String) {
@@ -157,8 +160,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun updateScreenState(state: ProfileScreenUIState) {
-        Timber.i("here state $state")
-        Timber.i("here old $oldScreenUIState")
         screenUIState = state.copy(canSave = state != oldScreenUIState)
         _uiState.value = UIState.Success(screenUIState)
     }
