@@ -8,7 +8,13 @@
     <string name="log_in">Войти</string>
     <string name="log_in_with_google">Войти с помощью Google</string>
     <string name="no_account">Нет аккаунта?</string>
-    <string name="register">Создать</string>
+    <string name="register_create">Создать</string>
     <string name="forgot_password">Забыли пароль?</string>
     <string name="reset">Восстановить</string>
+
+    <string name="registration">Регистрация</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="username">Имя пользователя</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="already_have_account">Есть аккаунт?</string>
 </resources>

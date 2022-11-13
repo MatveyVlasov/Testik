@@ -80,7 +80,7 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
             tilEmail.error = getStringOrNull(data.emailError)
             tilPassword.error = getStringOrNull(data.passwordError)
             tilPasswordRepeated.error = getStringOrNull(data.passwordRepeatedError)
-            tilName.error = getStringOrNull(data.usernameError)
+            tilUsername.error = getStringOrNull(data.usernameError)
 
             btnRegister.isEnabled = data.canRegister
         }

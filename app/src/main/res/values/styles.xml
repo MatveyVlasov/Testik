@@ -19,6 +19,7 @@
     <style name="CustomToolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:elevation">1dp</item>
         <item name="titleCentered">true</item>
+        <item name="titleTextColor">@color/blue_dark</item>
         <item name="titleTextAppearance">@style/CustomToolbarTitle</item>
         <item name="navigationIcon">@drawable/ic_arrow_back</item>
     </style>
@@ -31,7 +32,6 @@
     <style name="CustomTextInputEditText" parent="ThemeOverlay.Material3.TextInputEditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">@dimen/editText_margin_bottom</item>
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
         <item name="android:textSize">16sp</item>
         <item name="boxBackgroundColor">@color/white</item>
@@ -40,6 +40,7 @@
     <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/editText_margin_bottom</item>
         <item name="android:textColorHint">@color/gray_dark</item>
         <item name="boxBackgroundColor">@null</item>
     </style>

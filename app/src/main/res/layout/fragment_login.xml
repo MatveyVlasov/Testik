@@ -9,12 +9,11 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/login_menu"
         app:navigationIcon="@drawable/logo"
         app:title="@string/account_login"
-        app:titleTextColor="@color/blue_dark" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvAppName"
@@ -81,8 +80,8 @@
         android:id="@+id/btnLogin"
         style="@style/CustomButton.Purple"
         android:layout_marginTop="24dp"
-        android:enabled="false"
         android:text="@string/log_in"
+        android:enabled="false"
         app:layout_constraintBottom_toTopOf="@id/btnLoginWithGoogle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +90,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLoginWithGoogle"
         style="@style/CustomButton"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="30dp"
         android:backgroundTint="@color/white"
         android:text="@string/log_in_with_google"
@@ -111,6 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         app:layout_constraintBottom_toTopOf="@id/llResetPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -133,7 +133,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="4dp"
             android:gravity="bottom"
-            android:text="@string/register"
+            android:text="@string/register_create"
             android:textColor="@color/purple_dark" />
     </LinearLayout>
 
@@ -141,7 +141,7 @@
         android:id="@+id/llResetPassword"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:gravity="center"
