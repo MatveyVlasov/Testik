@@ -17,4 +17,8 @@
     <string name="username">Имя пользователя</string>
     <string name="register">Зарегистрироваться</string>
     <string name="already_have_account">Есть аккаунт?</string>
+
+    <string name="password_reset">Восстановление пароля</string>
+    <string name="reset_password">Восстановить</string>
+    <string name="follow_email_instructions">Следуйте инструкции, отправленной на почту\nВ случае отсутствия письма проверьте папку со спамом</string>
 </resources>

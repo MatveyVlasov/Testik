@@ -57,4 +57,8 @@
     <string name="username">Username</string>
     <string name="register">Register</string>
     <string name="already_have_account">Already have an account?</string>
+
+    <string name="password_reset">Password Reset</string>
+    <string name="reset_password">Reset</string>
+    <string name="follow_email_instructions">Follow the instructions sent to your email.\nif there\'s no mail, check your spam folder</string>
 </resources>
