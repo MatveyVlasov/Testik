@@ -25,7 +25,11 @@
         android:id="@+id/registrationFragment"
         android:name="com.app.tests.presentation.screen.registration.RegistrationFragment"
         android:label="RegistrationFragment"
-        tools:layout="@layout/fragment_registration" />
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/toMain"
+            app:destination="@id/mainFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/passwordResetFragment"
@@ -51,6 +55,15 @@
         <action
             android:id="@+id/toLogin"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/toPasswordChange"
+            app:destination="@id/passwordChangeFragment" />
     </fragment>
+
+    <dialog
+        android:id="@+id/passwordChangeFragment"
+        android:name="com.app.tests.presentation.dialog.passwordchange.PasswordChangeFragment"
+        android:label="PasswordChangeFragment"
+        tools:layout="@layout/fragment_password_change" />
 
 </navigation>

@@ -36,11 +36,13 @@
     <string name="ok">OK</string>
     <string name="confirm">Подтвердить</string>
     <string name="cancel">Отмена</string>
+    <string name="close">Закрыть</string>
 
     <string name="registration">Регистрация</string>
     <string name="repeat_password">Повторите пароль</string>
     <string name="username">Имя пользователя</string>
     <string name="register">Зарегистрироваться</string>
+    <string name="register_success">Аккаунт успешно зарегистрирован</string>
     <string name="already_have_account">Есть аккаунт?</string>
 
     <string name="password_reset">Восстановление пароля</string>
@@ -63,4 +65,9 @@
     <string name="delete_account">Удалить аккаунт</string>
     <string name="delete_account_confirmation">Вы действительно хотите удалить аккаунт?</string>
     <string name="delete_account_success">Вы успешно удалили аккаунт</string>
+
+    <string name="old_password">Старый пароль</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="change_password">Изменить пароль</string>
+    <string name="change_password_success">Пароль успешно изменён</string>
 </resources>

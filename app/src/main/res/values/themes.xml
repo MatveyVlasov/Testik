@@ -11,6 +11,7 @@
 
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="toolbarStyle">@style/CustomToolbar</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
     </style>
 
     <style name="Theme.ImageView" parent="Theme.MaterialComponents.Light.DarkActionBar">

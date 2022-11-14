@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.app.tests.R
 import com.app.tests.databinding.FragmentRegistrationBinding
 import com.app.tests.presentation.base.BaseFragment
 import com.app.tests.presentation.model.onSuccess
@@ -97,7 +98,10 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
             }
             is RegistrationScreenEvent.Loading -> setLoadingState(true)
             is RegistrationScreenEvent.SuccessRegistration -> {
-                showSnackbar(message = "You successfully registered")
+                showSnackbar(message = R.string.register_success)
+                navController.navigate(
+                    RegistrationFragmentDirections.toMain()
+                )
             }
         }
     }

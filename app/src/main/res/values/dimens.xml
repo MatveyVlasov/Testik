@@ -5,6 +5,8 @@
 
     <dimen name="editText_margin_bottom">12dp</dimen>
     <dimen name="margin_horizontal">20dp</dimen>
+    <dimen name="margin_bottom">10dp</dimen>
 
     <dimen name="button_radius">10dp</dimen>
+    <dimen name="button_close_margin">8dp</dimen>
 </resources>

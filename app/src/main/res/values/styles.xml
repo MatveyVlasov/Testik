@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="BottomSheetDialogTheme" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/RoundedBottomSheet</item>
+        <item name="snackbarStyle">@style/BottomSheetSnackbar</item>
+    </style>
+
+    <style name="RoundedBottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_rect_top_20_dp</item>
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+    <style name="BottomSheet2" parent="@style/Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_rect_top_20_dp</item>
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+    <style name="BottomSheetSnackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="elevation">16dp</item>
+    </style>
+
     <style name="CustomButton" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -38,6 +59,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
         <item name="boxBackgroundColor">@color/white</item>
     </style>
 
@@ -51,7 +73,7 @@
     </style>
 
     <style name="CustomTextInputEditText.LightGray">
-        <item name="boxBackgroundColor">#EBEDF2</item>
+        <item name="boxBackgroundColor">@color/gray_light</item>
     </style>
 
     <style name="CustomTextInputLayout.LightGray">

@@ -28,6 +28,7 @@
     <string name="ok">OK</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
 
     <string name="account_login">Account Login</string>
     <string name="language">Language</string>
@@ -44,6 +45,7 @@
     <string name="repeat_password">Repeat password</string>
     <string name="username">Username</string>
     <string name="register">Register</string>
+    <string name="register_success">Account successfully created</string>
     <string name="already_have_account">Already have an account?</string>
 
     <string name="password_reset">Password Reset</string>
@@ -66,4 +68,9 @@
     <string name="delete_account">Delete account</string>
     <string name="delete_account_confirmation">Do you really want to delete your account?</string>
     <string name="delete_account_success">You successfully deleted your account</string>
+
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="change_password">Change password</string>
+    <string name="change_password_success">Password successfully changed</string>
 </resources>

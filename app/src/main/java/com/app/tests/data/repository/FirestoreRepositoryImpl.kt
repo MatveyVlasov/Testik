@@ -4,6 +4,7 @@ import com.app.tests.data.model.ApiResult
 import com.app.tests.data.model.RegistrationDto
 import com.app.tests.data.model.UserDto
 import com.app.tests.domain.repository.FirestoreRepository
+import com.app.tests.util.execute
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import kotlinx.coroutines.tasks.await
@@ -14,25 +15,22 @@ class FirestoreRepositoryImpl @Inject constructor(
 ): FirestoreRepository {
 
     override suspend fun addUser(data: RegistrationDto): ApiResult<Unit> {
-        try {
+        return try {
             with(data) {
                 val userData = mapOf(
                     "email" to email,
                     "username" to username,
                     "avatar" to avatar
                 )
-                firebaseFirestore.collection("users").whereEqualTo("username", username).get().also {
-                    it.await()
-                    if (!it.result.isEmpty) return ApiResult.Error("Username already taken")
-                }
-                firebaseFirestore.collection("users").document(email).set(userData).also {
-                    it.await()
-                    return if (it.isSuccessful) ApiResult.Success()
-                    else ApiResult.Error(it.exception?.message)
-                }
+                firebaseFirestore.collection("users").whereEqualTo("username", username).get()
+                    .also {
+                        it.await()
+                        if (!it.result.isEmpty) return ApiResult.Error("Username already taken")
+                    }
+                firebaseFirestore.collection("users").document(email).set(userData).execute()
             }
         } catch (e: Exception) {
-            return ApiResult.Error(e.message)
+            ApiResult.Error(e.message)
         }
     }
 
@@ -54,33 +52,26 @@ class FirestoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUser(data: UserDto): ApiResult<Unit> {
-        try {
+        return try {
             with(data) {
                 firebaseFirestore.collection("users").whereEqualTo("username", username).get().also {
                     it.await()
                     if (!it.result.isEmpty && it.result.documents.first().data?.get("email") != email) return ApiResult.Error("Username already taken")
                 }
-                firebaseFirestore.collection("users").document(email).set(data).also {
-                    it.await()
-                    return if (it.isSuccessful) ApiResult.Success()
-                    else ApiResult.Error(it.exception?.message)
-                }
+                firebaseFirestore.collection("users").document(email).set(data).execute()
             }
         } catch (e: Exception) {
-            return ApiResult.Error(e.message)
+            ApiResult.Error(e.message)
         }
     }
 
     override suspend fun deleteUser(email: String?): ApiResult<Unit> {
-        try {
-            if (email == null) return ApiResult.Error("No email provided")
-            firebaseFirestore.collection("users").document(email).delete().also {
-                it.await()
-                return if (it.isSuccessful) ApiResult.Success()
-                else ApiResult.Error(it.exception?.message)
-            }
+        if (email == null) return ApiResult.Error("No email provided")
+
+        return try {
+            firebaseFirestore.collection("users").document(email).delete().execute()
         } catch (e: Exception) {
-            return ApiResult.Error(e.message)
+            ApiResult.Error(e.message)
         }
     }
 }

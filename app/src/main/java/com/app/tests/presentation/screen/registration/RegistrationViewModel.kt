@@ -10,6 +10,7 @@ import com.app.tests.presentation.model.UIState
 import com.app.tests.presentation.screen.registration.mapper.toDomain
 import com.app.tests.presentation.screen.registration.model.RegistrationScreenEvent
 import com.app.tests.presentation.screen.registration.model.RegistrationScreenUIState
+import com.app.tests.util.Constants.MIN_PASSWORD_LENGTH
 import com.app.tests.util.isEmail
 import com.app.tests.util.isUsername
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -123,9 +124,5 @@ class RegistrationViewModel @Inject constructor(
         viewModelScope.launch {
             _event.emit(event)
         }
-    }
-
-    companion object {
-        const val MIN_PASSWORD_LENGTH = 6
     }
 }

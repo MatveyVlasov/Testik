@@ -7,8 +7,11 @@ import android.util.Patterns
 import android.widget.ImageView
 import android.widget.TextView
 import com.app.tests.R
+import com.app.tests.data.model.ApiResult
 import com.app.tests.util.Constants.USERNAME_GOOGLE_DELIMITER
+import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
+import kotlinx.coroutines.tasks.await
 import java.util.*
 
 val Int.px get() = (this * Resources.getSystem().displayMetrics.density).toInt()
@@ -36,6 +39,12 @@ fun Context.setAppLocale(language: String): Context {
     config.setLocale(locale)
     config.setLayoutDirection(locale)
     return createConfigurationContext(config)
+}
+
+suspend fun<T> Task<T>.execute(): ApiResult<Unit> {
+    await()
+    return if (isSuccessful) ApiResult.Success()
+    else ApiResult.Error(exception?.message)
 }
 
 fun MaterialToolbar.setupLanguageItem(

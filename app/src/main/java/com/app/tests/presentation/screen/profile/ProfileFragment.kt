@@ -24,6 +24,7 @@ import com.app.tests.util.*
 import com.app.tests.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_PATH
 import com.app.tests.util.Constants.EXTRA_IMAGE_TITLE
+import com.app.tests.util.Constants.PASSWORD_CHANGED_RESULT_KEY
 import com.app.tests.util.Constants.UPDATE_AVATAR_RESULT_KEY
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -54,6 +55,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         collectData()
 
         addBackPressedCallback { onBackPressed() }
+        observeResult<Boolean>(PASSWORD_CHANGED_RESULT_KEY) {
+            if (it) showSnackbar(message = R.string.change_password_success)
+        }
     }
 
 
@@ -84,6 +88,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             ivAvatar.setOnClickListener { viewAvatar() }
             ivEditAvatar.setOnClickListener { onChangeAvatar() }
             btnSave.setOnClickListener { viewModel.save() }
+            btnChangePassword.setOnClickListener {
+                navController.navigate(
+                    ProfileFragmentDirections.toPasswordChange()
+                )
+            }
 
             etUsername.addTextChangedListener { viewModel.onUsernameChanged(it.toString()) }
             etFirstName.addTextChangedListener { viewModel.onFirstNameChanged(it.toString()) }

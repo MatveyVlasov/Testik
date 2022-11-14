@@ -20,5 +20,7 @@ interface AuthRepository {
 
     suspend fun deleteCurrentUser(): ApiResult<Unit>
 
+    suspend fun changePassword(oldPassword: String, newPassword: String): ApiResult<Unit>
+
     suspend fun resetPassword(email: String): ApiResult<Unit>
 }
