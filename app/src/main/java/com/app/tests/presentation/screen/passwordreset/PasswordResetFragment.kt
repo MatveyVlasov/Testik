@@ -86,10 +86,6 @@ class PasswordResetFragment : BaseFragment<FragmentPasswordResetBinding>() {
         setLoadingState(false)
     }
 
-    private fun setLoadingState(isLoading: Boolean) {
-        binding.progressBar.isVisible = isLoading
-    }
-
     private fun handleEvent(event: PasswordResetScreenEvent) {
         when (event) {
             is PasswordResetScreenEvent.ShowSnackbar -> {

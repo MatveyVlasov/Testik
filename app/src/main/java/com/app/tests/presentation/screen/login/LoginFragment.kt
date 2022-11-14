@@ -127,10 +127,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         setLoadingState(false)
     }
 
-    private fun setLoadingState(isLoading: Boolean) {
-        binding.progressBar.isVisible = isLoading
-    }
-
     private fun handleEvent(event: LoginScreenEvent) {
         when (event) {
             is LoginScreenEvent.ShowSnackbar -> {

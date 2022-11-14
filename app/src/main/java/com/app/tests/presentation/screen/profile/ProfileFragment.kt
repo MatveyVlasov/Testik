@@ -165,10 +165,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         setLoadingState(false)
     }
 
-    private fun setLoadingState(isLoading: Boolean) {
-        binding.progressBar.isVisible = isLoading
-    }
-
     private fun onBackPressed() {
         if (viewModel.screenUIState.canSave) confirmExitWithoutSaving()
         else navController.navigateUp()

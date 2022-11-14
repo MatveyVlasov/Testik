@@ -9,6 +9,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.app.tests.presentation.activity.MainActivity
 
 abstract class BaseFragment<T: ViewBinding> : Fragment() {
 
@@ -50,5 +51,9 @@ abstract class BaseFragment<T: ViewBinding> : Fragment() {
 
     protected fun setResult(key: String, result: Any) {
         navController.previousBackStackEntry?.savedStateHandle?.set(key, result)
+    }
+
+    protected fun setLoadingState(isLoading: Boolean) {
+        (activity as? MainActivity)?.setLoadingState(isLoading)
     }
 }
