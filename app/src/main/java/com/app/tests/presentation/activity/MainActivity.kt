@@ -15,6 +15,7 @@ import com.app.tests.di.UtilsModule
 import com.app.tests.presentation.base.BaseActivity
 import com.app.tests.util.setAppLocale
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -32,7 +33,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun attachBaseContext(newBase: Context) {
-        val lang = PreferencesRepositoryImpl(UtilsModule.provideSharedPreferences(newBase)).getLanguage()
+        val repository = PreferencesRepositoryImpl(UtilsModule.provideSharedPreferences(newBase))
+
+        var lang = repository.getLanguage()
+        if (lang.isEmpty()) {
+            val defaultLanguage = Locale.getDefault().language
+            repository.setLanguage(defaultLanguage)
+            lang = repository.getLanguage()
+        }
+
         super.attachBaseContext(ContextWrapper(newBase.setAppLocale(lang)))
     }
 

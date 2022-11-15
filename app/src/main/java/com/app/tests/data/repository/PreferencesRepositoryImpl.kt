@@ -3,6 +3,7 @@ package com.app.tests.data.repository
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.app.tests.domain.repository.PreferencesRepository
+import com.app.tests.util.Constants.LANGUAGES
 import javax.inject.Inject
 
 class PreferencesRepositoryImpl @Inject constructor(
@@ -10,10 +11,14 @@ class PreferencesRepositoryImpl @Inject constructor(
 ) : PreferencesRepository {
 
     override fun setLanguage(lang: String) = sharedPreferences.edit {
-        putString(LANGUAGE_KEY, lang)
+        if (lang in LANGUAGES.values) {
+            putString(LANGUAGE_KEY, lang)
+        } else {
+            putString(LANGUAGE_KEY, DEFAULT_LANGUAGE)
+        }
     }
 
-    override fun getLanguage(): String = sharedPreferences.getString(LANGUAGE_KEY, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
+    override fun getLanguage(): String = sharedPreferences.getString(LANGUAGE_KEY,"").orEmpty()
 
     override fun clear() = sharedPreferences.edit {
         clear()

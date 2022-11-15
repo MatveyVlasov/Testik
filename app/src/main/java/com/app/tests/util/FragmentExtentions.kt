@@ -9,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.app.tests.R
+import com.app.tests.util.Constants.LANGUAGES
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -146,18 +147,16 @@ fun Fragment.showSingleChoiceDialog(
 }
 
 fun Fragment.showChangeLanguageDialog(onSelected: (String) -> Unit) {
-    val languages = mapOf("English" to "en", "Русский" to "ru")
-
     var selectedItem = -1
 
     showSingleChoiceDialog(
         title = R.string.select_language_translated,
         positive = R.string.select_translated,
         negative = R.string.cancel_translated,
-        items = languages.keys.toList(),
+        items = LANGUAGES.keys.toList(),
         selectedItem = selectedItem,
         onPositiveClick = {
-            if (selectedItem != -1) onSelected(languages.values.elementAt(selectedItem))
+            if (selectedItem != -1) onSelected(LANGUAGES.values.elementAt(selectedItem))
         },
         onItemClick = { selectedItem = it }
     )

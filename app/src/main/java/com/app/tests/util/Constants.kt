@@ -2,6 +2,8 @@ package com.app.tests.util
 
 object Constants {
 
+    val LANGUAGES = mapOf("English" to "en", "Русский" to "ru")
+
     const val MIN_PASSWORD_LENGTH = 6
     const val USERNAME_GOOGLE_DELIMITER = '#'
     const val USERNAME_GOOGLE_ID_LENGTH = 4

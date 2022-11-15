@@ -139,6 +139,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             }
             is LoginScreenEvent.Loading -> setLoadingState(true)
             is LoginScreenEvent.NavigateToMain -> {
+                setLoadingState(false)
                 navController.navigate(LoginFragmentDirections.toMain())
             }
             is LoginScreenEvent.Restart -> {
