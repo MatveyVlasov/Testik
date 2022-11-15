@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="album_loading">Загрузка&#8230;</string>
+    <string name="album_converting">Загрузка&#8230;</string>
+    <string name="album_thumbnail">Создаём изображения&#8230;</string>
+
+    <string name="album_not_found_image">Фотографии не найдены</string>
+    <string name="album_not_found_video">Видеозаписи не найдены</string>
+    <string name="album_not_found_album">Медиафайлы не найдены</string>
+
+    <string name="album_camera_image_capture">Сделать фото</string>
+    <string name="album_camera_video_capture">Снять видео</string>
+
+    <string name="album_title">Выберите файлы</string>
+    <string name="album_all_images">Все фотографии</string>
+    <string name="album_all_videos">Все видео</string>
+    <string name="album_all_images_videos">Все файлы</string>
+
+    <string name="album_ok">ОК</string>
+    <string name="album_confirm">Подтвердить</string>
+    <string name="album_cancel">Отменить</string>
+
+    <string name="album_check_image_little">Выберите фотографию</string>
+    <string name="album_check_video_little">Выберите видео</string>
+    <string name="album_check_album_little">Выберите файл</string>
+    <string name="album_menu_finish">Завершить&#160;</string>
+    <string name="album_check">Выбрано</string>
+
+    <string name="album_title_permission_failed">В доступе отказано</string>
+    <string name="album_permission_storage_failed_hint">Отсутствует доступ к хранилищу</string>
+    <string name="album_permission_camera_image_failed_hint">Отсутствует доступ к хранилищу или камере</string>
+    <string name="album_permission_camera_video_failed_hint">Отсутствует доступ к хранилищу, камере или микрофону</string>
+
+    <plurals name="album_check_image_limit">
+        <item quantity="one">Вы можете выбрать не больше %1$d изображения</item>
+        <item quantity="few">Вы можете выбрать не больше %1$d изображений</item>
+        <item quantity="many">Вы можете выбрать не больше %1$d изображений</item>
+    </plurals>
+
+    <plurals name="album_check_image_limit_camera">
+        <item quantity="one">Вы можете выбрать не больше %1$d изображения</item>
+        <item quantity="few">Вы можете выбрать не больше %1$d изображений</item>
+        <item quantity="many">Вы можете выбрать не больше %1$d изображений</item>
+    </plurals>
+
+    <plurals name="album_check_video_limit">
+        <item quantity="one">Вы можете выбрать не больше %1$d видео</item>
+        <item quantity="few">Вы можете выбрать не больше %1$d видео</item>
+        <item quantity="many">Вы можете выбрать не больше %1$d видео</item>
+    </plurals>
+
+    <plurals name="album_check_video_limit_camera">
+        <item quantity="one">Вы можете выбрать не больше %1$d видео</item>
+        <item quantity="few">Вы можете выбрать не больше %1$d видео</item>
+        <item quantity="many">Вы можете выбрать не больше %1$d видео</item>
+    </plurals>
+
+    <plurals name="album_check_album_limit">
+        <item quantity="one">Вы можете выбрать не больше %1$d файла</item>
+        <item quantity="few">Вы можете выбрать не больше %1$d файлов</item>
+        <item quantity="many">Вы можете выбрать не больше %1$d файлов</item>
+    </plurals>
+
+    <plurals name="album_check_album_limit_camera">
+        <item quantity="one">Вы можете выбрать не больше %1$d файла</item>
+        <item quantity="few">Вы можете выбрать не больше %1$d файлов</item>
+        <item quantity="many">Вы можете выбрать не больше %1$d файлов</item>
+    </plurals>
+
+    <string name="album_item_unavailable">Недоступно</string>
+    <string name="album_take_file_unavailable">Недоступный файл, попробуйте снова</string>
+</resources>
