@@ -3,7 +3,6 @@ package com.app.tests.presentation.screen.registration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -94,6 +93,7 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
             }
             is RegistrationScreenEvent.Loading -> setLoadingState(true)
             is RegistrationScreenEvent.SuccessRegistration -> {
+                setLoadingState(false)
                 showSnackbar(message = R.string.register_success)
                 navController.navigate(
                     RegistrationFragmentDirections.toMain()

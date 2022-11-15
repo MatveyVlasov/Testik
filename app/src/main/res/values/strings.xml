@@ -73,4 +73,10 @@
     <string name="new_password">New password</string>
     <string name="change_password">Change password</string>
     <string name="change_password_success">Password successfully changed</string>
+
+    <string name="rotate">Rotate</string>
+    <string name="flip">Flip</string>
+    <string name="flip_horizontally">Flip horizontally</string>
+    <string name="flip_vertically">Flip vertically</string>
+    <string name="crop">Crop</string>
 </resources>

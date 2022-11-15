@@ -70,4 +70,10 @@
     <string name="new_password">Новый пароль</string>
     <string name="change_password">Изменить пароль</string>
     <string name="change_password_success">Пароль успешно изменён</string>
+
+    <string name="rotate">Повернуть</string>
+    <string name="flip">Перевернуть</string>
+    <string name="flip_horizontally">Перевернуть по горизонтали</string>
+    <string name="flip_vertically">Перевернуть по вертикали</string>
+    <string name="crop">Обрезать</string>
 </resources>

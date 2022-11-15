@@ -29,7 +29,7 @@ class ImageCropActivity : BaseActivity<ActivityImageCropBinding>(), CropImageVie
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            title = "Crop Image"
+            title = ""
         }
 
         binding.ivImage.setOnCropImageCompleteListener(this)
@@ -50,7 +50,7 @@ class ImageCropActivity : BaseActivity<ActivityImageCropBinding>(), CropImageVie
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.main, menu)
+        inflater.inflate(R.menu.crop_menu, menu)
         return true
     }
 
