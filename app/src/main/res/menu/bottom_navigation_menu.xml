@@ -2,12 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/mainFragment"
-        android:title="Main" />
+        android:title="@string/main"
+        android:icon="@drawable/ic_main"
+        android:iconTint="@color/blue_light" />
 
-    <item android:id="@+id/testsTakenFragment"
-        android:title="Tests taken" />
+    <item android:id="@+id/takenTestsFragment"
+        android:title="@string/taken_tests"
+        android:icon="@drawable/ic_taken_tests"
+        android:iconTint="@color/blue_light" />
 
-    <item android:id="@+id/testsCreatedFragment"
-        android:title="Tests created" />
+    <item android:id="@+id/createdTestsFragment"
+        android:title="@string/created_tests"
+        android:icon="@drawable/ic_created_tests" />
 
 </menu>

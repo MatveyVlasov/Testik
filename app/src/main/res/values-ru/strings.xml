@@ -78,4 +78,8 @@
     <string name="flip_horizontally">Перевернуть по горизонтали</string>
     <string name="flip_vertically">Перевернуть по вертикали</string>
     <string name="crop">Обрезать</string>
+
+    <string name="main">Главная</string>
+    <string name="taken_tests">Пройденные тесты</string>
+    <string name="created_tests">Созданные тесты</string>
 </resources>
