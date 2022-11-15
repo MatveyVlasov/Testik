@@ -100,6 +100,9 @@ class LoginViewModel @Inject constructor(
     private fun handleError(error: String) {
         val msg = error.lowercase()
         when {
+            msg.contains("no internet") -> {
+                emitEvent(LoginScreenEvent.ShowSnackbarByRes(R.string.no_internet))
+            }
             msg.contains("no user record") -> {
                 updateScreenState(screenUIState.copy(emailError = R.string.no_user))
             }

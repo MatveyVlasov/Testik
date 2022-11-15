@@ -55,6 +55,9 @@ class PasswordResetViewModel @Inject constructor(
     private fun handleError(error: String) {
         val msg = error.lowercase()
         when {
+            msg.contains("no internet") -> {
+                emitEvent(PasswordResetScreenEvent.ShowSnackbarByRes(R.string.no_internet))
+            }
             msg.contains("badly formatted") -> {
                 updateScreenState(screenUIState.copy(emailError = R.string.email_badly_formatted))
             }

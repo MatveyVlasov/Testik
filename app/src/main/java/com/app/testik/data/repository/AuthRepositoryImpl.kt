@@ -1,20 +1,25 @@
 package com.app.testik.data.repository
 
+import android.content.Context
 import com.app.testik.data.model.ApiResult
 import com.app.testik.data.model.LoginDto
 import com.app.testik.data.model.RegistrationDto
 import com.app.testik.domain.repository.AuthRepository
 import com.app.testik.util.execute
+import com.app.testik.util.isOnline
 import com.google.firebase.auth.*
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val firebaseAuth: FirebaseAuth
 ) : AuthRepository {
 
     override suspend fun signUpWithEmail(data: RegistrationDto): ApiResult<Unit> {
         if (data.password == null) return ApiResult.Error("No password provided")
+        if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
             firebaseAuth.createUserWithEmailAndPassword(data.email, data.password).execute()
@@ -24,6 +29,8 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun loginWithEmail(data: LoginDto): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
         return try {
             firebaseAuth.signInWithEmailAndPassword(data.email, data.password).execute()
         } catch (e: Exception) {
@@ -32,6 +39,8 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun loginWithGoogle(credential: AuthCredential): ApiResult<Boolean?> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
         return try {
             var isNewUser: Boolean?
 
@@ -58,6 +67,8 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteCurrentUser(): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
         return try {
             firebaseAuth.currentUser!!.delete().execute()
         } catch (e: Exception) {
@@ -66,6 +77,8 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun changePassword(oldPassword: String, newPassword: String): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
         return try {
             reauthenticate(oldPassword).also {
                 if (it is ApiResult.Error) return it
@@ -77,6 +90,8 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun resetPassword(email: String): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
         return try {
             firebaseAuth.sendPasswordResetEmail(email).execute()
         } catch (e: Exception) {
@@ -85,6 +100,8 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     private suspend fun reauthenticate(password: String): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
         return try {
             firebaseAuth.currentUser?.let { user ->
                 user.reauthenticate(EmailAuthProvider.getCredential(user.email!!, password)).execute()

@@ -27,7 +27,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 @AndroidEntryPoint
@@ -128,23 +127,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun handleEvent(event: LoginScreenEvent) {
         when (event) {
-            is LoginScreenEvent.ShowSnackbar -> {
-                setLoadingState(false)
-                showSnackbar(message = event.message)
-            }
-            is LoginScreenEvent.ShowSnackbarByRes -> {
-                setLoadingState(false)
-                showSnackbar(message = event.message)
-            }
-            is LoginScreenEvent.Loading -> setLoadingState(true)
+            is LoginScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
+            is LoginScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
+            is LoginScreenEvent.Loading -> Unit
             is LoginScreenEvent.NavigateToMain -> {
-                setLoadingState(false)
                 navController.navigate(LoginFragmentDirections.toMain())
             }
-            is LoginScreenEvent.Restart -> {
-                requireActivity().recreate()
-            }
+            is LoginScreenEvent.Restart -> requireActivity().recreate()
         }
+        setLoadingState(event is LoginScreenEvent.Loading)
     }
 
     private fun createRequest() {

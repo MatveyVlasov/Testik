@@ -22,6 +22,8 @@
     <string name="exit_app">Exit</string>
 
     <string name="error_occurred">An error occurred</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="error_while_saving_image">Error while saving image</string>
     <string name="empty" />
     <string name="yes">Yes</string>
     <string name="no">No</string>

@@ -30,6 +30,8 @@
     <string name="exit_app">Выйти</string>
 
     <string name="error_occurred">Произошла ошибка</string>
+    <string name="no_internet">Нет подключения к интернету</string>
+    <string name="error_while_saving_image">Произошла ошибка при сохранении изображения</string>
     <string name="empty" />
     <string name="yes">Да</string>
     <string name="no">Нет</string>

@@ -92,15 +92,14 @@ class PasswordChangeFragment : BaseBottomSheetDialogFragment<FragmentPasswordCha
 
     private fun handleEvent(event: PasswordChangeDialogEvent) {
         when (event) {
-            is PasswordChangeDialogEvent.ShowSnackbar -> {
-                setLoadingState(false)
-                showSnackbar(message = event.message)
-            }
-            is PasswordChangeDialogEvent.Loading -> setLoadingState(true)
+            is PasswordChangeDialogEvent.ShowSnackbar -> showSnackbar(message = event.message)
+            is PasswordChangeDialogEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
+            is PasswordChangeDialogEvent.Loading -> Unit
             is PasswordChangeDialogEvent.PasswordChanged -> {
                 setResult(PASSWORD_CHANGED_RESULT_KEY, true)
                 dismiss()
             }
         }
+        setLoadingState(event is PasswordChangeDialogEvent.Loading)
     }
 }

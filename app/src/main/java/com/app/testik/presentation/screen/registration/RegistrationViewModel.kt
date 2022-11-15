@@ -73,6 +73,9 @@ class RegistrationViewModel @Inject constructor(
     private fun handleError(error: String) {
         val msg = error.lowercase()
         when {
+            msg.contains("no internet") -> {
+                emitEvent(RegistrationScreenEvent.ShowSnackbarByRes(R.string.no_internet))
+            }
             msg.contains("email address is already in use") -> {
                 updateScreenState(screenUIState.copy(emailError = R.string.email_already_taken))
             }

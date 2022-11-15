@@ -116,6 +116,15 @@ class ProfileViewModel @Inject constructor(
     private fun handleError(error: String) {
         val msg = error.lowercase()
         when {
+            msg.contains("no internet") -> {
+                emitEvent(ProfileScreenEvent.ShowSnackbarByRes(R.string.no_internet))
+            }
+            msg.contains("error occurred") -> {
+                emitEvent(ProfileScreenEvent.ShowSnackbarByRes(R.string.error_occurred))
+            }
+            msg.contains("error while saving image") -> {
+                emitEvent(ProfileScreenEvent.ShowSnackbarByRes(R.string.error_while_saving_image))
+            }
             msg.contains("username already taken") -> {
                 updateScreenState(screenUIState.copy(usernameError = R.string.username_already_taken))
             }

@@ -2,7 +2,10 @@ package com.app.testik.util
 
 import android.content.Context
 import android.content.res.Resources
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
+import android.util.Log
 import android.util.Patterns
 import android.widget.ImageView
 import android.widget.TextView
@@ -63,4 +66,24 @@ fun MaterialToolbar.setupLanguageItem(
             setOnClickListener { onClick() }
         }
     }
+}
+
+fun isOnline(context: Context): Boolean {
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        ?: return false
+
+    val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        ?: return false
+
+    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+        return true
+    }
+    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+        return true
+    }
+    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+        return true
+    }
+
+    return false
 }

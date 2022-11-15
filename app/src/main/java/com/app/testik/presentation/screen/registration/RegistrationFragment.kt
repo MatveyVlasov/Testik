@@ -87,18 +87,17 @@ class RegistrationFragment : BaseFragment<FragmentRegistrationBinding>() {
 
     private fun handleEvent(event: RegistrationScreenEvent) {
         when (event) {
-            is RegistrationScreenEvent.ShowSnackbar -> {
-                setLoadingState(false)
-                showSnackbar(message = event.message)
-            }
-            is RegistrationScreenEvent.Loading -> setLoadingState(true)
+            is RegistrationScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
+            is RegistrationScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
+            is RegistrationScreenEvent.Loading -> Unit
             is RegistrationScreenEvent.SuccessRegistration -> {
-                setLoadingState(false)
                 showSnackbar(message = R.string.register_success)
                 navController.navigate(
                     RegistrationFragmentDirections.toMain()
                 )
             }
         }
+
+        setLoadingState(event is RegistrationScreenEvent.Loading)
     }
 }

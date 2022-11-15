@@ -88,15 +88,12 @@ class PasswordResetFragment : BaseFragment<FragmentPasswordResetBinding>() {
 
     private fun handleEvent(event: PasswordResetScreenEvent) {
         when (event) {
-            is PasswordResetScreenEvent.ShowSnackbar -> {
-                setLoadingState(false)
-                showSnackbar(message = event.message)
-            }
-            is PasswordResetScreenEvent.Loading -> setLoadingState(true)
-            is PasswordResetScreenEvent.EmailSent -> {
-                setLoadingState(false)
-                binding.tvEmailSent.isVisible = true
-            }
+            is PasswordResetScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
+            is PasswordResetScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
+            is PasswordResetScreenEvent.Loading -> Unit
+            is PasswordResetScreenEvent.EmailSent -> binding.tvEmailSent.isVisible = true
         }
+
+        setLoadingState(event is PasswordResetScreenEvent.Loading)
     }
 }

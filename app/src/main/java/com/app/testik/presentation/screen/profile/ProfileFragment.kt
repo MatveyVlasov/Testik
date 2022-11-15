@@ -118,15 +118,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private fun handleEvent(event: ProfileScreenEvent) {
         when (event) {
-            is ProfileScreenEvent.ShowSnackbar -> {
-                setLoadingState(false)
-                showSnackbar(message = event.message)
-            }
-            is ProfileScreenEvent.ShowSnackbarByRes -> {
-                setLoadingState(false)
-                showSnackbar(message = event.message)
-            }
-            is ProfileScreenEvent.Loading -> setLoadingState(true)
+            is ProfileScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
+            is ProfileScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
+            is ProfileScreenEvent.Loading -> Unit
             is ProfileScreenEvent.SuccessSignOut -> {
                 showSnackbar(message = R.string.sign_out_success)
                 navController.navigate(
@@ -139,10 +133,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     ProfileFragmentDirections.toLogin()
                 )
             }
-            is ProfileScreenEvent.Restart -> {
-                requireActivity().recreate()
-            }
+            is ProfileScreenEvent.Restart -> requireActivity().recreate()
         }
+        setLoadingState(event is ProfileScreenEvent.Loading)
     }
 
     private fun renderUIState(data: ProfileScreenUIState) {

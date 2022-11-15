@@ -65,6 +65,9 @@ class PasswordChangeViewModel @Inject constructor(
     private fun handleError(error: String) {
         val msg = error.lowercase()
         when {
+            msg.contains("no internet") -> {
+                emitEvent(PasswordChangeDialogEvent.ShowSnackbarByRes(R.string.no_internet))
+            }
             msg.contains("password is invalid") -> {
                 updateScreenState(screenUIState.copy(oldPasswordError = R.string.incorrect_password))
             }

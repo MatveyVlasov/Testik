@@ -24,8 +24,9 @@ class UpdateUserUseCase @Inject constructor(
             val newData = data.copy(avatar = avatar.toString())
             return updateUser(newData)
         }.onError {
-            updateUser(data)
-            return Result.Error("Error while saving image")
+            return updateUser(data).onSuccess {
+                return Result.Error("Error while saving image")
+            }
         }
         return Result.Error("Error occurred")
     }
