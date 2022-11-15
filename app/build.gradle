@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace 'com.app.tests'
+    namespace 'com.app.testik'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.app.tests"
+        applicationId "com.app.testik"
         minSdk 26
         targetSdk 33
         versionCode 1

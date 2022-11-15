@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.app.tests.presentation.screen.login.LoginFragment"
+        android:name="com.app.testik.presentation.screen.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login" >
         <action
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.app.tests.presentation.screen.registration.RegistrationFragment"
+        android:name="com.app.testik.presentation.screen.registration.RegistrationFragment"
         android:label="RegistrationFragment"
         tools:layout="@layout/fragment_registration" >
         <action
@@ -33,13 +33,13 @@
 
     <fragment
         android:id="@+id/passwordResetFragment"
-        android:name="com.app.tests.presentation.screen.passwordreset.PasswordResetFragment"
+        android:name="com.app.testik.presentation.screen.passwordreset.PasswordResetFragment"
         android:label="PasswordResetFragment"
         tools:layout="@layout/fragment_password_reset" />
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.app.tests.presentation.screen.main.MainFragment"
+        android:name="com.app.testik.presentation.screen.main.MainFragment"
         android:label="MainFragment"
         tools:layout="@layout/fragment_main" >
         <action
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.app.tests.presentation.screen.profile.ProfileFragment"
+        android:name="com.app.testik.presentation.screen.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -62,7 +62,7 @@
 
     <dialog
         android:id="@+id/passwordChangeFragment"
-        android:name="com.app.tests.presentation.dialog.passwordchange.PasswordChangeFragment"
+        android:name="com.app.testik.presentation.dialog.passwordchange.PasswordChangeFragment"
         android:label="PasswordChangeFragment"
         tools:layout="@layout/fragment_password_change" />
 
