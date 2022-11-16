@@ -4,7 +4,7 @@ import android.content.Context
 import com.app.testik.data.model.ApiResult
 import com.app.testik.data.model.RegistrationDto
 import com.app.testik.data.model.UserDto
-import com.app.testik.domain.repository.FirestoreRepository
+import com.app.testik.domain.repository.UserRepository
 import com.app.testik.util.execute
 import com.app.testik.util.isOnline
 import com.app.testik.util.loadedFromServer
@@ -14,10 +14,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class FirestoreRepositoryImpl @Inject constructor(
+class UserRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val firebaseFirestore: FirebaseFirestore
-): FirestoreRepository {
+): UserRepository {
 
     override suspend fun addUser(data: RegistrationDto): ApiResult<Unit> {
         return try {

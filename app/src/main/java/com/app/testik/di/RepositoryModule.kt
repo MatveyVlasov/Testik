@@ -1,13 +1,7 @@
 package com.app.testik.di
 
-import com.app.testik.data.repository.AuthRepositoryImpl
-import com.app.testik.data.repository.FirestoreRepositoryImpl
-import com.app.testik.data.repository.PreferencesRepositoryImpl
-import com.app.testik.data.repository.StorageRepositoryImpl
-import com.app.testik.domain.repository.AuthRepository
-import com.app.testik.domain.repository.FirestoreRepository
-import com.app.testik.domain.repository.PreferencesRepository
-import com.app.testik.domain.repository.StorageRepository
+import com.app.testik.data.repository.*
+import com.app.testik.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,9 +22,13 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindFirestoreRepository(firestoreRepositoryImpl: FirestoreRepositoryImpl): FirestoreRepository
+    abstract fun bindStorageRepository(storageRepositoryImpl: StorageRepositoryImpl): StorageRepository
 
     @Binds
     @Singleton
-    abstract fun bindStorageRepository(storageRepositoryImpl: StorageRepositoryImpl): StorageRepository
+    abstract fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTestRepository(testRepositoryImpl: TestRepositoryImpl): TestRepository
 }

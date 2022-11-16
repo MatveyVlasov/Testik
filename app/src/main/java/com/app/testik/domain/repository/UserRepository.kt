@@ -5,7 +5,7 @@ import com.app.testik.data.model.RegistrationDto
 import com.app.testik.data.model.UserDto
 import com.google.firebase.firestore.Source
 
-interface FirestoreRepository {
+interface UserRepository {
 
     suspend fun addUser(data: RegistrationDto): ApiResult<Unit>
 

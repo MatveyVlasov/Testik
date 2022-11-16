@@ -2,7 +2,7 @@ package com.app.testik.domain.usecase
 
 import com.app.testik.domain.mapper.toDto
 import com.app.testik.domain.model.*
-import com.app.testik.domain.repository.FirestoreRepository
+import com.app.testik.domain.repository.UserRepository
 import com.app.testik.domain.repository.StorageRepository
 import com.app.testik.domain.util.ResultWrapper
 import com.app.testik.domain.util.ResultWrapperImpl
@@ -10,7 +10,7 @@ import com.app.testik.util.loadedFromServer
 import javax.inject.Inject
 
 class UpdateUserUseCase @Inject constructor(
-    private val firestoreRepository: FirestoreRepository,
+    private val userRepository: UserRepository,
     private val storageRepository: StorageRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
@@ -33,7 +33,7 @@ class UpdateUserUseCase @Inject constructor(
 
     private suspend fun updateUser(data: UserModel) =
         wrap(
-            block = { firestoreRepository.updateUser(data.toDto()) },
+            block = { userRepository.updateUser(data.toDto()) },
             mapper = { }
         )
 }

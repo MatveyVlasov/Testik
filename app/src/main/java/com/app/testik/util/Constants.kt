@@ -14,4 +14,6 @@ object Constants {
 
     const val UPDATE_AVATAR_RESULT_KEY = "UPDATE_AVATAR_RESULT_KEY"
     const val PASSWORD_CHANGED_RESULT_KEY = "PASSWORD_CHANGED_RESULT_KEY"
+
+    const val QUERY_LIMIT = 20L
 }

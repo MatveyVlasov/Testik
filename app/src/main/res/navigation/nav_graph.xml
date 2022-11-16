@@ -66,4 +66,10 @@
         android:label="PasswordChangeFragment"
         tools:layout="@layout/fragment_password_change" />
 
+    <fragment
+        android:id="@+id/createdTestsFragment"
+        android:name="com.app.testik.presentation.screen.createdtests.CreatedTestsFragment"
+        android:label="CreatedTestsFragment"
+        tools:layout="@layout/fragment_created_tests" />
+
 </navigation>

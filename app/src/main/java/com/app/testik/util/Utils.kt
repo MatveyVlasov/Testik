@@ -5,7 +5,6 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
-import android.util.Log
 import android.util.Patterns
 import android.widget.ImageView
 import android.widget.TextView
@@ -16,6 +15,9 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.tasks.await
 import java.util.*
+
+val randomId: String
+    get() = UUID.randomUUID().toString()
 
 val Int.px get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
