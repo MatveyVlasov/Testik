@@ -94,4 +94,5 @@
     <string name="no_tests">There are no tests yet</string>
     <string name="click_to_create_test">Click on + button below to create a test</string>
     <string name="create_test">Create test</string>
+    <string name="try_again">Try again</string>
 </resources>

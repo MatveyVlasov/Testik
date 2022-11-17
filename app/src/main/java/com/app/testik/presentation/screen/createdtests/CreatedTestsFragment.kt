@@ -36,8 +36,8 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
     private val adapter by lazy {
         CompositeAdapter.Builder()
             .setOnUpdateCallback(viewModel::updateList)
+            .add(ErrorDelegateAdapter(viewModel::updateList))
             .add(LoadingDelegateAdapter())
-            .add(ErrorDelegateAdapter())
             .add(CreatedTestDelegateAdapter { showMenu(it, R.menu.test_menu) })
             .build()
     }

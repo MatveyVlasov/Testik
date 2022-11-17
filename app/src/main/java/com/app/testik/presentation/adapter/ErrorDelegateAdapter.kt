@@ -7,8 +7,9 @@ import com.app.testik.databinding.ItemErrorBinding
 import com.app.testik.presentation.model.ErrorItem
 import com.app.testik.util.delegateadapter.DelegateAdapter
 
-class ErrorDelegateAdapter :
-    DelegateAdapter<ErrorItem, ErrorDelegateAdapter.ViewHolder>(ErrorItem::class.java) {
+class ErrorDelegateAdapter(
+    val onTryAgainClick: () -> Unit
+) : DelegateAdapter<ErrorItem, ErrorDelegateAdapter.ViewHolder>(ErrorItem::class.java) {
 
     override fun createViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -24,6 +25,8 @@ class ErrorDelegateAdapter :
 
             binding.apply {
                 tvError.text = error.message
+
+                btnTryAgain.setOnClickListener { onTryAgainClick() }
             }
         }
     }

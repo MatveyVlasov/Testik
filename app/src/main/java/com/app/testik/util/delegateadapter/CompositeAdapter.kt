@@ -4,6 +4,7 @@ import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.app.testik.presentation.model.ErrorItem
 import com.app.testik.presentation.model.LoadingItem
 
 @Suppress("UNCHECKED_CAST")
@@ -62,8 +63,9 @@ class CompositeAdapter(
             onUpdateCallback?.let {
                 val newItemCount = list?.size ?: 0
 
-                positionForUpdate = if (newItemCount > itemCount) maxOf(0, newItemCount - 3)
-                                    else -1
+                positionForUpdate =
+                    if (newItemCount > itemCount && list?.last() !is ErrorItem) maxOf(0, newItemCount - 3)
+                    else -1
             }
         }
 

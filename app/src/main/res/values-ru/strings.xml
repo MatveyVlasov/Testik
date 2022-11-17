@@ -91,4 +91,5 @@
     <string name="no_tests">Список тестов пуст</string>
     <string name="click_to_create_test">Нажмите на кнопку +, чтобы создать тест</string>
     <string name="create_test">Создать тест</string>
+    <string name="try_again">Повторить попытку</string>
 </resources>
