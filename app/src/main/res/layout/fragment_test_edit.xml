@@ -13,19 +13,18 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/profile"
+            app:title="@string/test_settings"
             app:titleTextColor="@color/black"
             app:navigationIconTint="@color/black"
-            app:menu="@menu/profile_menu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/ivAvatar"
+            android:id="@+id/ivImage"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_rect_300_dp"
+            android:background="@drawable/rounded_rect_20_dp"
             android:outlineProvider="background"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_profile_avatar"
@@ -35,18 +34,18 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <ImageView
-            android:id="@+id/ivEditAvatar"
+            android:id="@+id/ivEditImage"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginBottom="25dp"
-            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginEnd="1dp"
             android:src="@drawable/ic_edit_image"
-            android:contentDescription="@string/change_avatar"
-            app:layout_constraintBottom_toBottomOf="@id/ivAvatar"
-            app:layout_constraintEnd_toEndOf="@id/ivAvatar" />
+            android:contentDescription="@string/avatar"
+            app:layout_constraintBottom_toBottomOf="@id/ivImage"
+            app:layout_constraintEnd_toEndOf="@id/ivImage" />
 
         <LinearLayout
-            android:id="@+id/llProfileForm"
+            android:id="@+id/llTestForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -55,80 +54,36 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivAvatar">
+            app:layout_constraintTop_toBottomOf="@id/ivImage">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilEmail"
+                android:id="@+id/tilTitle"
                 style="@style/CustomTextInputLayout.LightGray"
-                android:hint="@string/email"
-                app:startIconDrawable="@drawable/ic_mail">
+                android:hint="@string/title"
+                app:startIconDrawable="@drawable/ic_title">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etEmail"
+                    android:id="@+id/etTitle"
                     style="@style/CustomTextInputEditText.LightGray"
-                    android:inputType="textEmailAddress"
-                    android:enabled="false" />
+                    android:inputType="text"
+                    android:maxLength="@integer/title_max_length" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilUsername"
+                android:id="@+id/tilDescription"
                 style="@style/CustomTextInputLayout.LightGray"
-                android:hint="@string/username"
-                app:startIconDrawable="@drawable/ic_person"
-                app:errorEnabled="true">
+                android:hint="@string/description"
+                app:startIconDrawable="@drawable/ic_description"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/description_max_length">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etUsername"
+                    android:id="@+id/etDescription"
                     style="@style/CustomTextInputEditText.LightGray"
-                    android:inputType="textPersonName"
-                    android:maxLength="@integer/field_max_length" />
+                    android:inputType="textMultiLine" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:showDividers="middle"
-                android:divider="@drawable/empty_divider"
-                android:baselineAligned="false">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilFirstName"
-                    style="@style/CustomTextInputLayout.LightGray"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:hint="@string/first_name"
-                    app:startIconDrawable="@drawable/ic_person"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etFirstName"
-                        style="@style/CustomTextInputEditText.LightGray"
-                        android:inputType="textPersonName"
-                        android:maxLength="@integer/field_max_length" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilLastName"
-                    style="@style/CustomTextInputLayout.LightGray"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:hint="@string/last_name"
-                    app:startIconDrawable="@drawable/ic_person"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etLastName"
-                        style="@style/CustomTextInputEditText.LightGray"
-                        android:inputType="textPersonName"
-                        android:maxLength="@integer/field_max_length" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
 
         </LinearLayout>
 
@@ -140,18 +95,18 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
             android:text="@string/save"
-            app:layout_constraintTop_toBottomOf="@id/llProfileForm"
+            app:layout_constraintTop_toBottomOf="@id/llTestForm"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnChangePassword"
+            android:id="@+id/btnEditQuestions"
             style="@style/CustomButton.PurpleDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="@dimen/margin_bottom"
-            android:text="@string/change_password"
+            android:text="@string/edit_questions"
             app:layout_constraintTop_toBottomOf="@id/btnSave"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

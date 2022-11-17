@@ -95,4 +95,17 @@
     <string name="click_to_create_test">Click on + button below to create a test</string>
     <string name="create_test">Create test</string>
     <string name="try_again">Try again</string>
+
+    <string name="image">Image</string>
+    <string name="change_image">Change image</string>
+    <string name="load_image">Load image</string>
+    <string name="crop_image">Crop image</string>
+    <string name="delete_image">Delete image</string>
+
+    <string name="test_settings">Test Settings</string>
+    <string name="test_creation">Test Creation</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="description_too_long">Description is too long</string>
+    <string name="edit_questions">Edit questions</string>
 </resources>

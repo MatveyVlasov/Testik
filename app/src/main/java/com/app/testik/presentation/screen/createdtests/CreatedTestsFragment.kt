@@ -74,7 +74,11 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
 
     private fun initListeners() {
         binding.apply {
-
+            fabCreate.setOnClickListener {
+                navController.navigate(
+                    CreatedTestsFragmentDirections.toEditTest()
+                )
+            }
         }
     }
 

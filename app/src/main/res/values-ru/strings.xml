@@ -92,4 +92,17 @@
     <string name="click_to_create_test">Нажмите на кнопку +, чтобы создать тест</string>
     <string name="create_test">Создать тест</string>
     <string name="try_again">Повторить попытку</string>
+
+    <string name="image">Изображение</string>
+    <string name="change_image">Изменить изображение</string>
+    <string name="load_image">Загрузить изображение</string>
+    <string name="crop_image">Обрезать изображеие</string>
+    <string name="delete_image">Удалить изображение</string>
+
+    <string name="test_settings">Настройки теста</string>
+    <string name="test_creation">Создание теста</string>
+    <string name="title">Название</string>
+    <string name="description">Описание</string>
+    <string name="description_too_long">Описание слишком длинное</string>
+    <string name="edit_questions">Редактировать вопросы</string>
 </resources>

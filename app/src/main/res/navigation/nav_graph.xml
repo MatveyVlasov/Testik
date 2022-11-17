@@ -70,6 +70,21 @@
         android:id="@+id/createdTestsFragment"
         android:name="com.app.testik.presentation.screen.createdtests.CreatedTestsFragment"
         android:label="CreatedTestsFragment"
-        tools:layout="@layout/fragment_created_tests" />
+        tools:layout="@layout/fragment_created_tests" >
+        <action
+            android:id="@+id/toEditTest"
+            app:destination="@id/testEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/testEditFragment"
+        android:name="com.app.testik.presentation.screen.testedit.TestEditFragment"
+        android:label="TestEditFragment"
+        tools:layout="@layout/fragment_test_edit" >
+        <argument
+            android:name="testId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 
 </navigation>
