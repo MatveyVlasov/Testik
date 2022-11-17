@@ -14,7 +14,7 @@
         android:paddingVertical="8dp"
         android:paddingStart="8dp"
         android:orientation="horizontal"
-        android:background="@color/purple"
+        android:background="@color/purple_AA"
         tools:ignore="RtlSymmetry">
 
         <ImageView

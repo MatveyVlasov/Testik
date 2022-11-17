@@ -10,6 +10,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#323232</color>
     <color name="purple">#6A62B7</color>
+    <color name="purple_AA">#AA6A62F7</color>
     <color name="purple_light">#D0CBFF</color>
     <color name="purple_dark">#7F0D90</color>
     <color name="gray_light">#EBEDF2</color>
