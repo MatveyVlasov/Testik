@@ -9,4 +9,7 @@
 
     <dimen name="button_radius">10dp</dimen>
     <dimen name="button_close_margin">8dp</dimen>
+
+    <dimen name="navbar_height">56dp</dimen>
+    <dimen name="navbar_height_and_margin">64dp</dimen>
 </resources>

@@ -1,14 +1,16 @@
 package com.app.testik.presentation.screen.createdtests.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.databinding.ItemCreatedTestBinding
 import com.app.testik.presentation.screen.createdtests.model.CreatedTestDelegateItem
 import com.app.testik.util.delegateadapter.DelegateAdapter
 
-class CreatedTestDelegateAdapter :
-    DelegateAdapter<CreatedTestDelegateItem, CreatedTestDelegateAdapter.ViewHolder>(
+class CreatedTestDelegateAdapter(
+    val onMoreClick: (View) -> Unit
+) : DelegateAdapter<CreatedTestDelegateItem, CreatedTestDelegateAdapter.ViewHolder>(
         CreatedTestDelegateItem::class.java
     ) {
 
@@ -25,6 +27,8 @@ class CreatedTestDelegateAdapter :
 
             binding.apply {
                 tvTitle.text = test.title
+
+                ivMore.setOnClickListener { onMoreClick(it) }
             }
         }
     }

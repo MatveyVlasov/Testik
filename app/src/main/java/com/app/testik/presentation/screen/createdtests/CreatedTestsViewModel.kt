@@ -33,8 +33,7 @@ class CreatedTestsViewModel @Inject constructor(
     private var screenUIState = CreatedTestsScreenUIState()
 
     private var snapshot: QuerySnapshot? = null
-
-    var job: Job? = null
+    private var job: Job? = null
 
     init {
         updateList()

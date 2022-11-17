@@ -9,45 +9,65 @@
         android:id="@+id/rvTests"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/navbar_height_and_margin"
         android:layout_marginHorizontal="16dp"
         android:clipToPadding="false"
-        android:paddingBottom="100dp"
+        android:paddingBottom="8dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="3"
-        tools:listitem="@layout/item_loading" />
+        tools:listitem="@layout/item_created_test"
+        tools:visibility="visible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/navbar_height_and_margin"
+        android:layout_marginHorizontal="16dp"
+        android:src="@drawable/ic_add"
+        android:backgroundTint="@color/purple_dark"
+        android:contentDescription="@string/create_test"
+        app:tint="@color/white"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <LinearLayout
-        android:id="@+id/llInfo"
+        android:id="@+id/llNoTests"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        tools:visibility="gone">
 
         <ImageView
             android:id="@+id/ivIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_created_tests" />
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="38dp"
+            style="@style/TitleTextView.Regular.AutoSize"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:text="There will be"
-            android:gravity="center" />
+            android:textColor="@color/purple"
+            android:text="@string/no_tests" />
 
         <TextView
             android:id="@+id/tvDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="38dp"
-            android:layout_marginTop="5dp"
-            android:text="More..."
-            android:gravity="center" />
+            style="@style/TitleTextView.Regular.AutoSize"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/purple"
+            android:text="@string/click_to_create_test" />
 
     </LinearLayout>
 
