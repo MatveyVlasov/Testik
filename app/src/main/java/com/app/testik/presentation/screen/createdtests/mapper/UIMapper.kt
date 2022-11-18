@@ -5,5 +5,7 @@ import com.app.testik.presentation.screen.createdtests.model.CreatedTestDelegate
 
 fun TestModel.toCreatedTestItem() =
     CreatedTestDelegateItem(
-        title = title
+        id = id,
+        title = title,
+        image = image
     )

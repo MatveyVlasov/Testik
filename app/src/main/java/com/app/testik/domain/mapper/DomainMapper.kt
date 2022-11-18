@@ -2,9 +2,11 @@ package com.app.testik.domain.mapper
 
 import com.app.testik.data.model.LoginDto
 import com.app.testik.data.model.RegistrationDto
+import com.app.testik.data.model.TestDto
 import com.app.testik.data.model.UserDto
 import com.app.testik.domain.model.LoginModel
 import com.app.testik.domain.model.RegistrationModel
+import com.app.testik.domain.model.TestModel
 import com.app.testik.domain.model.UserModel
 
 fun RegistrationModel.toDto() =
@@ -28,4 +30,14 @@ fun UserModel.toDto() =
         firstName = firstName,
         lastName = lastName,
         avatar = avatar
+    )
+
+fun TestModel.toDto() =
+    TestDto(
+        id = id,
+        author = author,
+        title = title,
+        description = description,
+        category = category,
+        image = image
     )

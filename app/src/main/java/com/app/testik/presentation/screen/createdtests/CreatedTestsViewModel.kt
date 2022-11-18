@@ -36,11 +36,16 @@ class CreatedTestsViewModel @Inject constructor(
     private var job: Job? = null
 
     init {
-        updateList()
+        updateList(firstUpdate = true)
     }
 
-    fun updateList() {
+    fun updateList(firstUpdate: Boolean = false) {
         if (job?.isActive == true) return
+        if (firstUpdate) {
+            snapshot = null
+            updateScreenState(CreatedTestsScreenUIState())
+        }
+
         postItem(LoadingItem)
 
         job = viewModelScope.launch {

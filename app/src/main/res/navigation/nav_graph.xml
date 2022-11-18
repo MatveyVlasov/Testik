@@ -83,8 +83,8 @@
         tools:layout="@layout/fragment_test_edit" >
         <argument
             android:name="testId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
 
 </navigation>

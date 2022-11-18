@@ -32,6 +32,7 @@
     <string name="error_occurred">Произошла ошибка</string>
     <string name="no_internet">Нет подключения к интернету</string>
     <string name="error_while_saving_image">Произошла ошибка при сохранении изображения</string>
+    <string name="blank_field_error">Это поле не может быть пустым</string>
     <string name="empty" />
     <string name="yes">Да</string>
     <string name="no">Нет</string>
@@ -106,6 +107,7 @@
     <string name="description_too_long">Описание слишком длинное</string>
     <string name="category">Категория</string>
     <string name="select_category">Выберите категорию</string>
+    <string name="create_test_success">Тест успешно создан</string>
     <string name="edit_questions">Редактировать вопросы</string>
 
     <string name="category_math">Математика</string>

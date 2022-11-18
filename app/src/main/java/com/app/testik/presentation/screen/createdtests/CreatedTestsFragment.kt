@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
@@ -33,12 +32,17 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
 
     private val viewModel: CreatedTestsViewModel by viewModels()
 
-    private val adapter by lazy {
+    private val testsAdapter by lazy {
         CompositeAdapter.Builder()
             .setOnUpdateCallback(viewModel::updateList)
             .add(ErrorDelegateAdapter(viewModel::updateList))
             .add(LoadingDelegateAdapter())
-            .add(CreatedTestDelegateAdapter { showMenu(it, R.menu.test_menu) })
+            .add(CreatedTestDelegateAdapter (
+                onClick = { navigateToTest(it) },
+                onMoreClick = { view, testId ->
+                    showMenu(view = view, menuRes= R.menu.test_menu, testId = testId)
+                })
+            )
             .build()
     }
 
@@ -54,6 +58,9 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
         collectData()
 
         addBackPressedCallback { showExitAlert() }
+        observeResult<Boolean>(Constants.UPDATE_TEST_RESULT_KEY) {
+            if (it) viewModel.updateList(firstUpdate = true)
+        }
     }
 
 
@@ -61,14 +68,17 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
 
         setupBottomNavigation(true)
         binding.apply {
-            rvTests.adapter = adapter
+            rvTests.apply {
+                adapter = testsAdapter
 
-            rvTests.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy > 1) fabCreate.hide()
-                    else if (dy < 1) fabCreate.show()
-                }
-            })
+                clearOnScrollListeners()
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        if (dy > 1) fabCreate.hide()
+                        else if (dy < 1) fabCreate.show()
+                    }
+                })
+            }
         }
     }
 
@@ -89,15 +99,14 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
                     viewModel.uiState.collect {
                         it.onSuccess { data ->
                             recyclerViewState = binding.rvTests.layoutManager?.onSaveInstanceState()
-                            adapter.submitList(data.tests)
+                            testsAdapter.submitList(data.tests)
 
-                            if (adapter.currentList.isNotEmpty()) {
-                                binding.llNoTests.isVisible = false
-                                binding.rvTests.apply {
-                                    isVisible = true
-                                    postDelayed(100) {
-                                        layoutManager?.onRestoreInstanceState(recyclerViewState)
-                                    }
+                            val isListEmpty = data.tests.isEmpty()
+                            binding.llNoTests.isVisible = isListEmpty
+                            binding.rvTests.apply {
+                                isVisible = !isListEmpty
+                                postDelayed(40) {
+                                    layoutManager?.onRestoreInstanceState(recyclerViewState)
                                 }
                             }
                         }
@@ -107,22 +116,26 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
         }
     }
 
-    private fun showMenu(view: View, @MenuRes menuRes: Int) {
+    private fun showMenu(view: View, @MenuRes menuRes: Int, testId: String) {
         PopupMenu(requireContext(), view).apply {
             menuInflater.inflate(menuRes, menu)
 
             setOnMenuItemClickListener { menuItem: MenuItem ->
-                var msg = "No msg"
                 when (menuItem.itemId) {
-                    R.id.edit -> msg = "Edit"
-                    R.id.demo -> msg = "Demo"
-                    R.id.delete -> msg = "Delete"
+                    R.id.edit -> navigateToTest(testId)
+                    R.id.demo -> Unit
+                    R.id.delete -> Unit
                 }
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                 return@setOnMenuItemClickListener true
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) setForceShowIcon(true)
             show()
         }
+    }
+
+    private fun navigateToTest(testId: String) {
+        navController.navigate(
+            CreatedTestsFragmentDirections.toEditTest(testId)
+        )
     }
 }

@@ -81,15 +81,13 @@ class PasswordChangeViewModel @Inject constructor(
 
     private fun checkPasswordLength(): Boolean {
         return (screenUIState.newPassword.length >= MIN_PASSWORD_LENGTH).also {
-            val error = if (it) null else R.string.password_too_short
-            updateScreenState(screenUIState.copy(newPasswordError = error))
+            if (!it) updateScreenState(screenUIState.copy(newPasswordError = R.string.password_too_short))
         }
     }
 
     private fun checkPasswordsMatch(): Boolean {
         return (screenUIState.newPassword == screenUIState.passwordRepeated).also {
-            val error = if (it) null else R.string.no_passwords_match
-            updateScreenState(screenUIState.copy(passwordRepeatedError = error))
+            if (!it) updateScreenState(screenUIState.copy(passwordRepeatedError = R.string.no_passwords_match))
         }
     }
 

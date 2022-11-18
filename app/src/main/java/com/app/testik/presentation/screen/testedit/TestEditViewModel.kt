@@ -8,10 +8,10 @@ import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.*
 import com.app.testik.presentation.model.UIState
+import com.app.testik.presentation.screen.testedit.mapper.toDomain
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenEvent
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenUIState
-import com.app.testik.util.Constants
-import com.app.testik.util.loadedFromServer
+import com.app.testik.util.Constants.MAX_DESCRIPTION_LENGTH
 import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,12 +19,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class TestEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getCurrentUserInfoUseCase: GetCurrentUserInfoUseCase,
+    private val createTestUseCase: CreateTestUseCase,
+    private val updateTestUseCase: UpdateTestUseCase,
+    private val getTestInfoUseCase: GetTestInfoUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<TestEditScreenUIState>>
@@ -49,7 +52,7 @@ class TestEditViewModel @Inject constructor(
 
     fun onTitleChanged(title: String) {
         if (title == screenUIState.title) return
-        updateScreenState(screenUIState.copy(title = title))
+        updateScreenState(screenUIState.copy(title = title, titleError = null))
     }
 
     fun onDescriptionChanged(description: String) {
@@ -59,27 +62,27 @@ class TestEditViewModel @Inject constructor(
 
     fun onCategoryChanged(category: String) {
         if (category == screenUIState.category) return
-        updateScreenState(screenUIState.copy(category = category))
+        updateScreenState(screenUIState.copy(category = category, categoryError = null))
     }
 
-    fun getTestInfo(testId: Int, source: Source = Source.DEFAULT) {
-        if (testId == -1) return
+    fun getTestInfo(testId: String, source: Source = Source.DEFAULT) {
+        if (testId.isEmpty()) return
         emitEvent(TestEditScreenEvent.Loading)
 
         viewModelScope.launch {
-//            getCurrentUserInfoUseCase(source).onSuccess {
-//                val screenState = TestEditScreenUIState(
-//                    email = it.email,
-//                    username = it.username,
-//                    firstName = it.firstName,
-//                    lastName = it.lastName,
-//                    avatar = it.avatar
-//                )
-//                oldScreenUIState = screenState
-//                updateScreenState(state = screenState)
-//            }.onError {
-//                emitEvent(TestEditScreenEvent.ShowSnackbar(it))
-//            }
+            getTestInfoUseCase(screenUIState.id).onSuccess {
+                val screenState = TestEditScreenUIState(
+                    id = screenUIState.id,
+                    title = it.title,
+                    description = it.description,
+                    category = it.category,
+                    image = it.image
+                )
+                oldScreenUIState = screenState
+                updateScreenState(state = screenState)
+            }.onError {
+                emitEvent(TestEditScreenEvent.ShowSnackbar(it))
+            }
         }
     }
 
@@ -94,17 +97,33 @@ class TestEditViewModel @Inject constructor(
         if (!validateData()) return
         emitEvent(TestEditScreenEvent.Loading)
 
-        val imageUpdated = !screenUIState.image.loadedFromServer()
+        if (screenUIState.id.isEmpty()) createTest()
+        else updateTest()
+    }
 
+    private fun createTest() {
         viewModelScope.launch {
-//            updateUserUseCase(screenUIState.toDomain()).onSuccess {
-//                val screenState = screenUIState.copy(avatarUpdated = avatarUpdated)
-//                oldScreenUIState = screenState
-//                updateScreenState(screenState)
-//                emitEvent(TestEditEvent.ShowSnackbarByRes(R.string.saved))
-//            }.onError {
-//                handleError(it)
-//            }
+            createTestUseCase(screenUIState.toDomain()).onSuccess {
+                val screenState = screenUIState.copy(id = it, testUpdated = true)
+                oldScreenUIState = screenState
+                updateScreenState(screenState)
+                emitEvent(TestEditScreenEvent.SuccessTestCreation)
+            }.onError {
+                handleError(it)
+            }
+        }
+    }
+
+    private fun updateTest() {
+        viewModelScope.launch {
+            updateTestUseCase(screenUIState.toDomain()).onSuccess {
+                val screenState = screenUIState.copy(testUpdated = true)
+                oldScreenUIState = screenState
+                updateScreenState(screenState)
+                emitEvent(TestEditScreenEvent.ShowSnackbarByRes(R.string.saved))
+            }.onError {
+                handleError(it)
+            }
         }
     }
 
@@ -125,13 +144,24 @@ class TestEditViewModel @Inject constructor(
     }
 
     private fun validateData(): Boolean {
-        return checkDescriptionLength()
+        return checkDescriptionLength() && checkTitleNotBlank() && checkCategoryNotBlank()
     }
 
     private fun checkDescriptionLength(): Boolean {
-        return (screenUIState.description.length <= Constants.MIN_PASSWORD_LENGTH).also {
-            val error = if (it) null else R.string.description_too_long
-            updateScreenState(screenUIState.copy(descriptionError = error))
+        return (screenUIState.description.length <= MAX_DESCRIPTION_LENGTH).also {
+            if (!it) updateScreenState(screenUIState.copy(descriptionError = R.string.description_too_long))
+        }
+    }
+
+    private fun checkTitleNotBlank(): Boolean {
+        return (screenUIState.title.isNotBlank()).also {
+            if (!it) updateScreenState(screenUIState.copy(titleError = R.string.blank_field_error))
+        }
+    }
+
+    private fun checkCategoryNotBlank(): Boolean {
+        return (screenUIState.category.isNotBlank()).also {
+            if (!it) updateScreenState(screenUIState.copy(categoryError = R.string.blank_field_error))
         }
     }
 

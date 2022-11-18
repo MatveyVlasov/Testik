@@ -6,11 +6,13 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.util.Patterns
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.app.testik.R
 import com.app.testik.data.model.ApiResult
 import com.app.testik.util.Constants.USERNAME_GOOGLE_DELIMITER
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.tasks.await
@@ -88,4 +90,28 @@ fun isOnline(context: Context): Boolean {
     }
 
     return false
+}
+
+fun loadAvatar(context: Context, imageView: ImageView, url: String) {
+    val image = url.ifBlank { R.drawable.ic_profile_avatar }
+
+    Glide.with(context)
+        .load(image)
+        .into(imageView)
+}
+
+fun loadTestImage(context: Context, imageView: ImageView, url: String) {
+    val image = url.ifBlank { R.drawable.ic_profile_avatar } // change
+
+    Glide.with(context)
+        .load(image)
+        .into(imageView)
+}
+
+fun loadTestImage(view: View, imageView: ImageView, url: String) {
+    val image = url.ifBlank { R.drawable.ic_profile_avatar } // change
+
+    Glide.with(view)
+        .load(image)
+        .into(imageView)
 }

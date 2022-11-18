@@ -1,6 +1,6 @@
-package com.app.testik.domain.model
+package com.app.testik.data.model
 
-data class TestModel(
+data class TestDto(
     val id: String = "",
     val author: String = "",
     val title: String = "",

@@ -25,7 +25,6 @@ import com.app.testik.util.Constants.EXTRA_IMAGE_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_TITLE
 import com.app.testik.util.Constants.PASSWORD_CHANGED_RESULT_KEY
 import com.app.testik.util.Constants.UPDATE_AVATAR_RESULT_KEY
-import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yanzhenjie.album.Album
 import dagger.hilt.android.AndroidEntryPoint
@@ -161,16 +160,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         else navController.navigateUp()
     }
 
-    private fun loadAvatar(url: String) {
-        val avatar = url.ifBlank { R.drawable.ic_profile_avatar }
-
-        Glide.with(this)
-            .load(avatar)
-            .into(binding.ivAvatar)
-    }
+    private fun loadAvatar(url: String) =
+        loadAvatar(context = requireContext(), imageView = binding.ivAvatar, url = url)
 
     private fun onChangeAvatar() {
-        if (viewModel.screenUIState.avatar.isBlank()) pickAvatar()
+        if (viewModel.screenUIState.avatar.isEmpty()) pickAvatar()
         else changeAvatar()
     }
 
@@ -208,7 +202,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun viewAvatar() {
-        if (viewModel.screenUIState.avatar.isBlank()) return pickAvatar()
+        if (viewModel.screenUIState.avatar.isEmpty()) return pickAvatar()
 
         Intent(context, ImageViewActivity::class.java).also {
             it.putExtra(EXTRA_IMAGE_TITLE, getString(R.string.avatar))

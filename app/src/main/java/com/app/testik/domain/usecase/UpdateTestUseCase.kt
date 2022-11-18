@@ -2,38 +2,38 @@ package com.app.testik.domain.usecase
 
 import com.app.testik.domain.mapper.toDto
 import com.app.testik.domain.model.*
-import com.app.testik.domain.repository.UserRepository
 import com.app.testik.domain.repository.StorageRepository
+import com.app.testik.domain.repository.TestRepository
 import com.app.testik.domain.util.ResultWrapper
 import com.app.testik.domain.util.ResultWrapperImpl
 import com.app.testik.util.loadedFromServer
 import javax.inject.Inject
 
-class UpdateUserUseCase @Inject constructor(
-    private val userRepository: UserRepository,
+class UpdateTestUseCase @Inject constructor(
+    private val testRepository: TestRepository,
     private val storageRepository: StorageRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(data: UserModel): Result<Unit> {
-        if (data.avatar.isEmpty() || data.avatar.loadedFromServer()) return updateUser(data)
+    suspend operator fun invoke(data: TestModel): Result<Unit> {
+        if (data.image.isEmpty() || data.image.loadedFromServer()) return updateTest(data)
 
         wrap(
-            block = { storageRepository.uploadAvatar(data.toDto()) },
+            block = { storageRepository.uploadTestImage(testId = data.id, image = data.image) },
             mapper = { it.toString() }
-        ).onSuccess { avatar ->
-            val newData = data.copy(avatar = avatar)
-            return updateUser(newData)
+        ).onSuccess { image ->
+            val newData = data.copy(image = image)
+            return updateTest(newData)
         }.onError {
-            return updateUser(data).onSuccess {
+            return updateTest(data).onSuccess {
                 return Result.Error("Error while saving image")
             }
         }
         return Result.Error("Error occurred")
     }
 
-    private suspend fun updateUser(data: UserModel) =
+    private suspend fun updateTest(data: TestModel) =
         wrap(
-            block = { userRepository.updateUser(data.toDto()) },
+            block = { testRepository.updateTest(data.toDto()) },
             mapper = { }
         )
 }

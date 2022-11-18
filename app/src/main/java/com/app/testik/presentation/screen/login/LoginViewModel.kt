@@ -122,8 +122,7 @@ class LoginViewModel @Inject constructor(
 
     private fun checkEmail(): Boolean {
         return (screenUIState.email.isEmail()).also {
-            val error = if (it) null else R.string.email_badly_formatted
-            updateScreenState(screenUIState.copy(emailError = error))
+            if (!it) updateScreenState(screenUIState.copy(emailError = R.string.email_badly_formatted))
         }
     }
 

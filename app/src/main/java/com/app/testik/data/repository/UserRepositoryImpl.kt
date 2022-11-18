@@ -40,9 +40,9 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserInfo(email: String?, source: Source): ApiResult<UserDto> {
-        try {
-            if (email == null) return ApiResult.Error("No email provided")
+        if (email == null) return ApiResult.Error("No email provided")
 
+        try {
             firebaseFirestore.collection("users").document(email).get(source).also {
                 it.await()
                 return if (it.isSuccessful) {
@@ -65,14 +65,14 @@ class UserRepositoryImpl @Inject constructor(
                     it.await()
                     if (!it.result.isEmpty && it.result.documents.first().data?.get("email") != email) return ApiResult.Error("Username already taken")
                 }
-                val newData = mutableMapOf(
+                val newData = mutableMapOf<String, Any>(
                     "email" to email,
                     "username" to username,
                     "firstName" to firstName,
                     "lastName" to lastName
                 )
                 if (avatar.loadedFromServer() || avatar.isEmpty()) newData["avatar"] = avatar
-                firebaseFirestore.collection("users").document(email).set(newData).execute()
+                firebaseFirestore.collection("users").document(email).update(newData).execute()
             }
         } catch (e: Exception) {
             ApiResult.Error(e.message)

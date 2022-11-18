@@ -4,7 +4,9 @@ import com.app.testik.util.delegateadapter.DelegateAdapterItem
 import com.app.testik.util.randomId
 
 data class CreatedTestDelegateItem(
-    val title: String
+    val id: String,
+    val title: String,
+    val image: String
 ) : DelegateAdapterItem {
 
     override fun id() = randomId

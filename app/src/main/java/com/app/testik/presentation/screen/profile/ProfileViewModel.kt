@@ -138,8 +138,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun checkUsername(): Boolean {
         return (screenUIState.username.isUsername()).also {
-            val error = if (it) null else R.string.username_badly_formatted
-            updateScreenState(screenUIState.copy(usernameError = error))
+            if (!it) updateScreenState(screenUIState.copy(usernameError = R.string.username_badly_formatted))
         }
     }
 

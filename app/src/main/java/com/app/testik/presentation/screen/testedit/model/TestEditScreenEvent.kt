@@ -9,4 +9,6 @@ sealed class TestEditScreenEvent {
     data class ShowSnackbarByRes(@StringRes val message: Int) : TestEditScreenEvent()
 
     object Loading : TestEditScreenEvent()
+
+    object SuccessTestCreation : TestEditScreenEvent()
 }

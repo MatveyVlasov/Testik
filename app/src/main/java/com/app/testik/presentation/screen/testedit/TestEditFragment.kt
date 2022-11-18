@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.navArgs
 import com.app.testik.R
 import com.app.testik.databinding.FragmentTestEditBinding
 import com.app.testik.presentation.activity.ImageCropActivity
@@ -25,8 +25,7 @@ import com.app.testik.util.Constants.CATEGORIES
 import com.app.testik.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_TITLE
-import com.app.testik.util.Constants.UPDATE_AVATAR_RESULT_KEY
-import com.bumptech.glide.Glide
+import com.app.testik.util.Constants.UPDATE_TEST_RESULT_KEY
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yanzhenjie.album.Album
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,8 +35,6 @@ import kotlinx.coroutines.launch
 class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
     private val viewModel: TestEditViewModel by viewModels()
-
-    private val args: TestEditFragmentArgs by navArgs()
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -62,9 +59,9 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
     private fun initViews() {
 
         setupBottomNavigation(false)
-        binding.apply {
+        initializeViews()
 
-            if (args.testId == -1) toolbar.setTitle(R.string.test_creation)
+        binding.apply {
 
             ivImage.clipToOutline = true
         }
@@ -112,6 +109,10 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             is TestEditScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
             is TestEditScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
             is TestEditScreenEvent.Loading -> Unit
+            is TestEditScreenEvent.SuccessTestCreation -> {
+                showSnackbar(R.string.create_test_success)
+                initializeViews()
+            }
         }
         setLoadingState(event is TestEditScreenEvent.Loading)
     }
@@ -122,14 +123,30 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             if (!etDescription.isFocused) etDescription.setText(data.description)
             if (!etCategory.isFocused) etCategory.setText(data.category)
 
+            tilTitle.error = getStringOrNull(data.titleError)
             tilDescription.error = getStringOrNull(data.descriptionError)
+            tilCategory.error = getStringOrNull(data.categoryError)
 
             btnSave.isEnabled = data.canSave
         }
 
-        setResult(UPDATE_AVATAR_RESULT_KEY, data.imageUpdated)
+        setResult(UPDATE_TEST_RESULT_KEY, data.testUpdated)
         loadImage(data.image)
         setLoadingState(false)
+    }
+
+    private fun initializeViews() {
+        binding.apply {
+            if (viewModel.screenUIState.id.isEmpty()) {
+                toolbar.setTitle(R.string.test_creation)
+                btnSave.setText(R.string.create_test)
+                btnEditQuestions.isVisible = false
+            } else {
+                toolbar.setTitle(R.string.test_settings)
+                btnSave.setText(R.string.save)
+                btnEditQuestions.isVisible = true
+            }
+        }
     }
 
     private fun onBackPressed() {
@@ -137,16 +154,11 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
         else navController.navigateUp()
     }
 
-    private fun loadImage(url: String) {
-        val image = url.ifBlank { R.drawable.ic_profile_avatar } // change
-
-        Glide.with(this)
-            .load(image)
-            .into(binding.ivImage)
-    }
+    private fun loadImage(url: String) =
+        loadTestImage(context = requireContext(), imageView = binding.ivImage, url = url)
 
     private fun onChangeImage() {
-        if (viewModel.screenUIState.image.isBlank()) pickImage()
+        if (viewModel.screenUIState.image.isEmpty()) pickImage()
         else changeImage()
     }
 
@@ -184,7 +196,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
     }
 
     private fun viewImage() {
-        if (viewModel.screenUIState.image.isBlank()) return pickImage()
+        if (viewModel.screenUIState.image.isEmpty()) return pickImage()
 
         Intent(context, ImageViewActivity::class.java).also {
             it.putExtra(EXTRA_IMAGE_TITLE, getString(R.string.test_image))

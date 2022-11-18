@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.databinding.ItemCreatedTestBinding
 import com.app.testik.presentation.screen.createdtests.model.CreatedTestDelegateItem
 import com.app.testik.util.delegateadapter.DelegateAdapter
+import com.app.testik.util.loadTestImage
 
 class CreatedTestDelegateAdapter(
-    val onMoreClick: (View) -> Unit
+    val onClick: (String) -> Unit,
+    val onMoreClick: (View, String) -> Unit
 ) : DelegateAdapter<CreatedTestDelegateItem, CreatedTestDelegateAdapter.ViewHolder>(
         CreatedTestDelegateItem::class.java
     ) {
@@ -26,9 +28,12 @@ class CreatedTestDelegateAdapter(
         fun bind(test: CreatedTestDelegateItem) {
 
             binding.apply {
+                loadTestImage(view = root, imageView = binding.ivImage, url = test.image)
+
                 tvTitle.text = test.title
 
-                ivMore.setOnClickListener { onMoreClick(it) }
+                root.setOnClickListener { onClick(test.id) }
+                ivMore.setOnClickListener { onMoreClick(it, test.id) }
             }
         }
     }

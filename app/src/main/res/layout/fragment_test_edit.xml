@@ -60,7 +60,8 @@
                 android:id="@+id/tilTitle"
                 style="@style/CustomTextInputLayout.LightGray"
                 android:hint="@string/title"
-                app:startIconDrawable="@drawable/ic_title">
+                app:startIconDrawable="@drawable/ic_title"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etTitle"
@@ -76,7 +77,8 @@
                 android:hint="@string/description"
                 app:startIconDrawable="@drawable/ic_description"
                 app:counterEnabled="true"
-                app:counterMaxLength="@integer/description_max_length">
+                app:counterMaxLength="@integer/description_max_length"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDescription"
@@ -89,7 +91,8 @@
                 android:id="@+id/tilCategory"
                 style="@style/CustomTextInputLayout.LightGray"
                 android:hint="@string/category"
-                app:startIconDrawable="@drawable/ic_category">
+                app:startIconDrawable="@drawable/ic_category"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etCategory"

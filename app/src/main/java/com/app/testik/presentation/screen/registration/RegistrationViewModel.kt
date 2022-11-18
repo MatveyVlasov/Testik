@@ -92,29 +92,25 @@ class RegistrationViewModel @Inject constructor(
 
     private fun checkEmail(): Boolean {
         return (screenUIState.email.isEmail()).also {
-            val error = if (it) null else R.string.email_badly_formatted
-            updateScreenState(screenUIState.copy(emailError = error))
+            if (!it) updateScreenState(screenUIState.copy(emailError = R.string.email_badly_formatted))
         }
     }
 
     private fun checkPasswordLength(): Boolean {
         return (screenUIState.password.length >= MIN_PASSWORD_LENGTH).also {
-            val error = if (it) null else R.string.password_too_short
-            updateScreenState(screenUIState.copy(passwordError = error))
+            if (!it) updateScreenState(screenUIState.copy(passwordError = R.string.password_too_short))
         }
     }
 
     private fun checkPasswordsMatch(): Boolean {
         return (screenUIState.password == screenUIState.passwordRepeated).also {
-            val error = if (it) null else R.string.no_passwords_match
-            updateScreenState(screenUIState.copy(passwordRepeatedError = error))
+            if (!it) updateScreenState(screenUIState.copy(passwordRepeatedError = R.string.no_passwords_match))
         }
     }
 
     private fun checkUsername(): Boolean {
         return (screenUIState.username.isUsername()).also {
-            val error = if (it) null else R.string.username_badly_formatted
-            updateScreenState(screenUIState.copy(usernameError = error))
+            if (!it) updateScreenState(screenUIState.copy(usernameError = R.string.username_badly_formatted))
         }
     }
 
