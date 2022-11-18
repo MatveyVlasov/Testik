@@ -6,6 +6,7 @@ data class TestEditScreenUIState(
     val id: Int = -1,
     val title: String = "",
     val description: String = "",
+    val category: String = "",
     val image: String = "",
     val imageUpdated: Boolean = false,
     val canSave: Boolean = true,

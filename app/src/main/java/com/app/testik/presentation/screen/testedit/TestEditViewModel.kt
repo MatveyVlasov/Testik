@@ -57,6 +57,11 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(description = description, descriptionError = null))
     }
 
+    fun onCategoryChanged(category: String) {
+        if (category == screenUIState.category) return
+        updateScreenState(screenUIState.copy(category = category))
+    }
+
     fun getTestInfo(testId: Int, source: Source = Source.DEFAULT) {
         if (testId == -1) return
         emitEvent(TestEditScreenEvent.Loading)

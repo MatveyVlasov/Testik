@@ -21,6 +21,7 @@ import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenEvent
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenUIState
 import com.app.testik.util.*
+import com.app.testik.util.Constants.CATEGORIES
 import com.app.testik.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_TITLE
@@ -75,6 +76,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             ivImage.setOnClickListener { viewImage() }
             ivEditImage.setOnClickListener { onChangeImage() }
+            etCategory.setOnClickListener { showChangeCategoryDialog() }
             btnSave.setOnClickListener { viewModel.save() }
 //            btnEditQuestions.setOnClickListener {
 //                navController.navigate(
@@ -118,6 +120,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
         binding.apply {
             if (!etTitle.isFocused) etTitle.setText(data.title)
             if (!etDescription.isFocused) etDescription.setText(data.description)
+            if (!etCategory.isFocused) etCategory.setText(data.category)
 
             tilDescription.error = getStringOrNull(data.descriptionError)
 
@@ -192,6 +195,20 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
     private fun deleteImage() {
         viewModel.deleteImage()
+    }
+
+    private fun showChangeCategoryDialog() {
+        var selectedItem = CATEGORIES.lastIndex
+
+        showSingleChoiceDialog(
+            title = R.string.select_category,
+            positive = R.string.confirm,
+            negative = R.string.cancel,
+            items = CATEGORIES,
+            selectedItem = selectedItem,
+            onPositiveClick = { viewModel.onCategoryChanged(getString(CATEGORIES[selectedItem])) },
+            onItemClick = { selectedItem = it }
+        )
     }
 
     private fun confirmExitWithoutSaving() {

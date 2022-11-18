@@ -85,6 +85,21 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCategory"
+                style="@style/CustomTextInputLayout.LightGray"
+                android:hint="@string/category"
+                app:startIconDrawable="@drawable/ic_category">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCategory"
+                    style="@style/CustomTextInputEditText.LightGray"
+                    android:focusable="false"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton

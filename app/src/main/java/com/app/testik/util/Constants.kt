@@ -1,8 +1,15 @@
 package com.app.testik.util
 
+import com.app.testik.R
+
 object Constants {
 
-    val LANGUAGES = mapOf("English" to "en", "Русский" to "ru")
+    val LANGUAGES = mapOf(R.string.english to "en", R.string.russian to "ru")
+    val CATEGORIES = listOf(
+        R.string.category_math,
+        R.string.category_history,
+        R.string.category_other
+    )
 
     const val MIN_PASSWORD_LENGTH = 6
     const val USERNAME_GOOGLE_DELIMITER = '#'

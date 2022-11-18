@@ -104,5 +104,11 @@
     <string name="title">Название</string>
     <string name="description">Описание</string>
     <string name="description_too_long">Описание слишком длинное</string>
+    <string name="category">Категория</string>
+    <string name="select_category">Выберите категорию</string>
     <string name="edit_questions">Редактировать вопросы</string>
+
+    <string name="category_math">Математика</string>
+    <string name="category_history">История</string>
+    <string name="category_other">Другое</string>
 </resources>
