@@ -4,11 +4,11 @@ import com.app.testik.R
 
 object Constants {
 
-    val LANGUAGES = mapOf(R.string.english to "en", R.string.russian to "ru")
-    val CATEGORIES = listOf(
-        R.string.category_math,
-        R.string.category_history,
-        R.string.category_other
+    val LANGUAGES = mapOf("en" to R.string.english, "ru" to R.string.russian)
+    val CATEGORIES = mapOf(
+        "math" to R.string.category_math,
+        "history" to R.string.category_history,
+        "other" to R.string.category_other
     )
 
     const val MIN_PASSWORD_LENGTH = 6

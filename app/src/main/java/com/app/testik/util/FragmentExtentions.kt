@@ -9,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.app.testik.R
+import com.app.testik.util.Constants.CATEGORIES
 import com.app.testik.util.Constants.LANGUAGES
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -153,13 +154,15 @@ fun Fragment.showChangeLanguageDialog(onSelected: (String) -> Unit) {
         title = R.string.select_language_translated,
         positive = R.string.select_translated,
         negative = R.string.cancel_translated,
-        items = LANGUAGES.keys.toList(),
+        items = LANGUAGES.values.toList(),
         selectedItem = selectedItem,
         onPositiveClick = {
-            if (selectedItem != -1) onSelected(LANGUAGES.values.elementAt(selectedItem))
+            if (selectedItem != -1) onSelected(LANGUAGES.keys.elementAt(selectedItem))
         },
         onItemClick = { selectedItem = it }
     )
 }
 
 fun Fragment.getStringOrNull(@StringRes res: Int?) = if (res == null) null else getString(res)
+
+fun Fragment.getCategory(str: String) = getStringOrNull(CATEGORIES[str])

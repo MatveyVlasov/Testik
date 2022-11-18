@@ -11,7 +11,7 @@ class PreferencesRepositoryImpl @Inject constructor(
 ) : PreferencesRepository {
 
     override fun setLanguage(lang: String) = sharedPreferences.edit {
-        if (lang in LANGUAGES.values) {
+        if (lang in LANGUAGES.keys) {
             putString(LANGUAGE_KEY, lang)
         } else {
             putString(LANGUAGE_KEY, DEFAULT_LANGUAGE)

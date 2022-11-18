@@ -134,7 +134,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
         binding.apply {
             if (!etTitle.isFocused) etTitle.setText(data.title)
             if (!etDescription.isFocused) etDescription.setText(data.description)
-            if (!etCategory.isFocused) etCategory.setText(data.category)
+            if (!etCategory.isFocused) etCategory.setText(getCategory(data.category))
 
             tilTitle.error = getStringOrNull(data.titleError)
             tilDescription.error = getStringOrNull(data.descriptionError)
@@ -227,15 +227,15 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
     }
 
     private fun showChangeCategoryDialog() {
-        var selectedItem = CATEGORIES.lastIndex
+        var selectedItem = CATEGORIES.size - 1
 
         showSingleChoiceDialog(
             title = R.string.select_category,
             positive = R.string.confirm,
             negative = R.string.cancel,
-            items = CATEGORIES,
+            items = CATEGORIES.values.toList(),
             selectedItem = selectedItem,
-            onPositiveClick = { viewModel.onCategoryChanged(getString(CATEGORIES[selectedItem])) },
+            onPositiveClick = { viewModel.onCategoryChanged(CATEGORIES.keys.elementAt(selectedItem)) },
             onItemClick = { selectedItem = it }
         )
     }
