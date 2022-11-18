@@ -7,7 +7,9 @@ import com.app.testik.data.model.TestsDto
 import com.app.testik.domain.repository.TestRepository
 import com.app.testik.util.execute
 import com.app.testik.util.isOnline
+import com.app.testik.util.timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,7 +30,8 @@ class TestRepositoryImpl @Inject constructor(
                     "author" to author,
                     "title" to title,
                     "description" to description,
-                    "category" to category
+                    "category" to category,
+                    "timestamp" to timestamp
                 )
 
                 firebaseFirestore.collection("tests").add(newData).also {
@@ -64,7 +67,8 @@ class TestRepositoryImpl @Inject constructor(
                     "title" to title,
                     "description" to description,
                     "category" to category,
-                    "image" to image
+                    "image" to image,
+                    "timestamp" to timestamp
                 )
 
                 firebaseFirestore.collection("tests").document(data.id).update(newData).execute()
@@ -78,9 +82,14 @@ class TestRepositoryImpl @Inject constructor(
         if (authorEmail == null) return ApiResult.Error("No email provided")
 
         try {
-            firebaseFirestore.collection("tests").whereEqualTo("author", authorEmail)
-                .orderBy("title")
-                .startAfter(snapshot.orderBy("title"))
+            var query = firebaseFirestore.collection("tests")
+                .whereEqualTo("author", authorEmail)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+
+            if (snapshot != null)
+                query = query.startAfter(snapshot.orderBy("timestamp"))
+
+            query
                 .limit(limit)
                 .get()
                 .also {

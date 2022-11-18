@@ -21,6 +21,9 @@ import java.util.*
 val randomId: String
     get() = UUID.randomUUID().toString()
 
+val timestamp: Long
+    get() = System.currentTimeMillis()
+
 val Int.px get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 fun Int?.orZero() = this ?: 0
