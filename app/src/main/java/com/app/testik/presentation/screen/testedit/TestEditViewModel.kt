@@ -27,7 +27,8 @@ class TestEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val createTestUseCase: CreateTestUseCase,
     private val updateTestUseCase: UpdateTestUseCase,
-    private val getTestInfoUseCase: GetTestInfoUseCase
+    private val getTestInfoUseCase: GetTestInfoUseCase,
+    private val deleteTestUseCase: DeleteTestUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<TestEditScreenUIState>>
@@ -47,7 +48,8 @@ class TestEditViewModel @Inject constructor(
     private var oldScreenUIState: TestEditScreenUIState? = null
 
     init {
-        getTestInfo(testId = screenUIState.id)
+        // getTestInfo(testId = screenUIState.id)
+        getTestInfo(testId = screenUIState.id, source = Source.CACHE)
     }
 
     fun onTitleChanged(title: String) {
@@ -65,27 +67,6 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(category = category, categoryError = null))
     }
 
-    fun getTestInfo(testId: String, source: Source = Source.DEFAULT) {
-        if (testId.isEmpty()) return
-        emitEvent(TestEditScreenEvent.Loading)
-
-        viewModelScope.launch {
-            getTestInfoUseCase(screenUIState.id).onSuccess {
-                val screenState = TestEditScreenUIState(
-                    id = screenUIState.id,
-                    title = it.title,
-                    description = it.description,
-                    category = it.category,
-                    image = it.image
-                )
-                oldScreenUIState = screenState
-                updateScreenState(state = screenState)
-            }.onError {
-                emitEvent(TestEditScreenEvent.ShowSnackbar(it))
-            }
-        }
-    }
-
     fun loadImage(image: String) {
         if (screenUIState.image == image) return
         updateScreenState(screenUIState.copy(image = image))
@@ -99,6 +80,40 @@ class TestEditViewModel @Inject constructor(
 
         if (screenUIState.id.isEmpty()) createTest()
         else updateTest()
+    }
+
+    fun deleteTest() {
+        if (screenUIState.id.isEmpty()) return
+        emitEvent(TestEditScreenEvent.Loading)
+
+        viewModelScope.launch {
+            deleteTestUseCase(testId = screenUIState.id).onSuccess {
+                emitEvent(TestEditScreenEvent.SuccessTestDeletion)
+            }.onError {
+                emitEvent(TestEditScreenEvent.ShowSnackbar(it))
+            }
+        }
+    }
+
+    private fun getTestInfo(testId: String, source: Source = Source.DEFAULT) {
+        if (testId.isEmpty()) return
+        emitEvent(TestEditScreenEvent.Loading)
+
+        viewModelScope.launch {
+            getTestInfoUseCase(testId = screenUIState.id, source = source).onSuccess {
+                val screenState = TestEditScreenUIState(
+                    id = screenUIState.id,
+                    title = it.title,
+                    description = it.description,
+                    category = it.category,
+                    image = it.image
+                )
+                oldScreenUIState = screenState
+                updateScreenState(state = screenState)
+            }.onError {
+                emitEvent(TestEditScreenEvent.ShowSnackbar(it))
+            }
+        }
     }
 
     private fun createTest() {

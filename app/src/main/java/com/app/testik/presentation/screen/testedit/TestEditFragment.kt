@@ -63,6 +63,14 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
         binding.apply {
 
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.demo -> Unit
+                    R.id.delete -> confirmDeletion()
+                }
+                return@setOnMenuItemClickListener true
+            }
+
             ivImage.clipToOutline = true
         }
     }
@@ -113,6 +121,11 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
                 showSnackbar(R.string.create_test_success)
                 initializeViews()
             }
+            is TestEditScreenEvent.SuccessTestDeletion -> {
+                showSnackbar(R.string.delete_test_success)
+                setResult(UPDATE_TEST_RESULT_KEY, true)
+                navController.navigateUp()
+            }
         }
         setLoadingState(event is TestEditScreenEvent.Loading)
     }
@@ -139,10 +152,14 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
         binding.apply {
             if (viewModel.screenUIState.id.isEmpty()) {
                 toolbar.setTitle(R.string.test_creation)
+                toolbar.menu.findItem(R.id.delete).isVisible = false
+                toolbar.menu.findItem(R.id.demo).isVisible = false
                 btnSave.setText(R.string.create_test)
                 btnEditQuestions.isVisible = false
             } else {
                 toolbar.setTitle(R.string.test_settings)
+                toolbar.menu.findItem(R.id.delete).isVisible = true
+                toolbar.menu.findItem(R.id.demo).isVisible = true
                 btnSave.setText(R.string.save)
                 btnEditQuestions.isVisible = true
             }
@@ -230,6 +247,16 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             positive = R.string.confirm,
             negative = R.string.cancel,
             onPositiveClick = navController::navigateUp
+        )
+    }
+
+    private fun confirmDeletion() {
+        showAlert(
+            title = R.string.delete_test,
+            message = R.string.delete_test_confirmation,
+            positive = R.string.confirm,
+            negative = R.string.cancel,
+            onPositiveClick = viewModel::deleteTest
         )
     }
 }

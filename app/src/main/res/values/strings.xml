@@ -118,4 +118,8 @@
     <string name="category_math">Math</string>
     <string name="category_history">History</string>
     <string name="category_other">Other</string>
+
+    <string name="delete_test">Delete Test</string>
+    <string name="delete_test_confirmation">Do you really want to delete this test?</string>
+    <string name="delete_test_success">Test successfully deleted</string>
 </resources>

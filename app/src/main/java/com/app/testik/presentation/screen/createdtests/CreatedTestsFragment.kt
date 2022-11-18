@@ -22,6 +22,7 @@ import com.app.testik.presentation.adapter.LoadingDelegateAdapter
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.screen.createdtests.adapter.CreatedTestDelegateAdapter
+import com.app.testik.presentation.screen.createdtests.model.CreatedTestsScreenEvent
 import com.app.testik.util.*
 import com.app.testik.util.delegateadapter.CompositeAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -112,8 +113,25 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
                         }
                     }
                 }
+
+                launch {
+                    viewModel.event.collect { handleEvent(it) }
+                }
             }
         }
+    }
+
+    private fun handleEvent(event: CreatedTestsScreenEvent) {
+        when (event) {
+            is CreatedTestsScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
+            is CreatedTestsScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
+            is CreatedTestsScreenEvent.Loading -> Unit
+            is CreatedTestsScreenEvent.SuccessTestDeletion -> {
+                showSnackbar(R.string.delete_test_success)
+                viewModel.updateList(firstUpdate = true)
+            }
+        }
+        setLoadingState(event is CreatedTestsScreenEvent.Loading)
     }
 
     private fun showMenu(view: View, @MenuRes menuRes: Int, testId: String) {
@@ -124,7 +142,7 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
                 when (menuItem.itemId) {
                     R.id.edit -> navigateToTest(testId)
                     R.id.demo -> Unit
-                    R.id.delete -> Unit
+                    R.id.delete -> confirmDeletion(testId)
                 }
                 return@setOnMenuItemClickListener true
             }
@@ -136,6 +154,16 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
     private fun navigateToTest(testId: String) {
         navController.navigate(
             CreatedTestsFragmentDirections.toEditTest(testId)
+        )
+    }
+
+    private fun confirmDeletion(testId: String) {
+        showAlert(
+            title = R.string.delete_test,
+            message = R.string.delete_test_confirmation,
+            positive = R.string.confirm,
+            negative = R.string.cancel,
+            onPositiveClick = { viewModel.deleteTest(testId) }
         )
     }
 }

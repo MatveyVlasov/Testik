@@ -113,4 +113,8 @@
     <string name="category_math">Математика</string>
     <string name="category_history">История</string>
     <string name="category_other">Другое</string>
+
+    <string name="delete_test">Удалить тест</string>
+    <string name="delete_test_confirmation">Вы действительно хотите удалить этот тест?</string>
+    <string name="delete_test_success">Тест успешно удалён</string>
 </resources>

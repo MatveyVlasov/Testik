@@ -11,4 +11,6 @@ sealed class TestEditScreenEvent {
     object Loading : TestEditScreenEvent()
 
     object SuccessTestCreation : TestEditScreenEvent()
+
+    object SuccessTestDeletion : TestEditScreenEvent()
 }

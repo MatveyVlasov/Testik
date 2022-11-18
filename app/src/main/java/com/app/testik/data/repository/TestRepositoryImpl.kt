@@ -9,6 +9,7 @@ import com.app.testik.util.execute
 import com.app.testik.util.isOnline
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.Source
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -92,11 +93,11 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTest(testId: String): ApiResult<TestDto> {
+    override suspend fun getTest(testId: String, source: Source): ApiResult<TestDto> {
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         try {
-            firebaseFirestore.collection("tests").document(testId).get().also {
+            firebaseFirestore.collection("tests").document(testId).get(source).also {
                 it.await()
                 val test = it.result.toObject(TestDto::class.java)?.copy(id = testId)
                 return if (it.isSuccessful) ApiResult.Success(test)
@@ -104,6 +105,16 @@ class TestRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             return ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun deleteTest(testId: String): ApiResult<Unit> {
+        if (testId.isEmpty()) return ApiResult.Error("No test found")
+
+        return try {
+            firebaseFirestore.collection("tests").document(testId).delete().execute()
+        } catch (e: Exception) {
+            ApiResult.Error(e.message)
         }
     }
 

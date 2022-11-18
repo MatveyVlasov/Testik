@@ -4,6 +4,7 @@ import com.app.testik.data.model.ApiResult
 import com.app.testik.data.model.TestDto
 import com.app.testik.data.model.TestsDto
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.Source
 
 interface TestRepository {
 
@@ -15,5 +16,7 @@ interface TestRepository {
 
     suspend fun getTestsByAuthor(authorEmail: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsDto>
 
-    suspend fun getTest(testId: String): ApiResult<TestDto>
+    suspend fun getTest(testId: String, source: Source): ApiResult<TestDto>
+
+    suspend fun deleteTest(testId: String): ApiResult<Unit>
 }
