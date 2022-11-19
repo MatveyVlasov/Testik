@@ -22,6 +22,7 @@ import com.app.testik.presentation.screen.testedit.model.TestEditScreenEvent
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenUIState
 import com.app.testik.util.*
 import com.app.testik.util.Constants.CATEGORIES
+import com.app.testik.util.Constants.DELETE_TEST_RESULT_KEY
 import com.app.testik.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_TITLE
@@ -72,6 +73,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             }
 
             ivImage.clipToOutline = true
+            if (viewModel.screenUIState.id.isEmpty()) loadImage("")
         }
     }
 
@@ -123,7 +125,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             }
             is TestEditScreenEvent.SuccessTestDeletion -> {
                 showSnackbar(R.string.delete_test_success)
-                setResult(UPDATE_TEST_RESULT_KEY, true)
+                setResult(DELETE_TEST_RESULT_KEY, event.test)
                 navController.navigateUp()
             }
         }
@@ -143,7 +145,9 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             btnSave.isEnabled = data.canSave
         }
 
-        setResult(UPDATE_TEST_RESULT_KEY, data.testUpdated)
+        data.testUpdated?.let {
+            setResult(UPDATE_TEST_RESULT_KEY, it)
+        }
         loadImage(data.image)
         setLoadingState(false)
     }

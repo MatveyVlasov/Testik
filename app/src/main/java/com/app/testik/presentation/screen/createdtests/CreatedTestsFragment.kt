@@ -2,14 +2,12 @@ package com.app.testik.presentation.screen.createdtests
 
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.core.view.isVisible
-import androidx.core.view.postDelayed
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,14 +15,18 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.R
 import com.app.testik.databinding.FragmentCreatedTestsBinding
+import com.app.testik.domain.model.TestModel
 import com.app.testik.presentation.adapter.ErrorDelegateAdapter
 import com.app.testik.presentation.adapter.LoadingDelegateAdapter
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.screen.createdtests.adapter.CreatedTestDelegateAdapter
+import com.app.testik.presentation.screen.createdtests.mapper.toCreatedTestItem
+import com.app.testik.presentation.screen.createdtests.model.CreatedTestDelegateItem
 import com.app.testik.presentation.screen.createdtests.model.CreatedTestsScreenEvent
 import com.app.testik.util.*
 import com.app.testik.util.delegateadapter.CompositeAdapter
+import com.app.testik.util.delegateadapter.DelegateAdapterItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -47,7 +49,7 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
             .build()
     }
 
-    private var recyclerViewState: Parcelable? = null
+    private var tests = mutableListOf<DelegateAdapterItem>()
 
     override fun createBinding(inflater: LayoutInflater) = FragmentCreatedTestsBinding.inflate(inflater)
 
@@ -59,8 +61,15 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
         collectData()
 
         addBackPressedCallback { showExitAlert() }
-        observeResult<Boolean>(Constants.UPDATE_TEST_RESULT_KEY) {
-            if (it) viewModel.updateList(firstUpdate = true)
+
+        observeResult<TestModel>(Constants.UPDATE_TEST_RESULT_KEY) {
+            val item = getItem(it.id) ?: addItem(it.toCreatedTestItem())
+            if (item is CreatedTestDelegateItem) updateItem(test = item, newTest = it.toCreatedTestItem())
+        }
+
+        observeResult<TestModel>(Constants.DELETE_TEST_RESULT_KEY) {
+            val item = getItem(it.id)
+            if (item is CreatedTestDelegateItem) deleteItem(test = it.toCreatedTestItem(), deleteFromViewModel = true)
         }
     }
 
@@ -85,11 +94,7 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
 
     private fun initListeners() {
         binding.apply {
-            fabCreate.setOnClickListener {
-                navController.navigate(
-                    CreatedTestsFragmentDirections.toEditTest()
-                )
-            }
+            fabCreate.setOnClickListener { navigateToTest() }
         }
     }
 
@@ -99,17 +104,13 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
                 launch {
                     viewModel.uiState.collect {
                         it.onSuccess { data ->
-                            recyclerViewState = binding.rvTests.layoutManager?.onSaveInstanceState()
-                            testsAdapter.submitList(data.tests)
+                            if (tests != data.tests) tests = data.tests.toMutableList()
 
-                            val isListEmpty = data.tests.isEmpty()
+                            testsAdapter.submitList(tests.toList())
+
+                            val isListEmpty = tests.isEmpty()
                             binding.llNoTests.isVisible = isListEmpty
-                            binding.rvTests.apply {
-                                isVisible = !isListEmpty
-                                postDelayed(40) {
-                                    layoutManager?.onRestoreInstanceState(recyclerViewState)
-                                }
-                            }
+                            binding.rvTests.isVisible = !isListEmpty
                         }
                     }
                 }
@@ -128,7 +129,7 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
             is CreatedTestsScreenEvent.Loading -> Unit
             is CreatedTestsScreenEvent.SuccessTestDeletion -> {
                 showSnackbar(R.string.delete_test_success)
-                viewModel.updateList(firstUpdate = true)
+                deleteItem(event.test)
             }
         }
         setLoadingState(event is CreatedTestsScreenEvent.Loading)
@@ -151,7 +152,7 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
         }
     }
 
-    private fun navigateToTest(testId: String) {
+    private fun navigateToTest(testId: String = "") {
         navController.navigate(
             CreatedTestsFragmentDirections.toEditTest(testId)
         )
@@ -163,7 +164,28 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
             message = R.string.delete_test_confirmation,
             positive = R.string.confirm,
             negative = R.string.cancel,
-            onPositiveClick = { viewModel.deleteTest(testId) }
+            onPositiveClick = { viewModel.deleteTest(getItem(testId)) }
         )
+    }
+
+    private fun getItem(testId: String) = tests.find { it.id() == testId } as? CreatedTestDelegateItem
+
+    private fun addItem(test: CreatedTestDelegateItem) {
+        viewModel.addTestToList(test)
+        tests.add(0, test)
+        testsAdapter.submitList(tests.toList())
+    }
+
+    private fun updateItem(test: CreatedTestDelegateItem, newTest: CreatedTestDelegateItem) {
+        viewModel.updateTest(test = test, newTest = newTest)
+        val pos = tests.indexOf(test)
+        tests[pos] = newTest
+        testsAdapter.submitList(tests.toList())
+    }
+
+    private fun deleteItem(test: CreatedTestDelegateItem, deleteFromViewModel: Boolean = false) {
+        if (deleteFromViewModel) viewModel.deleteTestFromList(test)
+        tests.remove(test)
+        testsAdapter.submitList(tests.toList())
     }
 }

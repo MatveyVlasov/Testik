@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.presentation.model.ErrorItem
 import com.app.testik.presentation.model.LoadingItem
-import com.app.testik.util.Constants.QUERY_LIMIT
 
 @Suppress("UNCHECKED_CAST")
 class CompositeAdapter(
@@ -60,19 +59,27 @@ class CompositeAdapter(
     }
 
     override fun submitList(list: List<DelegateAdapterItem>?) {
-        super.submitList(list)
+        var newList = list
 
         list?.let {
             if (it.isNotEmpty() && it.last() !is LoadingItem) {
                 onUpdateCallback?.let { _ ->
                     val newItemCount = it.size
 
-                    positionForUpdate =
-                        if (newItemCount >= (itemCount + QUERY_LIMIT - 1) && it.last() !is ErrorItem) maxOf(0, newItemCount - 3)
-                        else -1
+                    positionForUpdate = maxOf(0, newItemCount - 3)
+
+                    (it.last() as? ErrorItem?).let { error ->
+                        if (error?.message?.contains("empty") == true) {
+                            positionForUpdate = -1
+                            newList = list.subList(0, list.lastIndex)
+                        }
+                    }
+
                 }
             }
         }
+
+        super.submitList(newList)
     }
 
     class Builder {

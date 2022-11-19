@@ -10,5 +10,5 @@ sealed class CreatedTestsScreenEvent {
 
     object Loading : CreatedTestsScreenEvent()
 
-    object SuccessTestDeletion : CreatedTestsScreenEvent()
+    data class SuccessTestDeletion(val test: CreatedTestDelegateItem) : CreatedTestsScreenEvent()
 }

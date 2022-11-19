@@ -7,6 +7,7 @@ import com.app.testik.R
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.*
+import com.app.testik.presentation.model.LoadingItem.id
 import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.testedit.mapper.toDomain
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenEvent
@@ -88,7 +89,7 @@ class TestEditViewModel @Inject constructor(
 
         viewModelScope.launch {
             deleteTestUseCase(testId = screenUIState.id).onSuccess {
-                emitEvent(TestEditScreenEvent.SuccessTestDeletion)
+                emitEvent(TestEditScreenEvent.SuccessTestDeletion(screenUIState.toDomain()))
             }.onError {
                 emitEvent(TestEditScreenEvent.ShowSnackbar(it))
             }
@@ -119,7 +120,8 @@ class TestEditViewModel @Inject constructor(
     private fun createTest() {
         viewModelScope.launch {
             createTestUseCase(screenUIState.toDomain()).onSuccess {
-                val screenState = screenUIState.copy(id = it, testUpdated = true)
+                var screenState = screenUIState.copy(id = it)
+                screenState = screenState.copy(testUpdated = screenState.toDomain())
                 oldScreenUIState = screenState
                 updateScreenState(screenState)
                 emitEvent(TestEditScreenEvent.SuccessTestCreation)
@@ -132,7 +134,7 @@ class TestEditViewModel @Inject constructor(
     private fun updateTest() {
         viewModelScope.launch {
             updateTestUseCase(screenUIState.toDomain()).onSuccess {
-                val screenState = screenUIState.copy(testUpdated = true)
+                val screenState = screenUIState.copy(testUpdated = screenUIState.toDomain())
                 oldScreenUIState = screenState
                 updateScreenState(screenState)
                 emitEvent(TestEditScreenEvent.ShowSnackbarByRes(R.string.saved))

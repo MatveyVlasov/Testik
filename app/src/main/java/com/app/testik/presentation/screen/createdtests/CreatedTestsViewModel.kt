@@ -9,6 +9,7 @@ import com.app.testik.presentation.model.ErrorItem
 import com.app.testik.presentation.model.LoadingItem
 import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.createdtests.mapper.toCreatedTestItem
+import com.app.testik.presentation.screen.createdtests.model.CreatedTestDelegateItem
 import com.app.testik.presentation.screen.createdtests.model.CreatedTestsScreenEvent
 import com.app.testik.presentation.screen.createdtests.model.CreatedTestsScreenUIState
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 import javax.inject.Inject
 
@@ -44,15 +46,11 @@ class CreatedTestsViewModel @Inject constructor(
     private var job: Job? = null
 
     init {
-        updateList(firstUpdate = true)
+        updateList()
     }
 
-    fun updateList(firstUpdate: Boolean = false) {
+    fun updateList() {
         if (job?.isActive == true) return
-        if (firstUpdate) {
-            snapshot = null
-            updateScreenState(CreatedTestsScreenUIState())
-        }
 
         postItem(LoadingItem)
 
@@ -61,26 +59,37 @@ class CreatedTestsViewModel @Inject constructor(
                 snapshot = it.snapshot
                 postListItems(it.tests.map { test -> test.toCreatedTestItem() })
             }.onError {
-                if (it.contains("empty")) postItem()
-                else postItem(ErrorItem(it))
+                postItem(ErrorItem(it))
             }
         }
     }
 
-    fun deleteTest(testId: String) {
-        if (testId.isEmpty()) return
+    fun addTestToList(test: CreatedTestDelegateItem) {
+        screenUIState.tests.add(0, test)
+    }
+
+    fun updateTest(test: CreatedTestDelegateItem, newTest: CreatedTestDelegateItem) {
+        val pos = screenUIState.tests.indexOf(test)
+        screenUIState.tests[pos] = newTest
+    }
+
+    fun deleteTestFromList(test: CreatedTestDelegateItem) {
+        screenUIState.tests.remove(test)
+    }
+
+    fun deleteTest(test: CreatedTestDelegateItem?) {
+        if (test == null) return
         emitEvent(CreatedTestsScreenEvent.Loading)
 
         viewModelScope.launch {
-            deleteTestUseCase(testId = testId).onSuccess {
-                emitEvent(CreatedTestsScreenEvent.SuccessTestDeletion)
+            deleteTestUseCase(testId = test.id).onSuccess {
+                screenUIState.tests.remove(test)
+                emitEvent(CreatedTestsScreenEvent.SuccessTestDeletion(test))
             }.onError {
                 emitEvent(CreatedTestsScreenEvent.ShowSnackbar(it))
             }
         }
     }
-
-    private fun postItem() = postListItems(emptyList())
 
     private fun postItem(data: DelegateAdapterItem) = postListItems(listOf(data))
 
