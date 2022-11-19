@@ -6,7 +6,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.util.Patterns
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.app.testik.R
@@ -104,17 +103,9 @@ fun loadAvatar(context: Context, imageView: ImageView, url: String) {
 }
 
 fun loadTestImage(context: Context, imageView: ImageView, url: String) {
-    val image = url.ifBlank { R.drawable.ic_profile_avatar } // change
+    val image = url.ifBlank { R.drawable.ic_feed }
 
     Glide.with(context)
-        .load(image)
-        .into(imageView)
-}
-
-fun loadTestImage(view: View, imageView: ImageView, url: String) {
-    val image = url.ifBlank { R.drawable.ic_profile_avatar } // change
-
-    Glide.with(view)
         .load(image)
         .into(imageView)
 }

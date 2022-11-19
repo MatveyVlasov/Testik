@@ -28,7 +28,7 @@ class CreatedTestDelegateAdapter(
         fun bind(test: CreatedTestDelegateItem) {
 
             binding.apply {
-                loadTestImage(view = root, imageView = binding.ivImage, url = test.image)
+                loadTestImage(context = root.context, imageView = binding.ivImage, url = test.image)
 
                 tvTitle.text = test.title
 
