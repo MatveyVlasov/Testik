@@ -6,11 +6,13 @@
     <integer name="description_max_length">1000</integer>
 
     <dimen name="editText_margin_bottom">12dp</dimen>
-    <dimen name="margin_horizontal">20dp</dimen>
-    <dimen name="margin_bottom">10dp</dimen>
+    <dimen name="margin_horizontal">16dp</dimen>
+    <dimen name="margin_bottom">8dp</dimen>
 
     <dimen name="button_radius">10dp</dimen>
     <dimen name="button_close_margin">8dp</dimen>
+
+    <dimen name="toolbar_text_size">20sp</dimen>
 
     <dimen name="navbar_height">56dp</dimen>
     <dimen name="navbar_height_and_margin">64dp</dimen>

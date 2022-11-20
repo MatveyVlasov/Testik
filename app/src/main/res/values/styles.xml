@@ -51,7 +51,7 @@
 
     <style name="CustomToolbarTitle" parent="@style/TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">@font/merriweather_regular</item>
-        <item name="android:textSize">21sp</item>
+        <item name="android:textSize">@dimen/toolbar_text_size</item>
     </style>
 
     <style name="CustomTextInputEditText" parent="ThemeOverlay.Material3.TextInputEditText">

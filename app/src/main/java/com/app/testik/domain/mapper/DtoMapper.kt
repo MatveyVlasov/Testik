@@ -1,8 +1,10 @@
 package com.app.testik.domain.mapper
 
+import com.app.testik.data.model.QuestionDto
 import com.app.testik.data.model.TestDto
 import com.app.testik.data.model.TestsDto
 import com.app.testik.data.model.UserDto
+import com.app.testik.domain.model.QuestionModel
 import com.app.testik.domain.model.TestModel
 import com.app.testik.domain.model.TestsModel
 import com.app.testik.domain.model.UserModel
@@ -38,5 +40,14 @@ fun TestDto.toDomain() =
         title = title,
         description = description,
         category = category,
+        image = image
+    )
+
+fun QuestionDto.toDomain() =
+    QuestionModel(
+        id = id,
+        testId = testId,
+        title = title,
+        description = description,
         image = image
     )

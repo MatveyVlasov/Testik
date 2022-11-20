@@ -85,11 +85,11 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             ivEditImage.setOnClickListener { onChangeImage() }
             etCategory.setOnClickListener { showChangeCategoryDialog() }
             btnSave.setOnClickListener { viewModel.save() }
-//            btnEditQuestions.setOnClickListener {
-//                navController.navigate(
-//                    ProfileFragmentDirections.toPasswordChange()
-//                )
-//            }
+            btnEditQuestions.setOnClickListener {
+                navController.navigate(
+                    TestEditFragmentDirections.toQuestionList(viewModel.screenUIState.id)
+                )
+            }
 
             etTitle.addTextChangedListener { viewModel.onTitleChanged(it.toString()) }
             etDescription.addTextChangedListener { viewModel.onDescriptionChanged(it.toString()) }

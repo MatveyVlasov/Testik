@@ -5,30 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTests"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        app:title="@string/question_list"
+        app:menu="@menu/question_list_menu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvQuestions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="@dimen/navbar_height_and_margin"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:clipToPadding="false"
         android:paddingBottom="8dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:itemCount="3"
-        tools:listitem="@layout/item_created_test"
+        tools:listitem="@layout/item_question"
         tools:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/navbar_height_and_margin"
+        android:layout_marginBottom="@dimen/margin_bottom"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:src="@drawable/ic_add"
         android:backgroundTint="@color/purple_dark"
-        android:contentDescription="@string/create_test"
+        android:contentDescription="@string/create_question"
         app:tint="@color/white"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,7 +48,7 @@
 
 
     <LinearLayout
-        android:id="@+id/llNoTests"
+        android:id="@+id/llNoQuestions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
@@ -49,7 +61,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_created_tests" />
+            android:src="@drawable/ic_question_mark" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -58,7 +70,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/purple"
-            android:text="@string/no_tests" />
+            android:text="@string/no_questions" />
 
         <TextView
             android:id="@+id/tvDescription"
@@ -67,7 +79,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="4dp"
             android:textColor="@color/purple"
-            android:text="@string/click_to_create_test" />
+            android:text="@string/click_to_create_question" />
 
     </LinearLayout>
 

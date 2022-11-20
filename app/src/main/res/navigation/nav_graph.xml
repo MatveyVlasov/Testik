@@ -85,6 +85,20 @@
             android:name="testId"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/toQuestionList"
+            app:destination="@id/questionListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/questionListFragment"
+        android:name="com.app.testik.presentation.screen.questlionlist.QuestionListFragment"
+        android:label="QuestionListFragment"
+        tools:layout="@layout/fragment_question_list">
+        <argument
+            android:name="testId"
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
 
 </navigation>

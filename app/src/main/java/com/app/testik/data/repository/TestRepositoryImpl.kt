@@ -1,9 +1,7 @@
 package com.app.testik.data.repository
 
 import android.content.Context
-import com.app.testik.data.model.ApiResult
-import com.app.testik.data.model.TestDto
-import com.app.testik.data.model.TestsDto
+import com.app.testik.data.model.*
 import com.app.testik.domain.repository.TestRepository
 import com.app.testik.util.execute
 import com.app.testik.util.isOnline
@@ -31,7 +29,8 @@ class TestRepositoryImpl @Inject constructor(
                     "title" to title,
                     "description" to description,
                     "category" to category,
-                    "timestamp" to timestamp
+                    "timestamp" to timestamp,
+                    "questions" to listOf(mapOf("title" to "123"), mapOf("title" to "Good!")) // temp
                 )
 
                 firebaseFirestore.collection("tests").add(newData).also {
@@ -124,6 +123,33 @@ class TestRepositoryImpl @Inject constructor(
             firebaseFirestore.collection("tests").document(testId).delete().execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun updateQuestions(testId: String, questions: List<QuestionDto>): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+        if (testId.isEmpty()) return ApiResult.Error("No test found")
+
+        return try {
+            val data = mapOf("questions" to questions)
+            firebaseFirestore.collection("tests").document(testId).update(data).execute()
+        } catch (e: Exception) {
+            ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun getTestQuestions(testId: String): ApiResult<List<QuestionDto>> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
+        try {
+            firebaseFirestore.collection("tests").document(testId).get().also {
+                it.await()
+                val questions = it.result.toObject(TestQuestionsDto::class.java)?.questions ?: emptyList()
+                return if (it.isSuccessful) ApiResult.Success(questions)
+                else ApiResult.Error(it.exception?.message)
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
         }
     }
 

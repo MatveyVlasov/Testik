@@ -117,4 +117,13 @@
     <string name="delete_test">Удалить тест</string>
     <string name="delete_test_confirmation">Вы действительно хотите удалить этот тест?</string>
     <string name="delete_test_success">Тест успешно удалён</string>
+
+    <string name="question_list">Список вопросов</string>
+    <string name="no_questions">Список вопросов пуст</string>
+    <string name="click_to_create_question">Нажмите на кнопку +, чтобы добавить вопрос</string>
+    <string name="create_question">Добавить вопрос</string>
+
+    <string name="delete_question">Удалить вопрос</string>
+    <string name="delete_question_confirmation">Вы действительно хотите удалить этот вопрос?</string>
+    <string name="delete_question_success">Вопрос успешно удалён</string>
 </resources>
