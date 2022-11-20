@@ -1,13 +1,7 @@
 package com.app.testik.domain.mapper
 
-import com.app.testik.data.model.LoginDto
-import com.app.testik.data.model.RegistrationDto
-import com.app.testik.data.model.TestDto
-import com.app.testik.data.model.UserDto
-import com.app.testik.domain.model.LoginModel
-import com.app.testik.domain.model.RegistrationModel
-import com.app.testik.domain.model.TestModel
-import com.app.testik.domain.model.UserModel
+import com.app.testik.data.model.*
+import com.app.testik.domain.model.*
 
 fun RegistrationModel.toDto() =
     RegistrationDto(
@@ -39,5 +33,14 @@ fun TestModel.toDto() =
         title = title,
         description = description,
         category = category,
+        image = image
+    )
+
+fun QuestionModel.toDto() =
+    QuestionDto(
+        id = id,
+        testId = testId,
+        title = title,
+        description = description,
         image = image
     )

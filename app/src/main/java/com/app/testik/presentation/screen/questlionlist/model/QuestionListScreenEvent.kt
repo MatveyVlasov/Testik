@@ -10,5 +10,5 @@ sealed class QuestionListScreenEvent {
 
     object Loading : QuestionListScreenEvent()
 
-    object SuccessQuestionDeletion : QuestionListScreenEvent()
+    object SuccessQuestionsSaving : QuestionListScreenEvent()
 }

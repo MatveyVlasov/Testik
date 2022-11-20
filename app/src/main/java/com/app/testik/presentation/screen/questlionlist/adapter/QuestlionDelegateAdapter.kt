@@ -4,13 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.databinding.ItemQuestionBinding
+import com.app.testik.domain.model.QuestionModel
+import com.app.testik.presentation.screen.questlionlist.mapper.toDomain
 import com.app.testik.presentation.screen.questlionlist.model.QuestionDelegateItem
 import com.app.testik.util.delegateadapter.DelegateAdapter
 import com.app.testik.util.loadTestImage
 
 class QuestionDelegateAdapter(
-    val onClick: (String) -> Unit,
-    val onDeleteClick: (String) -> Unit
+    val onClick: (QuestionModel) -> Unit,
+    val onDeleteClick: (QuestionDelegateItem) -> Unit
 ) : DelegateAdapter<QuestionDelegateItem, QuestionDelegateAdapter.ViewHolder>(
         QuestionDelegateItem::class.java
     ) {
@@ -31,9 +33,9 @@ class QuestionDelegateAdapter(
 
                 tvTitle.text = test.title
 
-                root.setOnClickListener { onClick(test.id) }
+                root.setOnClickListener { onClick(test.toDomain()) }
 
-                ivImage.setOnClickListener { onDeleteClick(test.id) }
+                ivDelete.setOnClickListener { onDeleteClick(test) }
             }
         }
     }

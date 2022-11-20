@@ -8,6 +8,7 @@ import androidx.annotation.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.app.testik.R
 import com.app.testik.util.Constants.CATEGORIES
 import com.app.testik.util.Constants.LANGUAGES
@@ -102,6 +103,16 @@ fun Fragment.showExitAlert() {
         positive = R.string.exit_app,
         negative = R.string.cancel,
         onPositiveClick = { requireActivity().finish() }
+    )
+}
+
+fun Fragment.confirmExitWithoutSaving() {
+    showAlert(
+        title = R.string.go_back,
+        message = R.string.go_back_confirmation,
+        positive = R.string.confirm,
+        negative = R.string.cancel,
+        onPositiveClick = { findNavController().navigateUp() }
     )
 }
 

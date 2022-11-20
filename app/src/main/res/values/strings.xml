@@ -127,8 +127,14 @@
     <string name="no_questions">There are no questions yet</string>
     <string name="click_to_create_question">Click on + button below to create a question</string>
     <string name="create_question">Create question</string>
+    <string name="save_questions">Save questions</string>
+    <string name="save_questions_success">Questions successfully saved</string>
 
     <string name="delete_question">Delete Question</string>
     <string name="delete_question_confirmation">Do you really want to delete this question?</string>
     <string name="delete_question_success">Question successfully deleted</string>
+
+    <string name="question_settings">Question Settings</string>
+    <string name="question_image">Question Image</string>
+    <string name="discard_changes">Discard changes</string>
 </resources>

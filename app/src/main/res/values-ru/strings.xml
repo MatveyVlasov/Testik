@@ -122,8 +122,14 @@
     <string name="no_questions">Список вопросов пуст</string>
     <string name="click_to_create_question">Нажмите на кнопку +, чтобы добавить вопрос</string>
     <string name="create_question">Добавить вопрос</string>
+    <string name="save_questions">Сохранить вопросы</string>
+    <string name="save_questions_success">Вопросы успешно сохранены</string>
 
     <string name="delete_question">Удалить вопрос</string>
     <string name="delete_question_confirmation">Вы действительно хотите удалить этот вопрос?</string>
     <string name="delete_question_success">Вопрос успешно удалён</string>
+
+    <string name="question_settings">Настройки вопроса</string>
+    <string name="question_image">Изображение к вопросу</string>
+    <string name="discard_changes">Сбросить изменения</string>
 </resources>

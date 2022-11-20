@@ -14,40 +14,40 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/test_settings"
+            app:title="@string/question_settings"
             app:titleTextColor="@color/black"
             app:navigationIconTint="@color/black"
-            app:menu="@menu/test_edit_menu"
+            app:menu="@menu/question_edit_menu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/ivImage"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_rect_20_dp"
-            android:outlineProvider="background"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/test_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:src="@drawable/ic_feed"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/ivImage"-->
+<!--            android:layout_width="250dp"-->
+<!--            android:layout_height="250dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:background="@drawable/rounded_rect_20_dp"-->
+<!--            android:outlineProvider="background"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            android:contentDescription="@string/question_image"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/toolbar"-->
+<!--            tools:src="@drawable/ic_feed"/>-->
 
-        <ImageView
-            android:id="@+id/ivEditImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="1dp"
-            android:layout_marginEnd="1dp"
-            android:src="@drawable/ic_edit_image"
-            android:contentDescription="@string/test_image"
-            app:layout_constraintBottom_toBottomOf="@id/ivImage"
-            app:layout_constraintEnd_toEndOf="@id/ivImage" />
+<!--        <ImageView-->
+<!--            android:id="@+id/ivEditImage"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginBottom="1dp"-->
+<!--            android:layout_marginEnd="1dp"-->
+<!--            android:src="@drawable/ic_edit_image"-->
+<!--            android:contentDescription="@string/question_image"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/ivImage"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/ivImage" />-->
 
         <LinearLayout
-            android:id="@+id/llTestForm"
+            android:id="@+id/llQuestionForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -56,7 +56,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivImage">
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilTitle"
@@ -89,45 +89,17 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilCategory"
-                style="@style/CustomTextInputLayout.LightGray"
-                android:hint="@string/category"
-                app:startIconDrawable="@drawable/ic_category"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etCategory"
-                    style="@style/CustomTextInputEditText.LightGray"
-                    android:focusable="false"
-                    android:inputType="text" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSave"
-            style="@style/CustomButton.PurpleDark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/save"
-            app:layout_constraintTop_toBottomOf="@id/llTestForm"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnEditQuestions"
+            android:id="@+id/btnDiscard"
             style="@style/CustomButton.PurpleDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="@dimen/margin_bottom"
-            android:text="@string/edit_questions"
-            app:layout_constraintTop_toBottomOf="@id/btnSave"
+            android:text="@string/discard_changes"
+            app:layout_constraintTop_toBottomOf="@id/llQuestionForm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

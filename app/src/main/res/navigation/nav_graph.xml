@@ -99,6 +99,20 @@
             android:name="testId"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/toEditQuestion"
+            app:destination="@id/questionEditFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/questionEditFragment"
+        android:name="com.app.testik.presentation.screen.questionedit.QuestionEditFragment"
+        android:label="QuestionEditFragment"
+        tools:layout="@layout/fragment_question_edit">
+        <argument
+            android:name="questionId"
+            app:argType="com.app.testik.domain.model.QuestionModel" />
+    </fragment>
+
 
 </navigation>

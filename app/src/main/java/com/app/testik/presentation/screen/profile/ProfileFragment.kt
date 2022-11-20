@@ -234,14 +234,4 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             onPositiveClick = viewModel::deleteAccount
         )
     }
-
-    private fun confirmExitWithoutSaving() {
-        showAlert(
-            title = R.string.go_back,
-            message = R.string.go_back_confirmation,
-            positive = R.string.confirm,
-            negative = R.string.cancel,
-            onPositiveClick = navController::navigateUp
-        )
-    }
 }

@@ -9,12 +9,13 @@ import com.app.testik.domain.usecase.*
 import com.app.testik.presentation.model.ErrorItem
 import com.app.testik.presentation.model.LoadingItem
 import com.app.testik.presentation.model.UIState
+import com.app.testik.presentation.screen.questlionlist.mapper.toDomain
 import com.app.testik.presentation.screen.questlionlist.mapper.toQuestionItem
+import com.app.testik.presentation.screen.questlionlist.model.QuestionDelegateItem
 import com.app.testik.presentation.screen.questlionlist.model.QuestionListScreenEvent
 import com.app.testik.presentation.screen.questlionlist.model.QuestionListScreenUIState
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -26,7 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class QuestionListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getTestQuestionsUseCase: GetTestQuestionsUseCase
+    private val getTestQuestionsUseCase: GetTestQuestionsUseCase,
+    private val updateQuestionsUseCase: UpdateQuestionsUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<QuestionListScreenUIState>>
@@ -35,51 +37,62 @@ class QuestionListViewModel @Inject constructor(
     val event: SharedFlow<QuestionListScreenEvent>
         get() = _event
 
+    val hasUnsavedChanges
+        get() = screenUIState != oldScreenUIState
+
     private val _uiState = MutableStateFlow<UIState<QuestionListScreenUIState>>(UIState.Loading)
     private val _event = MutableSharedFlow<QuestionListScreenEvent>()
 
     private val args = QuestionListFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
     private var screenUIState = QuestionListScreenUIState(testId = args.testId)
+    private var oldScreenUIState = QuestionListScreenUIState(testId = args.testId)
 
     init {
-        updateList()
+        updateList(isFirstUpdate = true)
     }
 
-    fun updateList() {
+    fun updateList(isFirstUpdate: Boolean = false) {
+        if (!isFirstUpdate && screenUIState.questions.isNotEmpty()) return
         postItem(LoadingItem)
 
         viewModelScope.launch {
             getTestQuestionsUseCase(screenUIState.testId).onSuccess {
-                postListItems(it.map { question-> question.toQuestionItem() })
+                postListItems(it.map { question -> question.toQuestionItem() })
             }.onError {
                 postItem(ErrorItem(it))
+            }
+            updateOldScreenState()
+        }
+    }
+
+    fun saveQuestions() {
+        viewModelScope.launch {
+            val questions = screenUIState.questions
+                .filterIsInstance<QuestionDelegateItem>()
+                .map { it.toDomain() }
+
+            updateQuestionsUseCase(screenUIState.testId, questions).onSuccess {
+                updateOldScreenState()
+                emitEvent(QuestionListScreenEvent.SuccessQuestionsSaving)
+            }.onError {
+                emitEvent(QuestionListScreenEvent.ShowSnackbar(it))
             }
         }
     }
 
-//    fun updateTest(test: CreatedTestDelegateItem, newTest: CreatedTestDelegateItem) {
-//        val pos = screenUIState.tests.indexOf(test)
-//        screenUIState.tests[pos] = newTest
-//    }
-//
-//    fun deleteTestFromList(test: CreatedTestDelegateItem) {
-//        screenUIState.tests.remove(test)
-//    }
-//
-//    fun deleteTest(test: CreatedTestDelegateItem?) {
-//        if (test == null) return
-//        emitEvent(CreatedTestsScreenEvent.Loading)
-//
-//        viewModelScope.launch {
-//            deleteTestUseCase(testId = test.id).onSuccess {
-//                screenUIState.tests.remove(test)
-//                emitEvent(CreatedTestsScreenEvent.SuccessTestDeletion(test))
-//            }.onError {
-//                emitEvent(CreatedTestsScreenEvent.ShowSnackbar(it))
-//            }
-//        }
-//    }
+    fun addQuestionToList(question: QuestionDelegateItem) {
+        screenUIState.questions.add(question)
+    }
+
+    fun updateQuestion(question: QuestionDelegateItem, newQuestion: QuestionDelegateItem) {
+        val pos = screenUIState.questions.indexOf(question)
+        screenUIState.questions[pos] = newQuestion
+    }
+
+    fun deleteQuestionFromList(question: QuestionDelegateItem) {
+        screenUIState.questions.remove(question)
+    }
 
     private fun postItem(data: DelegateAdapterItem) = postListItems(listOf(data))
 
@@ -92,6 +105,10 @@ class QuestionListViewModel @Inject constructor(
                 }
             )
         )
+    }
+
+    private fun updateOldScreenState() {
+        oldScreenUIState = screenUIState.copy(questions = screenUIState.questions.toMutableList())
     }
 
     private fun updateScreenState(state: QuestionListScreenUIState) {

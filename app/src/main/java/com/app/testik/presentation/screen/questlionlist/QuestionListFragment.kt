@@ -3,7 +3,6 @@ package com.app.testik.presentation.screen.questlionlist
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,13 +11,18 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.R
 import com.app.testik.databinding.FragmentQuestionListBinding
+import com.app.testik.domain.model.QuestionModel
 import com.app.testik.presentation.adapter.ErrorDelegateAdapter
 import com.app.testik.presentation.adapter.LoadingDelegateAdapter
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.screen.questlionlist.adapter.QuestionDelegateAdapter
+import com.app.testik.presentation.screen.questlionlist.mapper.toQuestionItem
+import com.app.testik.presentation.screen.questlionlist.model.QuestionDelegateItem
 import com.app.testik.presentation.screen.questlionlist.model.QuestionListScreenEvent
 import com.app.testik.util.*
+import com.app.testik.util.Constants.DELETE_QUESTION_RESULT_KEY
+import com.app.testik.util.Constants.UPDATE_QUESTION_RESULT_KEY
 import com.app.testik.util.delegateadapter.CompositeAdapter
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,13 +35,12 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
 
     private val questionsAdapter by lazy {
         CompositeAdapter.Builder()
-            .setOnUpdateCallback(viewModel::updateList)
             .add(ErrorDelegateAdapter(viewModel::updateList))
             .add(LoadingDelegateAdapter())
             .add(
                 QuestionDelegateAdapter(
                     onClick = { navigateToQuestion(it) },
-                    onDeleteClick = { }
+                    onDeleteClick = { confirmDeletion(it) }
                 )
             )
             .build()
@@ -54,17 +57,17 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
         initListeners()
         collectData()
 
-//        addBackPressedCallback { showExitAlert() }
+        addBackPressedCallback { onBackPressed() }
 
-//        observeResult<TestModel>(Constants.UPDATE_TEST_RESULT_KEY) {
-//            val item = getItem(it.id) ?: addItem(it.toCreatedTestItem())
-//            if (item is CreatedTestDelegateItem) updateItem(test = item, newTest = it.toCreatedTestItem())
-//        }
-//
-//        observeResult<TestModel>(Constants.DELETE_TEST_RESULT_KEY) {
-//            val item = getItem(it.id)
-//            if (item is CreatedTestDelegateItem) deleteItem(test = it.toCreatedTestItem(), deleteFromViewModel = true)
-//        }
+        observeResult<QuestionModel>(UPDATE_QUESTION_RESULT_KEY) {
+            val item = getItem(it.id) ?: addItem(it.toQuestionItem())
+            if (item is QuestionDelegateItem) updateItem(question = item, newQuestion = it.toQuestionItem())
+        }
+
+        observeResult<QuestionModel>(DELETE_QUESTION_RESULT_KEY) {
+            val item = getItem(it.id)
+            if (item is QuestionDelegateItem) deleteItem(question = it.toQuestionItem())
+        }
     }
 
 
@@ -72,9 +75,11 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
 
         setupBottomNavigation(false)
         binding.apply {
-            toolbar.menu.findItem(R.id.save).apply {
-                setActionView(R.layout.item_menu_text)
-                actionView?.findViewById<TextView>(R.id.tv)?.setText(R.string.save)
+            toolbar.setNavigationOnClickListener { onBackPressed() }
+
+            btnSave.setOnClickListener {
+                setLoadingState(true)
+                viewModel.saveQuestions()
             }
 
             rvQuestions.apply {
@@ -104,12 +109,9 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
                     viewModel.uiState.collect {
                         it.onSuccess { data ->
                             if (questions != data.questions) questions = data.questions.toMutableList()
-
                             questionsAdapter.submitList(questions.toList())
 
-                            val isListEmpty = questions.isEmpty()
-                            binding.llNoQuestions.isVisible = isListEmpty
-                            binding.rvQuestions.isVisible = !isListEmpty
+                            renderUIState()
                         }
                     }
                 }
@@ -126,48 +128,69 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
             is QuestionListScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
             is QuestionListScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
             is QuestionListScreenEvent.Loading -> Unit
-            is QuestionListScreenEvent.SuccessQuestionDeletion -> {
-                showSnackbar(R.string.delete_question_success)
-                //viewModel.updateList(firstUpdate = true)
-            }
+            is QuestionListScreenEvent.SuccessQuestionsSaving -> showSnackbar(message = R.string.save_questions_success)
         }
         setLoadingState(event is QuestionListScreenEvent.Loading)
     }
 
-    private fun navigateToQuestion(questionId: String = "") {
-//        navController.navigate(
-//            QuestionListFragmentDirections.toEditTest(testId)
-//        )
+    private fun renderUIState() {
+        val isListEmpty = questions.isEmpty()
+
+        binding.apply {
+            llNoQuestions.isVisible = isListEmpty
+            rvQuestions.isVisible = !isListEmpty
+            btnSave.isVisible = !isListEmpty
+        }
     }
 
-//    private fun getItem(testId: String) = tests.find { it.id() == testId } as? CreatedTestDelegateItem
-//
-//    private fun addItem(test: CreatedTestDelegateItem) {
-//        viewModel.addTestToList(test)
-//        tests.add(0, test)
-//        testsAdapter.submitList(tests.toList())
-//    }
-//
-//    private fun updateItem(test: CreatedTestDelegateItem, newTest: CreatedTestDelegateItem) {
-//        viewModel.updateTest(test = test, newTest = newTest)
-//        val pos = tests.indexOf(test)
-//        tests[pos] = newTest
-//        testsAdapter.submitList(tests.toList())
-//    }
-//
-//    private fun deleteItem(test: CreatedTestDelegateItem, deleteFromViewModel: Boolean = false) {
-//        if (deleteFromViewModel) viewModel.deleteTestFromList(test)
-//        tests.remove(test)
-//        testsAdapter.submitList(tests.toList())
-//    }
+    private fun navigateToQuestion(question: QuestionModel = QuestionModel()) {
+        navController.navigate(
+            QuestionListFragmentDirections.toEditQuestion(question)
+        )
+    }
 
-//    private fun confirmDeletion(questionId: String) {
-//        showAlert(
-//            title = R.string.delete_question,
-//            message = R.string.delete_question_confirmation,
-//            positive = R.string.confirm,
-//            negative = R.string.cancel,
-//            onPositiveClick = { viewModel.deleteQuestion(questionId) }
-//        )
-//    }
+    private fun getItem(questionId: String) = questions.find { it.id() == questionId } as? QuestionDelegateItem
+
+    private fun addItem(question: QuestionDelegateItem) {
+        viewModel.addQuestionToList(question)
+        questions.add(question)
+        questionsAdapter.submitList(questions.toList())
+
+        if (questions.size == 1) renderUIState()
+    }
+
+    private fun updateItem(question: QuestionDelegateItem, newQuestion: QuestionDelegateItem) {
+        viewModel.updateQuestion(question = question, newQuestion = newQuestion)
+        val pos = questions.indexOf(question)
+        questions[pos] = newQuestion
+        questionsAdapter.submitList(questions.toList())
+    }
+
+    private fun deleteItem(question: QuestionDelegateItem) {
+        viewModel.deleteQuestionFromList(question)
+        questions.remove(question)
+        questionsAdapter.submitList(questions.toList())
+
+        if (questions.isEmpty()) renderUIState()
+    }
+
+    private fun confirmDeletion(question: QuestionDelegateItem) {
+        showAlert(
+            title = R.string.delete_question,
+            message = R.string.delete_question_confirmation,
+            positive = R.string.confirm,
+            negative = R.string.cancel,
+            onPositiveClick = { deleteQuestion(question) }
+        )
+    }
+
+    private fun deleteQuestion(question: QuestionDelegateItem) {
+        showSnackbar(R.string.delete_question_success)
+        deleteItem(question)
+    }
+
+    private fun onBackPressed() {
+        if (viewModel.hasUnsavedChanges) confirmExitWithoutSaving()
+        else navController.navigateUp()
+    }
 }
