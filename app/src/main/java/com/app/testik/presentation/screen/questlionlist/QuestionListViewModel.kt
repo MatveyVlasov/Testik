@@ -82,16 +82,25 @@ class QuestionListViewModel @Inject constructor(
     }
 
     fun addQuestionToList(question: QuestionDelegateItem) {
-        screenUIState.questions.add(question)
+        val questions = screenUIState.questions.map { it }.toMutableList().also {
+            it.add(question)
+        }
+        updateScreenState(screenUIState.copy(questions = questions))
     }
 
     fun updateQuestion(question: QuestionDelegateItem, newQuestion: QuestionDelegateItem) {
         val pos = screenUIState.questions.indexOf(question)
-        screenUIState.questions[pos] = newQuestion
+        val questions = screenUIState.questions.map { it }.toMutableList().also {
+            it[pos] = newQuestion
+        }
+        updateScreenState(screenUIState.copy(questions = questions))
     }
 
     fun deleteQuestionFromList(question: QuestionDelegateItem) {
-        screenUIState.questions.remove(question)
+        val questions = screenUIState.questions.map { it }.toMutableList().also {
+            it.remove(question)
+        }
+        updateScreenState(screenUIState.copy(questions = questions))
     }
 
     private fun postItem(data: DelegateAdapterItem) = postListItems(listOf(data))

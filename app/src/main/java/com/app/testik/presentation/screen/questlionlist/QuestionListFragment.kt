@@ -60,13 +60,13 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
         addBackPressedCallback { onBackPressed() }
 
         observeResult<QuestionModel>(UPDATE_QUESTION_RESULT_KEY) {
-            val item = getItem(it.id) ?: addItem(it.toQuestionItem())
-            if (item is QuestionDelegateItem) updateItem(question = item, newQuestion = it.toQuestionItem())
+            val item = getItem(it.id) ?: viewModel.addQuestionToList(it.toQuestionItem())
+            if (item is QuestionDelegateItem) viewModel.updateQuestion(question = item, newQuestion = it.toQuestionItem())
         }
 
         observeResult<QuestionModel>(DELETE_QUESTION_RESULT_KEY) {
             val item = getItem(it.id)
-            if (item is QuestionDelegateItem) deleteItem(question = it.toQuestionItem())
+            if (item is QuestionDelegateItem) viewModel.deleteQuestionFromList(question = it.toQuestionItem())
         }
     }
 
@@ -109,8 +109,8 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
                     viewModel.uiState.collect {
                         it.onSuccess { data ->
                             if (questions != data.questions) questions = data.questions.toMutableList()
-                            questionsAdapter.submitList(questions.toList())
 
+                            questionsAdapter.submitList(questions.toList())
                             renderUIState()
                         }
                     }
@@ -151,29 +151,6 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
 
     private fun getItem(questionId: String) = questions.find { it.id() == questionId } as? QuestionDelegateItem
 
-    private fun addItem(question: QuestionDelegateItem) {
-        viewModel.addQuestionToList(question)
-        questions.add(question)
-        questionsAdapter.submitList(questions.toList())
-
-        if (questions.size == 1) renderUIState()
-    }
-
-    private fun updateItem(question: QuestionDelegateItem, newQuestion: QuestionDelegateItem) {
-        viewModel.updateQuestion(question = question, newQuestion = newQuestion)
-        val pos = questions.indexOf(question)
-        questions[pos] = newQuestion
-        questionsAdapter.submitList(questions.toList())
-    }
-
-    private fun deleteItem(question: QuestionDelegateItem) {
-        viewModel.deleteQuestionFromList(question)
-        questions.remove(question)
-        questionsAdapter.submitList(questions.toList())
-
-        if (questions.isEmpty()) renderUIState()
-    }
-
     private fun confirmDeletion(question: QuestionDelegateItem) {
         showAlert(
             title = R.string.delete_question,
@@ -186,7 +163,7 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
 
     private fun deleteQuestion(question: QuestionDelegateItem) {
         showSnackbar(R.string.delete_question_success)
-        deleteItem(question)
+        viewModel.deleteQuestionFromList(question)
     }
 
     private fun onBackPressed() {

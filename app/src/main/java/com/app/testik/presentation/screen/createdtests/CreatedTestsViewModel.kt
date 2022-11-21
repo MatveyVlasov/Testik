@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 import javax.inject.Inject
 
@@ -65,16 +64,25 @@ class CreatedTestsViewModel @Inject constructor(
     }
 
     fun addTestToList(test: CreatedTestDelegateItem) {
-        screenUIState.tests.add(0, test)
+        val tests = screenUIState.tests.map { it }.toMutableList().also {
+            it.add(0, test)
+        }
+        updateScreenState(screenUIState.copy(tests = tests))
     }
 
     fun updateTest(test: CreatedTestDelegateItem, newTest: CreatedTestDelegateItem) {
         val pos = screenUIState.tests.indexOf(test)
-        screenUIState.tests[pos] = newTest
+        val tests = screenUIState.tests.map { it }.toMutableList().also {
+            it[pos] = newTest
+        }
+        updateScreenState(screenUIState.copy(tests = tests))
     }
 
     fun deleteTestFromList(test: CreatedTestDelegateItem) {
-        screenUIState.tests.remove(test)
+        val tests = screenUIState.tests.map { it }.toMutableList().also {
+            it.remove(test)
+        }
+        updateScreenState(screenUIState.copy(tests = tests))
     }
 
     fun deleteTest(test: CreatedTestDelegateItem?) {
@@ -83,7 +91,7 @@ class CreatedTestsViewModel @Inject constructor(
 
         viewModelScope.launch {
             deleteTestUseCase(testId = test.id).onSuccess {
-                screenUIState.tests.remove(test)
+                deleteTestFromList(test)
                 emitEvent(CreatedTestsScreenEvent.SuccessTestDeletion(test))
             }.onError {
                 emitEvent(CreatedTestsScreenEvent.ShowSnackbar(it))

@@ -63,13 +63,13 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
         addBackPressedCallback { showExitAlert() }
 
         observeResult<TestModel>(Constants.UPDATE_TEST_RESULT_KEY) {
-            val item = getItem(it.id) ?: addItem(it.toCreatedTestItem())
-            if (item is CreatedTestDelegateItem) updateItem(test = item, newTest = it.toCreatedTestItem())
+            val item = getItem(it.id) ?: viewModel.addTestToList(it.toCreatedTestItem())
+            if (item is CreatedTestDelegateItem) viewModel.updateTest(test = item, newTest = it.toCreatedTestItem())
         }
 
         observeResult<TestModel>(Constants.DELETE_TEST_RESULT_KEY) {
             val item = getItem(it.id)
-            if (item is CreatedTestDelegateItem) deleteItem(test = it.toCreatedTestItem(), deleteFromViewModel = true)
+            if (item is CreatedTestDelegateItem) viewModel.deleteTestFromList(test = it.toCreatedTestItem())
         }
     }
 
@@ -127,10 +127,7 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
             is CreatedTestsScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
             is CreatedTestsScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
             is CreatedTestsScreenEvent.Loading -> Unit
-            is CreatedTestsScreenEvent.SuccessTestDeletion -> {
-                showSnackbar(R.string.delete_test_success)
-                deleteItem(event.test)
-            }
+            is CreatedTestsScreenEvent.SuccessTestDeletion -> showSnackbar(R.string.delete_test_success)
         }
         setLoadingState(event is CreatedTestsScreenEvent.Loading)
     }
@@ -170,22 +167,4 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
 
     private fun getItem(testId: String) = tests.find { it.id() == testId } as? CreatedTestDelegateItem
 
-    private fun addItem(test: CreatedTestDelegateItem) {
-        viewModel.addTestToList(test)
-        tests.add(0, test)
-        testsAdapter.submitList(tests.toList())
-    }
-
-    private fun updateItem(test: CreatedTestDelegateItem, newTest: CreatedTestDelegateItem) {
-        viewModel.updateTest(test = test, newTest = newTest)
-        val pos = tests.indexOf(test)
-        tests[pos] = newTest
-        testsAdapter.submitList(tests.toList())
-    }
-
-    private fun deleteItem(test: CreatedTestDelegateItem, deleteFromViewModel: Boolean = false) {
-        if (deleteFromViewModel) viewModel.deleteTestFromList(test)
-        tests.remove(test)
-        testsAdapter.submitList(tests.toList())
-    }
 }
