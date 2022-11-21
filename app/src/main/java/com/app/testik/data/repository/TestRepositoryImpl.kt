@@ -131,7 +131,7 @@ class TestRepositoryImpl @Inject constructor(
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            val data = mapOf("questions" to questions)
+            val data = mapOf("questions" to questions, "timestamp" to timestamp)
             firebaseFirestore.collection("tests").document(testId).update(data).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
