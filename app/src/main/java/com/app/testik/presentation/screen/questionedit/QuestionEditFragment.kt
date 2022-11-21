@@ -69,8 +69,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
                 return@setOnMenuItemClickListener true
             }
 
-            //ivImage.clipToOutline = true
-            //if (viewModel.screenUIState.id.isEmpty()) loadImage("")
+            ivImage.clipToOutline = true
         }
     }
 
@@ -78,8 +77,8 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
         binding.apply {
             toolbar.setNavigationOnClickListener { onBackPressed() }
 
-//            ivImage.setOnClickListener { viewImage() }
-//            ivEditImage.setOnClickListener { onChangeImage() }
+            ivImage.setOnClickListener { viewImage() }
+            ivEditImage.setOnClickListener { onChangeImage() }
             btnDiscard.setOnClickListener {
                 etTitle.clearFocus()
                 etDescription.clearFocus()
@@ -129,7 +128,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             btnDiscard.isEnabled = data.canDiscard
         }
 
-//        loadImage(data.image)
+        loadImage(data.image)
         setLoadingState(false)
     }
 
@@ -143,8 +142,8 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
         navController.navigateUp()
     }
 
-//    private fun loadImage(url: String) =
-//        loadTestImage(context = requireContext(), imageView = binding.ivImage, url = url)
+    private fun loadImage(url: String) =
+        loadQuestionImage(context = requireContext(), imageView = binding.ivImage, url = url)
 
     private fun onChangeImage() {
         if (viewModel.screenUIState.image.isEmpty()) pickImage()

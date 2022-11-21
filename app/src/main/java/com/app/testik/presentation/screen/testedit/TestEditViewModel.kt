@@ -49,7 +49,7 @@ class TestEditViewModel @Inject constructor(
     private var oldScreenUIState: TestEditScreenUIState? = null
 
     init {
-        // getTestInfo(testId = screenUIState.id)
+        if (screenUIState.id.isEmpty()) updateScreenState(screenUIState)
         getTestInfo(testId = screenUIState.id, source = Source.CACHE)
     }
 

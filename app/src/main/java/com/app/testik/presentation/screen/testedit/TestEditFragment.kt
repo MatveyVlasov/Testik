@@ -73,7 +73,6 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             }
 
             ivImage.clipToOutline = true
-            if (viewModel.screenUIState.id.isEmpty()) loadImage("")
         }
     }
 

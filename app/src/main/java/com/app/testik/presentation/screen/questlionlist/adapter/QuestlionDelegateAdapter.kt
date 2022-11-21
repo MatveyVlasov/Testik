@@ -8,7 +8,7 @@ import com.app.testik.domain.model.QuestionModel
 import com.app.testik.presentation.screen.questlionlist.mapper.toDomain
 import com.app.testik.presentation.screen.questlionlist.model.QuestionDelegateItem
 import com.app.testik.util.delegateadapter.DelegateAdapter
-import com.app.testik.util.loadTestImage
+import com.app.testik.util.loadQuestionImage
 
 class QuestionDelegateAdapter(
     val onClick: (QuestionModel) -> Unit,
@@ -29,7 +29,7 @@ class QuestionDelegateAdapter(
         fun bind(test: QuestionDelegateItem) {
 
             binding.apply {
-                loadTestImage(context = root.context, imageView = binding.ivImage, url = test.image)
+                loadQuestionImage(context = root.context, imageView = binding.ivImage, url = test.image)
 
                 tvTitle.text = test.title
 

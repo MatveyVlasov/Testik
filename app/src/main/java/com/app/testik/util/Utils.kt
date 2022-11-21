@@ -2,6 +2,7 @@ package com.app.testik.util
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -9,6 +10,7 @@ import android.util.Patterns
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import com.app.testik.R
 import com.app.testik.data.model.ApiResult
 import com.app.testik.util.Constants.USERNAME_GOOGLE_DELIMITER
@@ -95,18 +97,19 @@ fun isOnline(context: Context): Boolean {
     return false
 }
 
-fun loadAvatar(context: Context, imageView: ImageView, url: String) {
-    val image = url.ifBlank { R.drawable.ic_profile_avatar }
+fun loadImage(context: Context, imageView: ImageView, url: String, @DrawableRes defaultImage: Int) {
+    val image = url.ifBlank { defaultImage }
 
     Glide.with(context)
         .load(image)
         .into(imageView)
 }
 
-fun loadTestImage(context: Context, imageView: ImageView, url: String) {
-    val image = url.ifBlank { R.drawable.ic_feed }
+fun loadAvatar(context: Context, imageView: ImageView, url: String) =
+    loadImage(context = context, imageView = imageView, url = url, defaultImage = R.drawable.ic_profile_avatar)
 
-    Glide.with(context)
-        .load(image)
-        .into(imageView)
-}
+fun loadTestImage(context: Context, imageView: ImageView, url: String) =
+    loadImage(context = context, imageView = imageView, url = url, defaultImage = R.drawable.ic_feed)
+
+fun loadQuestionImage(context: Context, imageView: ImageView, url: String) =
+    loadImage(context = context, imageView = imageView, url = url, defaultImage = R.drawable.ic_question_mark)
