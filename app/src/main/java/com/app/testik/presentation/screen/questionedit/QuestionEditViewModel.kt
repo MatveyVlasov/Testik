@@ -134,7 +134,7 @@ class QuestionEditViewModel @Inject constructor(
 
     fun deleteAnswer(answer: AnswerDelegateItem) {
         val answers = screenUIState.answers.map { it }.toMutableList().also {
-            it.remove(answer)
+            it.removeIf { item -> item.id == answer.id }
         }
         updateScreenState(screenUIState.copy(answers = answers))
     }
@@ -155,7 +155,7 @@ class QuestionEditViewModel @Inject constructor(
     }
 
     fun validateData(): Boolean {
-        return checkDescriptionLength() && checkTitleNotBlank()
+        return checkDescriptionLength() && checkTitleNotBlank() && checkCorrectAnswers()
     }
 
     private fun checkDescriptionLength(): Boolean {
@@ -167,6 +167,20 @@ class QuestionEditViewModel @Inject constructor(
     private fun checkTitleNotBlank(): Boolean {
         return (screenUIState.title.isNotBlank()).also {
             if (!it) updateScreenState(screenUIState.copy(titleError = R.string.blank_field_error))
+        }
+    }
+
+    private fun checkCorrectAnswers(): Boolean {
+        val hasCorrectAnswers = when (screenUIState.type) {
+            QuestionType.SINGLE_CHOICE -> {
+                screenUIState.answers.filterIsInstance<SingleChoiceDelegateItem>().any { it.isCorrect }
+            }
+            QuestionType.MULTIPLE_CHOICE -> {
+                screenUIState.answers.filterIsInstance<MultipleChoiceDelegateItem>().any { it.isCorrect }
+            }
+        }
+        return (hasCorrectAnswers).also {
+            if (!it) emitEvent(QuestionEditScreenEvent.ShowSnackbarByRes(R.string.no_correct_answers))
         }
     }
 

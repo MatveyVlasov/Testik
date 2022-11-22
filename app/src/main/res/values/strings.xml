@@ -140,6 +140,7 @@
 
     <string name="answer_option">Answer option</string>
     <string name="add_answer_option">Add answer option</string>
+    <string name="no_correct_answers">The question should contain at least one correct answer</string>
     <string name="type">Type</string>
     <string name="single_choice">Single choice</string>
     <string name="multiple_choice">Multiple choice</string>

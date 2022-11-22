@@ -41,11 +41,13 @@ class MultipleChoiceDelegateAdapter(
                     onSelectClick(answer, isChecked)
                 }
 
-                ivDelete.setOnClickListener { onDeleteClick(answer) }
+                ivDelete.setOnClickListener {
+                    llAnswer.clearFocus()
+                    onDeleteClick(answer)
+                }
             }
         }
     }
-
 }
 
 

@@ -41,7 +41,10 @@ class SingleChoiceDelegateAdapter(
                     onSelectClick(answer)
                 }
 
-                ivDelete.setOnClickListener { onDeleteClick(answer) }
+                ivDelete.setOnClickListener {
+                    llAnswer.clearFocus()
+                    onDeleteClick(answer)
+                }
             }
         }
     }

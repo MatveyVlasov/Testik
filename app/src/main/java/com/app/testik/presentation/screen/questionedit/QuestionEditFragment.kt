@@ -160,6 +160,10 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             tilTitle.error = getStringOrNull(data.titleError)
             tilDescription.error = getStringOrNull(data.descriptionError)
 
+            if (tilTitle.error != null || tilDescription.error != null) {
+                scrollView.fullScroll(View.FOCUS_UP)
+            }
+
             btnDiscard.isEnabled = data.canDiscard
         }
 

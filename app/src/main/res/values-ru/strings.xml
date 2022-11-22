@@ -135,6 +135,7 @@
 
     <string name="answer_option">Вариант ответа</string>
     <string name="add_answer_option">Добавить вариант ответа</string>
+    <string name="no_correct_answers">Вопрос должен иметь хотя бы один правильный ответ</string>
     <string name="type">Тип</string>
     <string name="single_choice">Одиночный выбор</string>
     <string name="multiple_choice">Множественный выбор</string>
