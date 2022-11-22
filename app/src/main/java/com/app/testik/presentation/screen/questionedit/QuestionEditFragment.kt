@@ -95,8 +95,6 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             ivImage.clipToOutline = true
 
             rvAnswers.adapter = answersAdapter
-
-            btnAddAnswer.setOnClickListener { viewModel.addAnswer() }
         }
     }
 
@@ -106,6 +104,11 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
 
             ivImage.setOnClickListener { viewImage() }
             ivEditImage.setOnClickListener { onChangeImage() }
+
+            btnAddAnswer.setOnClickListener {
+                viewModel.addAnswer()
+                scrollView.fullScroll(View.FOCUS_DOWN)
+            }
             btnDiscard.setOnClickListener {
                 etTitle.clearFocus()
                 etDescription.clearFocus()
