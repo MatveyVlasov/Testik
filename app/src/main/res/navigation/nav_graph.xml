@@ -111,7 +111,7 @@
         tools:layout="@layout/fragment_question_edit">
         <argument
             android:name="questionId"
-            app:argType="com.app.testik.domain.model.QuestionModel" />
+            app:argType="com.app.testik.presentation.model.QuestionDelegateItem" />
     </fragment>
 
 

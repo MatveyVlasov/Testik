@@ -42,5 +42,13 @@ fun QuestionModel.toDto() =
         testId = testId,
         title = title,
         description = description,
-        image = image
+        image = image,
+        type = type.title,
+        answers = answers.map { it.toDto() }
+    )
+
+fun AnswerModel.toDto() =
+    AnswerDto(
+        text = text,
+        isCorrect = isCorrect
     )

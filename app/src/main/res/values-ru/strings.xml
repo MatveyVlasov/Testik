@@ -132,4 +132,10 @@
     <string name="question_settings">Настройки вопроса</string>
     <string name="question_image">Изображение к вопросу</string>
     <string name="discard_changes">Сбросить изменения</string>
+
+    <string name="answer_option">Вариант ответа</string>
+    <string name="add_answer_option">Добавить вариант ответа</string>
+    <string name="type">Тип</string>
+    <string name="single_choice">Одиночный выбор</string>
+    <string name="multiple_choice">Множественный выбор</string>
 </resources>

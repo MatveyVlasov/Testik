@@ -137,4 +137,10 @@
     <string name="question_settings">Question Settings</string>
     <string name="question_image">Question Image</string>
     <string name="discard_changes">Discard changes</string>
+
+    <string name="answer_option">Answer option</string>
+    <string name="add_answer_option">Add answer option</string>
+    <string name="type">Type</string>
+    <string name="single_choice">Single choice</string>
+    <string name="multiple_choice">Multiple choice</string>
 </resources>

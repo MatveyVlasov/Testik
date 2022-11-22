@@ -106,7 +106,7 @@
         <item name="android:autoSizeTextType">uniform</item>
     </style>
 
-    <style name="TitleTextView.Regular" parent="Widget.AppCompat.TextView">
+    <style name="TitleTextView.Regular">
         <item name="android:fontFamily">@font/merriweather_regular</item>
     </style>
 

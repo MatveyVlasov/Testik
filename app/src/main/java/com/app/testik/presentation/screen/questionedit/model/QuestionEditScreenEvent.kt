@@ -9,4 +9,6 @@ sealed class QuestionEditScreenEvent {
     data class ShowSnackbarByRes(@StringRes val message: Int) : QuestionEditScreenEvent()
 
     object Loading : QuestionEditScreenEvent()
+
+    object EnableDiscardButton : QuestionEditScreenEvent()
 }

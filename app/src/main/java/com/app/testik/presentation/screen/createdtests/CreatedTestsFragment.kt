@@ -26,7 +26,6 @@ import com.app.testik.presentation.screen.createdtests.model.CreatedTestDelegate
 import com.app.testik.presentation.screen.createdtests.model.CreatedTestsScreenEvent
 import com.app.testik.util.*
 import com.app.testik.util.delegateadapter.CompositeAdapter
-import com.app.testik.util.delegateadapter.DelegateAdapterItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -48,8 +47,6 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
             )
             .build()
     }
-
-    private var tests = mutableListOf<DelegateAdapterItem>()
 
     override fun createBinding(inflater: LayoutInflater) = FragmentCreatedTestsBinding.inflate(inflater)
 
@@ -104,11 +101,9 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
                 launch {
                     viewModel.uiState.collect {
                         it.onSuccess { data ->
-                            if (tests != data.tests) tests = data.tests.toMutableList()
+                            testsAdapter.submitList(data.tests)
 
-                            testsAdapter.submitList(tests.toList())
-
-                            val isListEmpty = tests.isEmpty()
+                            val isListEmpty = data.tests.isEmpty()
                             binding.llNoTests.isVisible = isListEmpty
                             binding.rvTests.isVisible = !isListEmpty
                         }
@@ -165,6 +160,6 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
         )
     }
 
-    private fun getItem(testId: String) = tests.find { it.id() == testId } as? CreatedTestDelegateItem
+    private fun getItem(testId: String) = testsAdapter.currentList.find { it.id() == testId } as? CreatedTestDelegateItem
 
 }

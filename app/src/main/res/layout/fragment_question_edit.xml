@@ -89,7 +89,47 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilType"
+                style="@style/CustomTextInputLayout.LightGray"
+                android:hint="@string/type"
+                app:startIconDrawable="@drawable/ic_category">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etType"
+                    style="@style/CustomTextInputEditText.LightGray"
+                    android:focusable="false"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:paddingVertical="8dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/llQuestionForm"
+            app:layout_constraintBottom_toTopOf="@id/btnDiscard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_single_choice" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddAnswer"
+            style="@style/CustomButton.PurpleDark"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginBottom="@dimen/margin_bottom"
+            android:text="@string/add_answer_option"
+            app:layout_constraintTop_toBottomOf="@id/rvAnswers"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDiscard"
@@ -99,7 +139,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="@dimen/margin_bottom"
             android:text="@string/discard_changes"
-            app:layout_constraintTop_toBottomOf="@id/llQuestionForm"
+            app:layout_constraintTop_toBottomOf="@id/btnAddAnswer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

@@ -7,7 +7,6 @@ import com.app.testik.R
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.*
-import com.app.testik.presentation.model.LoadingItem.id
 import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.testedit.mapper.toDomain
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenEvent
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel

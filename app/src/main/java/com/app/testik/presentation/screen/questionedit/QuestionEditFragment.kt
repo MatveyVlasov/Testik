@@ -13,11 +13,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.app.testik.R
 import com.app.testik.databinding.FragmentQuestionEditBinding
+import com.app.testik.domain.model.QuestionType
 import com.app.testik.presentation.activity.ImageCropActivity
 import com.app.testik.presentation.activity.ImageViewActivity
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
-import com.app.testik.presentation.screen.questionedit.mapper.toDomain
+import com.app.testik.presentation.screen.questionedit.adapter.MultipleChoiceDelegateAdapter
+import com.app.testik.presentation.screen.questionedit.adapter.SingleChoiceDelegateAdapter
+import com.app.testik.presentation.screen.questionedit.mapper.toQuestionItem
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenEvent
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenUIState
 import com.app.testik.util.*
@@ -26,6 +29,7 @@ import com.app.testik.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_TITLE
 import com.app.testik.util.Constants.UPDATE_QUESTION_RESULT_KEY
+import com.app.testik.util.delegateadapter.CompositeAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yanzhenjie.album.Album
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +45,25 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             val path = result.data?.extras?.getString(EXTRA_IMAGE_CROPPED_PATH).orEmpty()
             viewModel.loadImage(path)
         }
+    }
+
+    private val answersAdapter by lazy {
+        CompositeAdapter.Builder()
+            .add(
+                SingleChoiceDelegateAdapter(
+                    onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
+                    onSelectClick = { item -> viewModel.onSelectClick(answer = item) },
+                    onDeleteClick = {}
+                )
+            )
+            .add(
+                MultipleChoiceDelegateAdapter(
+                    onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
+                    onSelectClick = { item, isChecked -> viewModel.onSelectClick(answer = item, isChecked = isChecked) },
+                    onDeleteClick = {}
+                )
+            )
+            .build()
     }
 
     override fun createBinding(inflater: LayoutInflater) = FragmentQuestionEditBinding.inflate(inflater)
@@ -70,6 +93,10 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             }
 
             ivImage.clipToOutline = true
+
+            rvAnswers.adapter = answersAdapter
+
+            btnAddAnswer.setOnClickListener { viewModel.addAnswer() }
         }
     }
 
@@ -85,6 +112,8 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
                 viewModel.discardChanges()
             }
 
+            etType.setOnClickListener { showChangeTypeDialog() }
+
             etTitle.addTextChangedListener { viewModel.onTitleChanged(it.toString()) }
             etDescription.addTextChangedListener { viewModel.onDescriptionChanged(it.toString()) }
         }
@@ -95,8 +124,9 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiState.collect { state ->
-                        state.onSuccess {
-                            renderUIState(it)
+                        state.onSuccess { data ->
+                            answersAdapter.submitList(data.answers)
+                            renderUIState(data)
                         }
                     }
                 }
@@ -113,6 +143,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             is QuestionEditScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
             is QuestionEditScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
             is QuestionEditScreenEvent.Loading -> Unit
+            is QuestionEditScreenEvent.EnableDiscardButton -> binding.btnDiscard.isEnabled = true
         }
         setLoadingState(event is QuestionEditScreenEvent.Loading)
     }
@@ -121,6 +152,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
         binding.apply {
             if (!etTitle.isFocused) etTitle.setText(data.title)
             if (!etDescription.isFocused) etDescription.setText(data.description)
+            if (!etType.isFocused) etType.setText(data.type.description)
 
             tilTitle.error = getStringOrNull(data.titleError)
             tilDescription.error = getStringOrNull(data.descriptionError)
@@ -137,7 +169,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
         if (viewModel.screenUIState.canDiscard) {
             var question = viewModel.screenUIState
             if (question.id.isEmpty()) question = question.copy(id = randomId)
-            setResult(UPDATE_QUESTION_RESULT_KEY, question.toDomain())
+            setResult(UPDATE_QUESTION_RESULT_KEY, question.toQuestionItem())
         }
         navController.navigateUp()
     }
@@ -209,7 +241,21 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
 
     private fun deleteQuestion() {
         showSnackbar(R.string.delete_question_success)
-        setResult(DELETE_QUESTION_RESULT_KEY, viewModel.screenUIState.toDomain())
+        setResult(DELETE_QUESTION_RESULT_KEY, viewModel.screenUIState.toQuestionItem())
         navController.navigateUp()
+    }
+
+    private fun showChangeTypeDialog() {
+        var selectedItem = viewModel.screenUIState.type.ordinal
+
+        showSingleChoiceDialog(
+            title = R.string.select_category,
+            positive = R.string.confirm,
+            negative = R.string.cancel,
+            items = QuestionType.values().map { it.description },
+            selectedItem = selectedItem,
+            onPositiveClick = { viewModel.onTypeChanged(QuestionType.values()[selectedItem]) },
+            onItemClick = { selectedItem = it }
+        )
     }
 }

@@ -1,13 +1,7 @@
 package com.app.testik.domain.mapper
 
-import com.app.testik.data.model.QuestionDto
-import com.app.testik.data.model.TestDto
-import com.app.testik.data.model.TestsDto
-import com.app.testik.data.model.UserDto
-import com.app.testik.domain.model.QuestionModel
-import com.app.testik.domain.model.TestModel
-import com.app.testik.domain.model.TestsModel
-import com.app.testik.domain.model.UserModel
+import com.app.testik.data.model.*
+import com.app.testik.domain.model.*
 
 fun UserDto.toDomain() =
     UserModel(
@@ -49,5 +43,17 @@ fun QuestionDto.toDomain() =
         testId = testId,
         title = title,
         description = description,
-        image = image
+        image = image,
+        type = type.toQuestionType(),
+        answers = answers.map { it.toDomain(type.toQuestionType()) }
     )
+
+fun AnswerDto.toDomain(type: QuestionType) =
+    AnswerModel(
+        type = type,
+        text = text,
+        isCorrect = isCorrect,
+    )
+
+fun String.toQuestionType() =
+    QuestionType.values().find { it.title == this } ?: QuestionType.SINGLE_CHOICE

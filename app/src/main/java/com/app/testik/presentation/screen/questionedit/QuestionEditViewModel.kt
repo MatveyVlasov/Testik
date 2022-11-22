@@ -4,11 +4,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.testik.R
+import com.app.testik.domain.model.QuestionType
+import com.app.testik.presentation.model.AnswerDelegateItem
+import com.app.testik.presentation.screen.questionedit.model.SingleChoiceDelegateItem
 import com.app.testik.presentation.model.UIState
+import com.app.testik.presentation.model.copy
+import com.app.testik.presentation.screen.questionedit.model.MultipleChoiceDelegateItem
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenEvent
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenUIState
 import com.app.testik.util.Constants.MAX_DESCRIPTION_LENGTH
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -45,7 +51,9 @@ class QuestionEditViewModel @Inject constructor(
                 testId = testId,
                 title = title,
                 description = description,
-                image = image
+                image = image,
+                type = type,
+                answers = answers
             )
             oldScreenUIState = screenState
             updateScreenState(screenState)
@@ -62,6 +70,68 @@ class QuestionEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(description = description, descriptionError = null))
     }
 
+    fun onTypeChanged(type: QuestionType) {
+        if (type == screenUIState.type) return
+
+        val answers =
+            if (screenUIState.type == QuestionType.SINGLE_CHOICE && type == QuestionType.MULTIPLE_CHOICE) {
+                screenUIState.answers.filterIsInstance<SingleChoiceDelegateItem>().map {
+                    MultipleChoiceDelegateItem(id = it.id, text = it.text, isCorrect = it.isCorrect)
+                }
+            } else if (screenUIState.type == QuestionType.MULTIPLE_CHOICE && type == QuestionType.SINGLE_CHOICE) {
+                screenUIState.answers.filterIsInstance<MultipleChoiceDelegateItem>().map {
+                    SingleChoiceDelegateItem(id = it.id, text = it.text, isCorrect = false)
+                }
+            } else {
+                emptyList()
+            }
+
+
+        updateScreenState(screenUIState.copy(type = type, answers = answers))
+    }
+
+    fun onAnswerTextChanged(answer: AnswerDelegateItem, text: String) {
+        val item = screenUIState.answers.find { it.id == answer.id } ?: return
+        if (text == item.text) return
+
+        val pos = screenUIState.answers.indexOf(item)
+        val answers = screenUIState.answers.map { it }.toMutableList().also {
+            it[pos] = it[pos].copy(text = text)
+        }
+        screenUIState = screenUIState.copy(answers = answers, canDiscard = true)
+        emitEvent(QuestionEditScreenEvent.EnableDiscardButton)
+    }
+
+    fun onSelectClick(answer: SingleChoiceDelegateItem) {
+        val answers = mutableListOf<AnswerDelegateItem>()
+
+        screenUIState.answers.filterIsInstance<SingleChoiceDelegateItem>().forEach {
+            answers.add(it.copy(isCorrect = it.id == answer.id))
+        }
+        updateScreenState(screenUIState.copy(answers = answers))
+    }
+
+    fun onSelectClick(answer: MultipleChoiceDelegateItem, isChecked: Boolean) {
+
+        val pos = screenUIState.answers.indexOf(answer)
+        val answers = screenUIState.answers.map { it }.toMutableList().also {
+            it[pos] = (it[pos] as MultipleChoiceDelegateItem).copy(isCorrect = isChecked)
+        }
+        updateScreenState(screenUIState.copy(answers = answers))
+    }
+
+    fun addAnswer() {
+        val answers = screenUIState.answers.map { it }.toMutableList().also {
+            it.add(
+                when (screenUIState.type) {
+                    QuestionType.MULTIPLE_CHOICE -> MultipleChoiceDelegateItem()
+                    else -> SingleChoiceDelegateItem()
+                }
+            )
+        }
+        updateScreenState(screenUIState.copy(answers = answers))
+    }
+
     fun loadImage(image: String) {
         if (screenUIState.image == image) return
         updateScreenState(screenUIState.copy(image = image))
@@ -70,7 +140,11 @@ class QuestionEditViewModel @Inject constructor(
     fun deleteImage() = loadImage("")
 
     fun discardChanges() {
-        updateScreenState(oldScreenUIState)
+        updateScreenState(screenUIState)
+        viewModelScope.launch {
+            delay(10)
+            updateScreenState(oldScreenUIState)
+        }
     }
 
     fun validateData(): Boolean {
