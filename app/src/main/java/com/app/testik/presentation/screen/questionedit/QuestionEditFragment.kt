@@ -53,14 +53,14 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
                 SingleChoiceDelegateAdapter(
                     onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
                     onSelectClick = { item -> viewModel.onSelectClick(answer = item) },
-                    onDeleteClick = {}
+                    onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }
                 )
             )
             .add(
                 MultipleChoiceDelegateAdapter(
                     onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
                     onSelectClick = { item, isChecked -> viewModel.onSelectClick(answer = item, isChecked = isChecked) },
-                    onDeleteClick = {}
+                    onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }
                 )
             )
             .build()
