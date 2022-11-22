@@ -16,6 +16,7 @@
 
     <dimen name="navbar_height">56dp</dimen>
     <dimen name="navbar_height_and_margin">64dp</dimen>
+    <dimen name="toolbar_height_and_margin">80dp</dimen>
 
     <dimen name="card_margin_horizontal">8dp</dimen>
     <dimen name="card_radius">10dp</dimen>

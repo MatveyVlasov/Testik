@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -22,130 +21,144 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/ivImage"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_rect_20_dp"
-            android:outlineProvider="background"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/question_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:src="@drawable/ic_question_mark" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <ImageView
-            android:id="@+id/ivEditImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="1dp"
-            android:layout_marginEnd="1dp"
-            android:src="@drawable/ic_edit_image"
-            android:contentDescription="@string/question_image"
-            app:layout_constraintBottom_toBottomOf="@id/ivImage"
-            app:layout_constraintEnd_toEndOf="@id/ivImage" />
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-        <LinearLayout
-            android:id="@+id/llQuestionForm"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivImage">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilTitle"
-                style="@style/CustomTextInputLayout.LightGray"
-                android:hint="@string/title"
-                app:startIconDrawable="@drawable/ic_title"
-                app:errorEnabled="true">
+            <ImageView
+                android:id="@+id/ivImage"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="@dimen/toolbar_height_and_margin"
+                android:background="@drawable/rounded_rect_20_dp"
+                android:outlineProvider="background"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/question_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_question_mark" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etTitle"
-                    style="@style/CustomTextInputEditText.LightGray"
-                    android:inputType="text"
-                    android:maxLength="@integer/title_max_length" />
+            <ImageView
+                android:id="@+id/ivEditImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginEnd="1dp"
+                android:src="@drawable/ic_edit_image"
+                android:contentDescription="@string/question_image"
+                app:layout_constraintBottom_toBottomOf="@id/ivImage"
+                app:layout_constraintEnd_toEndOf="@id/ivImage" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:id="@+id/llQuestionForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivImage">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilDescription"
-                style="@style/CustomTextInputLayout.LightGray"
-                android:hint="@string/description"
-                app:startIconDrawable="@drawable/ic_description"
-                app:counterEnabled="true"
-                app:counterMaxLength="@integer/description_max_length"
-                app:errorEnabled="true">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTitle"
+                    style="@style/CustomTextInputLayout.LightGray"
+                    android:hint="@string/title"
+                    app:startIconDrawable="@drawable/ic_title"
+                    app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDescription"
-                    style="@style/CustomTextInputEditText.LightGray"
-                    android:inputType="textMultiLine" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTitle"
+                        style="@style/CustomTextInputEditText.LightGray"
+                        android:inputType="text"
+                        android:maxLength="@integer/title_max_length" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilType"
-                style="@style/CustomTextInputLayout.LightGray"
-                android:hint="@string/type"
-                app:startIconDrawable="@drawable/ic_category">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilDescription"
+                    style="@style/CustomTextInputLayout.LightGray"
+                    android:hint="@string/description"
+                    app:startIconDrawable="@drawable/ic_description"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@integer/description_max_length"
+                    app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etType"
-                    style="@style/CustomTextInputEditText.LightGray"
-                    android:focusable="false"
-                    android:inputType="text" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDescription"
+                        style="@style/CustomTextInputEditText.LightGray"
+                        android:inputType="textMultiLine" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAnswers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
-            android:paddingVertical="8dp"
-            android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/llQuestionForm"
-            app:layout_constraintBottom_toTopOf="@id/btnDiscard"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_single_choice" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilType"
+                    style="@style/CustomTextInputLayout.LightGray"
+                    android:hint="@string/type"
+                    app:startIconDrawable="@drawable/ic_category">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddAnswer"
-            style="@style/CustomButton.PurpleDark"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
-            android:layout_marginBottom="@dimen/margin_bottom"
-            android:text="@string/add_answer_option"
-            app:layout_constraintTop_toBottomOf="@id/rvAnswers"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etType"
+                        style="@style/CustomTextInputEditText.LightGray"
+                        android:focusable="false"
+                        android:inputType="text" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDiscard"
-            style="@style/CustomButton.PurpleDark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="@dimen/margin_bottom"
-            android:text="@string/discard_changes"
-            app:layout_constraintTop_toBottomOf="@id/btnAddAnswer"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAnswers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:paddingVertical="8dp"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/llQuestionForm"
+                app:layout_constraintBottom_toTopOf="@id/btnDiscard"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_single_choice" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddAnswer"
+                style="@style/CustomButton.PurpleDark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:layout_marginBottom="@dimen/margin_bottom"
+                android:text="@string/add_answer_option"
+                app:layout_constraintTop_toBottomOf="@id/rvAnswers"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDiscard"
+                style="@style/CustomButton.PurpleDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="@dimen/margin_bottom"
+                android:text="@string/discard_changes"
+                app:layout_constraintTop_toBottomOf="@id/btnAddAnswer"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
