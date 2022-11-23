@@ -23,8 +23,8 @@
     <string name="incorrect_password">Пароль неверный</string>
     <string name="too_many_requests">Вы отправили слишком много запросов. Повторите попытку через минуту</string>
 
-    <string name="go_back">Назад</string>
-    <string name="go_back_confirmation">Вы действительно хотите перейти назад? Все несохранённые изменения будут потеряны</string>
+    <string name="unsaved_changes">Несохранённые изменения</string>
+    <string name="unsaved_changes_confirmation">Вы действительно хотите покинуть экран? Все несохранённые изменения будут потеряны</string>
     <string name="app_exit">Выход</string>
     <string name="exit_app_confirmation">Вы действительно хотите выйти?</string>
     <string name="exit_app">Выйти</string>

@@ -85,9 +85,15 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             etCategory.setOnClickListener { showChangeCategoryDialog() }
             btnSave.setOnClickListener { viewModel.save() }
             btnEditQuestions.setOnClickListener {
-                navController.navigate(
-                    TestEditFragmentDirections.toQuestionList(viewModel.screenUIState.id)
-                )
+                if (viewModel.screenUIState.canSave) confirmExitWithoutSaving {
+                    etTitle.clearFocus()
+                    etDescription.clearFocus()
+                    viewModel.discardChanges()
+                    navigateToQuestionList()
+                }
+                else {
+                    navigateToQuestionList()
+                }
             }
 
             etTitle.addTextChangedListener { viewModel.onTitleChanged(it.toString()) }
@@ -174,6 +180,12 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
         else navController.navigateUp()
     }
 
+    private fun navigateToQuestionList() {
+        navController.navigate(
+            TestEditFragmentDirections.toQuestionList(viewModel.screenUIState.id)
+        )
+    }
+
     private fun loadImage(url: String) =
         loadTestImage(context = requireContext(), imageView = binding.ivImage, url = url)
 
@@ -243,13 +255,13 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
         )
     }
 
-    private fun confirmExitWithoutSaving() {
+    private fun confirmExitWithoutSaving(onPositiveClick: () -> Unit) {
         showAlert(
-            title = R.string.go_back,
-            message = R.string.go_back_confirmation,
+            title = R.string.unsaved_changes,
+            message = R.string.unsaved_changes_confirmation,
             positive = R.string.confirm,
             negative = R.string.cancel,
-            onPositiveClick = navController::navigateUp
+            onPositiveClick = { onPositiveClick() }
         )
     }
 

@@ -42,7 +42,7 @@ class QuestionEditViewModel @Inject constructor(
     var screenUIState = QuestionEditScreenUIState()
         private set
 
-    private var oldScreenUIState: QuestionEditScreenUIState = screenUIState
+    private var oldScreenUIState: QuestionEditScreenUIState = screenUIState.copy()
 
     init {
         args.questionId.apply {

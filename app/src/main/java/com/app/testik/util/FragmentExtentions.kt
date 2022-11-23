@@ -107,8 +107,8 @@ fun Fragment.showExitAlert() {
 
 fun Fragment.confirmExitWithoutSaving() {
     showAlert(
-        title = R.string.go_back,
-        message = R.string.go_back_confirmation,
+        title = R.string.unsaved_changes,
+        message = R.string.unsaved_changes_confirmation,
         positive = R.string.confirm,
         negative = R.string.cancel,
         onPositiveClick = { findNavController().navigateUp() }

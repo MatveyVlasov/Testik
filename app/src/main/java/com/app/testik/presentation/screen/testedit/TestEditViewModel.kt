@@ -45,7 +45,7 @@ class TestEditViewModel @Inject constructor(
     var screenUIState = TestEditScreenUIState(id = args.testId)
         private set
 
-    private var oldScreenUIState: TestEditScreenUIState? = null
+    private var oldScreenUIState: TestEditScreenUIState = screenUIState.copy()
 
     init {
         if (screenUIState.id.isEmpty()) updateScreenState(screenUIState)
@@ -80,6 +80,10 @@ class TestEditViewModel @Inject constructor(
 
         if (screenUIState.id.isEmpty()) createTest()
         else updateTest()
+    }
+
+    fun discardChanges() {
+        updateScreenState(oldScreenUIState)
     }
 
     fun deleteTest() {

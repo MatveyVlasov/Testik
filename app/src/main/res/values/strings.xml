@@ -17,8 +17,8 @@
     <string name="incorrect_password">The password is invalid</string>
     <string name="too_many_requests">You sent too many requests. Try again in a while</string>
 
-    <string name="go_back">Go back</string>
-    <string name="go_back_confirmation">Do you really want to go back? All unsaved changes will be lost</string>
+    <string name="unsaved_changes">Unsaved changes</string>
+    <string name="unsaved_changes_confirmation">Do you really want to leave the screen? All unsaved changes will be lost</string>
     <string name="app_exit">Exit</string>
     <string name="exit_app_confirmation">Are you sure you want to exit?</string>
     <string name="exit_app">Exit</string>
