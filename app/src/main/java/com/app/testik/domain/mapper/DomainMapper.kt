@@ -32,7 +32,7 @@ fun TestModel.toDto() =
         author = author,
         title = title,
         description = description,
-        category = category,
+        category = category.title,
         image = image
     )
 

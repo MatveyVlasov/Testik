@@ -1,13 +1,14 @@
 package com.app.testik.presentation.screen.testedit.model
 
 import androidx.annotation.StringRes
+import com.app.testik.domain.model.CategoryType
 import com.app.testik.domain.model.TestModel
 
 data class TestEditScreenUIState(
     val id: String = "",
     val title: String = "",
     val description: String = "",
-    val category: String = "",
+    val category: CategoryType = CategoryType.NOT_SELECTED,
     val image: String = "",
     val testUpdated: TestModel? = null,
     val canSave: Boolean = true,

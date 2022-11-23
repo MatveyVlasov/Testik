@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.app.testik.R
 import com.app.testik.databinding.FragmentTestEditBinding
+import com.app.testik.domain.model.CategoryType
 import com.app.testik.presentation.activity.ImageCropActivity
 import com.app.testik.presentation.activity.ImageViewActivity
 import com.app.testik.presentation.base.BaseFragment
@@ -21,7 +22,6 @@ import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenEvent
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenUIState
 import com.app.testik.util.*
-import com.app.testik.util.Constants.CATEGORIES
 import com.app.testik.util.Constants.DELETE_TEST_RESULT_KEY
 import com.app.testik.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_PATH
@@ -135,7 +135,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
         binding.apply {
             if (!etTitle.isFocused) etTitle.setText(data.title)
             if (!etDescription.isFocused) etDescription.setText(data.description)
-            if (!etCategory.isFocused) etCategory.setText(getCategory(data.category))
+            if (!etCategory.isFocused) etCategory.setText(data.category.description)
 
             tilTitle.error = getStringOrNull(data.titleError)
             tilDescription.error = getStringOrNull(data.descriptionError)
@@ -230,15 +230,15 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
     }
 
     private fun showChangeCategoryDialog() {
-        var selectedItem = CATEGORIES.size - 1
+        var selectedItem = viewModel.screenUIState.category.ordinal
 
         showSingleChoiceDialog(
             title = R.string.select_category,
             positive = R.string.confirm,
             negative = R.string.cancel,
-            items = CATEGORIES.values.toList(),
+            items = CategoryType.values().map { it.description }.subList(0, CategoryType.values().lastIndex),
             selectedItem = selectedItem,
-            onPositiveClick = { viewModel.onCategoryChanged(CATEGORIES.keys.elementAt(selectedItem)) },
+            onPositiveClick = { viewModel.onCategoryChanged(CategoryType.values()[selectedItem]) },
             onItemClick = { selectedItem = it }
         )
     }

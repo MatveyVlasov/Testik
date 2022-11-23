@@ -13,17 +13,17 @@ fun UserDto.toDomain() =
     )
 
 fun TestsDto.toDomain(): TestsModel {
-    val tests = mutableListOf<TestModel>()
+    val tests = mutableListOf<TestDto>()
     if (!snapshot.isEmpty) {
         for (document in snapshot) {
-            val data = document.toObject(TestModel::class.java)
+            val data = document.toObject(TestDto::class.java)
             tests.add(data.copy(id = document.id))
         }
     }
 
     return TestsModel(
         snapshot = snapshot,
-        tests = tests
+        tests = tests.map { it.toDomain() }
     )
 }
 
@@ -33,7 +33,7 @@ fun TestDto.toDomain() =
         author = author,
         title = title,
         description = description,
-        category = category,
+        category = category.toCategoryType(),
         image = image
     )
 
@@ -54,6 +54,9 @@ fun AnswerDto.toDomain(type: QuestionType) =
         text = text,
         isCorrect = isCorrect,
     )
+
+fun String.toCategoryType() =
+    CategoryType.values().find { it.title == this } ?: CategoryType.NOT_SELECTED
 
 fun String.toQuestionType() =
     QuestionType.values().find { it.title == this } ?: QuestionType.SINGLE_CHOICE

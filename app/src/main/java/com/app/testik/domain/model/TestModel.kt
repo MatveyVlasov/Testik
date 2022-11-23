@@ -7,6 +7,6 @@ data class TestModel(
     val author: String = "",
     val title: String = "",
     val description: String = "",
-    val category: String = "",
+    val category: CategoryType = CategoryType.NOT_SELECTED,
     val image: String = ""
 ) : Serializable

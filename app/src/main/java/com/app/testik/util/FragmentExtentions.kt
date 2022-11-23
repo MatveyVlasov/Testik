@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.app.testik.R
-import com.app.testik.util.Constants.CATEGORIES
 import com.app.testik.util.Constants.LANGUAGES
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -175,5 +174,3 @@ fun Fragment.showChangeLanguageDialog(onSelected: (String) -> Unit) {
 }
 
 fun Fragment.getStringOrNull(@StringRes res: Int?) = if (res == null) null else getString(res)
-
-fun Fragment.getCategory(str: String) = getStringOrNull(CATEGORIES[str])

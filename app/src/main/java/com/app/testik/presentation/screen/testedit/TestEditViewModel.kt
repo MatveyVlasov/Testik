@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.testik.R
+import com.app.testik.domain.model.CategoryType
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.*
@@ -61,7 +62,7 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(description = description, descriptionError = null))
     }
 
-    fun onCategoryChanged(category: String) {
+    fun onCategoryChanged(category: CategoryType) {
         if (category == screenUIState.category) return
         updateScreenState(screenUIState.copy(category = category, categoryError = null))
     }
@@ -175,7 +176,7 @@ class TestEditViewModel @Inject constructor(
     }
 
     private fun checkCategoryNotBlank(): Boolean {
-        return (screenUIState.category.isNotBlank()).also {
+        return (screenUIState.category != CategoryType.NOT_SELECTED).also {
             if (!it) updateScreenState(screenUIState.copy(categoryError = R.string.blank_field_error))
         }
     }
