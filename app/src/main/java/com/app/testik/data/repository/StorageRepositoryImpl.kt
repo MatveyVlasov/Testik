@@ -8,6 +8,7 @@ import com.app.testik.domain.repository.StorageRepository
 import com.app.testik.util.execute
 import com.app.testik.util.isOnline
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import java.io.File
@@ -23,9 +24,7 @@ class StorageRepositoryImpl @Inject constructor(
 
         return try {
             val uri = File(image).toUri()
-            val avatar = firebaseStorage.reference.child("avatars").child(email)
-                .putFile(uri).await()
-                .storage.downloadUrl.await()
+            val avatar = firebaseStorage.reference.child("avatars").child(email).uploadImage(uri)
             ApiResult.Success(avatar)
         } catch (e: Exception) {
             ApiResult.Error(e.message)
@@ -47,9 +46,7 @@ class StorageRepositoryImpl @Inject constructor(
 
         return try {
             val uri = File(image).toUri()
-            val testImage = firebaseStorage.reference.child("tests").child(testId).child(testId)
-                .putFile(uri).await()
-                .storage.downloadUrl.await()
+            val testImage = firebaseStorage.reference.child("tests").child(testId).child(testId).uploadImage(uri)
             ApiResult.Success(testImage)
         } catch (e: Exception) {
             ApiResult.Error(e.message)
@@ -85,12 +82,13 @@ class StorageRepositoryImpl @Inject constructor(
 
         return try {
             val uri = File(image).toUri()
-            val testImage = firebaseStorage.reference.child("tests").child(testId).child(questionId)
-                .putFile(uri).await()
-                .storage.downloadUrl.await()
+            val testImage = firebaseStorage.reference.child("tests").child(testId).child(questionId).uploadImage(uri)
             ApiResult.Success(testImage)
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
     }
+
+    private suspend fun StorageReference.uploadImage(uri: Uri) =
+        putFile(uri).await().storage.downloadUrl.await()
 }
