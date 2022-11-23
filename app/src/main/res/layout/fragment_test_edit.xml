@@ -76,7 +76,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDescription"
                 style="@style/CustomTextInputLayout.LightGray"
-                android:hint="@string/description"
+                android:hint="@string/description_optional"
                 app:startIconDrawable="@drawable/ic_description"
                 app:counterEnabled="true"
                 app:counterMaxLength="@integer/description_max_length"

@@ -105,6 +105,7 @@
     <string name="test_creation">Создание теста</string>
     <string name="title">Название</string>
     <string name="description">Описание</string>
+    <string name="description_optional">Описание (необязательно)</string>
     <string name="description_too_long">Описание слишком длинное</string>
     <string name="category">Категория</string>
     <string name="select_category">Выберите категорию</string>
