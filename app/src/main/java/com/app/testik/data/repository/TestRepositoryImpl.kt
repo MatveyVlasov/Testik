@@ -29,8 +29,7 @@ class TestRepositoryImpl @Inject constructor(
                     "title" to title,
                     "description" to description,
                     "category" to category,
-                    "timestamp" to timestamp,
-                    "questions" to listOf(mapOf("title" to "123"), mapOf("title" to "Good!")) // temp
+                    "timestamp" to timestamp
                 )
 
                 firebaseFirestore.collection("tests").add(newData).also {

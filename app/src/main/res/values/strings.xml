@@ -25,7 +25,8 @@
 
     <string name="error_occurred">An error occurred</string>
     <string name="no_internet">No internet connection</string>
-    <string name="error_while_saving_image">Error while saving image</string>
+    <string name="error_while_saving_image">Error occurred while saving image</string>
+    <string name="error_while_saving_images">Some images were not saved dur to an error</string>
     <string name="blank_field_error">This field cannot be blank</string>
     <string name="empty" />
     <string name="yes">Yes</string>

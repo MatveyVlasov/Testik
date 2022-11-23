@@ -18,7 +18,7 @@ class UpdateUserUseCase @Inject constructor(
         if (data.avatar.isEmpty() || data.avatar.loadedFromServer()) return updateUser(data)
 
         wrap(
-            block = { storageRepository.uploadAvatar(data.toDto()) },
+            block = { storageRepository.uploadAvatar(email = data.email, image = data.avatar) },
             mapper = { it.toString() }
         ).onSuccess { avatar ->
             val newData = data.copy(avatar = avatar)

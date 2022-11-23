@@ -18,6 +18,6 @@ class DeleteTestUseCase @Inject constructor(
             block = { testRepository.deleteTest(testId) },
             mapper = { }
         ).onSuccess {
-            storageRepository.deleteTestImage(testId)
+            storageRepository.deleteTest(testId)
         }
 }

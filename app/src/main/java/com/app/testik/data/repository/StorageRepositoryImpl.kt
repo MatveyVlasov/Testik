@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
 import com.app.testik.data.model.ApiResult
-import com.app.testik.data.model.UserDto
 import com.app.testik.domain.repository.StorageRepository
 import com.app.testik.util.execute
 import com.app.testik.util.isOnline
@@ -19,12 +18,12 @@ class StorageRepositoryImpl @Inject constructor(
     private val firebaseStorage: FirebaseStorage
 ) : StorageRepository {
 
-    override suspend fun uploadAvatar(data: UserDto): ApiResult<Uri> {
+    override suspend fun uploadAvatar(email: String, image: String): ApiResult<Uri> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
-            val uri = File(data.avatar).toUri()
-            val avatar = firebaseStorage.reference.child("avatars").child(data.email)
+            val uri = File(image).toUri()
+            val avatar = firebaseStorage.reference.child("avatars").child(email)
                 .putFile(uri).await()
                 .storage.downloadUrl.await()
             ApiResult.Success(avatar)
@@ -48,7 +47,7 @@ class StorageRepositoryImpl @Inject constructor(
 
         return try {
             val uri = File(image).toUri()
-            val testImage = firebaseStorage.reference.child("tests").child(testId)
+            val testImage = firebaseStorage.reference.child("tests").child(testId).child(testId)
                 .putFile(uri).await()
                 .storage.downloadUrl.await()
             ApiResult.Success(testImage)
@@ -61,7 +60,35 @@ class StorageRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
-            firebaseStorage.reference.child("tests").child(testId).delete().execute()
+            firebaseStorage.reference.child("tests").child(testId).child(testId).delete().execute()
+        } catch (e: Exception) {
+            ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun deleteTest(testId: String): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
+        return try {
+            val images = firebaseStorage.reference.child("tests").child(testId).listAll().await().items
+            for (image in images) {
+                image.delete().await()
+            }
+            return ApiResult.Success()
+        } catch (e: Exception) {
+            ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun uploadQuestionImage(testId: String, questionId: String, image: String): ApiResult<Uri> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
+        return try {
+            val uri = File(image).toUri()
+            val testImage = firebaseStorage.reference.child("tests").child(testId).child(questionId)
+                .putFile(uri).await()
+                .storage.downloadUrl.await()
+            ApiResult.Success(testImage)
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }

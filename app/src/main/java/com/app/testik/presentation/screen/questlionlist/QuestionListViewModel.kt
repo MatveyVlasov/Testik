@@ -3,6 +3,7 @@ package com.app.testik.presentation.screen.questlionlist
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.testik.R
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.*
@@ -76,7 +77,7 @@ class QuestionListViewModel @Inject constructor(
                 updateOldScreenState()
                 emitEvent(QuestionListScreenEvent.SuccessQuestionsSaving)
             }.onError {
-                emitEvent(QuestionListScreenEvent.ShowSnackbar(it))
+                handleError(it)
             }
         }
     }
@@ -101,6 +102,22 @@ class QuestionListViewModel @Inject constructor(
             it.remove(question)
         }
         updateScreenState(screenUIState.copy(questions = questions))
+    }
+
+    private fun handleError(error: String) {
+        val msg = error.lowercase()
+        when {
+            msg.contains("no internet") -> {
+                emitEvent(QuestionListScreenEvent.ShowSnackbarByRes(R.string.no_internet))
+            }
+            msg.contains("error occurred") -> {
+                emitEvent(QuestionListScreenEvent.ShowSnackbarByRes(R.string.error_occurred))
+            }
+            msg.contains("images were not saved") -> {
+                emitEvent(QuestionListScreenEvent.ShowSnackbarByRes(R.string.error_while_saving_images))
+            }
+            else -> emitEvent(QuestionListScreenEvent.ShowSnackbar(error))
+        }
     }
 
     private fun postItem(data: DelegateAdapterItem) = postListItems(listOf(data))
