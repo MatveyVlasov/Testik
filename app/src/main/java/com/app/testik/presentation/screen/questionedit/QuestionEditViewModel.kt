@@ -139,6 +139,16 @@ class QuestionEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(answers = answers))
     }
 
+    fun moveAnswer(from: Int, to: Int) {
+        if (from == to) return
+        val answers = screenUIState.answers.map { it }.toMutableList().also {
+            val item = it[from]
+            it.removeAt(from)
+            it.add(to, item)
+        }
+        updateScreenState(screenUIState.copy(answers = answers))
+    }
+
     fun loadImage(image: String) {
         if (screenUIState.image == image) return
         updateScreenState(screenUIState.copy(image = image))

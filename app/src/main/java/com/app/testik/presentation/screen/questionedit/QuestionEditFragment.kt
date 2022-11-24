@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.app.testik.R
 import com.app.testik.databinding.FragmentQuestionEditBinding
 import com.app.testik.domain.model.QuestionType
@@ -66,6 +67,10 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             .build()
     }
 
+    private val itemTouchHelper by lazy {
+        ItemTouchHelper(ItemTouchCallback { from, to -> viewModel.moveAnswer(from, to) })
+    }
+
     override fun createBinding(inflater: LayoutInflater) = FragmentQuestionEditBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,6 +100,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             ivImage.clipToOutline = true
 
             rvAnswers.adapter = answersAdapter
+            itemTouchHelper.attachToRecyclerView(rvAnswers)
         }
     }
 
@@ -109,6 +115,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
                 viewModel.addAnswer()
                 scrollView.fullScroll(View.FOCUS_DOWN)
             }
+
             btnDiscard.setOnClickListener {
                 etTitle.clearFocus()
                 etDescription.clearFocus()

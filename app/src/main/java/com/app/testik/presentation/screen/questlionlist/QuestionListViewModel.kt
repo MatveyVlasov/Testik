@@ -104,6 +104,16 @@ class QuestionListViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(questions = questions))
     }
 
+    fun moveQuestion(from: Int, to: Int) {
+        if (from == to) return
+        val questions = screenUIState.questions.map { it }.toMutableList().also {
+            val item = it[from]
+            it.removeAt(from)
+            it.add(to, item)
+        }
+        updateScreenState(screenUIState.copy(questions = questions))
+    }
+
     private fun handleError(error: String) {
         val msg = error.lowercase()
         when {

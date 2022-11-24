@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.R
 import com.app.testik.databinding.FragmentQuestionListBinding
@@ -41,6 +42,10 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
                 )
             )
             .build()
+    }
+
+    private val itemTouchHelper by lazy {
+        ItemTouchHelper(ItemTouchCallback { from, to -> viewModel.moveQuestion(from, to) })
     }
 
     override fun createBinding(inflater: LayoutInflater) = FragmentQuestionListBinding.inflate(inflater)
@@ -79,6 +84,7 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
 
             rvQuestions.apply {
                 adapter = questionsAdapter
+                itemTouchHelper.attachToRecyclerView(this)
 
                 clearOnScrollListeners()
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
