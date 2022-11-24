@@ -13,7 +13,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/toolbar_height"
             app:title="@string/question_settings"
             app:titleTextColor="@color/black"
             app:navigationIconTint="@color/black"
@@ -27,6 +27,8 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbar_height"
+        android:fillViewport="true"
         android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +39,7 @@
                 android:id="@+id/ivImage"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
-                android:layout_marginTop="@dimen/toolbar_height_and_margin"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/rounded_rect_20_dp"
                 android:outlineProvider="background"
                 android:scaleType="centerCrop"

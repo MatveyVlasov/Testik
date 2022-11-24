@@ -17,17 +17,13 @@ interface TestRepository {
 
     suspend fun getTestsByAuthor(authorEmail: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsDto>
 
+    suspend fun getTestsByCategory(category: String, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsDto>
+
     suspend fun getTest(testId: String, source: Source): ApiResult<TestDto>
 
     suspend fun deleteTest(testId: String): ApiResult<Unit>
 
     suspend fun updateQuestions(testId: String, questions: List<QuestionDto>): ApiResult<Unit>
 
-    //suspend fun updateQuestionImage(questionId: String, image: String): ApiResult<Unit>
-
     suspend fun getTestQuestions(testId: String): ApiResult<List<QuestionDto>>
-
-    //suspend fun getQuestion(questionId: String, source: Source): ApiResult<QuestionDto>
-
-    //suspend fun deleteQuestion(questionId: String): ApiResult<Unit>
 }

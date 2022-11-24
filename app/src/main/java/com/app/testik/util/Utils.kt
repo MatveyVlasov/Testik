@@ -2,12 +2,10 @@ package com.app.testik.util
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.util.Patterns
-import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
@@ -76,6 +74,21 @@ fun MaterialToolbar.setupLanguageItem(
         }
     }
 }
+
+fun MaterialToolbar.setupAvatarItem(
+    onClick: () -> Unit = {},
+) {
+    menu.findItem(R.id.profile).apply {
+        setActionView(R.layout.item_avatar)
+
+        actionView?.apply {
+            findViewById<ImageView>(R.id.ivAvatar).clipToOutline = true
+            setOnClickListener { onClick() }
+        }
+    }
+}
+
+fun MaterialToolbar.getAvatarItem(): ImageView = menu.findItem(R.id.profile).actionView?.findViewById(R.id.ivAvatar)!!
 
 fun isOnline(context: Context): Boolean {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager

@@ -146,4 +146,5 @@
     <string name="type">Type</string>
     <string name="single_choice">Single choice</string>
     <string name="multiple_choice">Multiple choice</string>
+    <string name="more_tests">More tests</string>
 </resources>

@@ -14,7 +14,7 @@ class CreatedTestDelegateAdapter(
     val onMoreClick: (View, String) -> Unit
 ) : DelegateAdapter<CreatedTestDelegateItem, CreatedTestDelegateAdapter.ViewHolder>(
         CreatedTestDelegateItem::class.java
-    ) {
+) {
 
     override fun createViewHolder(parent: ViewGroup): RecyclerView.ViewHolder =
         ViewHolder(

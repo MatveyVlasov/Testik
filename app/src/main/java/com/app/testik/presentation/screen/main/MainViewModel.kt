@@ -2,12 +2,16 @@ package com.app.testik.presentation.screen.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.testik.domain.model.CategoryType
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
+import com.app.testik.domain.usecase.GetCategoryTestsUseCase
 import com.app.testik.domain.usecase.GetCurrentUserInfoUseCase
 import com.app.testik.presentation.model.UIState
+import com.app.testik.presentation.screen.main.mapper.toTestItem
 import com.app.testik.presentation.screen.main.model.MainScreenEvent
 import com.app.testik.presentation.screen.main.model.MainScreenUIState
+import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getCurrentUserInfoUseCase: GetCurrentUserInfoUseCase
+    private val getCurrentUserInfoUseCase: GetCurrentUserInfoUseCase,
+    private val getCategoryTestsUseCase: GetCategoryTestsUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<MainScreenUIState>>
@@ -33,19 +38,32 @@ class MainViewModel @Inject constructor(
     private var screenUIState = MainScreenUIState()
 
     init {
+        getUserInfo(Source.CACHE)
         getUserInfo()
+
+        for (item in screenUIState.categoryTests) {
+            getTestsByCategory(item.category)
+        }
     }
 
-    fun getUserInfo() {
-        //emitEvent(MainScreenEvent.Loading)
-
+    fun getUserInfo(source: Source = Source.DEFAULT) {
         viewModelScope.launch {
-            getCurrentUserInfoUseCase().onSuccess {
-                updateScreenState(
-                    MainScreenUIState(
-                        avatar = it.avatar
-                    )
-                )
+            getCurrentUserInfoUseCase(source).onSuccess {
+                updateScreenState(screenUIState.copy(avatar = it.avatar))
+            }.onError {
+                emitEvent(MainScreenEvent.ShowSnackbar(it))
+            }
+        }
+    }
+
+    private fun getTestsByCategory(category: CategoryType) {
+        viewModelScope.launch {
+            getCategoryTestsUseCase(category).onSuccess { data ->
+                val categoryTests = screenUIState.categoryTests.map { it }.toMutableList().also { list ->
+                    val pos = category.ordinal
+                    list[pos] = list[pos].copy(tests = data.tests.map { it.toTestItem() })
+                }
+                updateScreenState(state = screenUIState.copy(categoryTests = categoryTests))
             }.onError {
                 emitEvent(MainScreenEvent.ShowSnackbar(it))
             }

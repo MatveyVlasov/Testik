@@ -141,4 +141,6 @@
     <string name="type">Тип</string>
     <string name="single_choice">Одиночный выбор</string>
     <string name="multiple_choice">Множественный выбор</string>
+
+    <string name="more_tests">Больше тестов</string>
 </resources>

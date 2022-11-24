@@ -248,7 +248,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             title = R.string.select_category,
             positive = R.string.confirm,
             negative = R.string.cancel,
-            items = CategoryType.values().map { it.description }.subList(0, CategoryType.values().lastIndex),
+            items = CategoryType.values().filter { it.title.isNotEmpty() }.map { it.description },
             selectedItem = selectedItem,
             onPositiveClick = { viewModel.onCategoryChanged(CategoryType.values()[selectedItem]) },
             onItemClick = { selectedItem = it }

@@ -100,6 +100,27 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getTestsByCategory(category: String, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsDto> {
+        try {
+            var query = firebaseFirestore.collection("tests")
+                .whereEqualTo("category", category)
+
+            if (snapshot != null)
+                query = query.startAfter(snapshot)
+
+            query
+                .limit(limit)
+                .get()
+                .also {
+                    val newSnapshot = it.await()
+                    return if (it.isSuccessful) ApiResult.Success(TestsDto(newSnapshot))
+                    else ApiResult.Error(it.exception?.message)
+                }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
+
     override suspend fun getTest(testId: String, source: Source): ApiResult<TestDto> {
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
