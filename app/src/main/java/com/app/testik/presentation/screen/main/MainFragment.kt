@@ -50,13 +50,16 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         binding.apply {
             toolbar.setupAvatarItem { navigateToProfile() }
 
+            val color = requireContext().getThemeColor(com.google.android.material.R.attr.colorSecondary)
+            swipeRefresh.setColorSchemeColors(color)
+
             rvCategoryTests.adapter = categoryTestsAdapter
         }
     }
 
     private fun initListeners() {
         binding.apply {
-
+            swipeRefresh.setOnRefreshListener { viewModel.getTests() }
         }
 
         observeResult<Boolean>(UPDATE_AVATAR_RESULT_KEY) { if (it) viewModel.getUserInfo() }
@@ -70,6 +73,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                         state.onSuccess {
                             loadAvatar(it.avatar)
                             categoryTestsAdapter.submitList(it.categoryTests)
+                            binding.swipeRefresh.isRefreshing = false
                         }
                     }
                 }

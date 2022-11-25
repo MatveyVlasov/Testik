@@ -6,8 +6,11 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.util.Patterns
+import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.app.testik.R
 import com.app.testik.data.model.ApiResult
@@ -50,6 +53,11 @@ fun Context.setAppLocale(language: String): Context {
     config.setLayoutDirection(locale)
     return createConfigurationContext(config)
 }
+
+@ColorInt
+fun Context.getThemeColor(@AttrRes attrRes: Int): Int = TypedValue()
+    .apply { theme.resolveAttribute (attrRes, this, true) }
+    .data
 
 suspend fun<T> Task<T>.execute(): ApiResult<Unit> {
     await()

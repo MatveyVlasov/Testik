@@ -41,9 +41,7 @@ class MainViewModel @Inject constructor(
         getUserInfo(Source.CACHE)
         getUserInfo()
 
-        for (item in screenUIState.categoryTests) {
-            getTestsByCategory(item.category)
-        }
+        getTests()
     }
 
     fun getUserInfo(source: Source = Source.DEFAULT) {
@@ -53,6 +51,13 @@ class MainViewModel @Inject constructor(
             }.onError {
                 emitEvent(MainScreenEvent.ShowSnackbar(it))
             }
+        }
+    }
+
+    fun getTests() {
+        _uiState.value = UIState.Loading
+        for (item in screenUIState.categoryTests) {
+            getTestsByCategory(item.category)
         }
     }
 
