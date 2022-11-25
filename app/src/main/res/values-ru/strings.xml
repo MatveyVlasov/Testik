@@ -109,6 +109,7 @@
     <string name="description_too_long">Описание слишком длинное</string>
     <string name="category">Категория</string>
     <string name="select_category">Выберите категорию</string>
+    <string name="publish">Опубликовать (будет виден на главной странице)</string>
     <string name="create_test_success">Тест успешно создан</string>
     <string name="edit_questions">Редактировать вопросы</string>
 

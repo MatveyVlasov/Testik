@@ -10,6 +10,7 @@ data class TestEditScreenUIState(
     val description: String = "",
     val category: CategoryType = CategoryType.NOT_SELECTED,
     val image: String = "",
+    val isPublished: Boolean = false,
     val testUpdated: TestModel? = null,
     val canSave: Boolean = true,
     @StringRes val titleError: Int? = null,

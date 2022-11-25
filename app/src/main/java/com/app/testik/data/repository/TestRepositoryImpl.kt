@@ -66,6 +66,7 @@ class TestRepositoryImpl @Inject constructor(
                     "description" to description,
                     "category" to category,
                     "image" to image,
+                    "isPublished" to isPublished,
                     "timestamp" to timestamp
                 )
 
@@ -104,6 +105,7 @@ class TestRepositoryImpl @Inject constructor(
         try {
             var query = firebaseFirestore.collection("tests")
                 .whereEqualTo("category", category)
+                .whereEqualTo("isPublished", true)
 
             if (snapshot != null)
                 query = query.startAfter(snapshot)

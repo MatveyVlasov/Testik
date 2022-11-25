@@ -34,7 +34,8 @@ fun TestDto.toDomain() =
         title = title,
         description = description,
         category = category.toCategoryType(),
-        image = image
+        image = image,
+        isPublished = isPublished
     )
 
 fun QuestionDto.toDomain() =

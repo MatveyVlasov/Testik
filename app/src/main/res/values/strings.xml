@@ -114,6 +114,7 @@
     <string name="description_too_long">Description is too long</string>
     <string name="category">Category</string>
     <string name="select_category">Select category</string>
+    <string name="publish">Publish (will be visible on main page)</string>
     <string name="create_test_success">Test successfully created</string>
     <string name="edit_questions">Edit questions</string>
 
@@ -146,5 +147,6 @@
     <string name="type">Type</string>
     <string name="single_choice">Single choice</string>
     <string name="multiple_choice">Multiple choice</string>
+
     <string name="more_tests">More tests</string>
 </resources>

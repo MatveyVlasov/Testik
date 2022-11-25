@@ -33,7 +33,8 @@ fun TestModel.toDto() =
         title = title,
         description = description,
         category = category.title,
-        image = image
+        image = image,
+        isPublished = isPublished
     )
 
 fun QuestionModel.toDto() =

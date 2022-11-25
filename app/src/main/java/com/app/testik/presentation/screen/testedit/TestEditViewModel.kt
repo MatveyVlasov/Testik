@@ -67,6 +67,11 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(category = category, categoryError = null))
     }
 
+    fun onPublishChanged(isPublished: Boolean) {
+        if (isPublished == screenUIState.isPublished) return
+        updateScreenState(screenUIState.copy(isPublished = isPublished))
+    }
+
     fun loadImage(image: String) {
         if (screenUIState.image == image) return
         updateScreenState(screenUIState.copy(image = image))
@@ -110,7 +115,8 @@ class TestEditViewModel @Inject constructor(
                     title = it.title,
                     description = it.description,
                     category = it.category,
-                    image = it.image
+                    image = it.image,
+                    isPublished = it.isPublished
                 )
                 oldScreenUIState = screenState
                 updateScreenState(state = screenState)

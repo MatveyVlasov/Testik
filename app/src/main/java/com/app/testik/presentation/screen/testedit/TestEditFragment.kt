@@ -83,7 +83,11 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             ivImage.setOnClickListener { viewImage() }
             ivEditImage.setOnClickListener { onChangeImage() }
             etCategory.setOnClickListener { showChangeCategoryDialog() }
+
+            switchPublish.setOnCheckedChangeListener { _, isChecked -> viewModel.onPublishChanged(isChecked) }
+
             btnSave.setOnClickListener { viewModel.save() }
+
             btnEditQuestions.setOnClickListener {
                 if (viewModel.screenUIState.canSave) confirmExitWithoutSaving {
                     etTitle.clearFocus()
@@ -147,6 +151,8 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             tilDescription.error = getStringOrNull(data.descriptionError)
             tilCategory.error = getStringOrNull(data.categoryError)
 
+            switchPublish.isChecked = data.isPublished
+
             btnSave.isEnabled = data.canSave
         }
 
@@ -163,12 +169,16 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
                 toolbar.setTitle(R.string.test_creation)
                 toolbar.menu.findItem(R.id.delete).isVisible = false
                 toolbar.menu.findItem(R.id.demo).isVisible = false
+
+                llPublish.isVisible = false
                 btnSave.setText(R.string.create_test)
                 btnEditQuestions.isVisible = false
             } else {
                 toolbar.setTitle(R.string.test_settings)
                 toolbar.menu.findItem(R.id.delete).isVisible = true
                 toolbar.menu.findItem(R.id.demo).isVisible = true
+
+                llPublish.isVisible = true
                 btnSave.setText(R.string.save)
                 btnEditQuestions.isVisible = true
             }

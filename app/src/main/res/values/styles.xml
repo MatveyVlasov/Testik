@@ -114,4 +114,17 @@
         <item name="android:maxLines">1</item>
         <item name="android:autoSizeTextType">uniform</item>
     </style>
+
+    <style name="SwitchTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">5</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:textColor">@color/black</item>
+
+        <item name="android:maxLines">1</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMaxTextSize">18sp</item>
+    </style>
 </resources>
