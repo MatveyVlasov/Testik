@@ -74,7 +74,9 @@ class TestEditViewModel @Inject constructor(
 
     fun onQuestionNumChanged(questionsNum: Int) {
         if (questionsNum == screenUIState.questionsNum) return
-        updateScreenState(screenUIState.copy(questionsNum = questionsNum))
+        val state = screenUIState.copy(questionsNum = questionsNum)
+        oldScreenUIState = state
+        updateScreenState(state)
     }
 
     fun loadImage(image: String) {
