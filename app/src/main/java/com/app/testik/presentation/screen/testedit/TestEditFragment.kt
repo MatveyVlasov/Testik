@@ -73,6 +73,8 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             }
 
             ivImage.clipToOutline = true
+
+            tvPublish.addInfoIcon { navigateToInfo(getString(R.string.publish_info)) }
         }
     }
 
@@ -193,6 +195,12 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
     private fun navigateToQuestionList() {
         navController.navigate(
             TestEditFragmentDirections.toQuestionList(viewModel.screenUIState.id)
+        )
+    }
+
+    private fun navigateToInfo(text: String) {
+        navController.navigate(
+            TestEditFragmentDirections.toInfo(text)
         )
     }
 

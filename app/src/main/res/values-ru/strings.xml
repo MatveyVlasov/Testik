@@ -41,6 +41,7 @@
     <string name="confirm">Подтвердить</string>
     <string name="cancel">Отмена</string>
     <string name="close">Закрыть</string>
+    <string name="info">Информация</string>
 
     <string name="registration">Регистрация</string>
     <string name="repeat_password">Повторите пароль</string>
@@ -109,7 +110,8 @@
     <string name="description_too_long">Описание слишком длинное</string>
     <string name="category">Категория</string>
     <string name="select_category">Выберите категорию</string>
-    <string name="publish">Опубликовать (будет виден на главной странице)</string>
+    <string name="publish">Опубликовать</string>
+    <string name="publish_info">Тест будет виден на главной странице</string>
     <string name="create_test_success">Тест успешно создан</string>
     <string name="edit_questions">Редактировать вопросы</string>
 

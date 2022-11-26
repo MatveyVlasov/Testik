@@ -5,6 +5,10 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <action
+        android:id="@+id/toInfo"
+        app:destination="@id/infoFragment" />
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.app.testik.presentation.screen.login.LoginFragment"
@@ -113,6 +117,16 @@
             android:name="questionId"
             app:argType="com.app.testik.presentation.model.QuestionDelegateItem" />
     </fragment>
+
+    <dialog
+        android:id="@+id/infoFragment"
+        android:name="com.app.testik.presentation.dialog.info.InfoFragment"
+        android:label="InfoFragment"
+        tools:layout="@layout/fragment_info">
+        <argument
+            android:name="text"
+            app:argType="string" />
+    </dialog>
 
 
 </navigation>

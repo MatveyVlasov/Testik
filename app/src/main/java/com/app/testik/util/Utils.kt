@@ -1,17 +1,24 @@
 package com.app.testik.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Patterns
 import android.util.TypedValue
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.app.testik.R
 import com.app.testik.data.model.ApiResult
 import com.app.testik.util.Constants.USERNAME_GOOGLE_DELIMITER
@@ -134,3 +141,47 @@ fun loadTestImage(context: Context, imageView: ImageView, url: String) =
 
 fun loadQuestionImage(context: Context, imageView: ImageView, url: String) =
     loadImage(context = context, imageView = imageView, url = url, defaultImage = R.drawable.ic_question_mark)
+
+fun TextView.addImage(
+    atText: String,
+    @DrawableRes image: Int,
+    width: Int,
+    height: Int,
+    onClick: (() -> Unit)? = null
+) {
+    val ssb = SpannableStringBuilder(text)
+
+    val drawable = ContextCompat.getDrawable(context, image) ?: return
+    drawable.mutate()
+    drawable.setBounds(0, 0, width, height)
+
+    val start = text.indexOf(atText)
+    ssb.setSpan(VerticalImageSpan(drawable), start, start + atText.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+
+    if (onClick != null) {
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                onClick()
+            }
+        }
+        ssb.setSpan(clickableSpan, start, start + atText.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        movementMethod = LinkMovementMethod()
+    }
+
+    setText(ssb, TextView.BufferType.SPANNABLE)
+}
+
+@SuppressLint("SetTextI18n")
+fun TextView.addInfoIcon(onClick: () -> Unit) {
+    val tag = "[ic_info]"
+    val imageSize = 16.px
+
+    text = "$text $tag"
+    addImage(
+        atText = tag,
+        image = R.drawable.ic_info,
+        width = imageSize,
+        height = imageSize,
+        onClick = onClick
+    )
+}
