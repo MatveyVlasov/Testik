@@ -117,8 +117,8 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             }
 
             btnDiscard.setOnClickListener {
-                etTitle.clearFocus()
-                etDescription.clearFocus()
+                clearFocus()
+                scrollView.fullScroll(View.FOCUS_UP)
                 viewModel.discardChanges()
             }
 
@@ -268,8 +268,20 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             negative = R.string.cancel,
             items = QuestionType.values().map { it.description },
             selectedItem = selectedItem,
-            onPositiveClick = { viewModel.onTypeChanged(QuestionType.values()[selectedItem]) },
+            onPositiveClick = { changeType(QuestionType.values()[selectedItem]) },
             onItemClick = { selectedItem = it }
         )
+    }
+
+    private fun changeType(type: QuestionType) {
+        clearFocus()
+        viewModel.onTypeChanged(type)
+    }
+
+    private fun clearFocus() {
+        binding.etInvisible.apply {
+            requestFocus()
+            clearFocus()
+        }
     }
 }

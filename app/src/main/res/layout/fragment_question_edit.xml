@@ -118,6 +118,17 @@
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilInvisible"
+                    style="@style/CustomTextInputLayout.LightGray"
+                    android:visibility="invisible">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etInvisible"
+                        style="@style/CustomTextInputEditText.LightGray" />
+
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -128,6 +139,7 @@
                 android:paddingVertical="8dp"
                 android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintVertical_bias="0"
                 app:layout_constraintTop_toBottomOf="@id/llQuestionForm"
                 app:layout_constraintBottom_toTopOf="@id/btnDiscard"
                 app:layout_constraintStart_toStartOf="parent"
