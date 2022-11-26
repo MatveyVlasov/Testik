@@ -133,10 +133,11 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
     }
 
     private fun renderUIState(isListEmpty: Boolean) {
+        val isVisible = isListEmpty && !viewModel.hasUnsavedChanges
         binding.apply {
-            llNoQuestions.isVisible = isListEmpty
-            rvQuestions.isVisible = !isListEmpty
-            btnSave.isVisible = !isListEmpty
+            llNoQuestions.isVisible = isVisible
+            rvQuestions.isVisible = !isVisible
+            btnSave.isVisible = !isVisible
         }
     }
 
