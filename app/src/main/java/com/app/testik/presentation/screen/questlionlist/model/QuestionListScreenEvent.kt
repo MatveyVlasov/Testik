@@ -10,5 +10,5 @@ sealed class QuestionListScreenEvent {
 
     object Loading : QuestionListScreenEvent()
 
-    object SuccessQuestionsSaving : QuestionListScreenEvent()
+    data class SuccessQuestionsSaving(val questionsNum: Int) : QuestionListScreenEvent()
 }

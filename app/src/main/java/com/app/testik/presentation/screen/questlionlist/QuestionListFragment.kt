@@ -127,7 +127,10 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
             is QuestionListScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
             is QuestionListScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
             is QuestionListScreenEvent.Loading -> Unit
-            is QuestionListScreenEvent.SuccessQuestionsSaving -> showSnackbar(message = R.string.save_questions_success)
+            is QuestionListScreenEvent.SuccessQuestionsSaving -> {
+                setResult(Constants.UPDATE_QUESTION_LIST_RESULT_KEY, event.questionsNum)
+                showSnackbar(message = R.string.save_questions_success)
+            }
         }
         setLoadingState(event is QuestionListScreenEvent.Loading)
     }

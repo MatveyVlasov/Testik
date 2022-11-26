@@ -72,6 +72,11 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(isPublished = isPublished))
     }
 
+    fun onQuestionNumChanged(questionsNum: Int) {
+        if (questionsNum == screenUIState.questionsNum) return
+        updateScreenState(screenUIState.copy(questionsNum = questionsNum))
+    }
+
     fun loadImage(image: String) {
         if (screenUIState.image == image) return
         updateScreenState(screenUIState.copy(image = image))

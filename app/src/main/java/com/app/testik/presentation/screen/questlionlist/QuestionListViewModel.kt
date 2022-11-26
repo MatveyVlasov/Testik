@@ -75,7 +75,7 @@ class QuestionListViewModel @Inject constructor(
 
             updateQuestionsUseCase(screenUIState.testId, questions).onSuccess {
                 updateOldScreenState()
-                emitEvent(QuestionListScreenEvent.SuccessQuestionsSaving)
+                emitEvent(QuestionListScreenEvent.SuccessQuestionsSaving(questions.size))
             }.onError {
                 handleError(it)
             }
