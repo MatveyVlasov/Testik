@@ -116,7 +116,8 @@ class TestEditViewModel @Inject constructor(
                     description = it.description,
                     category = it.category,
                     image = it.image,
-                    isPublished = it.isPublished
+                    isPublished = it.isPublished,
+                    questionsNum = it.questionsNum
                 )
                 oldScreenUIState = screenState
                 updateScreenState(state = screenState)
@@ -170,7 +171,7 @@ class TestEditViewModel @Inject constructor(
     }
 
     private fun validateData(): Boolean {
-        return checkDescriptionLength() && checkTitleNotBlank() && checkCategoryNotBlank()
+        return checkDescriptionLength() && checkTitleNotBlank() && checkCategoryNotBlank() && checkHasQuestions()
     }
 
     private fun checkDescriptionLength(): Boolean {
@@ -188,6 +189,12 @@ class TestEditViewModel @Inject constructor(
     private fun checkCategoryNotBlank(): Boolean {
         return (screenUIState.category != CategoryType.NOT_SELECTED).also {
             if (!it) updateScreenState(screenUIState.copy(categoryError = R.string.blank_field_error))
+        }
+    }
+
+    private fun checkHasQuestions(): Boolean {
+        return (!screenUIState.isPublished || screenUIState.questionsNum > 0).also {
+            if (!it) emitEvent(TestEditScreenEvent.ShowSnackbarByRes(R.string.publish_no_questions))
         }
     }
 

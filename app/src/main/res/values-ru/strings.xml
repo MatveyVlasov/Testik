@@ -113,6 +113,7 @@
     <string name="select_category">Выберите категорию</string>
     <string name="publish">Опубликовать</string>
     <string name="publish_info">Тест будет виден на главной странице</string>
+    <string name="publish_no_questions">Тест без вопросов не может быть опубликован</string>
     <string name="create_test_success">Тест успешно создан</string>
     <string name="edit_questions">Редактировать вопросы</string>
 
