@@ -139,6 +139,7 @@ class TestRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteTest(testId: String): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
