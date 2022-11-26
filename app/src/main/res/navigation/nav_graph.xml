@@ -78,6 +78,9 @@
         <action
             android:id="@+id/toEditTest"
             app:destination="@id/testEditFragment" />
+        <action
+            android:id="@+id/toQuestionList"
+            app:destination="@id/questionListFragment" />
     </fragment>
 
     <fragment

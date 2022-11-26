@@ -1,8 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
   <item
-      android:id="@+id/edit"
-      android:title="@string/edit"
+      android:id="@+id/editTest"
+      android:title="@string/edit_test"
+      android:icon="@drawable/ic_edit" />
+
+  <item
+      android:id="@+id/editQuestions"
+      android:title="@string/edit_questions"
       android:icon="@drawable/ic_edit" />
 
   <item

@@ -133,7 +133,8 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
 
             setOnMenuItemClickListener { menuItem: MenuItem ->
                 when (menuItem.itemId) {
-                    R.id.edit -> navigateToTest(testId)
+                    R.id.editTest -> navigateToTest(testId)
+                    R.id.editQuestions -> navigateToQuestionList(testId)
                     R.id.demo -> Unit
                     R.id.delete -> confirmDeletion(testId)
                 }
@@ -147,6 +148,12 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
     private fun navigateToTest(testId: String = "") {
         navController.navigate(
             CreatedTestsFragmentDirections.toEditTest(testId)
+        )
+    }
+
+    private fun navigateToQuestionList(testId: String) {
+        navController.navigate(
+            CreatedTestsFragmentDirections.toQuestionList(testId)
         )
     }
 

@@ -87,6 +87,7 @@
     <string name="created_tests">Созданные тесты</string>
 
     <string name="edit">Редактировать</string>
+    <string name="edit_test">Редактировать тест</string>
     <string name="demo">Запустить демо тест</string>
     <string name="delete">Удалить</string>
     <string name="test_image">Изображение теста</string>

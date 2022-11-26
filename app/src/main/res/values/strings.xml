@@ -92,6 +92,7 @@
     <string name="created_tests">Created tests</string>
 
     <string name="edit">Edit</string>
+    <string name="edit_test">Edit test</string>
     <string name="demo">Run demo test</string>
     <string name="delete">Delete</string>
     <string name="test_image">Test Image</string>
