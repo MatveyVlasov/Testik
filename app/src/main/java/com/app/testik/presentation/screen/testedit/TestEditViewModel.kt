@@ -49,7 +49,7 @@ class TestEditViewModel @Inject constructor(
 
     init {
         if (screenUIState.id.isEmpty()) updateScreenState(screenUIState)
-        getTestInfo(testId = screenUIState.id, source = Source.CACHE)
+        getTestInfo(source = Source.CACHE)
     }
 
     fun onTitleChanged(title: String) {
@@ -111,13 +111,13 @@ class TestEditViewModel @Inject constructor(
         }
     }
 
-    private fun getTestInfo(testId: String, source: Source = Source.DEFAULT) {
-        if (testId.isEmpty()) return
+    private fun getTestInfo(source: Source = Source.DEFAULT, isUpdated: Boolean = false) {
+        if (screenUIState.id.isEmpty()) return
         emitEvent(TestEditScreenEvent.Loading)
 
         viewModelScope.launch {
             getTestInfoUseCase(testId = screenUIState.id, source = source).onSuccess {
-                val screenState = TestEditScreenUIState(
+                var screenState = TestEditScreenUIState(
                     id = screenUIState.id,
                     title = it.title,
                     description = it.description,
@@ -126,8 +126,9 @@ class TestEditViewModel @Inject constructor(
                     isPublished = it.isPublished,
                     questionsNum = it.questionsNum
                 )
+                if (isUpdated) screenState = screenState.copy(testUpdated = screenState.toDomain())
                 oldScreenUIState = screenState
-                updateScreenState(state = screenState)
+                updateScreenState(screenState)
             }.onError {
                 emitEvent(TestEditScreenEvent.ShowSnackbar(it))
             }
@@ -151,9 +152,7 @@ class TestEditViewModel @Inject constructor(
     private fun updateTest() {
         viewModelScope.launch {
             updateTestUseCase(screenUIState.toDomain()).onSuccess {
-                val screenState = screenUIState.copy(testUpdated = screenUIState.toDomain())
-                oldScreenUIState = screenState
-                updateScreenState(screenState)
+                getTestInfo(isUpdated = true)
                 emitEvent(TestEditScreenEvent.ShowSnackbarByRes(R.string.saved))
             }.onError {
                 handleError(it)

@@ -63,26 +63,6 @@ class ProfileViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(lastName = lastName, lastNameError = null))
     }
 
-    fun getUserInfo(source: Source = Source.DEFAULT) {
-        emitEvent(ProfileScreenEvent.Loading)
-
-        viewModelScope.launch {
-            getCurrentUserInfoUseCase(source).onSuccess {
-                val screenState = ProfileScreenUIState(
-                    email = it.email,
-                    username = it.username,
-                    firstName = it.firstName,
-                    lastName = it.lastName,
-                    avatar = it.avatar
-                )
-                oldScreenUIState = screenState
-                updateScreenState(state = screenState)
-            }.onError {
-                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
-            }
-        }
-    }
-
     fun loadAvatar(avatar: String) {
         if (screenUIState.avatar == avatar) return
         updateScreenState(screenUIState.copy(avatar = avatar))
@@ -98,9 +78,7 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
             updateUserUseCase(screenUIState.toDomain()).onSuccess {
-                val screenState = screenUIState.copy(avatarUpdated = avatarUpdated)
-                oldScreenUIState = screenState
-                updateScreenState(screenState)
+                getUserInfo(isAvatarUpdated = avatarUpdated || screenUIState.avatarUpdated)
                 emitEvent(ProfileScreenEvent.ShowSnackbarByRes(R.string.saved))
             }.onError {
                 handleError(it)
@@ -111,6 +89,51 @@ class ProfileViewModel @Inject constructor(
     fun setLanguage(lang: String) {
         preferencesUseCase.setLanguage(lang)
         emitEvent(ProfileScreenEvent.Restart)
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            signOutUseCase().onSuccess {
+                emitEvent(ProfileScreenEvent.SuccessSignOut)
+            }.onError {
+                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
+            }
+        }
+    }
+
+    fun deleteAccount() {
+        viewModelScope.launch {
+            deleteUserUseCase(screenUIState.email).onSuccess {
+                signOutUseCase().onSuccess {
+                    emitEvent(ProfileScreenEvent.SuccessAccountDeletion)
+                }.onError {
+                    emitEvent(ProfileScreenEvent.ShowSnackbar(it))
+                }
+            }.onError {
+                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
+            }
+        }
+    }
+
+    private fun getUserInfo(source: Source = Source.DEFAULT, isAvatarUpdated: Boolean = false) {
+        emitEvent(ProfileScreenEvent.Loading)
+
+        viewModelScope.launch {
+            getCurrentUserInfoUseCase(source).onSuccess {
+                val screenState = ProfileScreenUIState(
+                    email = it.email,
+                    username = it.username,
+                    firstName = it.firstName,
+                    lastName = it.lastName,
+                    avatar = it.avatar,
+                    avatarUpdated = isAvatarUpdated
+                )
+                oldScreenUIState = screenState
+                updateScreenState(state = screenState)
+            }.onError {
+                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
+            }
+        }
     }
 
     private fun handleError(error: String) {
@@ -139,30 +162,6 @@ class ProfileViewModel @Inject constructor(
     private fun checkUsername(): Boolean {
         return (screenUIState.username.isUsername()).also {
             if (!it) updateScreenState(screenUIState.copy(usernameError = R.string.username_badly_formatted))
-        }
-    }
-
-    fun signOut() {
-        viewModelScope.launch {
-            signOutUseCase().onSuccess {
-                emitEvent(ProfileScreenEvent.SuccessSignOut)
-            }.onError {
-                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
-            }
-        }
-    }
-
-    fun deleteAccount() {
-        viewModelScope.launch {
-            deleteUserUseCase(screenUIState.email).onSuccess {
-                signOutUseCase().onSuccess {
-                    emitEvent(ProfileScreenEvent.SuccessAccountDeletion)
-                }.onError {
-                    emitEvent(ProfileScreenEvent.ShowSnackbar(it))
-                }
-            }.onError {
-                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
-            }
         }
     }
 

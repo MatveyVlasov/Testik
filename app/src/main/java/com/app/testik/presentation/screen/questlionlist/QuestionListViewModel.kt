@@ -74,7 +74,7 @@ class QuestionListViewModel @Inject constructor(
                 .map { it.toDomain() }
 
             updateQuestionsUseCase(screenUIState.testId, questions).onSuccess {
-                updateOldScreenState()
+                updateList()
                 emitEvent(QuestionListScreenEvent.SuccessQuestionsSaving(questions.size))
             }.onError {
                 handleError(it)
@@ -112,6 +112,15 @@ class QuestionListViewModel @Inject constructor(
             it.add(to, item)
         }
         updateScreenState(screenUIState.copy(questions = questions))
+    }
+
+    private fun updateList() {
+        viewModelScope.launch {
+            getTestQuestionsUseCase(screenUIState.testId).onSuccess { list ->
+                updateScreenState(screenUIState.copy(questions = list.map { it.toQuestionItem() }))
+            }
+            updateOldScreenState()
+        }
     }
 
     private fun handleError(error: String) {
