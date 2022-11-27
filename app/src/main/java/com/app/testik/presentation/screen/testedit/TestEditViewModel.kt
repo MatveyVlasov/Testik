@@ -13,6 +13,7 @@ import com.app.testik.presentation.screen.testedit.mapper.toDomain
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenEvent
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenUIState
 import com.app.testik.util.Constants.MAX_DESCRIPTION_LENGTH
+import com.app.testik.util.removeExtraSpacesAndBreaks
 import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -54,7 +55,7 @@ class TestEditViewModel @Inject constructor(
 
     fun onTitleChanged(title: String) {
         if (title == screenUIState.title) return
-        updateScreenState(screenUIState.copy(title = title, titleError = null))
+        updateScreenState(screenUIState.copy(title = title.removeExtraSpacesAndBreaks(), titleError = null))
     }
 
     fun onDescriptionChanged(description: String) {

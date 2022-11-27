@@ -37,6 +37,8 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="14sp"
+            android:maxLines="3"
+            android:ellipsize="end"
             tools:text="What do you know about our app?" />
 
         <ImageView

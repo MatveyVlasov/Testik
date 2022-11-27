@@ -13,6 +13,7 @@ import com.app.testik.presentation.screen.questionedit.model.MultipleChoiceDeleg
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenEvent
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenUIState
 import com.app.testik.util.Constants.MAX_DESCRIPTION_LENGTH
+import com.app.testik.util.removeExtraSpacesAndBreaks
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -62,7 +63,7 @@ class QuestionEditViewModel @Inject constructor(
 
     fun onTitleChanged(title: String) {
         if (title == screenUIState.title) return
-        updateScreenState(screenUIState.copy(title = title, titleError = null))
+        updateScreenState(screenUIState.copy(title = title.removeExtraSpacesAndBreaks(), titleError = null))
     }
 
     fun onDescriptionChanged(description: String) {
@@ -96,7 +97,7 @@ class QuestionEditViewModel @Inject constructor(
 
         val pos = screenUIState.answers.indexOf(item)
         val answers = screenUIState.answers.map { it }.toMutableList().also {
-            it[pos] = it[pos].copy(text = text)
+            it[pos] = it[pos].copy(text = text.removeExtraSpacesAndBreaks())
         }
         screenUIState = screenUIState.copy(answers = answers, canDiscard = true)
         emitEvent(QuestionEditScreenEvent.EnableDiscardButton)

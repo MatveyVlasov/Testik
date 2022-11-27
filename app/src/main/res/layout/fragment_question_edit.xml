@@ -84,7 +84,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etTitle"
                         style="@style/CustomTextInputEditText.LightGray"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:maxLength="@integer/title_max_length" />
 
                 </com.google.android.material.textfield.TextInputLayout>

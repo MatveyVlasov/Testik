@@ -46,6 +46,8 @@ fun String.toUsername() = filter { c -> c.isLetterOrDigit() || c == USERNAME_GOO
 
 fun String.removeExtraSpaces() = trim().replace("\\s+".toRegex(), " ")
 
+fun String.removeExtraSpacesAndBreaks() = replace("\n", " ").removeExtraSpaces()
+
 fun String.isEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches() && isNotBlank()
 
 fun Uri?.toAvatar() = toString().takeWhile { it != '=' }
