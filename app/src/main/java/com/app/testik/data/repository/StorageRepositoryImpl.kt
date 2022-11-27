@@ -1,6 +1,8 @@
 package com.app.testik.data.repository
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.net.toUri
 import com.app.testik.data.model.ApiResult
@@ -12,6 +14,7 @@ import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 
 class StorageRepositoryImpl @Inject constructor(
@@ -23,8 +26,7 @@ class StorageRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
-            val uri = File(image).toUri()
-            val avatar = firebaseStorage.reference.child("avatars").child(email).uploadImage(uri)
+            val avatar = firebaseStorage.reference.child("avatars").child(email).uploadImage(image)
             ApiResult.Success(avatar)
         } catch (e: Exception) {
             ApiResult.Error(e.message)
@@ -45,8 +47,7 @@ class StorageRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
-            val uri = File(image).toUri()
-            val testImage = firebaseStorage.reference.child("tests").child(testId).child(testId).uploadImage(uri)
+            val testImage = firebaseStorage.reference.child("tests").child(testId).child(testId).uploadImage(image)
             ApiResult.Success(testImage)
         } catch (e: Exception) {
             ApiResult.Error(e.message)
@@ -81,14 +82,36 @@ class StorageRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
-            val uri = File(image).toUri()
-            val testImage = firebaseStorage.reference.child("tests").child(testId).child(questionId).uploadImage(uri)
+            val testImage = firebaseStorage.reference.child("tests").child(testId).child(questionId).uploadImage(image)
             ApiResult.Success(testImage)
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
     }
 
-    private suspend fun StorageReference.uploadImage(uri: Uri) =
-        putFile(uri).await().storage.downloadUrl.await()
+    private suspend fun StorageReference.uploadImage(image: String) =
+        putFile(compressImage(image).toUri()).await().storage.downloadUrl.await()
+
+    private fun compressImage(image: String): File {
+        val outputDir = context.cacheDir
+        val compressedImageFile = File.createTempFile("temp", ".jpg", outputDir)
+
+        try {
+            val bitmap = BitmapFactory.decodeFile(image)
+            bitmap.compress(
+                Bitmap.CompressFormat.JPEG,
+                IMAGE_COMPRESS_RATIO,
+                FileOutputStream(compressedImageFile)
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return compressedImageFile
+    }
+
+    companion object {
+        const val IMAGE_COMPRESS_RATIO = 50
+    }
+
 }
