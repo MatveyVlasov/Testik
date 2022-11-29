@@ -111,6 +111,7 @@
     <string name="description_too_long">Описание слишком длинное</string>
     <string name="category">Категория</string>
     <string name="select_category">Выберите категорию</string>
+    <string name="select_question_type">Выберите тип вопроса</string>
     <string name="publish">Опубликовать</string>
     <string name="publish_info">Тест будет виден на главной странице</string>
     <string name="publish_no_questions">Тест без вопросов не может быть опубликован</string>

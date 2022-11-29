@@ -85,7 +85,7 @@
                         android:id="@+id/etTitle"
                         style="@style/CustomTextInputEditText.LightGray"
                         android:inputType="textMultiLine"
-                        android:maxLength="@integer/title_max_length" />
+                        android:maxLength="@integer/question_max_length" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

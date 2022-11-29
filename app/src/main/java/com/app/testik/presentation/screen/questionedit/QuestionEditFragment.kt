@@ -263,7 +263,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
         var selectedItem = viewModel.screenUIState.type.ordinal
 
         showSingleChoiceDialog(
-            title = R.string.select_category,
+            title = R.string.select_question_type,
             positive = R.string.confirm,
             negative = R.string.cancel,
             items = QuestionType.values().map { it.description },

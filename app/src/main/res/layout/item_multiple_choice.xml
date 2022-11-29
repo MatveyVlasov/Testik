@@ -34,8 +34,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etAnswer"
                 style="@style/CustomTextInputEditText.LightGray"
-                android:inputType="textEmailAddress"
-                android:maxLength="@integer/email_max_length" />
+                android:inputType="textMultiLine"
+                android:maxLength="@integer/answer_max_length" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

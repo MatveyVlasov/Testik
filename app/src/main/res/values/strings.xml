@@ -116,6 +116,7 @@
     <string name="description_too_long">Description is too long</string>
     <string name="category">Category</string>
     <string name="select_category">Select category</string>
+    <string name="select_question_type">Select type</string>
     <string name="publish">Publish</string>
     <string name="publish_info">Your test will be visible on main page</string>
     <string name="publish_no_questions">Test with no questions cannot be published</string>
