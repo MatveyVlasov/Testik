@@ -1,7 +1,9 @@
 package com.app.testik.domain.model
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class TestModel(
     val id: String = "",
     val author: String = "",
@@ -11,4 +13,4 @@ data class TestModel(
     val image: String = "",
     val isPublished: Boolean = false,
     val questionsNum: Int = 0
-) : Serializable
+) : Parcelable
