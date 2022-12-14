@@ -150,4 +150,12 @@
     <string name="multiple_choice">Множественный выбор</string>
 
     <string name="more_tests">Больше тестов</string>
+
+    <string name="author">Автор</string>
+    <plurals name="questions_num">
+        <item quantity="one">%d вопрос</item>
+        <item quantity="few">%d вопроса</item>
+        <item quantity="many">%d вопросов</item>
+    </plurals>
+    <string name="start">Начать</string>
 </resources>

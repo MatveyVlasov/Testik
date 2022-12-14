@@ -21,6 +21,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.app.testik.R
 import com.app.testik.data.model.ApiResult
+import com.app.testik.domain.model.UserModel
 import com.app.testik.util.Constants.USERNAME_GOOGLE_DELIMITER
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
@@ -43,6 +44,16 @@ fun Char.isDigitOrLatinLowercase() = this.isDigit() || this in 'a'..'z'
 fun String.isUsername() = all { it.isDigitOrLatinLowercase() } && isNotBlank()
 
 fun String.toUsername() = filter { c -> c.isLetterOrDigit() || c == USERNAME_GOOGLE_DELIMITER }.lowercase()
+
+fun UserModel.getFullName(): String {
+    var name = username
+
+    if (firstName.isNotEmpty() && lastName.isNotEmpty()) name += " ($firstName $lastName)"
+    else if (firstName.isNotEmpty()) name += " ($firstName)"
+    else if (lastName.isNotEmpty()) name += " ($lastName)"
+
+    return name
+}
 
 fun String.removeExtraSpaces() = trim().replace("\\s+".toRegex(), " ")
 

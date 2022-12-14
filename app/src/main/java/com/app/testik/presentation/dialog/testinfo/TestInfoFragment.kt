@@ -81,8 +81,8 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
     private fun renderUIState(data: TestInfoDialogUIState) {
         binding.apply {
             tvTitle.text = data.title
-            tvAuthor.text = data.author
-            tvQuestionsNum.text = data.questionsNum.toString()
+            tvAuthor.text = data.authorName
+            tvQuestionsNum.text = resources.getQuantityString(R.plurals.questions_num, data.questionsNum, data.questionsNum)
             tvDescriptionTitle.isVisible = data.description.isNotEmpty()
             tvDescription.isVisible = data.description.isNotEmpty()
             tvDescription.text = data.description

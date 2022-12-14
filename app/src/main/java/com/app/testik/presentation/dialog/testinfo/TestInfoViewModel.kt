@@ -10,6 +10,7 @@ import com.app.testik.presentation.dialog.testinfo.model.TestInfoDialogEvent
 import com.app.testik.presentation.dialog.testinfo.model.TestInfoDialogUIState
 import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.testedit.TestEditFragmentArgs
+import com.app.testik.util.getFullName
 import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class TestInfoViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getTestInfoUseCase: GetTestInfoUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<TestInfoDialogUIState>>
@@ -59,8 +61,18 @@ class TestInfoViewModel @Inject constructor(
                     questionsNum = it.questionsNum
                 )
                 updateScreenState(screenState)
+
+                getAuthorInfo(it.author)
             }.onError {
                 emitEvent(TestInfoDialogEvent.ShowSnackbar(it))
+            }
+        }
+    }
+
+    private fun getAuthorInfo(author: String) {
+        viewModelScope.launch {
+            getUserInfoUseCase(email = author).onSuccess {
+                updateScreenState(screenUIState.copy(authorName = it.getFullName()))
             }
         }
     }

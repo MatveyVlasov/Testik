@@ -155,4 +155,11 @@
     <string name="multiple_choice">Multiple choice</string>
 
     <string name="more_tests">More tests</string>
+
+    <string name="author">Author</string>
+    <plurals name="questions_num">
+        <item quantity="one">%d question</item>
+        <item quantity="other">%d questions</item>
+    </plurals>
+    <string name="start">Start</string>
 </resources>
