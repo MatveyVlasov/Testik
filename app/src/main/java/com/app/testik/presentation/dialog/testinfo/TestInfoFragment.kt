@@ -83,6 +83,8 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
             tvTitle.text = data.title
             tvAuthor.text = data.author
             tvQuestionsNum.text = data.questionsNum.toString()
+            tvDescriptionTitle.isVisible = data.description.isNotEmpty()
+            tvDescription.isVisible = data.description.isNotEmpty()
             tvDescription.text = data.description
         }
 
