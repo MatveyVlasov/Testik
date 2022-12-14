@@ -83,7 +83,7 @@ fun MaterialToolbar.setupLanguageItem(
 
         actionView?.apply {
             findViewById<TextView>(R.id.tvLanguage).apply {
-                text = Locale.getDefault().language.uppercase()
+                text = resources.configuration.locales.get(0).language.uppercase()
                 if (color != null) setTextColor(color)
             }
             if (color != null) findViewById<ImageView>(R.id.ivLanguage).setColorFilter(color)
