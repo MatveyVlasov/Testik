@@ -70,6 +70,7 @@
     <string name="delete_account">Удалить аккаунт</string>
     <string name="delete_account_confirmation">Вы действительно хотите удалить аккаунт?</string>
     <string name="delete_account_success">Вы успешно удалили аккаунт</string>
+    <string name="delete_account_recent_auth_required">Вам необходимо выйти из аккаунта и повторно зайти для удаления аккаунта</string>
 
     <string name="old_password">Старый пароль</string>
     <string name="new_password">Новый пароль</string>

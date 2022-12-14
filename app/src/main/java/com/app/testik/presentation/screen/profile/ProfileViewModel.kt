@@ -110,7 +110,7 @@ class ProfileViewModel @Inject constructor(
                     emitEvent(ProfileScreenEvent.ShowSnackbar(it))
                 }
             }.onError {
-                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
+                handleError(it)
             }
         }
     }
@@ -144,6 +144,9 @@ class ProfileViewModel @Inject constructor(
             }
             msg.contains("error occurred") -> {
                 emitEvent(ProfileScreenEvent.ShowSnackbarByRes(R.string.error_occurred))
+            }
+            msg.contains("requires recent authentication") -> {
+                emitEvent(ProfileScreenEvent.ShowSnackbarByRes(R.string.delete_account_recent_auth_required))
             }
             msg.contains("error while saving image") -> {
                 emitEvent(ProfileScreenEvent.ShowSnackbarByRes(R.string.error_while_saving_image))

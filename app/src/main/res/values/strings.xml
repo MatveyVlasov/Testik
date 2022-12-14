@@ -75,6 +75,7 @@
     <string name="delete_account">Delete account</string>
     <string name="delete_account_confirmation">Do you really want to delete your account?</string>
     <string name="delete_account_success">You successfully deleted your account</string>
+    <string name="delete_account_recent_auth_required">Please sign out and log in again to delete your account</string>
 
     <string name="old_password">Old password</string>
     <string name="new_password">New password</string>
