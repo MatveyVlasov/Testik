@@ -80,6 +80,7 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
 
     private fun renderUIState(data: TestInfoDialogUIState) {
         binding.apply {
+            tvCategory.setText(data.category.description)
             tvTitle.text = data.title
             tvAuthor.text = data.authorName
             tvQuestionsNum.text = resources.getQuantityString(R.plurals.questions_num, data.questionsNum, data.questionsNum)

@@ -1,6 +1,5 @@
 package com.app.testik.presentation.base
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +8,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 abstract class BaseBottomSheetDialogFragment<T: ViewBinding> : BottomSheetDialogFragment() {
@@ -34,21 +31,6 @@ abstract class BaseBottomSheetDialogFragment<T: ViewBinding> : BottomSheetDialog
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = createBinding(inflater).also { _binding = it }.root
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState).also { dialog ->
-            dialog.setOnShowListener {
-                (dialog as? BottomSheetDialog)?.findViewById<View>(
-                    com.google.android.material.R.id.design_bottom_sheet
-                )?.let {
-                    BottomSheetBehavior.from(it).apply {
-                        state = BottomSheetBehavior.STATE_EXPANDED
-                        skipCollapsed = true
-                    }
-                }
-            }
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
