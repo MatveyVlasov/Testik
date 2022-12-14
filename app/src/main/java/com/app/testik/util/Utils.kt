@@ -98,10 +98,7 @@ fun MaterialToolbar.setupAvatarItem(
     menu.findItem(R.id.profile).apply {
         setActionView(R.layout.item_avatar)
 
-        actionView?.apply {
-            findViewById<ImageView>(R.id.ivAvatar).clipToOutline = true
-            setOnClickListener { onClick() }
-        }
+        actionView?.setOnClickListener { onClick() }
     }
 }
 
@@ -133,6 +130,8 @@ fun loadImage(context: Context, imageView: ImageView, url: String, @DrawableRes 
     Glide.with(context)
         .load(image)
         .into(imageView)
+
+    imageView.clipToOutline = true
 }
 
 fun loadAvatar(context: Context, imageView: ImageView, url: String) =

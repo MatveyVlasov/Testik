@@ -74,7 +74,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 return@setOnMenuItemClickListener true
             }
 
-            ivAvatar.clipToOutline = true
         }
     }
 

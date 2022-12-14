@@ -97,8 +97,6 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
                 return@setOnMenuItemClickListener true
             }
 
-            ivImage.clipToOutline = true
-
             rvAnswers.adapter = answersAdapter
             itemTouchHelper.attachToRecyclerView(rvAnswers)
         }

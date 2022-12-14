@@ -76,8 +76,6 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
                 return@setOnMenuItemClickListener true
             }
 
-            ivImage.clipToOutline = true
-
             tvPublish.addInfoIcon { navigateToInfo(getString(R.string.publish_info)) }
         }
     }
