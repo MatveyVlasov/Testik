@@ -9,7 +9,7 @@ import com.app.testik.util.delegateadapter.DelegateAdapter
 import com.app.testik.util.loadTestImage
 
 class TestDelegateAdapter(
-    //val onClick: (String) -> Unit
+    val onClick: (String) -> Unit
 ) : DelegateAdapter<TestDelegateItem, TestDelegateAdapter.ViewHolder>(
         TestDelegateItem::class.java
 ) {
@@ -30,7 +30,7 @@ class TestDelegateAdapter(
 
                 tvTitle.text = test.title
 
-                //root.setOnClickListener { onClick(test.id) }
+                root.setOnClickListener { onClick(test.id) }
             }
         }
     }

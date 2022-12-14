@@ -49,6 +49,9 @@
         <action
             android:id="@+id/toProfile"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/toTestInfo"
+            app:destination="@id/testInfoFragment" />
     </fragment>
 
     <fragment
@@ -131,5 +134,15 @@
             app:argType="string" />
     </dialog>
 
+    <dialog
+        android:id="@+id/testInfoFragment"
+        android:name="com.app.testik.presentation.dialog.testinfo.TestInfoFragment"
+        android:label="TestInfoFragment"
+        tools:layout="@layout/fragment_test_info">
+        <argument
+            android:name="testId"
+            android:defaultValue=""
+            app:argType="string" />
+    </dialog>
 
 </navigation>

@@ -56,7 +56,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
         addBackPressedCallback { onBackPressed() }
 
         observeResult<Int>(Constants.UPDATE_QUESTION_LIST_RESULT_KEY) {
-            viewModel.onQuestionNumChanged(it)
+            viewModel.onQuestionsNumChanged(it)
         }
     }
 

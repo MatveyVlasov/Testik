@@ -73,7 +73,7 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(isPublished = isPublished))
     }
 
-    fun onQuestionNumChanged(questionsNum: Int) {
+    fun onQuestionsNumChanged(questionsNum: Int) {
         if (questionsNum == screenUIState.questionsNum) return
         val state = screenUIState.copy(questionsNum = questionsNum)
         oldScreenUIState = state

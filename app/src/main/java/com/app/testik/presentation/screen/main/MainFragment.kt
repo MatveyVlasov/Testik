@@ -28,7 +28,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     private val categoryTestsAdapter by lazy {
         CompositeAdapter.Builder()
             .add(
-                CategoryTestsDelegateAdapter()
+                CategoryTestsDelegateAdapter { navigateToTest(it) }
             )
             .build()
     }
@@ -101,6 +101,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     private fun navigateToProfile() {
         navController.navigate(
             MainFragmentDirections.toProfile()
+        )
+    }
+
+    private fun navigateToTest(testId: String) {
+        navController.navigate(
+            MainFragmentDirections.toTestInfo(testId)
         )
     }
 }

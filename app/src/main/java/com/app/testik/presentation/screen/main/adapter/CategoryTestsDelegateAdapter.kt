@@ -9,6 +9,7 @@ import com.app.testik.util.delegateadapter.CompositeAdapter
 import com.app.testik.util.delegateadapter.DelegateAdapter
 
 class CategoryTestsDelegateAdapter(
+    val onTestClick: (String) -> Unit
     //val onMoreClick: (String) -> Unit
 ) : DelegateAdapter<CategoryTestsDelegateItem, CategoryTestsDelegateAdapter.ViewHolder>(
         CategoryTestsDelegateItem::class.java
@@ -26,7 +27,7 @@ class CategoryTestsDelegateAdapter(
         private val testsAdapter by lazy {
             CompositeAdapter.Builder()
                 .add(
-                    TestDelegateAdapter()
+                    TestDelegateAdapter(onTestClick)
                 )
                 .build()
         }
