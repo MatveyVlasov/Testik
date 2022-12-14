@@ -2,6 +2,7 @@ package com.app.testik.presentation.screen.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.testik.R
 import com.app.testik.domain.model.CategoryType
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
@@ -11,6 +12,7 @@ import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.main.mapper.toTestItem
 import com.app.testik.presentation.screen.main.model.MainScreenEvent
 import com.app.testik.presentation.screen.main.model.MainScreenUIState
+import com.app.testik.presentation.screen.questlionlist.model.QuestionListScreenEvent
 import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -49,7 +51,7 @@ class MainViewModel @Inject constructor(
             getCurrentUserInfoUseCase(source).onSuccess {
                 updateScreenState(screenUIState.copy(avatar = it.avatar))
             }.onError {
-                emitEvent(MainScreenEvent.ShowSnackbar(it))
+                handleError(it)
             }
         }
     }
@@ -69,9 +71,21 @@ class MainViewModel @Inject constructor(
                     list[pos] = list[pos].copy(tests = data.tests.map { it.toTestItem() })
                 }
                 updateScreenState(state = screenUIState.copy(categoryTests = categoryTests))
-            }.onError {
-                emitEvent(MainScreenEvent.ShowSnackbar(it))
             }
+        }
+    }
+
+    private fun handleError(error: String) {
+        val msg = error.lowercase()
+        when {
+            msg.contains("no internet") -> {
+                emitEvent(MainScreenEvent.ShowSnackbarByRes(R.string.no_internet))
+            }
+            msg.contains("error occurred") -> {
+                emitEvent(MainScreenEvent.ShowSnackbarByRes(R.string.error_occurred))
+            }
+            msg.contains("failed to get document from cache") -> Unit
+            else -> emitEvent(MainScreenEvent.ShowSnackbar(error))
         }
     }
 

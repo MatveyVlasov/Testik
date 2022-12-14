@@ -89,6 +89,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     private fun handleEvent(event: MainScreenEvent) {
         when (event) {
             is MainScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
+            is MainScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
             is MainScreenEvent.Loading -> Unit
         }
         setLoadingState(event is MainScreenEvent.Loading)
