@@ -143,6 +143,20 @@
             android:name="testId"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/toQuestionMain"
+            app:destination="@id/questionMainFragment" />
     </dialog>
+
+    <fragment
+        android:id="@+id/questionMainFragment"
+        android:name="com.app.testik.presentation.screen.questionmain.QuestionMainFragment"
+        android:label="QuestionMainFragment"
+        tools:layout="@layout/fragment_question_main">
+        <argument
+            android:name="testId"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
 
 </navigation>

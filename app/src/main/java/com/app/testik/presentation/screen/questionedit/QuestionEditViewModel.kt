@@ -6,10 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.app.testik.R
 import com.app.testik.domain.model.QuestionType
 import com.app.testik.presentation.model.AnswerDelegateItem
-import com.app.testik.presentation.screen.questionedit.model.SingleChoiceDelegateItem
+import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.model.copy
-import com.app.testik.presentation.screen.questionedit.model.MultipleChoiceDelegateItem
+import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenEvent
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenUIState
 import com.app.testik.util.Constants.MAX_DESCRIPTION_LENGTH

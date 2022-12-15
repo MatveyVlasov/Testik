@@ -7,11 +7,11 @@ import com.app.testik.R
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.*
+import com.app.testik.presentation.mapper.toDomain
+import com.app.testik.presentation.mapper.toQuestionItem
 import com.app.testik.presentation.model.ErrorItem
 import com.app.testik.presentation.model.LoadingItem
 import com.app.testik.presentation.model.UIState
-import com.app.testik.presentation.screen.questlionlist.mapper.toDomain
-import com.app.testik.presentation.screen.questlionlist.mapper.toQuestionItem
 import com.app.testik.presentation.model.QuestionDelegateItem
 import com.app.testik.presentation.screen.questlionlist.model.QuestionListScreenEvent
 import com.app.testik.presentation.screen.questlionlist.model.QuestionListScreenUIState

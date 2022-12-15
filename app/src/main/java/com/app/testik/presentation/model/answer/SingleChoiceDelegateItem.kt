@@ -1,4 +1,4 @@
-package com.app.testik.presentation.screen.questionedit.model
+package com.app.testik.presentation.model.answer
 
 import com.app.testik.presentation.model.AnswerDelegateItem
 import com.app.testik.util.randomId

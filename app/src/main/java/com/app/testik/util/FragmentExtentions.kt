@@ -3,6 +3,7 @@ package com.app.testik.util
 import android.app.Activity
 import android.app.AlertDialog
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.annotation.*
 import androidx.core.content.res.ResourcesCompat
@@ -53,6 +54,24 @@ fun Fragment.showSnackbar(
     @StringRes message: Int,
     duration: Int = Snackbar.LENGTH_LONG
 ) = showSnackbar(
+    message = getString(message),
+    duration = duration
+)
+
+fun Fragment.showToast(
+    message: String,
+    duration: Int = Toast.LENGTH_LONG
+): Toast {
+    Toast.makeText(context, message, duration).also {
+        it.show()
+        return it
+    }
+}
+
+fun Fragment.showToast(
+    @StringRes message: Int,
+    duration: Int = Toast.LENGTH_LONG
+) = showToast(
     message = getString(message),
     duration = duration
 )

@@ -1,8 +1,8 @@
 package com.app.testik.presentation.screen.questionedit.mapper
 
 import com.app.testik.domain.model.QuestionModel
+import com.app.testik.presentation.mapper.toDomain
 import com.app.testik.presentation.model.QuestionDelegateItem
-import com.app.testik.presentation.screen.questlionlist.mapper.toDomain
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenUIState
 
 fun QuestionEditScreenUIState.toDomain() =

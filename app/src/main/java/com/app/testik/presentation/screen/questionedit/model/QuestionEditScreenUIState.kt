@@ -13,7 +13,6 @@ data class QuestionEditScreenUIState(
     val canDiscard: Boolean = true,
     val type: QuestionType = QuestionType.SINGLE_CHOICE,
     val answers: List<AnswerDelegateItem> = emptyList(),
-        //val answers: MutableList<out AnswerDelegateItem> = mutableListOf(),
     @StringRes val titleError: Int? = null,
     @StringRes val descriptionError: Int? = null
 )

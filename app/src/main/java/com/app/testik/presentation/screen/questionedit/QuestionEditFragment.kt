@@ -19,8 +19,8 @@ import com.app.testik.presentation.activity.ImageCropActivity
 import com.app.testik.presentation.activity.ImageViewActivity
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
-import com.app.testik.presentation.screen.questionedit.adapter.MultipleChoiceDelegateAdapter
-import com.app.testik.presentation.screen.questionedit.adapter.SingleChoiceDelegateAdapter
+import com.app.testik.presentation.adapter.answer.MultipleChoiceEditDelegateAdapter
+import com.app.testik.presentation.adapter.answer.SingleChoiceEditDelegateAdapter
 import com.app.testik.presentation.screen.questionedit.mapper.toQuestionItem
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenEvent
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenUIState
@@ -51,14 +51,14 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
     private val answersAdapter by lazy {
         CompositeAdapter.Builder()
             .add(
-                SingleChoiceDelegateAdapter(
+                SingleChoiceEditDelegateAdapter(
                     onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
                     onSelectClick = { item -> viewModel.onSelectClick(answer = item) },
                     onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }
                 )
             )
             .add(
-                MultipleChoiceDelegateAdapter(
+                MultipleChoiceEditDelegateAdapter(
                     onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
                     onSelectClick = { item, isChecked -> viewModel.onSelectClick(answer = item, isChecked = isChecked) },
                     onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }

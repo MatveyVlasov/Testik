@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="4dp">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/CustomTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_rect_20_dp"
+        android:backgroundTint="@color/question_number_background_selector"
+        android:gravity="center"
+        android:textSize="18sp"
+        tools:text="11" />
+
+</FrameLayout>

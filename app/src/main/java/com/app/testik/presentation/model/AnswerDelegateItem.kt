@@ -1,8 +1,8 @@
 package com.app.testik.presentation.model
 
 import android.os.Parcelable
-import com.app.testik.presentation.screen.questionedit.model.MultipleChoiceDelegateItem
-import com.app.testik.presentation.screen.questionedit.model.SingleChoiceDelegateItem
+import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
+import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
 import com.app.testik.util.randomId
 import kotlinx.parcelize.Parcelize

@@ -148,11 +148,15 @@
     <string name="discard_changes">Discard changes</string>
 
     <string name="answer_option">Answer option</string>
+    <string name="answer_option_abc">Answer %s</string>
     <string name="add_answer_option">Add answer option</string>
     <string name="no_correct_answers">The question should contain at least one correct answer</string>
     <string name="type">Type</string>
     <string name="single_choice">Single choice</string>
     <string name="multiple_choice">Multiple choice</string>
+
+    <string name="single_choice_instruction">Select one answer:</string>
+    <string name="multiple_choice_instruction">Select one or more answers:</string>
 
     <string name="more_tests">More tests</string>
 
@@ -162,4 +166,12 @@
         <item quantity="other">%d questions</item>
     </plurals>
     <string name="start">Start</string>
+
+    <string name="finish">Завершить</string>
+    <string name="go_to_prev_question">Go to previous question</string>
+    <string name="go_to_next_question">Go to next question</string>
+    <string name="cannot_go_to_prev_question">You are already on the first question</string>
+    <string name="cannot_go_to_next_question">You are already on the last question</string>
+
+    <string name="submit">Submit</string>
 </resources>

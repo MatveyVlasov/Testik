@@ -49,7 +49,7 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
         binding.apply {
 
             ivImage.setOnClickListener { viewImage() }
-            btnStart.setOnClickListener {  }
+            btnStart.setOnClickListener { navigateToQuestionMain() }
         }
     }
 
@@ -104,5 +104,11 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
             it.putExtra(EXTRA_IMAGE_PATH, viewModel.screenUIState.image)
             startActivity(it)
         }
+    }
+
+    private fun navigateToQuestionMain() {
+        navController.navigate(
+            TestInfoFragmentDirections.toQuestionMain(viewModel.screenUIState.id)
+        )
     }
 }

@@ -1,12 +1,12 @@
-package com.app.testik.presentation.screen.questlionlist.mapper
+package com.app.testik.presentation.mapper
 
 import com.app.testik.domain.model.AnswerModel
 import com.app.testik.domain.model.QuestionModel
 import com.app.testik.domain.model.QuestionType
 import com.app.testik.presentation.model.AnswerDelegateItem
 import com.app.testik.presentation.model.QuestionDelegateItem
-import com.app.testik.presentation.screen.questionedit.model.MultipleChoiceDelegateItem
-import com.app.testik.presentation.screen.questionedit.model.SingleChoiceDelegateItem
+import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
+import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 
 fun QuestionModel.toQuestionItem() =
     QuestionDelegateItem(
