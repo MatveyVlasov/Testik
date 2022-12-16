@@ -90,11 +90,12 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                 launch {
                     viewModel.uiState.collect {
                         it.onSuccess { data ->
-                            if (data.questions.isNotEmpty()) {
-                                binding.pager.adapter = QuestionAdapter(
-                                    fragment = this@QuestionMainFragment,
-                                    questions = data.questions
-                                )
+                            if (data.questions.isNotEmpty() && binding.pager.adapter == null) {
+                                binding.pager.adapter =
+                                    QuestionAdapter(
+                                        fragment = this@QuestionMainFragment,
+                                        questions = data.questions
+                                    )
                                 questionsNumList = MutableList(data.questions.size) { num ->
                                     num.toQuestionNumber()
                                 }
