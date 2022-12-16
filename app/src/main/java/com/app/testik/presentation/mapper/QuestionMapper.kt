@@ -16,7 +16,8 @@ fun QuestionModel.toQuestionItem() =
         description = description,
         image = image,
         type = type,
-        answers = answers.map { it.toAnswerItem() }
+        answers = answers.map { it.toAnswerItem() },
+        enteredAnswer = enteredAnswer
     )
 
 fun QuestionDelegateItem.toDomain() =
@@ -27,7 +28,8 @@ fun QuestionDelegateItem.toDomain() =
         description = description,
         image = image,
         type = type,
-        answers = answers.map { it.toDomain() }
+        answers = answers.map { it.toDomain() },
+        enteredAnswer = enteredAnswer
     )
 
 fun AnswerModel.toAnswerItem(): AnswerDelegateItem {
@@ -35,12 +37,14 @@ fun AnswerModel.toAnswerItem(): AnswerDelegateItem {
         QuestionType.SINGLE_CHOICE ->
             SingleChoiceDelegateItem(
                 text = text,
-                isCorrect = isCorrect
+                isCorrect = isCorrect,
+                isSelected = isSelected
             )
         QuestionType.MULTIPLE_CHOICE ->
             MultipleChoiceDelegateItem(
                 text = text,
-                isCorrect = isCorrect
+                isCorrect = isCorrect,
+                isSelected = isSelected
             )
     }
 }
@@ -50,12 +54,14 @@ fun AnswerDelegateItem.toDomain(): AnswerModel {
         is SingleChoiceDelegateItem ->
             AnswerModel(
                 text = text,
-                isCorrect = isCorrect
+                isCorrect = isCorrect,
+                isSelected = isSelected
             )
         is MultipleChoiceDelegateItem ->
             AnswerModel(
                 text = text,
-                isCorrect = isCorrect
+                isCorrect = isCorrect,
+                isSelected = isSelected
             )
         else -> AnswerModel(text = text)
     }

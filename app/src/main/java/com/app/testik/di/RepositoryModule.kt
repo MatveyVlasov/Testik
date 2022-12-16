@@ -31,4 +31,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindTestRepository(testRepositoryImpl: TestRepositoryImpl): TestRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTestPassedRepository(testPassedRepositoryImpl: TestPassedRepositoryImpl): TestPassedRepository
 }

@@ -7,5 +7,6 @@ data class QuestionModel(
     val description: String = "",
     val image: String = "",
     val type: QuestionType = QuestionType.SINGLE_CHOICE,
-    val answers: List<AnswerModel> = emptyList()
+    val answers: List<AnswerModel> = emptyList(),
+    val enteredAnswer: String = ""
 )

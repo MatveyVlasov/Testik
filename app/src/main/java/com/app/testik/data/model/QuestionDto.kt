@@ -7,5 +7,6 @@ data class QuestionDto(
     val description: String = "",
     val image: String = "",
     val type: String = "",
-    val answers: List<AnswerDto> = emptyList()
+    val answers: List<AnswerDto> = emptyList(),
+    val enteredAnswer: String = ""
 )

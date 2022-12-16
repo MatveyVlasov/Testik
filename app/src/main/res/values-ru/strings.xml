@@ -164,6 +164,8 @@
     <string name="start">Начать</string>
 
     <string name="finish">Завершить</string>
+    <string name="save_draft">Сохранить черновик</string>
+    <string name="draft_saved">Черновик сохранён</string>
     <string name="go_to_prev_question">Перейти к предыдущему вопросу</string>
     <string name="go_to_next_question">Перейти к следующему вопросу</string>
     <string name="cannot_go_to_prev_question">Вы уже на первом вопросе</string>

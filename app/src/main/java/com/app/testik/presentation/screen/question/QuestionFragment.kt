@@ -15,6 +15,7 @@ import com.app.testik.presentation.activity.ImageViewActivity
 import com.app.testik.presentation.adapter.answer.MultipleChoiceDelegateAdapter
 import com.app.testik.presentation.adapter.answer.SingleChoiceDelegateAdapter
 import com.app.testik.presentation.base.BaseFragment
+import com.app.testik.presentation.model.AnswerDelegateItem
 import com.app.testik.presentation.model.QuestionDelegateItem
 import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.screen.question.model.QuestionScreenEvent
@@ -55,9 +56,10 @@ class QuestionFragment(private val question: QuestionDelegateItem) : BaseFragmen
 
         addBackPressedCallback { onBackPressed() }
 
-        viewModel.updateQuestion(question)
+        if (savedInstanceState == null) viewModel.updateQuestion(question)
     }
 
+    fun getAnswers(): List<AnswerDelegateItem> = viewModel.screenUIState.answers
 
     private fun initViews() {
 

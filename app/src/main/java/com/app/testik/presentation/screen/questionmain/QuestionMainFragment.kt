@@ -66,6 +66,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                     super.onPageSelected(position)
                     if (selectedItem == position) return
                     if (selectedItem != -1) {
+                        updateAnswers(selectedItem)
                         questionsNumList[selectedItem] = questionsNumList[selectedItem].copy(isSelected = false)
                     }
                     selectedItem = position
@@ -77,6 +78,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                 }
             })
 
+            btnSaveDraft.setOnClickListener { saveAnswers() }
             btnPrev.setOnClickListener { goToPreviousQuestion() }
             btnNext.setOnClickListener { goToNextQuestion() }
         }
@@ -145,5 +147,16 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
 
     private fun onBackPressed() {
         navController.navigateUp()
+    }
+
+    private fun updateAnswers(pos: Int) {
+        (binding.pager.adapter as QuestionAdapter).getFragment(pos).also {
+            viewModel.updateAnswers(pos, it.getAnswers())
+        }
+    }
+
+    private fun saveAnswers() {
+        updateAnswers(binding.pager.currentItem)
+        viewModel.saveAnswers(showInfo = true)
     }
 }

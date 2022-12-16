@@ -5,5 +5,7 @@ import com.google.firebase.firestore.PropertyName
 data class AnswerDto(
     val text: String = "",
     @get:PropertyName("isCorrect")
-    val isCorrect: Boolean = false
+    val isCorrect: Boolean = false,
+    @get:PropertyName("isSelected")
+    val isSelected: Boolean = false
 )

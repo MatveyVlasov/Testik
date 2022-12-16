@@ -22,9 +22,6 @@ import androidx.core.content.ContextCompat
 import com.app.testik.R
 import com.app.testik.data.model.ApiResult
 import com.app.testik.domain.model.UserModel
-import com.app.testik.presentation.model.AnswerDelegateItem
-import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
-import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 import com.app.testik.util.Constants.USERNAME_GOOGLE_DELIMITER
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
@@ -56,16 +53,6 @@ fun UserModel.getFullName(): String {
     else if (lastName.isNotEmpty()) name += " ($lastName)"
 
     return name
-}
-
-fun List<AnswerDelegateItem>.removeCorrectAnswers(): List<AnswerDelegateItem> {
-    return map {
-        when (it) {
-            is SingleChoiceDelegateItem -> it.copy(isCorrect = false)
-            is MultipleChoiceDelegateItem -> it.copy(isCorrect = false)
-            else -> it
-        }
-    }
 }
 
 fun String.removeExtraSpaces() = trim().replace("\\s+".toRegex(), " ")

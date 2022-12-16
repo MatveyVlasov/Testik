@@ -1,6 +1,7 @@
 package com.app.testik.domain.mapper
 
 import com.app.testik.data.model.*
+import com.app.testik.data.model.TestDto
 import com.app.testik.domain.model.*
 
 fun UserDto.toDomain() =
@@ -39,6 +40,15 @@ fun TestDto.toDomain() =
         questionsNum = questions.size
     )
 
+fun TestPassedDto.toDomain() =
+    TestPassedModel(
+        id = id,
+        testId = testId,
+        user = user,
+        timeStarted = timeStarted,
+        timeFinished = timeFinished
+    )
+
 fun QuestionDto.toDomain() =
     QuestionModel(
         id = id,
@@ -47,7 +57,8 @@ fun QuestionDto.toDomain() =
         description = description,
         image = image,
         type = type.toQuestionType(),
-        answers = answers.map { it.toDomain(type.toQuestionType()) }
+        answers = answers.map { it.toDomain(type.toQuestionType()) },
+        enteredAnswer = enteredAnswer
     )
 
 fun AnswerDto.toDomain(type: QuestionType) =
@@ -55,6 +66,7 @@ fun AnswerDto.toDomain(type: QuestionType) =
         type = type,
         text = text,
         isCorrect = isCorrect,
+        isSelected = isSelected
     )
 
 fun String.toCategoryType() =

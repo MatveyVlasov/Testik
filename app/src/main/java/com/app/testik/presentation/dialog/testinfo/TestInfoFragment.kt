@@ -49,7 +49,7 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
         binding.apply {
 
             ivImage.setOnClickListener { viewImage() }
-            btnStart.setOnClickListener { navigateToQuestionMain() }
+            btnStart.setOnClickListener { viewModel.createTestPassed() }
         }
     }
 
@@ -75,6 +75,7 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
         when (event) {
             is TestInfoDialogEvent.ShowSnackbar -> showSnackbar(message = event.message)
             is TestInfoDialogEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
+            is TestInfoDialogEvent.SuccessTestCreation -> navigateToQuestionMain(event.id)
         }
     }
 
@@ -106,9 +107,12 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
         }
     }
 
-    private fun navigateToQuestionMain() {
+    private fun navigateToQuestionMain(id: String) {
         navController.navigate(
-            TestInfoFragmentDirections.toQuestionMain(viewModel.screenUIState.id)
+            TestInfoFragmentDirections.toQuestionMain(
+                id = id,
+                testId = viewModel.screenUIState.id
+            )
         )
     }
 }

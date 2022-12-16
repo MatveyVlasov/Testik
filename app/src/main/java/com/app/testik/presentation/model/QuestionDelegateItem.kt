@@ -13,7 +13,8 @@ data class QuestionDelegateItem(
     val description: String = "",
     val image: String = "",
     val type: QuestionType = QuestionType.SINGLE_CHOICE,
-    val answers: List<AnswerDelegateItem> = emptyList()
+    val answers: List<AnswerDelegateItem> = emptyList(),
+    val enteredAnswer: String = ""
 ) : DelegateAdapterItem, Parcelable {
 
     override fun id() = id

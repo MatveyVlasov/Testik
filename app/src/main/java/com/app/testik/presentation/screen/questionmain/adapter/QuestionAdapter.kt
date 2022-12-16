@@ -10,7 +10,11 @@ class QuestionAdapter(
     private val questions: List<QuestionDelegateItem>
 ) : FragmentStateAdapter(fragment) {
 
+    private val fragments = List(questions.size) {  QuestionFragment(questions[it]) }
+
     override fun getItemCount(): Int = questions.size
 
-    override fun createFragment(position: Int): Fragment = QuestionFragment(questions[position])
+    override fun createFragment(position: Int): Fragment = fragments[position]
+
+    fun getFragment(position: Int): QuestionFragment = fragments[position]
 }

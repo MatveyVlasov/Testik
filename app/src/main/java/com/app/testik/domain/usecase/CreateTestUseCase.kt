@@ -21,7 +21,7 @@ class CreateTestUseCase @Inject constructor(
 
         return wrap(
             block = { testRepository.createTest(newData.toDto()) },
-            mapper = { it!! }
+            mapper = { it.orEmpty() }
         ).onSuccess { testId ->
             if (data.image.loadedFromServer() || data.image.isEmpty()) return@onSuccess
             return wrap(

@@ -154,6 +154,10 @@
         android:label="QuestionMainFragment"
         tools:layout="@layout/fragment_question_main">
         <argument
+            android:name="id"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
             android:name="testId"
             android:defaultValue=""
             app:argType="string" />

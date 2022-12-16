@@ -31,7 +31,7 @@ class MultipleChoiceDelegateAdapter(
                 etAnswer.setText(answer.text)
 
                 btnSelect.setOnCheckedChangeListener(null)
-                btnSelect.isChecked = answer.isCorrect
+                btnSelect.isChecked = answer.isSelected
                 btnSelect.setOnCheckedChangeListener { _, isChecked ->
                     onSelectClick(answer, isChecked)
                 }

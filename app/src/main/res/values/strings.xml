@@ -167,7 +167,9 @@
     </plurals>
     <string name="start">Start</string>
 
-    <string name="finish">Завершить</string>
+    <string name="finish">Finish</string>
+    <string name="save_draft">Save draft</string>
+    <string name="draft_saved">Draft saved</string>
     <string name="go_to_prev_question">Go to previous question</string>
     <string name="go_to_next_question">Go to next question</string>
     <string name="cannot_go_to_prev_question">You are already on the first question</string>

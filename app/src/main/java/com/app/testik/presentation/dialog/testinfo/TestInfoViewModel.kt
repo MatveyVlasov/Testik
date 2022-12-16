@@ -3,9 +3,11 @@ package com.app.testik.presentation.dialog.testinfo
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.testik.R
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.*
+import com.app.testik.presentation.dialog.testinfo.mapper.toDomain
 import com.app.testik.presentation.dialog.testinfo.model.TestInfoDialogEvent
 import com.app.testik.presentation.dialog.testinfo.model.TestInfoDialogUIState
 import com.app.testik.presentation.model.UIState
@@ -24,7 +26,8 @@ import javax.inject.Inject
 class TestInfoViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getTestInfoUseCase: GetTestInfoUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val createTestPassedUseCase: CreateTestPassedUseCase,
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<TestInfoDialogUIState>>
@@ -43,6 +46,16 @@ class TestInfoViewModel @Inject constructor(
 
     init {
         getTestInfo(source = Source.CACHE)
+    }
+
+    fun createTestPassed() {
+        viewModelScope.launch {
+            createTestPassedUseCase(screenUIState.toDomain()).onSuccess {
+                emitEvent(TestInfoDialogEvent.SuccessTestCreation(it))
+            }.onError {
+                handleError(it)
+            }
+        }
     }
 
     private fun getTestInfo(source: Source = Source.DEFAULT) {
@@ -74,6 +87,19 @@ class TestInfoViewModel @Inject constructor(
             getUserInfoUseCase(email = author).onSuccess {
                 updateScreenState(screenUIState.copy(authorName = it.getFullName()))
             }
+        }
+    }
+
+    private fun handleError(error: String) {
+        val msg = error.lowercase()
+        when {
+            msg.contains("no internet") -> {
+                emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.no_internet))
+            }
+            msg.contains("error occurred") -> {
+                emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.error_occurred))
+            }
+            else -> emitEvent(TestInfoDialogEvent.ShowSnackbar(error))
         }
     }
 

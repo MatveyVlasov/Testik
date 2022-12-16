@@ -2,8 +2,7 @@ package com.app.testik.data.repository
 
 import android.content.Context
 import com.app.testik.data.model.*
-import com.app.testik.data.model.TestDto
-import com.app.testik.domain.repository.TestRepository
+import com.app.testik.domain.repository.TestPassedRepository
 import com.app.testik.util.execute
 import com.app.testik.util.isOnline
 import com.app.testik.util.timestamp
@@ -15,25 +14,24 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class TestRepositoryImpl @Inject constructor(
+class TestPassedRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val firebaseFirestore: FirebaseFirestore
-): TestRepository {
+): TestPassedRepository {
 
-    override suspend fun createTest(data: TestDto): ApiResult<String> {
+    override suspend fun createTest(data: TestPassedDto): ApiResult<String> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
             with (data) {
                 val newData = mapOf(
-                    "author" to author,
-                    "title" to title,
-                    "description" to description,
-                    "category" to category,
-                    "lastUpdated" to timestamp
+                    "testId" to testId,
+                    "user" to user,
+                    "timeStarted" to timeStarted,
+                    "timeFinished" to timeFinished
                 )
 
-                firebaseFirestore.collection("tests").add(newData).also {
+                firebaseFirestore.collection("testsPassed").add(newData).also {
                     it.await()
                     return if (it.isSuccessful) ApiResult.Success(it.result.id)
                     else ApiResult.Error(it.exception?.message)
@@ -45,49 +43,36 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateTestImage(testId: String, image: String): ApiResult<Unit> {
-        if (testId.isEmpty()) return ApiResult.Error("No test found")
-
-        return try {
-            val data = mapOf("image" to image)
-            firebaseFirestore.collection("tests").document(testId).update(data).execute()
-        } catch (e: Exception) {
-            ApiResult.Error(e.message)
-        }
-    }
-
-    override suspend fun updateTest(data: TestDto): ApiResult<Unit> {
+    override suspend fun updateTest(data: TestPassedDto): ApiResult<Unit> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
         if (data.id.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
             with (data) {
                 val newData = mapOf(
-                    "title" to title,
-                    "description" to description,
-                    "category" to category,
-                    "image" to image,
-                    "isPublished" to isPublished,
-                    "lastUpdated" to timestamp
+                    "testId" to testId,
+                    "user" to user,
+                    "timeStarted" to timeStarted,
+                    "timeFinished" to timeFinished
                 )
 
-                firebaseFirestore.collection("tests").document(data.id).update(newData).execute()
+                firebaseFirestore.collection("testsPassed").document(data.id).update(newData).execute()
             }
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
     }
 
-    override suspend fun getTestsByAuthor(authorEmail: String?, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsDto> {
-        if (authorEmail == null) return ApiResult.Error("No email provided")
+    override suspend fun getTestsByUser(email: String?, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsDto> {
+        if (email == null) return ApiResult.Error("No email provided")
 
         try {
-            var query = firebaseFirestore.collection("tests")
-                .whereEqualTo("author", authorEmail)
-                .orderBy("lastUpdated", Query.Direction.DESCENDING)
+            var query = firebaseFirestore.collection("testsPassed")
+                .whereEqualTo("user", email)
+                .orderBy("timeFinished", Query.Direction.DESCENDING)
 
             if (snapshot != null)
-                query = query.startAfter(snapshot.orderBy("lastUpdated"))
+                query = query.startAfter(snapshot.orderBy("timeFinished"))
 
             query
                 .limit(limit)
@@ -102,35 +87,13 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTestsByCategory(category: String, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsDto> {
-        try {
-            var query = firebaseFirestore.collection("tests")
-                .whereEqualTo("category", category)
-                .whereEqualTo("isPublished", true)
-
-            if (snapshot != null)
-                query = query.startAfter(snapshot)
-
-            query
-                .limit(limit)
-                .get()
-                .also {
-                    val newSnapshot = it.await()
-                    return if (it.isSuccessful) ApiResult.Success(TestsDto(newSnapshot))
-                    else ApiResult.Error(it.exception?.message)
-                }
-        } catch (e: Exception) {
-            return ApiResult.Error(e.message)
-        }
-    }
-
-    override suspend fun getTest(testId: String, source: Source): ApiResult<TestDto> {
+    override suspend fun getTest(testId: String, source: Source): ApiResult<TestPassedDto> {
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         try {
-            firebaseFirestore.collection("tests").document(testId).get(source).also {
+            firebaseFirestore.collection("testsPassed").document(testId).get(source).also {
                 it.await()
-                val test = it.result.toObject(TestDto::class.java)?.copy(id = testId)
+                val test = it.result.toObject(TestPassedDto::class.java)?.copy(id = testId)
                 return if (it.isSuccessful) ApiResult.Success(test)
                 else ApiResult.Error(it.exception?.message)
             }
@@ -144,7 +107,7 @@ class TestRepositoryImpl @Inject constructor(
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            firebaseFirestore.collection("tests").document(testId).delete().execute()
+            firebaseFirestore.collection("testsPassed").document(testId).delete().execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -155,8 +118,8 @@ class TestRepositoryImpl @Inject constructor(
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            val data = mapOf("questions" to questions, "lastUpdated" to timestamp)
-            firebaseFirestore.collection("tests").document(testId).update(data).execute()
+            val data = mapOf("questions" to questions, "timeFinished" to timestamp)
+            firebaseFirestore.collection("testsPassed").document(testId).update(data).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -166,7 +129,7 @@ class TestRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
-            firebaseFirestore.collection("tests").document(testId).get().also {
+            firebaseFirestore.collection("testsPassed").document(testId).get().also {
                 it.await()
                 val questions = it.result.toObject(TestQuestionsDto::class.java)?.questions ?: emptyList()
                 return if (it.isSuccessful) ApiResult.Success(questions)

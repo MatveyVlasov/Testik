@@ -1,6 +1,7 @@
 package com.app.testik.domain.mapper
 
 import com.app.testik.data.model.*
+import com.app.testik.data.model.TestDto
 import com.app.testik.domain.model.*
 
 fun RegistrationModel.toDto() =
@@ -37,6 +38,15 @@ fun TestModel.toDto() =
         isPublished = isPublished
     )
 
+fun TestPassedModel.toDto() =
+    TestPassedDto(
+        id = id,
+        testId = testId,
+        user = user,
+        timeStarted = timeStarted,
+        timeFinished = timeFinished
+    )
+
 fun QuestionModel.toDto() =
     QuestionDto(
         id = id,
@@ -45,11 +55,13 @@ fun QuestionModel.toDto() =
         description = description,
         image = image,
         type = type.title,
-        answers = answers.map { it.toDto() }
+        answers = answers.map { it.toDto() },
+        enteredAnswer = enteredAnswer
     )
 
 fun AnswerModel.toDto() =
     AnswerDto(
         text = text,
-        isCorrect = isCorrect
+        isCorrect = isCorrect,
+        isSelected = isSelected
     )

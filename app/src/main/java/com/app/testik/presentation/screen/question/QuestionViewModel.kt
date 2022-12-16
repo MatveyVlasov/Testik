@@ -9,7 +9,6 @@ import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
 import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 import com.app.testik.presentation.screen.question.model.QuestionScreenEvent
 import com.app.testik.presentation.screen.question.model.QuestionScreenUIState
-import com.app.testik.util.removeCorrectAnswers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +32,8 @@ class QuestionViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UIState<QuestionScreenUIState>>(UIState.Loading)
     private val _event = MutableSharedFlow<QuestionScreenEvent>()
 
-    private var screenUIState = QuestionScreenUIState()
+    var screenUIState = QuestionScreenUIState()
+        private set
 
     fun updateQuestion(question: QuestionDelegateItem) {
         question.apply {
@@ -44,7 +44,7 @@ class QuestionViewModel @Inject constructor(
                 description = description,
                 image = image,
                 type = type,
-                answers = answers.removeCorrectAnswers()
+                answers = answers
             )
             updateScreenState(screenState)
         }
@@ -54,7 +54,7 @@ class QuestionViewModel @Inject constructor(
         val answers = mutableListOf<AnswerDelegateItem>()
 
         screenUIState.answers.filterIsInstance<SingleChoiceDelegateItem>().forEach {
-            answers.add(it.copy(isCorrect = it.id == answer.id))
+            answers.add(it.copy(isSelected = it.id == answer.id))
         }
         updateScreenState(screenUIState.copy(answers = answers))
     }
@@ -63,7 +63,7 @@ class QuestionViewModel @Inject constructor(
 
         val pos = screenUIState.answers.indexOf(answer)
         val answers = screenUIState.answers.map { it }.toMutableList().also {
-            it[pos] = (it[pos] as MultipleChoiceDelegateItem).copy(isCorrect = isChecked)
+            it[pos] = (it[pos] as MultipleChoiceDelegateItem).copy(isSelected = isChecked)
         }
         updateScreenState(screenUIState.copy(answers = answers))
     }
