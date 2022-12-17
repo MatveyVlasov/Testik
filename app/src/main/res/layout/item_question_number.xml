@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        style="@style/CustomTextView"
+        style="@style/CustomTextView.AutoSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="12dp"
@@ -16,7 +16,6 @@
         android:background="@drawable/rounded_rect_20_dp"
         android:backgroundTint="@color/question_number_background_selector"
         android:gravity="center"
-        android:textSize="18sp"
         tools:text="11" />
 
 </FrameLayout>
