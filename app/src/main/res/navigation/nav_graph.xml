@@ -61,7 +61,8 @@
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/toLogin"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment" />
         <action
             android:id="@+id/toPasswordChange"
             app:destination="@id/passwordChangeFragment" />

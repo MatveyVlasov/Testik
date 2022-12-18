@@ -70,6 +70,10 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.checkUser()
+    }
 
     private fun initViews() {
 

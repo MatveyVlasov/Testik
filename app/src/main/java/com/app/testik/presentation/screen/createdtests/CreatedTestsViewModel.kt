@@ -13,6 +13,7 @@ import com.app.testik.presentation.screen.createdtests.model.CreatedTestDelegate
 import com.app.testik.presentation.screen.createdtests.model.CreatedTestsScreenEvent
 import com.app.testik.presentation.screen.createdtests.model.CreatedTestsScreenUIState
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -26,6 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreatedTestsViewModel @Inject constructor(
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val getCurrentUserTestsUseCase: GetCurrentUserTestsUseCase,
     private val deleteTestUseCase: DeleteTestUseCase
 ) : ViewModel() {
@@ -41,11 +43,24 @@ class CreatedTestsViewModel @Inject constructor(
 
     private var screenUIState = CreatedTestsScreenUIState()
 
+    private var user: FirebaseUser? = null
     private var snapshot: QuerySnapshot? = null
     private var job: Job? = null
 
     init {
         updateList()
+    }
+
+    fun checkUser() {
+        viewModelScope.launch {
+            val newUser = getCurrentUserUseCase()
+            if (user != newUser) {
+                screenUIState = CreatedTestsScreenUIState()
+                snapshot = null
+                user = newUser
+                updateList()
+            }
+        }
     }
 
     fun updateList() {
