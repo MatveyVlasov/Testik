@@ -14,7 +14,7 @@ class CreateTestPassedUseCase @Inject constructor(
 ) : ResultWrapper by ResultWrapperImpl() {
 
     suspend operator fun invoke(data: TestPassedModel): Result<String> {
-        val newData = data.copy(user = authRepository.getCurrentUser()!!.email!!)
+        val newData = data.copy(user = authRepository.getCurrentUser()!!.uid)
 
         return wrap(
             block = { testPassedRepository.createTest(newData.toDto()) },

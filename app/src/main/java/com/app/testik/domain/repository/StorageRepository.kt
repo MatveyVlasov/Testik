@@ -5,9 +5,9 @@ import com.app.testik.data.model.ApiResult
 
 interface StorageRepository {
 
-    suspend fun uploadAvatar(email: String, image: String): ApiResult<Uri>
+    suspend fun uploadAvatar(uid: String, image: String): ApiResult<Uri>
 
-    suspend fun deleteAvatar(email: String): ApiResult<Unit>
+    suspend fun deleteAvatar(uid: String): ApiResult<Unit>
 
     suspend fun uploadTestImage(testId: String, image: String): ApiResult<Uri>
 

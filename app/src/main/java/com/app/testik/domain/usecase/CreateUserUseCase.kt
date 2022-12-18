@@ -17,16 +17,23 @@ class CreateUserUseCase @Inject constructor(
 ) : ResultWrapper by ResultWrapperImpl() {
 
     suspend operator fun invoke(data: RegistrationModel): Result<Unit> {
-        return wrap(
+        wrap(
             block = { authRepository.signUpWithEmail(data.toDto()) },
-            mapper = { }
-        ).onSuccess {
+            mapper = { it!! }
+        ).onSuccess { user ->
             return wrap(
-                block = { userRepository.addUser(data.toDto()) },
+                block = {
+                    userRepository.addUser(
+                        data.toDto(),
+                        user.uid
+                    )
+                },
                 mapper = { }
             ).onError {
                 authRepository.deleteCurrentUser()
+                return Result.Error(it)
             }
         }
+        return Result.Error("An error occurred")
     }
 }

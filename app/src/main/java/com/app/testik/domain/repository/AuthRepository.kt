@@ -4,15 +4,16 @@ import com.app.testik.data.model.ApiResult
 import com.app.testik.data.model.LoginDto
 import com.app.testik.data.model.RegistrationDto
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 
 interface AuthRepository {
 
-    suspend fun signUpWithEmail(data: RegistrationDto): ApiResult<Unit>
+    suspend fun signUpWithEmail(data: RegistrationDto): ApiResult<FirebaseUser?>
 
     suspend fun loginWithEmail(data: LoginDto): ApiResult<Unit>
 
-    suspend fun loginWithGoogle(credential: AuthCredential): ApiResult<Boolean?>
+    suspend fun loginWithGoogle(credential: AuthCredential): ApiResult<AuthResult>
 
     suspend fun getCurrentUser(): FirebaseUser?
 

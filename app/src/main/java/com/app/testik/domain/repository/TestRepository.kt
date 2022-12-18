@@ -15,7 +15,7 @@ interface TestRepository {
 
     suspend fun updateTestImage(testId: String, image: String): ApiResult<Unit>
 
-    suspend fun getTestsByAuthor(authorEmail: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsDto>
+    suspend fun getTestsByAuthor(uid: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsDto>
 
     suspend fun getTestsByCategory(category: String, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsDto>
 

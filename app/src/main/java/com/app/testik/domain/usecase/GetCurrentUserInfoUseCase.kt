@@ -19,7 +19,7 @@ class GetCurrentUserInfoUseCase @Inject constructor(
         wrap(
             block = {
                 userRepository.getUserInfo(
-                    email = authRepository.getCurrentUser()?.email,
+                    uid = authRepository.getCurrentUser()?.uid,
                     source = source
                 )
             },

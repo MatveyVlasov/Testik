@@ -20,7 +20,7 @@ class GetCurrentUserTestsUseCase @Inject constructor(
         wrap(
             block = {
                 testRepository.getTestsByAuthor(
-                    authorEmail = authRepository.getCurrentUser()?.email,
+                    uid = authRepository.getCurrentUser()?.uid,
                     limit = QUERY_LIMIT,
                     snapshot = snapshot
                 )

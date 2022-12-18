@@ -84,7 +84,7 @@ class TestInfoViewModel @Inject constructor(
 
     private fun getAuthorInfo(author: String) {
         viewModelScope.launch {
-            getUserInfoUseCase(email = author).onSuccess {
+            getUserInfoUseCase(uid = author).onSuccess {
                 updateScreenState(screenUIState.copy(authorName = it.getFullName()))
             }
         }

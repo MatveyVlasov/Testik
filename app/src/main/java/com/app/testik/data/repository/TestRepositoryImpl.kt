@@ -78,12 +78,12 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTestsByAuthor(authorEmail: String?, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsDto> {
-        if (authorEmail == null) return ApiResult.Error("No email provided")
+    override suspend fun getTestsByAuthor(uid: String?, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsDto> {
+        if (uid == null) return ApiResult.Error("No user id provided")
 
         try {
             var query = firebaseFirestore.collection("tests")
-                .whereEqualTo("author", authorEmail)
+                .whereEqualTo("author", uid)
                 .orderBy("lastUpdated", Query.Direction.DESCENDING)
 
             if (snapshot != null)

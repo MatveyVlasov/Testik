@@ -19,7 +19,9 @@ class UserRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore
 ): UserRepository {
 
-    override suspend fun addUser(data: RegistrationDto): ApiResult<Unit> {
+    override suspend fun addUser(data: RegistrationDto, uid: String?): ApiResult<Unit> {
+        if (uid == null) return ApiResult.Error("No user id provided")
+
         return try {
             with(data) {
                 val userData = mapOf(
@@ -32,18 +34,18 @@ class UserRepositoryImpl @Inject constructor(
                         it.await()
                         if (!it.result.isEmpty) return ApiResult.Error("Username already taken")
                     }
-                firebaseFirestore.collection("users").document(email).set(userData).execute()
+                firebaseFirestore.collection("users").document(uid).set(userData).execute()
             }
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
     }
 
-    override suspend fun getUserInfo(email: String?, source: Source): ApiResult<UserDto> {
-        if (email == null) return ApiResult.Error("No email provided")
+    override suspend fun getUserInfo(uid: String?, source: Source): ApiResult<UserDto> {
+        if (uid == null) return ApiResult.Error("No user id provided")
 
         try {
-            firebaseFirestore.collection("users").document(email).get(source).also {
+            firebaseFirestore.collection("users").document(uid).get(source).also {
                 it.await()
                 return if (it.isSuccessful) {
                     val user = it.result.toObject(UserDto::class.java) ?: return ApiResult.Error("No data found")
@@ -56,14 +58,15 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateUser(data: UserDto): ApiResult<Unit> {
+    override suspend fun updateUser(data: UserDto, uid: String?): ApiResult<Unit> {
+        if (uid == null) return ApiResult.Error("No user id provided")
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
             with(data) {
                 firebaseFirestore.collection("users").whereEqualTo("username", username).get().also {
                     it.await()
-                    if (!it.result.isEmpty && it.result.documents.first().data?.get("email") != email) return ApiResult.Error("Username already taken")
+                    if (!it.result.isEmpty && it.result.documents.first().id != uid) return ApiResult.Error("Username already taken")
                 }
                 val newData = mutableMapOf<String, Any>(
                     "email" to email,
@@ -72,19 +75,19 @@ class UserRepositoryImpl @Inject constructor(
                     "lastName" to lastName
                 )
                 if (avatar.loadedFromServer() || avatar.isEmpty()) newData["avatar"] = avatar
-                firebaseFirestore.collection("users").document(email).update(newData).execute()
+                firebaseFirestore.collection("users").document(uid).update(newData).execute()
             }
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
     }
 
-    override suspend fun deleteUser(email: String?): ApiResult<Unit> {
-        if (email == null) return ApiResult.Error("No email provided")
+    override suspend fun deleteUser(uid: String?): ApiResult<Unit> {
+        if (uid == null) return ApiResult.Error("No user id provided")
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
-            firebaseFirestore.collection("users").document(email).delete().execute()
+            firebaseFirestore.collection("users").document(uid).delete().execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }

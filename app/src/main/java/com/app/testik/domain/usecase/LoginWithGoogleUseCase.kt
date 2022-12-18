@@ -19,11 +19,11 @@ class LoginWithGoogleUseCase @Inject constructor(
     suspend operator fun invoke(credential: AuthCredential, data: RegistrationModel): Result<Unit> {
         wrap(
             block = { authRepository.loginWithGoogle(credential) },
-            mapper = { it }
-        ).onSuccess { isNewUser ->
-            if (isNewUser == true) {
+            mapper = { it!! }
+        ).onSuccess { result ->
+            if (result.additionalUserInfo?.isNewUser == true) {
                 return wrap(
-                    block = { userRepository.addUser(data.toDto()) },
+                    block = { userRepository.addUser(data = data.toDto(), uid = result.user?.uid) },
                     mapper = { }
                 )
             }

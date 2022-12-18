@@ -22,22 +22,22 @@ class StorageRepositoryImpl @Inject constructor(
     private val firebaseStorage: FirebaseStorage
 ) : StorageRepository {
 
-    override suspend fun uploadAvatar(email: String, image: String): ApiResult<Uri> {
+    override suspend fun uploadAvatar(uid: String, image: String): ApiResult<Uri> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
-            val avatar = firebaseStorage.reference.child("avatars").child(email).uploadImage(image)
+            val avatar = firebaseStorage.reference.child("avatars").child(uid).uploadImage(image)
             ApiResult.Success(avatar)
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
     }
 
-    override suspend fun deleteAvatar(email: String): ApiResult<Unit> {
+    override suspend fun deleteAvatar(uid: String): ApiResult<Unit> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
          return try {
-            firebaseStorage.reference.child("avatars").child(email).delete().execute()
+            firebaseStorage.reference.child("avatars").child(uid).delete().execute()
         } catch (e: Exception) {
             return ApiResult.Error(e.message)
         }

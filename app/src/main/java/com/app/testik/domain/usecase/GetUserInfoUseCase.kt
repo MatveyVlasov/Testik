@@ -13,9 +13,9 @@ class GetUserInfoUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(email: String): Result<UserModel> =
+    suspend operator fun invoke(uid: String): Result<UserModel> =
         wrap(
-            block = { userRepository.getUserInfo(email = email, source = Source.DEFAULT) },
+            block = { userRepository.getUserInfo(uid = uid, source = Source.DEFAULT) },
             mapper = { it!!.toDomain() }
         )
 }

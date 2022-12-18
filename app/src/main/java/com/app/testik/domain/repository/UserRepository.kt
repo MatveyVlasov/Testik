@@ -7,11 +7,11 @@ import com.google.firebase.firestore.Source
 
 interface UserRepository {
 
-    suspend fun addUser(data: RegistrationDto): ApiResult<Unit>
+    suspend fun addUser(data: RegistrationDto, uid: String?): ApiResult<Unit>
 
-    suspend fun getUserInfo(email: String?, source: Source): ApiResult<UserDto>
+    suspend fun getUserInfo(uid: String?, source: Source): ApiResult<UserDto>
 
-    suspend fun updateUser(data: UserDto): ApiResult<Unit>
+    suspend fun updateUser(data: UserDto, uid: String?): ApiResult<Unit>
 
-    suspend fun deleteUser(email: String?): ApiResult<Unit>
+    suspend fun deleteUser(uid: String?): ApiResult<Unit>
 }

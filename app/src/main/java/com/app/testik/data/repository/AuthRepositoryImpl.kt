@@ -17,14 +17,17 @@ class AuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) : AuthRepository {
 
-    override suspend fun signUpWithEmail(data: RegistrationDto): ApiResult<Unit> {
+    override suspend fun signUpWithEmail(data: RegistrationDto): ApiResult<FirebaseUser?> {
         if (data.password == null) return ApiResult.Error("No password provided")
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
-        return try {
-            firebaseAuth.createUserWithEmailAndPassword(data.email, data.password).execute()
+        try {
+            firebaseAuth.createUserWithEmailAndPassword(data.email, data.password).also {
+                it.await()
+                return ApiResult.Success(it.result.user)
+            }
         } catch (e: Exception) {
-            ApiResult.Error(e.message)
+            return ApiResult.Error(e.message)
         }
     }
 
@@ -38,20 +41,16 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun loginWithGoogle(credential: AuthCredential): ApiResult<Boolean?> {
+    override suspend fun loginWithGoogle(credential: AuthCredential): ApiResult<AuthResult> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
-        return try {
-            var isNewUser: Boolean?
-
-            firebaseAuth.signInWithCredential(credential).also { task ->
-                task.await()
-                isNewUser = task.result.additionalUserInfo?.isNewUser
+        try {
+            firebaseAuth.signInWithCredential(credential).also {
+                it.await()
+                return ApiResult.Success(it.result)
             }
-
-            ApiResult.Success(isNewUser)
         } catch (e: Exception) {
-            ApiResult.Error(e.message)
+            return ApiResult.Error(e.message)
         }
     }
 
