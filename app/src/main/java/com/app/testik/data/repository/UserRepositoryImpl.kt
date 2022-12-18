@@ -19,6 +19,9 @@ class UserRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore
 ): UserRepository {
 
+    private val collection
+        get() = firebaseFirestore.collection(COLLECTION_ID)
+
     override suspend fun addUser(data: RegistrationDto, uid: String?): ApiResult<Unit> {
         if (uid == null) return ApiResult.Error("No user id provided")
 
@@ -29,12 +32,12 @@ class UserRepositoryImpl @Inject constructor(
                     "username" to username,
                     "avatar" to avatar
                 )
-                firebaseFirestore.collection("users").whereEqualTo("username", username).get()
+                collection.whereEqualTo("username", username).get()
                     .also {
                         it.await()
                         if (!it.result.isEmpty) return ApiResult.Error("Username already taken")
                     }
-                firebaseFirestore.collection("users").document(uid).set(userData).execute()
+                collection.document(uid).set(userData).execute()
             }
         } catch (e: Exception) {
             ApiResult.Error(e.message)
@@ -45,7 +48,7 @@ class UserRepositoryImpl @Inject constructor(
         if (uid == null) return ApiResult.Error("No user id provided")
 
         try {
-            firebaseFirestore.collection("users").document(uid).get(source).also {
+            collection.document(uid).get(source).also {
                 it.await()
                 return if (it.isSuccessful) {
                     val user = it.result.toObject(UserDto::class.java) ?: return ApiResult.Error("No data found")
@@ -64,7 +67,7 @@ class UserRepositoryImpl @Inject constructor(
 
         return try {
             with(data) {
-                firebaseFirestore.collection("users").whereEqualTo("username", username).get().also {
+                collection.whereEqualTo("username", username).get().also {
                     it.await()
                     if (!it.result.isEmpty && it.result.documents.first().id != uid) return ApiResult.Error("Username already taken")
                 }
@@ -75,7 +78,7 @@ class UserRepositoryImpl @Inject constructor(
                     "lastName" to lastName
                 )
                 if (avatar.loadedFromServer() || avatar.isEmpty()) newData["avatar"] = avatar
-                firebaseFirestore.collection("users").document(uid).update(newData).execute()
+                collection.document(uid).update(newData).execute()
             }
         } catch (e: Exception) {
             ApiResult.Error(e.message)
@@ -87,9 +90,13 @@ class UserRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
-            firebaseFirestore.collection("users").document(uid).delete().execute()
+            collection.document(uid).delete().execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
+    }
+
+    companion object {
+        private const val COLLECTION_ID = "users"
     }
 }

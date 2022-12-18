@@ -19,6 +19,9 @@ class TestPassedRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore
 ): TestPassedRepository {
 
+    private val collection
+        get() = firebaseFirestore.collection(COLLECTION_ID)
+
     override suspend fun createTest(data: TestPassedDto): ApiResult<String> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
@@ -31,7 +34,7 @@ class TestPassedRepositoryImpl @Inject constructor(
                     "timeFinished" to timeFinished
                 )
 
-                firebaseFirestore.collection("testsPassed").add(newData).also {
+                collection.add(newData).also {
                     it.await()
                     return if (it.isSuccessful) ApiResult.Success(it.result.id)
                     else ApiResult.Error(it.exception?.message)
@@ -56,7 +59,7 @@ class TestPassedRepositoryImpl @Inject constructor(
                     "timeFinished" to timeFinished
                 )
 
-                firebaseFirestore.collection("testsPassed").document(data.id).update(newData).execute()
+                collection.document(data.id).update(newData).execute()
             }
         } catch (e: Exception) {
             ApiResult.Error(e.message)
@@ -67,7 +70,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         if (email == null) return ApiResult.Error("No email provided")
 
         try {
-            var query = firebaseFirestore.collection("testsPassed")
+            var query = collection
                 .whereEqualTo("user", email)
                 .orderBy("timeFinished", Query.Direction.DESCENDING)
 
@@ -91,7 +94,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         try {
-            firebaseFirestore.collection("testsPassed").document(testId).get(source).also {
+            collection.document(testId).get(source).also {
                 it.await()
                 val test = it.result.toObject(TestPassedDto::class.java)?.copy(id = testId)
                 return if (it.isSuccessful) ApiResult.Success(test)
@@ -107,7 +110,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            firebaseFirestore.collection("testsPassed").document(testId).delete().execute()
+            collection.document(testId).delete().execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -119,7 +122,7 @@ class TestPassedRepositoryImpl @Inject constructor(
 
         return try {
             val data = mapOf("questions" to questions, "timeFinished" to timestamp)
-            firebaseFirestore.collection("testsPassed").document(testId).update(data).execute()
+            collection.document(testId).update(data).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -129,7 +132,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
-            firebaseFirestore.collection("testsPassed").document(testId).get().also {
+            collection.document(testId).get().also {
                 it.await()
                 val questions = it.result.toObject(TestQuestionsDto::class.java)?.questions ?: emptyList()
                 return if (it.isSuccessful) ApiResult.Success(questions)
@@ -141,4 +144,8 @@ class TestPassedRepositoryImpl @Inject constructor(
     }
 
     private fun QuerySnapshot?.orderBy(field: String) = this?.documents?.last()?.data?.get(field)
+
+    companion object {
+        private const val COLLECTION_ID = "testsPassed"
+    }
 }

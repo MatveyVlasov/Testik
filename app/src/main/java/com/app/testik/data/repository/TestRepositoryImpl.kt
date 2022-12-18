@@ -20,6 +20,9 @@ class TestRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore
 ): TestRepository {
 
+    private val collection
+        get() = firebaseFirestore.collection(COLLECTION_ID)
+
     override suspend fun createTest(data: TestDto): ApiResult<String> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
@@ -33,7 +36,7 @@ class TestRepositoryImpl @Inject constructor(
                     "lastUpdated" to timestamp
                 )
 
-                firebaseFirestore.collection("tests").add(newData).also {
+                collection.add(newData).also {
                     it.await()
                     return if (it.isSuccessful) ApiResult.Success(it.result.id)
                     else ApiResult.Error(it.exception?.message)
@@ -50,7 +53,7 @@ class TestRepositoryImpl @Inject constructor(
 
         return try {
             val data = mapOf("image" to image)
-            firebaseFirestore.collection("tests").document(testId).update(data).execute()
+            collection.document(testId).update(data).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -71,7 +74,7 @@ class TestRepositoryImpl @Inject constructor(
                     "lastUpdated" to timestamp
                 )
 
-                firebaseFirestore.collection("tests").document(data.id).update(newData).execute()
+                collection.document(data.id).update(newData).execute()
             }
         } catch (e: Exception) {
             ApiResult.Error(e.message)
@@ -82,7 +85,7 @@ class TestRepositoryImpl @Inject constructor(
         if (uid == null) return ApiResult.Error("No user id provided")
 
         try {
-            var query = firebaseFirestore.collection("tests")
+            var query = collection
                 .whereEqualTo("author", uid)
                 .orderBy("lastUpdated", Query.Direction.DESCENDING)
 
@@ -104,7 +107,7 @@ class TestRepositoryImpl @Inject constructor(
 
     override suspend fun getTestsByCategory(category: String, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsDto> {
         try {
-            var query = firebaseFirestore.collection("tests")
+            var query = collection
                 .whereEqualTo("category", category)
                 .whereEqualTo("isPublished", true)
 
@@ -128,7 +131,7 @@ class TestRepositoryImpl @Inject constructor(
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         try {
-            firebaseFirestore.collection("tests").document(testId).get(source).also {
+            collection.document(testId).get(source).also {
                 it.await()
                 val test = it.result.toObject(TestDto::class.java)?.copy(id = testId)
                 return if (it.isSuccessful) ApiResult.Success(test)
@@ -144,7 +147,7 @@ class TestRepositoryImpl @Inject constructor(
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            firebaseFirestore.collection("tests").document(testId).delete().execute()
+            collection.document(testId).delete().execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -156,7 +159,7 @@ class TestRepositoryImpl @Inject constructor(
 
         return try {
             val data = mapOf("questions" to questions, "lastUpdated" to timestamp)
-            firebaseFirestore.collection("tests").document(testId).update(data).execute()
+            collection.document(testId).update(data).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -166,7 +169,7 @@ class TestRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
-            firebaseFirestore.collection("tests").document(testId).get().also {
+            collection.document(testId).get().also {
                 it.await()
                 val questions = it.result.toObject(TestQuestionsDto::class.java)?.questions ?: emptyList()
                 return if (it.isSuccessful) ApiResult.Success(questions)
@@ -178,4 +181,8 @@ class TestRepositoryImpl @Inject constructor(
     }
 
     private fun QuerySnapshot?.orderBy(field: String) = this?.documents?.last()?.data?.get(field)
+
+    companion object {
+        private const val COLLECTION_ID = "tests"
+    }
 }
