@@ -1,4 +1,4 @@
-package com.app.testik.presentation.screen.createdtests
+package com.app.testik.presentation.screen.testscreated
 
 import android.os.Build
 import android.os.Bundle
@@ -14,32 +14,32 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.R
-import com.app.testik.databinding.FragmentCreatedTestsBinding
+import com.app.testik.databinding.FragmentTestsCreatedBinding
 import com.app.testik.domain.model.TestModel
 import com.app.testik.presentation.adapter.ErrorDelegateAdapter
 import com.app.testik.presentation.adapter.LoadingDelegateAdapter
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
-import com.app.testik.presentation.screen.createdtests.adapter.CreatedTestDelegateAdapter
-import com.app.testik.presentation.screen.createdtests.mapper.toCreatedTestItem
-import com.app.testik.presentation.screen.createdtests.model.CreatedTestDelegateItem
-import com.app.testik.presentation.screen.createdtests.model.CreatedTestsScreenEvent
+import com.app.testik.presentation.screen.testscreated.adapter.TestCreatedDelegateAdapter
+import com.app.testik.presentation.screen.testscreated.mapper.toTestCreatedItem
+import com.app.testik.presentation.screen.testscreated.model.TestCreatedDelegateItem
+import com.app.testik.presentation.screen.testscreated.model.TestsCreatedScreenEvent
 import com.app.testik.util.*
 import com.app.testik.util.delegateadapter.CompositeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
+class TestsCreatedFragment : BaseFragment<FragmentTestsCreatedBinding>() {
 
-    private val viewModel: CreatedTestsViewModel by viewModels()
+    private val viewModel: TestsCreatedViewModel by viewModels()
 
     private val testsAdapter by lazy {
         CompositeAdapter.Builder()
             .setOnUpdateCallback(viewModel::updateList)
             .add(ErrorDelegateAdapter(viewModel::updateList))
             .add(LoadingDelegateAdapter())
-            .add(CreatedTestDelegateAdapter (
+            .add(TestCreatedDelegateAdapter (
                 onClick = { navigateToTest(it) },
                 onMoreClick = { view, testId ->
                     showMenu(view = view, menuRes= R.menu.test_menu, testId = testId)
@@ -48,7 +48,7 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
             .build()
     }
 
-    override fun createBinding(inflater: LayoutInflater) = FragmentCreatedTestsBinding.inflate(inflater)
+    override fun createBinding(inflater: LayoutInflater) = FragmentTestsCreatedBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,13 +60,13 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
         addBackPressedCallback { showExitAlert() }
 
         observeResult<TestModel>(Constants.UPDATE_TEST_RESULT_KEY) {
-            val item = getItem(it.id) ?: viewModel.addTestToList(it.toCreatedTestItem())
-            if (item is CreatedTestDelegateItem) viewModel.updateTest(test = item, newTest = it.toCreatedTestItem())
+            val item = getItem(it.id) ?: viewModel.addTestToList(it.toTestCreatedItem())
+            if (item is TestCreatedDelegateItem) viewModel.updateTest(test = item, newTest = it.toTestCreatedItem())
         }
 
         observeResult<TestModel>(Constants.DELETE_TEST_RESULT_KEY) {
             val item = getItem(it.id)
-            if (item is CreatedTestDelegateItem) viewModel.deleteTestFromList(test = it.toCreatedTestItem())
+            if (item is TestCreatedDelegateItem) viewModel.deleteTestFromList(test = it.toTestCreatedItem())
         }
     }
 
@@ -121,14 +121,14 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
         }
     }
 
-    private fun handleEvent(event: CreatedTestsScreenEvent) {
+    private fun handleEvent(event: TestsCreatedScreenEvent) {
         when (event) {
-            is CreatedTestsScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
-            is CreatedTestsScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
-            is CreatedTestsScreenEvent.Loading -> Unit
-            is CreatedTestsScreenEvent.SuccessTestDeletion -> showSnackbar(R.string.delete_test_success)
+            is TestsCreatedScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
+            is TestsCreatedScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
+            is TestsCreatedScreenEvent.Loading -> Unit
+            is TestsCreatedScreenEvent.SuccessTestDeletion -> showSnackbar(R.string.delete_test_success)
         }
-        setLoadingState(event is CreatedTestsScreenEvent.Loading)
+        setLoadingState(event is TestsCreatedScreenEvent.Loading)
     }
 
     private fun showMenu(view: View, @MenuRes menuRes: Int, testId: String) {
@@ -151,13 +151,13 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
 
     private fun navigateToTest(testId: String = "") {
         navController.navigate(
-            CreatedTestsFragmentDirections.toEditTest(testId)
+            TestsCreatedFragmentDirections.toEditTest(testId)
         )
     }
 
     private fun navigateToQuestionList(testId: String) {
         navController.navigate(
-            CreatedTestsFragmentDirections.toQuestionList(testId)
+            TestsCreatedFragmentDirections.toQuestionList(testId)
         )
     }
 
@@ -171,6 +171,6 @@ class CreatedTestsFragment : BaseFragment<FragmentCreatedTestsBinding>() {
         )
     }
 
-    private fun getItem(testId: String) = testsAdapter.currentList.find { it.id() == testId } as? CreatedTestDelegateItem
+    private fun getItem(testId: String) = testsAdapter.currentList.find { it.id() == testId } as? TestCreatedDelegateItem
 
 }

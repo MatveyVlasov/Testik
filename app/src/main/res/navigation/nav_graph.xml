@@ -75,10 +75,10 @@
         tools:layout="@layout/fragment_password_change" />
 
     <fragment
-        android:id="@+id/createdTestsFragment"
-        android:name="com.app.testik.presentation.screen.createdtests.CreatedTestsFragment"
-        android:label="CreatedTestsFragment"
-        tools:layout="@layout/fragment_created_tests" >
+        android:id="@+id/testsCreatedFragment"
+        android:name="com.app.testik.presentation.screen.testscreated.TestsCreatedFragment"
+        android:label="TestsCreatedFragment"
+        tools:layout="@layout/fragment_tests_created" >
         <action
             android:id="@+id/toEditTest"
             app:destination="@id/testEditFragment" />
@@ -163,5 +163,10 @@
             android:defaultValue=""
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/testsPassedFragment"
+        android:name="com.app.testik.presentation.screen.testspassed.TestsPassedFragment"
+        android:label="TestsPassedFragment"
+        tools:layout="@layout/fragment_tests_passed" />
 
 </navigation>

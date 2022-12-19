@@ -56,4 +56,8 @@ abstract class BaseFragment<T: ViewBinding> : Fragment() {
     protected fun setLoadingState(isLoading: Boolean) {
         (activity as? MainActivity)?.setLoadingState(isLoading)
     }
+
+    protected fun setNavbarItem(destination: Int) {
+        (activity as? MainActivity)?.setNavbarItem(destination)
+    }
 }

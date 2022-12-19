@@ -1,7 +1,7 @@
-package com.app.testik.presentation.screen.createdtests.model
+package com.app.testik.presentation.screen.testspassed.model
 
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
 
-data class CreatedTestsScreenUIState(
+data class TestsPassedScreenUIState(
     val tests: List<DelegateAdapterItem> = emptyList()
 )

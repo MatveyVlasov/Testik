@@ -11,9 +11,9 @@ class UpdateAnswersUseCase @Inject constructor(
     private val testPassedRepository: TestPassedRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(testId: String, questions: List<QuestionModel>): Result<Unit> {
+    suspend operator fun invoke(recordId: String, questions: List<QuestionModel>): Result<Unit> {
         return wrap(
-            block = { testPassedRepository.updateQuestions(testId = testId, questions = questions.map { it.toDto() }) },
+            block = { testPassedRepository.updateQuestions(recordId = recordId, questions = questions.map { it.toDto() }) },
             mapper = { }
         )
     }

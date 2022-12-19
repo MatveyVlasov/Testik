@@ -10,13 +10,13 @@ interface TestPassedRepository {
 
     suspend fun updateTest(data: TestPassedDto): ApiResult<Unit>
 
-    suspend fun getTestsByUser(email: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsDto>
+    suspend fun getTestsByUser(uid: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsPassedDto>
 
-    suspend fun getTest(testId: String, source: Source): ApiResult<TestPassedDto>
+    suspend fun getTest(recordId: String, source: Source): ApiResult<TestPassedDto>
 
-    suspend fun deleteTest(testId: String): ApiResult<Unit>
+    suspend fun deleteTest(recordId: String): ApiResult<Unit>
 
-    suspend fun updateQuestions(testId: String, questions: List<QuestionDto>): ApiResult<Unit>
+    suspend fun updateQuestions(recordId: String, questions: List<QuestionDto>): ApiResult<Unit>
 
-    suspend fun getTestQuestions(testId: String): ApiResult<List<QuestionDto>>
+    suspend fun getTestQuestions(recordId: String): ApiResult<List<QuestionDto>>
 }

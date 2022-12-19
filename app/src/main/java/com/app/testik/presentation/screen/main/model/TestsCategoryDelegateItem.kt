@@ -6,7 +6,7 @@ import com.app.testik.util.delegateadapter.DelegateAdapterItem
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class CategoryTestsDelegateItem(
+data class TestsCategoryDelegateItem(
     val category: CategoryType,
     val tests: List<TestDelegateItem> = emptyList()
 ) : DelegateAdapterItem, Parcelable {

@@ -10,7 +10,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.app.testik.databinding.FragmentMainBinding
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
-import com.app.testik.presentation.screen.main.adapter.CategoryTestsDelegateAdapter
+import com.app.testik.presentation.screen.main.adapter.TestsCategoryDelegateAdapter
 import com.app.testik.presentation.screen.main.model.MainScreenEvent
 import com.app.testik.util.*
 import com.app.testik.util.Constants.UPDATE_AVATAR_RESULT_KEY
@@ -28,7 +28,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     private val categoryTestsAdapter by lazy {
         CompositeAdapter.Builder()
             .add(
-                CategoryTestsDelegateAdapter { navigateToTest(it) }
+                TestsCategoryDelegateAdapter { navigateToTest(it) }
             )
             .build()
     }

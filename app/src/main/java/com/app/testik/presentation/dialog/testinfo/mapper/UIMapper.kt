@@ -5,5 +5,7 @@ import com.app.testik.presentation.dialog.testinfo.model.TestInfoDialogUIState
 
 fun TestInfoDialogUIState.toDomain() =
     TestPassedModel(
-        testId = id
+        testId = id,
+        title = title,
+        image = image
     )

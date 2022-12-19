@@ -88,8 +88,8 @@
     <string name="flip_vertically">Flip vertically</string>
     <string name="crop">Crop</string>
 
-    <string name="main">Main</string>
-    <string name="taken_tests">Taken tests</string>
+    <string name="main">Home</string>
+    <string name="passed_tests">Passed tests</string>
     <string name="created_tests">Created tests</string>
 
     <string name="edit">Edit</string>
@@ -176,4 +176,7 @@
     <string name="cannot_go_to_next_question">You are already on the last question</string>
 
     <string name="submit">Submit</string>
+
+    <string name="go_home_to_take_test">You can choose a test to take on home screen</string>
+    <string name="go_home">Go home</string>
 </resources>

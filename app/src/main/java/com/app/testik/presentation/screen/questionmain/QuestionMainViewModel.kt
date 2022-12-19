@@ -56,7 +56,10 @@ class QuestionMainViewModel @Inject constructor(
     fun saveAnswers(showInfo: Boolean = false) {
         if (showInfo) emitEvent(QuestionMainScreenEvent.Loading)
         viewModelScope.launch {
-            updateAnswersUseCase(screenUIState.id, screenUIState.questions.map { it.toDomain() }).onSuccess {
+            updateAnswersUseCase(
+                recordId = screenUIState.id,
+                questions = screenUIState.questions.map { it.toDomain() }
+            ).onSuccess {
                 if (showInfo) emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.draft_saved))
             }.onError {
                 handleError(it)

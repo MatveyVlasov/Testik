@@ -1,4 +1,4 @@
-package com.app.testik.presentation.screen.createdtests
+package com.app.testik.presentation.screen.testscreated
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,10 +8,10 @@ import com.app.testik.domain.usecase.*
 import com.app.testik.presentation.model.ErrorItem
 import com.app.testik.presentation.model.LoadingItem
 import com.app.testik.presentation.model.UIState
-import com.app.testik.presentation.screen.createdtests.mapper.toCreatedTestItem
-import com.app.testik.presentation.screen.createdtests.model.CreatedTestDelegateItem
-import com.app.testik.presentation.screen.createdtests.model.CreatedTestsScreenEvent
-import com.app.testik.presentation.screen.createdtests.model.CreatedTestsScreenUIState
+import com.app.testik.presentation.screen.testscreated.mapper.toTestCreatedItem
+import com.app.testik.presentation.screen.testscreated.model.TestCreatedDelegateItem
+import com.app.testik.presentation.screen.testscreated.model.TestsCreatedScreenEvent
+import com.app.testik.presentation.screen.testscreated.model.TestsCreatedScreenUIState
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.QuerySnapshot
@@ -26,22 +26,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CreatedTestsViewModel @Inject constructor(
+class TestsCreatedViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val getCurrentUserTestsUseCase: GetCurrentUserTestsUseCase,
+    private val getCurrentUserCreatedTestsUseCase: GetCurrentUserCreatedTestsUseCase,
     private val deleteTestUseCase: DeleteTestUseCase
 ) : ViewModel() {
 
-    val uiState: StateFlow<UIState<CreatedTestsScreenUIState>>
+    val uiState: StateFlow<UIState<TestsCreatedScreenUIState>>
         get() = _uiState
 
-    val event: SharedFlow<CreatedTestsScreenEvent>
+    val event: SharedFlow<TestsCreatedScreenEvent>
         get() = _event
 
-    private val _uiState = MutableStateFlow<UIState<CreatedTestsScreenUIState>>(UIState.Loading)
-    private val _event = MutableSharedFlow<CreatedTestsScreenEvent>()
+    private val _uiState = MutableStateFlow<UIState<TestsCreatedScreenUIState>>(UIState.Loading)
+    private val _event = MutableSharedFlow<TestsCreatedScreenEvent>()
 
-    private var screenUIState = CreatedTestsScreenUIState()
+    private var screenUIState = TestsCreatedScreenUIState()
 
     private var user: FirebaseUser? = null
     private var snapshot: QuerySnapshot? = null
@@ -55,7 +55,7 @@ class CreatedTestsViewModel @Inject constructor(
         viewModelScope.launch {
             val newUser = getCurrentUserUseCase()
             if (user != newUser) {
-                screenUIState = CreatedTestsScreenUIState()
+                screenUIState = TestsCreatedScreenUIState()
                 snapshot = null
                 user = newUser
                 updateList()
@@ -69,23 +69,23 @@ class CreatedTestsViewModel @Inject constructor(
         postItem(LoadingItem)
 
         job = viewModelScope.launch {
-            getCurrentUserTestsUseCase(snapshot).onSuccess {
+            getCurrentUserCreatedTestsUseCase(snapshot).onSuccess {
                 snapshot = it.snapshot
-                postListItems(it.tests.map { test -> test.toCreatedTestItem() })
+                postListItems(it.tests.map { test -> test.toTestCreatedItem() })
             }.onError {
                 postItem(ErrorItem(it))
             }
         }
     }
 
-    fun addTestToList(test: CreatedTestDelegateItem) {
+    fun addTestToList(test: TestCreatedDelegateItem) {
         val tests = screenUIState.tests.map { it }.toMutableList().also {
             it.add(0, test)
         }
         updateScreenState(screenUIState.copy(tests = tests))
     }
 
-    fun updateTest(test: CreatedTestDelegateItem, newTest: CreatedTestDelegateItem) {
+    fun updateTest(test: TestCreatedDelegateItem, newTest: TestCreatedDelegateItem) {
         val pos = screenUIState.tests.indexOf(test)
         val tests = screenUIState.tests.map { it }.toMutableList().also {
             it[pos] = newTest
@@ -93,23 +93,23 @@ class CreatedTestsViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(tests = tests))
     }
 
-    fun deleteTestFromList(test: CreatedTestDelegateItem) {
+    fun deleteTestFromList(test: TestCreatedDelegateItem) {
         val tests = screenUIState.tests.map { it }.toMutableList().also {
             it.remove(test)
         }
         updateScreenState(screenUIState.copy(tests = tests))
     }
 
-    fun deleteTest(test: CreatedTestDelegateItem?) {
+    fun deleteTest(test: TestCreatedDelegateItem?) {
         if (test == null) return
-        emitEvent(CreatedTestsScreenEvent.Loading)
+        emitEvent(TestsCreatedScreenEvent.Loading)
 
         viewModelScope.launch {
             deleteTestUseCase(testId = test.id).onSuccess {
                 deleteTestFromList(test)
-                emitEvent(CreatedTestsScreenEvent.SuccessTestDeletion(test))
+                emitEvent(TestsCreatedScreenEvent.SuccessTestDeletion(test))
             }.onError {
-                emitEvent(CreatedTestsScreenEvent.ShowSnackbar(it))
+                emitEvent(TestsCreatedScreenEvent.ShowSnackbar(it))
             }
         }
     }
@@ -127,12 +127,12 @@ class CreatedTestsViewModel @Inject constructor(
         )
     }
 
-    private fun updateScreenState(state: CreatedTestsScreenUIState) {
+    private fun updateScreenState(state: TestsCreatedScreenUIState) {
         screenUIState = state
         _uiState.value = UIState.Success(screenUIState)
     }
 
-    private fun emitEvent(event: CreatedTestsScreenEvent) {
+    private fun emitEvent(event: TestsCreatedScreenEvent) {
         viewModelScope.launch {
             _event.emit(event)
         }

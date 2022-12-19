@@ -6,12 +6,12 @@
         android:icon="@drawable/ic_main"
         android:iconTint="@color/blue_light" />
 
-    <item android:id="@+id/takenTestsFragment"
-        android:title="@string/taken_tests"
-        android:icon="@drawable/ic_taken_tests"
+    <item android:id="@+id/testsPassedFragment"
+        android:title="@string/passed_tests"
+        android:icon="@drawable/ic_passed_tests"
         android:iconTint="@color/blue_light" />
 
-    <item android:id="@+id/createdTestsFragment"
+    <item android:id="@+id/testsCreatedFragment"
         android:title="@string/created_tests"
         android:icon="@drawable/ic_created_tests" />
 

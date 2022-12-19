@@ -84,7 +84,7 @@
     <string name="crop">Обрезать</string>
 
     <string name="main">Главная</string>
-    <string name="taken_tests">Пройденные тесты</string>
+    <string name="passed_tests">Пройденные тесты</string>
     <string name="created_tests">Созданные тесты</string>
 
     <string name="edit">Редактировать</string>
@@ -172,4 +172,7 @@
     <string name="cannot_go_to_next_question">Вы уже на последнем вопросе</string>
 
     <string name="submit">Подтвердить</string>
+
+    <string name="go_home_to_take_test">Вы можете выбрать тест для прохождения на главной</string>
+    <string name="go_home">На главную</string>
 </resources>

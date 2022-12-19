@@ -40,8 +40,10 @@ fun TestModel.toDto() =
 
 fun TestPassedModel.toDto() =
     TestPassedDto(
-        id = id,
+        recordId = recordId,
         testId = testId,
+        title = title,
+        image = image,
         user = user,
         timeStarted = timeStarted,
         timeFinished = timeFinished

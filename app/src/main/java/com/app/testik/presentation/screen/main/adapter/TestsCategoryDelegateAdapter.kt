@@ -3,26 +3,26 @@ package com.app.testik.presentation.screen.main.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.app.testik.databinding.ItemCategoryTestsBinding
-import com.app.testik.presentation.screen.main.model.CategoryTestsDelegateItem
+import com.app.testik.databinding.ItemTestsCategoryBinding
+import com.app.testik.presentation.screen.main.model.TestsCategoryDelegateItem
 import com.app.testik.util.delegateadapter.CompositeAdapter
 import com.app.testik.util.delegateadapter.DelegateAdapter
 
-class CategoryTestsDelegateAdapter(
+class TestsCategoryDelegateAdapter(
     val onTestClick: (String) -> Unit
     //val onMoreClick: (String) -> Unit
-) : DelegateAdapter<CategoryTestsDelegateItem, CategoryTestsDelegateAdapter.ViewHolder>(
-        CategoryTestsDelegateItem::class.java
+) : DelegateAdapter<TestsCategoryDelegateItem, TestsCategoryDelegateAdapter.ViewHolder>(
+        TestsCategoryDelegateItem::class.java
 ) {
 
     override fun createViewHolder(parent: ViewGroup): RecyclerView.ViewHolder =
         ViewHolder(
-            ItemCategoryTestsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemTestsCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
 
-    override fun bindViewHolder(model: CategoryTestsDelegateItem, viewHolder: ViewHolder) = viewHolder.bind(model)
+    override fun bindViewHolder(model: TestsCategoryDelegateItem, viewHolder: ViewHolder) = viewHolder.bind(model)
 
-    inner class ViewHolder(private val binding: ItemCategoryTestsBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemTestsCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private val testsAdapter by lazy {
             CompositeAdapter.Builder()
@@ -36,7 +36,7 @@ class CategoryTestsDelegateAdapter(
             binding.rvTests.adapter = testsAdapter
         }
 
-        fun bind(categoryTests: CategoryTestsDelegateItem) {
+        fun bind(categoryTests: TestsCategoryDelegateItem) {
 
             testsAdapter.submitList(categoryTests.tests)
 

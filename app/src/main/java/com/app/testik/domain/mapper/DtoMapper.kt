@@ -28,6 +28,21 @@ fun TestsDto.toDomain(): TestsModel {
     )
 }
 
+fun TestsPassedDto.toDomain(): TestsPassedModel {
+    val tests = mutableListOf<TestPassedDto>()
+    if (!snapshot.isEmpty) {
+        for (document in snapshot) {
+            val data = document.toObject(TestPassedDto::class.java)
+            tests.add(data.copy(recordId = document.id))
+        }
+    }
+
+    return TestsPassedModel(
+        snapshot = snapshot,
+        tests = tests.map { it.toDomain() }
+    )
+}
+
 fun TestDto.toDomain() =
     TestModel(
         id = id,
@@ -42,8 +57,10 @@ fun TestDto.toDomain() =
 
 fun TestPassedDto.toDomain() =
     TestPassedModel(
-        id = id,
+        recordId = recordId,
         testId = testId,
+        title = title,
+        image = image,
         user = user,
         timeStarted = timeStarted,
         timeFinished = timeFinished

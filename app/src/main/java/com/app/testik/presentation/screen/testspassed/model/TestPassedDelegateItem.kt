@@ -1,14 +1,14 @@
-package com.app.testik.presentation.screen.createdtests.model
+package com.app.testik.presentation.screen.testspassed.model
 
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
 
-data class CreatedTestDelegateItem(
-    val id: String,
+data class TestPassedDelegateItem(
+    val recordId: String,
     val title: String,
     val image: String
 ) : DelegateAdapterItem {
 
-    override fun id() = id
+    override fun id() = recordId
 
     override fun content(): Any = this
 }

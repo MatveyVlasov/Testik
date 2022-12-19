@@ -29,9 +29,11 @@ class TestPassedRepositoryImpl @Inject constructor(
             with (data) {
                 val newData = mapOf(
                     "testId" to testId,
+                    "title" to title,
+                    "image" to image,
                     "user" to user,
-                    "timeStarted" to timeStarted,
-                    "timeFinished" to timeFinished
+                    "timeStarted" to timestamp,
+                    "timeFinished" to timestamp
                 )
 
                 collection.add(newData).also {
@@ -48,30 +50,27 @@ class TestPassedRepositoryImpl @Inject constructor(
 
     override suspend fun updateTest(data: TestPassedDto): ApiResult<Unit> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
-        if (data.id.isEmpty()) return ApiResult.Error("No test found")
+        if (data.recordId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
             with (data) {
                 val newData = mapOf(
-                    "testId" to testId,
-                    "user" to user,
-                    "timeStarted" to timeStarted,
-                    "timeFinished" to timeFinished
+                    "timeFinished" to timestamp
                 )
 
-                collection.document(data.id).update(newData).execute()
+                collection.document(data.recordId).update(newData).execute()
             }
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
     }
 
-    override suspend fun getTestsByUser(email: String?, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsDto> {
-        if (email == null) return ApiResult.Error("No email provided")
+    override suspend fun getTestsByUser(uid: String?, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsPassedDto> {
+        if (uid == null) return ApiResult.Error("No user id provided")
 
         try {
             var query = collection
-                .whereEqualTo("user", email)
+                .whereEqualTo("user", uid)
                 .orderBy("timeFinished", Query.Direction.DESCENDING)
 
             if (snapshot != null)
@@ -82,7 +81,7 @@ class TestPassedRepositoryImpl @Inject constructor(
                 .get()
                 .also {
                     val newSnapshot = it.await()
-                    return if (it.isSuccessful) ApiResult.Success(TestsDto(newSnapshot))
+                    return if (it.isSuccessful) ApiResult.Success(TestsPassedDto(newSnapshot))
                     else ApiResult.Error(it.exception?.message)
                 }
         } catch (e: Exception) {
@@ -90,13 +89,13 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTest(testId: String, source: Source): ApiResult<TestPassedDto> {
-        if (testId.isEmpty()) return ApiResult.Error("No test found")
+    override suspend fun getTest(recordId: String, source: Source): ApiResult<TestPassedDto> {
+        if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         try {
-            collection.document(testId).get(source).also {
+            collection.document(recordId).get(source).also {
                 it.await()
-                val test = it.result.toObject(TestPassedDto::class.java)?.copy(id = testId)
+                val test = it.result.toObject(TestPassedDto::class.java)?.copy(recordId = recordId)
                 return if (it.isSuccessful) ApiResult.Success(test)
                 else ApiResult.Error(it.exception?.message)
             }
@@ -105,34 +104,35 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteTest(testId: String): ApiResult<Unit> {
+    override suspend fun deleteTest(recordId: String): ApiResult<Unit> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
-        if (testId.isEmpty()) return ApiResult.Error("No test found")
+        if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            collection.document(testId).delete().execute()
+            collection.document(recordId).delete().execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
     }
 
-    override suspend fun updateQuestions(testId: String, questions: List<QuestionDto>): ApiResult<Unit> {
+    override suspend fun updateQuestions(recordId: String, questions: List<QuestionDto>): ApiResult<Unit> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
-        if (testId.isEmpty()) return ApiResult.Error("No test found")
+        if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
             val data = mapOf("questions" to questions, "timeFinished" to timestamp)
-            collection.document(testId).update(data).execute()
+            collection.document(recordId).update(data).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
     }
 
-    override suspend fun getTestQuestions(testId: String): ApiResult<List<QuestionDto>> {
+    override suspend fun getTestQuestions(recordId: String): ApiResult<List<QuestionDto>> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
+        if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         try {
-            collection.document(testId).get().also {
+            collection.document(recordId).get().also {
                 it.await()
                 val questions = it.result.toObject(TestQuestionsDto::class.java)?.questions ?: emptyList()
                 return if (it.isSuccessful) ApiResult.Success(questions)
