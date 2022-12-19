@@ -8,7 +8,7 @@ interface TestPassedRepository {
 
     suspend fun createTest(data: TestPassedDto): ApiResult<String>
 
-    suspend fun updateTest(data: TestPassedDto): ApiResult<Unit>
+    suspend fun finishTest(data: TestPassedDto, questions: List<QuestionDto>): ApiResult<Unit>
 
     suspend fun getTestsByUser(uid: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsPassedDto>
 

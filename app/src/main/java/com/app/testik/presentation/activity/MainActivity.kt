@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.annotation.IdRes
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -24,15 +27,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 //    @Inject
 //    lateinit var preferencesUseCase: PreferencesUseCase
 
-    lateinit var navHostFragment: NavHostFragment
+    lateinit var navController: NavController
 
     override fun createBinding(inflater: LayoutInflater) = ActivityMainBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
-        binding.bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
+        navController = (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment).findNavController()
+        binding.bottomNavigationView.setupWithNavController(navController)
     }
 
     override fun attachBaseContext(newBase: Context) {
@@ -52,9 +55,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.progressBar.isVisible = isLoading
     }
 
-    fun setNavbarItem(destination: Int) {
+    fun setNavbarItem(@IdRes destination: Int, bundle: Bundle = bundleOf()) {
         binding.bottomNavigationView.menu.findItem(destination).also {
-            NavigationUI.onNavDestinationSelected(it, navHostFragment.findNavController())
+            NavigationUI.onNavDestinationSelected(it, navController)
+        }
+        if (destination == R.id.testsPassedFragment) {
+            navController.navigate(destination, bundle)
         }
     }
 }

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -57,7 +59,7 @@ abstract class BaseFragment<T: ViewBinding> : Fragment() {
         (activity as? MainActivity)?.setLoadingState(isLoading)
     }
 
-    protected fun setNavbarItem(destination: Int) {
-        (activity as? MainActivity)?.setNavbarItem(destination)
+    protected fun setNavbarItem(@IdRes destination: Int, bundle: Bundle = bundleOf()) {
+        (activity as? MainActivity)?.setNavbarItem(destination, bundle)
     }
 }

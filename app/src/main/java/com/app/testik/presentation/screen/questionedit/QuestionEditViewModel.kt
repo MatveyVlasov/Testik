@@ -46,7 +46,7 @@ class QuestionEditViewModel @Inject constructor(
     private var oldScreenUIState: QuestionEditScreenUIState = screenUIState.copy()
 
     init {
-        args.questionId.apply {
+        args.question.apply {
             val screenState = screenUIState.copy(
                 id = id,
                 testId = testId,

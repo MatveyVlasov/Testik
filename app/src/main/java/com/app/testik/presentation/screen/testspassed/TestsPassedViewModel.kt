@@ -9,6 +9,7 @@ import com.app.testik.presentation.model.ErrorItem
 import com.app.testik.presentation.model.LoadingItem
 import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.testspassed.mapper.toTestPassedItem
+import com.app.testik.presentation.screen.testspassed.model.TestPassedDelegateItem
 import com.app.testik.presentation.screen.testspassed.model.TestsPassedScreenEvent
 import com.app.testik.presentation.screen.testspassed.model.TestsPassedScreenUIState
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
@@ -74,6 +75,14 @@ class TestsPassedViewModel @Inject constructor(
                 postItem(ErrorItem(it))
             }
         }
+    }
+
+    fun addTestToList(test: TestPassedDelegateItem) {
+        if (screenUIState.tests.isEmpty()) return
+        val tests = screenUIState.tests.map { it }.toMutableList().also {
+            it.add(0, test)
+        }
+        updateScreenState(screenUIState.copy(tests = tests))
     }
 
     private fun postItem(data: DelegateAdapterItem) = postListItems(listOf(data))

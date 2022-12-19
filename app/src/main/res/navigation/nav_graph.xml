@@ -19,7 +19,8 @@
             app:destination="@id/registrationFragment" />
         <action
             android:id="@+id/toMain"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment" />
         <action
             android:id="@+id/toPasswordReset"
             app:destination="@id/passwordResetFragment" />
@@ -32,7 +33,8 @@
         tools:layout="@layout/fragment_registration" >
         <action
             android:id="@+id/toMain"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment" />
     </fragment>
 
     <fragment
@@ -121,7 +123,7 @@
         android:label="QuestionEditFragment"
         tools:layout="@layout/fragment_question_edit">
         <argument
-            android:name="questionId"
+            android:name="question"
             app:argType="com.app.testik.presentation.model.QuestionDelegateItem" />
     </fragment>
 
@@ -162,11 +164,25 @@
             android:name="testId"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/toResults"
+            app:destination="@id/testResultsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/testsPassedFragment"
         android:name="com.app.testik.presentation.screen.testspassed.TestsPassedFragment"
         android:label="TestsPassedFragment"
         tools:layout="@layout/fragment_tests_passed" />
+
+    <fragment
+        android:id="@+id/testResultsFragment"
+        android:name="com.app.testik.presentation.screen.testresults.TestResultsFragment"
+        android:label="TestResultsFragment"
+        tools:layout="@layout/fragment_test_results">
+        <argument
+            android:name="recordId"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

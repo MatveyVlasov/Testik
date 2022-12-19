@@ -78,6 +78,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                 }
             })
 
+            btnFinish.setOnClickListener { finish() }
             btnSaveDraft.setOnClickListener { saveAnswers() }
             btnPrev.setOnClickListener { goToPreviousQuestion() }
             btnNext.setOnClickListener { goToNextQuestion() }
@@ -117,6 +118,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
             is QuestionMainScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
             is QuestionMainScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
             is QuestionMainScreenEvent.Loading -> Unit
+            is QuestionMainScreenEvent.NavigateToResults -> navigateToResults(event.recordId)
         }
         setLoadingState(event is QuestionMainScreenEvent.Loading)
     }
@@ -159,5 +161,16 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
     private fun saveAnswers() {
         updateAnswers(binding.pager.currentItem)
         viewModel.saveAnswers(showInfo = true)
+    }
+
+    private fun finish() {
+        updateAnswers(binding.pager.currentItem)
+        viewModel.finish()
+    }
+
+    private fun navigateToResults(recordId: String) {
+        navController.navigate(
+            QuestionMainFragmentDirections.toResults(recordId)
+        )
     }
 }

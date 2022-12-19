@@ -6,6 +6,9 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build.VERSION.SDK_INT
+import android.os.Bundle
+import android.os.Parcelable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
@@ -27,6 +30,7 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
 import java.util.*
 
 val randomId: String
@@ -64,6 +68,21 @@ fun String.isEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches() && isNotBl
 fun Uri?.toAvatar() = toString().takeWhile { it != '=' }
 
 fun String.loadedFromServer() = startsWith("http")
+
+fun Long.toDate(): String {
+    SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault()).also {
+        return it.format(this)
+    }
+}
+
+fun getTimeDifference(start: Long, end: Long): String {
+    val diff = end - start
+    val seconds = diff / 1000
+    val minutes = seconds / 60
+    val hours = minutes / 60
+
+    return String.format("%02d:%02d:%02d", hours, minutes, seconds)
+}
 
 fun Context.setAppLocale(language: String): Context {
     val locale = Locale(language)
@@ -202,4 +221,9 @@ fun Int.toABC(): Char {
     val alphabet = ('A'..'Z').toList()
     if (this > alphabet.lastIndex) return ' '
     return alphabet[this]
+}
+
+inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
+    SDK_INT >= 33 -> getParcelable(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelable(key) as? T
 }

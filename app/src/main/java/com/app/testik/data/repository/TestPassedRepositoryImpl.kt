@@ -48,17 +48,18 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateTest(data: TestPassedDto): ApiResult<Unit> {
+    override suspend fun finishTest(data: TestPassedDto, questions: List<QuestionDto>): ApiResult<Unit> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
         if (data.recordId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
             with (data) {
                 val newData = mapOf(
-                    "timeFinished" to timestamp
+                    "timeFinished" to timestamp,
+                    "questions" to questions
                 )
 
-                collection.document(data.recordId).update(newData).execute()
+                collection.document(recordId).update(newData).execute()
             }
         } catch (e: Exception) {
             ApiResult.Error(e.message)

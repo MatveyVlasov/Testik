@@ -7,13 +7,18 @@ import com.app.testik.domain.util.ResultWrapper
 import com.app.testik.domain.util.ResultWrapperImpl
 import javax.inject.Inject
 
-class UpdateTestPassedUseCase @Inject constructor(
+class FinishTestUseCase @Inject constructor(
     private val testPassedRepository: TestPassedRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(data: TestPassedModel): Result<Unit> {
+    suspend operator fun invoke(data: TestPassedModel, questions: List<QuestionModel>): Result<Unit> {
         return wrap(
-            block = { testPassedRepository.updateTest(data.toDto()) },
+            block = {
+                testPassedRepository.finishTest(
+                    data = data.toDto(),
+                    questions = questions.map { it.toDto() }
+                )
+            },
             mapper = { }
         )
     }

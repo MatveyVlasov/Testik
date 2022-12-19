@@ -11,6 +11,7 @@ import com.app.testik.presentation.mapper.toDomain
 import com.app.testik.presentation.mapper.toQuestionItem
 import com.app.testik.presentation.model.AnswerDelegateItem
 import com.app.testik.presentation.model.UIState
+import com.app.testik.presentation.screen.questionmain.mapper.toDomain
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenEvent
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +27,8 @@ import javax.inject.Inject
 class QuestionMainViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getTestQuestionsUseCase: GetTestQuestionsUseCase,
-    private val updateAnswersUseCase: UpdateAnswersUseCase
+    private val updateAnswersUseCase: UpdateAnswersUseCase,
+    private val finishTestUseCase: FinishTestUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<QuestionMainScreenUIState>>
@@ -40,7 +42,7 @@ class QuestionMainViewModel @Inject constructor(
 
     private val args = QuestionMainFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    private var screenUIState = QuestionMainScreenUIState(id = args.id, testId = args.testId)
+    private var screenUIState = QuestionMainScreenUIState(recordId = args.id, testId = args.testId)
 
     init {
         updateList()
@@ -57,10 +59,24 @@ class QuestionMainViewModel @Inject constructor(
         if (showInfo) emitEvent(QuestionMainScreenEvent.Loading)
         viewModelScope.launch {
             updateAnswersUseCase(
-                recordId = screenUIState.id,
+                recordId = screenUIState.recordId,
                 questions = screenUIState.questions.map { it.toDomain() }
             ).onSuccess {
                 if (showInfo) emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.draft_saved))
+            }.onError {
+                handleError(it)
+            }
+        }
+    }
+
+    fun finish() {
+        emitEvent(QuestionMainScreenEvent.Loading)
+        viewModelScope.launch {
+            finishTestUseCase(
+                data = screenUIState.toDomain(),
+                questions = screenUIState.questions.map { it.toDomain() }
+            ).onSuccess {
+                emitEvent(QuestionMainScreenEvent.NavigateToResults(screenUIState.recordId))
             }.onError {
                 handleError(it)
             }

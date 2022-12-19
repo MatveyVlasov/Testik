@@ -9,4 +9,6 @@ sealed class QuestionMainScreenEvent {
     data class ShowSnackbarByRes(@StringRes val message: Int) : QuestionMainScreenEvent()
 
     object Loading : QuestionMainScreenEvent()
+
+    data class NavigateToResults(val recordId: String) : QuestionMainScreenEvent()
 }
