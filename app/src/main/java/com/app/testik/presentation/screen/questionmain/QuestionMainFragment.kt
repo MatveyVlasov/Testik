@@ -78,7 +78,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                 }
             })
 
-            btnFinish.setOnClickListener { finish() }
+            btnFinish.setOnClickListener { confirmFinish() }
             btnSaveDraft.setOnClickListener { saveAnswers() }
             btnPrev.setOnClickListener { goToPreviousQuestion() }
             btnNext.setOnClickListener { goToNextQuestion() }
@@ -161,6 +161,16 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
     private fun saveAnswers() {
         updateAnswers(binding.pager.currentItem)
         viewModel.saveAnswers(showInfo = true)
+    }
+
+    private fun confirmFinish() {
+        showAlert(
+            title = R.string.finish_test,
+            message = R.string.finish_test_confirmation,
+            positive = R.string.confirm,
+            negative = R.string.cancel,
+            onPositiveClick = { finish() }
+        )
     }
 
     private fun finish() {

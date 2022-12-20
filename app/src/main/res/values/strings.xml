@@ -177,6 +177,8 @@
     <string name="start">Start</string>
 
     <string name="finish">Finish</string>
+    <string name="finish_test">Finish test</string>
+    <string name="finish_test_confirmation">Do you really want to finish this test? You will not be able to edit your answers</string>
     <string name="save_draft">Save draft</string>
     <string name="draft_saved">Draft saved</string>
     <string name="go_to_prev_question">Go to previous question</string>

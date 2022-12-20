@@ -175,6 +175,8 @@
     <string name="start">Начать</string>
 
     <string name="finish">Завершить</string>
+    <string name="finish_test">Завершить тест</string>
+    <string name="finish_test_confirmation">Вы действительно хотите завершить тест? Вы больше не сможете редактировать свои ответы</string>
     <string name="save_draft">Сохранить черновик</string>
     <string name="draft_saved">Черновик сохранён</string>
     <string name="go_to_prev_question">Перейти к предыдущему вопросу</string>
