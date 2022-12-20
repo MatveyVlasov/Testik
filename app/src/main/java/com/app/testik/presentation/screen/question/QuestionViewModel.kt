@@ -41,6 +41,7 @@ class QuestionViewModel @Inject constructor(
                 id = id,
                 testId = testId,
                 title = title,
+                points = points,
                 description = description,
                 image = image,
                 type = type,
@@ -60,8 +61,8 @@ class QuestionViewModel @Inject constructor(
     }
 
     fun onSelectClick(answer: MultipleChoiceDelegateItem, isChecked: Boolean) {
-
         val pos = screenUIState.answers.indexOf(answer)
+        if (pos == -1) return
         val answers = screenUIState.answers.map { it }.toMutableList().also {
             it[pos] = (it[pos] as MultipleChoiceDelegateItem).copy(isSelected = isChecked)
         }

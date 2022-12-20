@@ -91,6 +91,7 @@ class QuestionListViewModel @Inject constructor(
 
     fun updateQuestion(question: QuestionDelegateItem, newQuestion: QuestionDelegateItem) {
         val pos = screenUIState.questions.indexOf(question)
+        if (pos == -1) return
         val questions = screenUIState.questions.map { it }.toMutableList().also {
             it[pos] = newQuestion
         }

@@ -71,7 +71,8 @@ class TestInfoViewModel @Inject constructor(
                     author = it.author,
                     description = it.description,
                     category = it.category,
-                    questionsNum = it.questionsNum
+                    questionsNum = it.questionsNum,
+                    pointsMax = it.pointsMax
                 )
                 updateScreenState(screenState)
 

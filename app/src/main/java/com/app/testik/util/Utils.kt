@@ -43,6 +43,8 @@ val Int.px get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 fun Int?.orZero() = this ?: 0
 
+fun String.toIntOrZero() = this.toIntOrNull().orZero()
+
 fun Char.isDigitOrLatinLowercase() = this.isDigit() || this in 'a'..'z'
 
 fun String.isUsername() = all { it.isDigitOrLatinLowercase() } && isNotBlank()

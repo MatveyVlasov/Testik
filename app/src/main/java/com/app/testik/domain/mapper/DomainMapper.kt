@@ -35,7 +35,8 @@ fun TestModel.toDto() =
         description = description,
         category = category.title,
         image = image,
-        isPublished = isPublished
+        isPublished = isPublished,
+        pointsMax = pointsMax
     )
 
 fun TestPassedModel.toDto() =
@@ -46,7 +47,9 @@ fun TestPassedModel.toDto() =
         image = image,
         user = user,
         timeStarted = timeStarted,
-        timeFinished = timeFinished
+        timeFinished = timeFinished,
+        pointsMax = pointsMax,
+        pointsEarned = pointsEarned
     )
 
 fun QuestionModel.toDto() =
@@ -55,6 +58,7 @@ fun QuestionModel.toDto() =
         testId = testId,
         title = title,
         description = description,
+        points = points,
         image = image,
         type = type.title,
         answers = answers.map { it.toDto() },

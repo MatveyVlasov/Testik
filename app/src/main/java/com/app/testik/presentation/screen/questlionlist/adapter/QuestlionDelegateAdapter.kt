@@ -3,10 +3,10 @@ package com.app.testik.presentation.screen.questlionlist.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.app.testik.R
 import com.app.testik.databinding.ItemQuestionBinding
 import com.app.testik.presentation.model.QuestionDelegateItem
 import com.app.testik.util.delegateadapter.DelegateAdapter
-import com.app.testik.util.loadQuestionImage
 
 class QuestionDelegateAdapter(
     val onClick: (QuestionDelegateItem) -> Unit,
@@ -27,8 +27,8 @@ class QuestionDelegateAdapter(
         fun bind(test: QuestionDelegateItem) {
 
             binding.apply {
-                loadQuestionImage(context = root.context, imageView = binding.ivImage, url = test.image)
-
+                tvPointsData.text = test.points.toString()
+                tvPoints.text = binding.root.resources.getQuantityString(R.plurals.points_quantity, test.points)
                 tvTitle.text = test.title
 
                 root.setOnClickListener { onClick(test) }

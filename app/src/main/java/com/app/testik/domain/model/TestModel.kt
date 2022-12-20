@@ -12,5 +12,6 @@ data class TestModel(
     val category: CategoryType = CategoryType.NOT_SELECTED,
     val image: String = "",
     val isPublished: Boolean = false,
-    val questionsNum: Int = 0
+    val questionsNum: Int = 0,
+    val pointsMax: Int = 0
 ) : Parcelable

@@ -11,5 +11,7 @@ data class TestPassedModel(
     val image: String = "",
     val user: String = "",
     val timeStarted: Long = 0L,
-    val timeFinished: Long = 0L
+    val timeFinished: Long = 0L,
+    val pointsMax: Int = 0,
+    val pointsEarned: Int = 0
 ): Parcelable

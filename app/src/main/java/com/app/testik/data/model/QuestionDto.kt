@@ -5,6 +5,7 @@ data class QuestionDto(
     val testId: String = "",
     val title: String = "",
     val description: String = "",
+    val points: Int = 1,
     val image: String = "",
     val type: String = "",
     val answers: List<AnswerDto> = emptyList(),

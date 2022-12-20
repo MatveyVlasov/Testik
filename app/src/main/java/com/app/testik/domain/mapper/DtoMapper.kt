@@ -52,7 +52,8 @@ fun TestDto.toDomain() =
         category = category.toCategoryType(),
         image = image,
         isPublished = isPublished,
-        questionsNum = questions.size
+        questionsNum = questions.size,
+        pointsMax = pointsMax
     )
 
 fun TestPassedDto.toDomain() =
@@ -63,7 +64,9 @@ fun TestPassedDto.toDomain() =
         image = image,
         user = user,
         timeStarted = timeStarted,
-        timeFinished = timeFinished
+        timeFinished = timeFinished,
+        pointsMax = pointsMax,
+        pointsEarned = pointsEarned
     )
 
 fun QuestionDto.toDomain() =
@@ -72,6 +75,7 @@ fun QuestionDto.toDomain() =
         testId = testId,
         title = title,
         description = description,
+        points = points,
         image = image,
         type = type.toQuestionType(),
         answers = answers.map { it.toDomain(type.toQuestionType()) },

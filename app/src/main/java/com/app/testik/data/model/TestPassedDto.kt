@@ -8,5 +8,7 @@ data class TestPassedDto(
     val user: String = "",
     val timeStarted: Long = 0L,
     val timeFinished: Long = 0L,
-    val questions: List<EmptyDto> = emptyList()
+    val questions: List<EmptyDto> = emptyList(),
+    val pointsMax: Int = 0,
+    val pointsEarned: Int = 0
 )

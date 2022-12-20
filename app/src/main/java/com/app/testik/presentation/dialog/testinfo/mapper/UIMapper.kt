@@ -7,5 +7,6 @@ fun TestInfoDialogUIState.toDomain() =
     TestPassedModel(
         testId = id,
         title = title,
-        image = image
+        image = image,
+        pointsMax = pointsMax
     )

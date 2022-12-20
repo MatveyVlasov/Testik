@@ -85,6 +85,7 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
             tvTitle.text = data.title
             tvAuthor.text = data.authorName
             tvQuestionsNum.text = resources.getQuantityString(R.plurals.questions_num, data.questionsNum, data.questionsNum)
+            tvPointsNum.text = resources.getQuantityString(R.plurals.points_max, data.pointsMax, data.pointsMax)
             tvDescriptionTitle.isVisible = data.description.isNotEmpty()
             tvDescription.isVisible = data.description.isNotEmpty()
             tvDescription.text = data.description

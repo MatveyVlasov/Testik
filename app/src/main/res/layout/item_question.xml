@@ -9,6 +9,7 @@
     app:cardCornerRadius="@dimen/card_radius">
 
     <LinearLayout
+        android:id="@+id/llQuestion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="8dp"
@@ -16,15 +17,47 @@
         android:orientation="horizontal"
         android:background="@color/purple_AA">
 
-        <ImageView
-            android:id="@+id/ivImage"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llPoints"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_gravity="center"
             android:background="@drawable/rounded_rect_10_dp"
-            android:outlineProvider="background"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/test_image" />
+            android:backgroundTint="@color/blue_dark">
+
+            <TextView
+                android:id="@+id/tvPointsData"
+                style="@style/CustomTextView.AutoSize"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="12dp"
+                android:paddingHorizontal="6dp"
+                android:paddingTop="6dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tvPoints"
+                tools:text="19" />
+
+            <TextView
+                android:id="@+id/tvPoints"
+                style="@style/CustomTextView.AutoSize"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="2dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:autoSizeMinTextSize="4sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="points" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tvTitle"

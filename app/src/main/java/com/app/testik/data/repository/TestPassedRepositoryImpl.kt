@@ -54,9 +54,23 @@ class TestPassedRepositoryImpl @Inject constructor(
 
         return try {
             with (data) {
+                var pointsMax = 0
+                var pointsEarned = 0
+                questions.forEach { question ->
+                    pointsMax += question.points
+
+                    var isCorrect = true
+                    question.answers.forEach {
+                        isCorrect = isCorrect && it.isCorrect == it.isSelected
+                    }
+                    if (isCorrect) pointsEarned += question.points
+                }
+
                 val newData = mapOf(
                     "timeFinished" to timestamp,
-                    "questions" to questions
+                    "questions" to questions,
+                    "pointsMax" to pointsMax,
+                    "pointsEarned" to pointsEarned
                 )
 
                 collection.document(recordId).update(newData).execute()

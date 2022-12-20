@@ -9,6 +9,7 @@ data class QuestionEditScreenUIState(
     val testId: String = "",
     val title: String = "",
     val description: String = "",
+    val points: String = "",
     val image: String = "",
     val canDiscard: Boolean = true,
     val type: QuestionType = QuestionType.SINGLE_CHOICE,

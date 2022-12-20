@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="account_login">Вход в аккаунт</string>
     <string name="language">Язык</string>
@@ -110,6 +110,7 @@
     <string name="description">Описание</string>
     <string name="description_optional">Описание (необязательно)</string>
     <string name="description_too_long">Описание слишком длинное</string>
+    <string name="points">Баллов</string>
     <string name="category">Категория</string>
     <string name="select_category">Выберите категорию</string>
     <string name="select_question_type">Выберите тип вопроса</string>
@@ -161,6 +162,16 @@
         <item quantity="few">%d вопроса</item>
         <item quantity="many">%d вопросов</item>
     </plurals>
+    <plurals name="points_quantity">
+        <item quantity="one" tools:ignore="ImpliedQuantity">балл</item>
+        <item quantity="few">балла</item>
+        <item quantity="many">баллов</item>
+    </plurals>
+    <plurals name="points_max">
+        <item quantity="one">%d балл максимум</item>
+        <item quantity="few">%d балла максимум</item>
+        <item quantity="many">%d баллов максимум</item>
+    </plurals>
     <string name="start">Начать</string>
 
     <string name="finish">Завершить</string>
@@ -171,6 +182,7 @@
     <string name="cannot_go_to_prev_question">Вы уже на первом вопросе</string>
     <string name="cannot_go_to_next_question">Вы уже на последнем вопросе</string>
 
+    <string name="points_num">Баллов: %d</string>
     <string name="submit">Подтвердить</string>
 
     <string name="go_home_to_take_test">Вы можете выбрать тест для прохождения на главной</string>
@@ -180,5 +192,5 @@
     <string name="test_title">Тест:</string>
     <string name="date">Дата:</string>
     <string name="time_spent">Потрачено времени:</string>
-    <string name="points_earned">Баллы: %d/%d</string>
+    <string name="points_earned">Баллов: %d/%d</string>
 </resources>

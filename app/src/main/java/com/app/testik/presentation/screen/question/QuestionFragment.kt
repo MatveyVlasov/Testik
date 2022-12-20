@@ -105,6 +105,7 @@ class QuestionFragment(private val question: QuestionDelegateItem) : BaseFragmen
 
     private fun renderUIState(data: QuestionScreenUIState) {
         binding.apply {
+            tvPoints.text = getString(R.string.points_num, data.points)
             tvTitle.text = data.title
             tvDescription.text = data.description
             tvType.setText(data.type.instruction)

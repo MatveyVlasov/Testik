@@ -124,6 +124,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
 
             etTitle.addTextChangedListener { viewModel.onTitleChanged(it.toString()) }
             etDescription.addTextChangedListener { viewModel.onDescriptionChanged(it.toString()) }
+            etPoints.addTextChangedListener { viewModel.onPointsChanged(it.toString()) }
         }
     }
 
@@ -160,6 +161,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
         binding.apply {
             if (!etTitle.isFocused) etTitle.setText(data.title)
             if (!etDescription.isFocused) etDescription.setText(data.description)
+            if (!etPoints.isFocused) etPoints.setText(data.points)
             if (!etType.isFocused) etType.setText(data.type.description)
 
             tilTitle.error = getStringOrNull(data.titleError)

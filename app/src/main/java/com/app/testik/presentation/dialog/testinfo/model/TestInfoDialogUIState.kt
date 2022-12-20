@@ -10,5 +10,6 @@ data class TestInfoDialogUIState(
     val author: String = "",
     val authorName: String = "",
     val description: String = "",
-    val questionsNum: Int = 0
+    val questionsNum: Int = 0,
+    val pointsMax: Int = 0
 )

@@ -115,6 +115,7 @@
     <string name="description">Description</string>
     <string name="description_optional">Description (optional)</string>
     <string name="description_too_long">Description is too long</string>
+    <string name="points">Points</string>
     <string name="category">Category</string>
     <string name="select_category">Select category</string>
     <string name="select_question_type">Select type</string>
@@ -165,6 +166,14 @@
         <item quantity="one">%d question</item>
         <item quantity="other">%d questions</item>
     </plurals>
+    <plurals name="points_quantity">
+        <item quantity="one">point</item>
+        <item quantity="other">points</item>
+    </plurals>
+    <plurals name="points_max">
+        <item quantity="one">%d point max</item>
+        <item quantity="other">%d points max</item>
+    </plurals>
     <string name="start">Start</string>
 
     <string name="finish">Finish</string>
@@ -175,6 +184,7 @@
     <string name="cannot_go_to_prev_question">You are already on the first question</string>
     <string name="cannot_go_to_next_question">You are already on the last question</string>
 
+    <string name="points_num">Points: %d</string>
     <string name="submit">Submit</string>
 
     <string name="go_home_to_take_test">You can choose a test to take on home screen</string>

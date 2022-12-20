@@ -10,7 +10,9 @@ fun TestPassedModel.toUIState() =
         recordId = recordId,
         testId = testId,
         timeSpent = getTimeDifference(timeStarted, timeFinished),
-        date = timeFinished.toDate()
+        date = timeFinished.toDate(),
+        pointsMax = pointsMax,
+        pointsEarned = pointsEarned
     )
 
 fun TestResultsScreenUIState.toDomain() =
@@ -18,5 +20,7 @@ fun TestResultsScreenUIState.toDomain() =
         recordId = recordId,
         testId = testId,
         title = title,
-        image = image
+        image = image,
+        pointsMax = pointsMax,
+        pointsEarned = pointsEarned
     )

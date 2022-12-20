@@ -108,6 +108,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="10 questions" />
 
+        <ImageView
+            android:id="@+id/ivPointsIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/margin_horizontal"
+            android:src="@drawable/ic_points"
+            android:importantForAccessibility="no"
+            app:layout_constraintTop_toBottomOf="@id/ivQuestionIcon"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvPointsNum"
+            style="@style/CustomTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="@dimen/margin_horizontal"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/ivPointsIcon"
+            app:layout_constraintStart_toEndOf="@id/ivPointsIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="11 points max" />
+
         <TextView
             android:id="@+id/tvDescriptionTitle"
             style="@style/TitleTextView"
@@ -120,7 +145,7 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvQuestionsNum" />
+            app:layout_constraintTop_toBottomOf="@id/tvPointsNum" />
 
         <TextView
             android:id="@+id/tvDescription"

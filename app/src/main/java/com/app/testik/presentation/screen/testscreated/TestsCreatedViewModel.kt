@@ -87,6 +87,7 @@ class TestsCreatedViewModel @Inject constructor(
 
     fun updateTest(test: TestCreatedDelegateItem, newTest: TestCreatedDelegateItem) {
         val pos = screenUIState.tests.indexOf(test)
+        if (pos == -1) return
         val tests = screenUIState.tests.map { it }.toMutableList().also {
             it[pos] = newTest
         }

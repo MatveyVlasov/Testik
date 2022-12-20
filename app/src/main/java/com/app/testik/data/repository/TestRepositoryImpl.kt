@@ -158,7 +158,15 @@ class TestRepositoryImpl @Inject constructor(
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            val data = mapOf("questions" to questions, "lastUpdated" to timestamp)
+            var pointsMax = 0
+            questions.forEach {
+                pointsMax += it.points
+            }
+            val data = mapOf(
+                "questions" to questions,
+                "pointsMax" to pointsMax,
+                "lastUpdated" to timestamp
+            )
             collection.document(testId).update(data).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)

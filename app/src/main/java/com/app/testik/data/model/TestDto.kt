@@ -11,5 +11,6 @@ data class TestDto(
     val image: String = "",
     @get:PropertyName("isPublished")
     val isPublished: Boolean = false,
-    val questions: List<EmptyDto> = emptyList()
+    val questions: List<EmptyDto> = emptyList(),
+    val pointsMax: Int = 0
 )

@@ -52,6 +52,7 @@ class QuestionEditViewModel @Inject constructor(
                 testId = testId,
                 title = title,
                 description = description,
+                points = points.toString(),
                 image = image,
                 type = type,
                 answers = answers
@@ -69,6 +70,11 @@ class QuestionEditViewModel @Inject constructor(
     fun onDescriptionChanged(description: String) {
         if (description == screenUIState.description) return
         updateScreenState(screenUIState.copy(description = description, descriptionError = null))
+    }
+
+    fun onPointsChanged(points: String) {
+        if (points == screenUIState.points) return
+        updateScreenState(screenUIState.copy(points = points))
     }
 
     fun onTypeChanged(type: QuestionType) {
@@ -113,8 +119,9 @@ class QuestionEditViewModel @Inject constructor(
     }
 
     fun onSelectClick(answer: MultipleChoiceDelegateItem, isChecked: Boolean) {
+        val item = screenUIState.answers.find { it.id == answer.id } ?: return
+        val pos = screenUIState.answers.indexOf(item)
 
-        val pos = screenUIState.answers.indexOf(answer)
         val answers = screenUIState.answers.map { it }.toMutableList().also {
             it[pos] = (it[pos] as MultipleChoiceDelegateItem).copy(isCorrect = isChecked)
         }
