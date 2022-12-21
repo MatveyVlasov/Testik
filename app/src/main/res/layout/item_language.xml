@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/tvLanguage"
-        style="@style/CustomTextView"
+        style="@style/CustomTextView.BlueDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"

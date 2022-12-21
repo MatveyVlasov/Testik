@@ -176,6 +176,7 @@
     </plurals>
     <string name="start">Start</string>
 
+    <string name="time_left">Time left</string>
     <string name="finish">Finish</string>
     <string name="finish_test">Finish test</string>
     <string name="finish_test_confirmation">Do you really want to finish this test? You will not be able to edit your answers</string>

@@ -33,7 +33,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/margin_horizontal"
             android:src="@drawable/ic_time"
-            android:contentDescription="Time left" />
+            android:contentDescription="@string/time_left" />
 
         <TextView
             android:id="@+id/tvTimeLeft"
@@ -42,7 +42,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="4dp"
-            android:textColor="@color/black"
             android:textSize="24sp"
             android:text="30:00"
             tools:text="30:00" />

@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/tvError"
-            style="@style/TitleTextView.AutoSize"
+            style="@style/TitleTextView.AutoSize.White"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:gravity="center"

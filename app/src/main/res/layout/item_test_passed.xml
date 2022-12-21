@@ -33,7 +33,7 @@
 
             <TextView
                 android:id="@+id/tvTitle"
-                style="@style/TitleTextView"
+                style="@style/TitleTextView.White"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="50dp"
@@ -50,12 +50,11 @@
 
             <TextView
                 android:id="@+id/tvDate"
-                style="@style/CustomTextView"
+                style="@style/CustomTextView.White"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginStart="@dimen/margin_horizontal"
-                android:textColor="@color/white"
                 android:textSize="14sp"
                 android:text="@string/date"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle"
@@ -63,12 +62,11 @@
 
             <TextView
                 android:id="@+id/tvDateData"
-                style="@style/CustomTextView"
+                style="@style/CustomTextView.White"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="@dimen/margin_horizontal"
-                android:textColor="@color/white"
                 android:textSize="14sp"
                 android:textStyle="italic"
                 app:layout_constraintTop_toTopOf="@id/tvDate"
@@ -78,11 +76,10 @@
 
             <TextView
                 android:id="@+id/tvPoints"
-                style="@style/CustomTextView"
+                style="@style/CustomTextView.White"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_horizontal"
-                android:textColor="@color/white"
                 android:textSize="14sp"
                 android:text="@string/points_title"
                 app:layout_constraintTop_toBottomOf="@id/tvDateData"
@@ -90,12 +87,11 @@
 
             <TextView
                 android:id="@+id/tvPointsData"
-                style="@style/CustomTextView"
+                style="@style/CustomTextView.White"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="@dimen/margin_horizontal"
-                android:textColor="@color/white"
                 android:textSize="14sp"
                 android:textStyle="italic"
                 app:layout_constraintTop_toTopOf="@id/tvPoints"

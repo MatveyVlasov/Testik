@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_horizontal"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/ivMore"

@@ -29,14 +29,13 @@
 
             <TextView
                 android:id="@+id/tvPointsData"
-                style="@style/CustomTextView.AutoSize"
+                style="@style/CustomTextView.AutoSize.White"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="12dp"
                 android:paddingHorizontal="6dp"
                 android:paddingTop="6dp"
-                android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/tvPoints"
@@ -44,13 +43,12 @@
 
             <TextView
                 android:id="@+id/tvPoints"
-                style="@style/CustomTextView.AutoSize"
+                style="@style/CustomTextView.AutoSize.White"
                 android:layout_width="match_parent"
                 android:layout_height="16dp"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginBottom="2dp"
                 android:gravity="center_horizontal"
-                android:textColor="@color/white"
                 android:autoSizeMinTextSize="4sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +59,7 @@
 
         <TextView
             android:id="@+id/tvTitle"
-            style="@style/TitleTextView"
+            style="@style/TitleTextView.White"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"

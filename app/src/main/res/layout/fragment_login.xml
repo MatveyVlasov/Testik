@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/tvAppName"
-        style="@style/CustomTextView"
+        style="@style/CustomTextView.BlueDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
@@ -122,7 +122,7 @@
 
         <TextView
             android:id="@+id/tvNoAccount"
-            style="@style/CustomTextView.AutoSize"
+            style="@style/CustomTextView.AutoSize.BlueDark"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="bottom|end"
@@ -154,7 +154,7 @@
 
         <TextView
             android:id="@+id/tvForgotPassword"
-            style="@style/CustomTextView.AutoSize"
+            style="@style/CustomTextView.AutoSize.BlueDark"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="bottom|end"

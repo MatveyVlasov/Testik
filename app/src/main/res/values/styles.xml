@@ -85,6 +85,14 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="CustomTextView.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="CustomTextView.BlueDark">
         <item name="android:textColor">@color/blue_dark</item>
     </style>
 
@@ -94,11 +102,27 @@
         <item name="android:autoSizeTextType">uniform</item>
     </style>
 
+    <style name="CustomTextView.AutoSize.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="CustomTextView.AutoSize.BlueDark">
+        <item name="android:textColor">@color/blue_dark</item>
+    </style>
+
     <style name="TitleTextView" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/merriweather_bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TitleTextView.White">
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TitleTextView.Purple">
+        <item name="android:textColor">@color/purple</item>
     </style>
 
     <style name="TitleTextView.AutoSize">
@@ -106,13 +130,28 @@
         <item name="android:autoSizeTextType">uniform</item>
     </style>
 
+    <style name="TitleTextView.AutoSize.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TitleTextView.AutoSize.Purple">
+        <item name="android:textColor">@color/purple</item>
+    </style>
+
     <style name="TitleTextView.Regular">
         <item name="android:fontFamily">@font/merriweather_regular</item>
     </style>
 
-    <style name="TitleTextView.Regular.AutoSize">
-        <item name="android:maxLines">1</item>
-        <item name="android:autoSizeTextType">uniform</item>
+    <style name="TitleTextView.AutoSize.Regular">
+        <item name="android:fontFamily">@font/merriweather_regular</item>
+    </style>
+
+    <style name="TitleTextView.AutoSize.Regular.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TitleTextView.AutoSize.Regular.Purple">
+        <item name="android:textColor">@color/purple</item>
     </style>
 
     <style name="SwitchTextView" parent="Widget.AppCompat.TextView">

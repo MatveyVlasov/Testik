@@ -38,7 +38,7 @@
 
         <TextView
             android:id="@+id/tvTitle"
-            style="@style/TitleTextView.Regular.AutoSize"
+            style="@style/TitleTextView.AutoSize.Regular.Purple"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
@@ -47,7 +47,7 @@
 
         <TextView
             android:id="@+id/tvDescription"
-            style="@style/TitleTextView.Regular.AutoSize"
+            style="@style/TitleTextView.AutoSize.Regular.Purple"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="4dp"
