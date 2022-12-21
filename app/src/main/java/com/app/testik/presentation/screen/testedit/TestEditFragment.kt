@@ -138,6 +138,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             }
             is TestEditScreenEvent.SuccessTestDeletion -> {
                 showSnackbar(R.string.delete_test_success)
+                setResult(UPDATE_TEST_RESULT_KEY, null)
                 setResult(DELETE_TEST_RESULT_KEY, event.test)
                 navController.navigateUp()
             }

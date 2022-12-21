@@ -57,7 +57,7 @@ abstract class BaseFragment<T: ViewBinding> : Fragment() {
             }
     }
 
-    protected fun setResult(key: String, result: Any) {
+    protected fun setResult(key: String, result: Any?) {
         navController.previousBackStackEntry?.savedStateHandle?.set(key, result)
     }
 
