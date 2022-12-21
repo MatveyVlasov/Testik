@@ -3,6 +3,7 @@ package com.app.testik.presentation.screen.testresults
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.testik.domain.model.TestPassedModel
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.GetTestInfoUseCase
@@ -39,8 +40,9 @@ class TestResultsViewModel @Inject constructor(
 
     private val args = TestResultsFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    var screenUIState = TestResultsScreenUIState(recordId = args.recordId)
-        private set
+    private var screenUIState = TestResultsScreenUIState(recordId = args.recordId)
+
+    var testToInsert: TestPassedModel? = null
 
     init {
         getRecordInfo()
@@ -51,6 +53,7 @@ class TestResultsViewModel @Inject constructor(
 
         viewModelScope.launch {
             getTestPassedInfoUseCase(recordId = screenUIState.recordId, source = Source.CACHE).onSuccess {
+                testToInsert = it
                 screenUIState = it.toUIState()
                 getTestInfo()
             }.onError {

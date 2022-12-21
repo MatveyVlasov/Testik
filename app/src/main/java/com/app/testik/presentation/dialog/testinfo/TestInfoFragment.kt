@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.app.testik.R
 import com.app.testik.databinding.FragmentTestInfoBinding
+import com.app.testik.domain.model.TestPassedModel
 import com.app.testik.presentation.activity.ImageViewActivity
 import com.app.testik.presentation.base.BaseBottomSheetDialogFragment
 import com.app.testik.presentation.dialog.testinfo.model.TestInfoDialogEvent
@@ -75,7 +76,7 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
         when (event) {
             is TestInfoDialogEvent.ShowSnackbar -> showSnackbar(message = event.message)
             is TestInfoDialogEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
-            is TestInfoDialogEvent.SuccessTestCreation -> navigateToQuestionMain(event.id)
+            is TestInfoDialogEvent.SuccessTestCreation -> navigateToQuestionMain(event.test)
         }
     }
 
@@ -108,12 +109,9 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
         }
     }
 
-    private fun navigateToQuestionMain(id: String) {
+    private fun navigateToQuestionMain(test: TestPassedModel) {
         navController.navigate(
-            TestInfoFragmentDirections.toQuestionMain(
-                id = id,
-                testId = viewModel.screenUIState.id
-            )
+            TestInfoFragmentDirections.toQuestionMain(test)
         )
     }
 }

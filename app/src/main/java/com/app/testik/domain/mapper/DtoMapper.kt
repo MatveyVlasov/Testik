@@ -65,8 +65,10 @@ fun TestPassedDto.toDomain() =
         user = user,
         timeStarted = timeStarted,
         timeFinished = timeFinished,
+        isFinished = isFinished,
         pointsMax = pointsMax,
-        pointsEarned = pointsEarned
+        pointsEarned = pointsEarned,
+        pointsCalculated = pointsCalculated
     )
 
 fun QuestionDto.toDomain() =

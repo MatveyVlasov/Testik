@@ -48,8 +48,10 @@ fun TestPassedModel.toDto() =
         user = user,
         timeStarted = timeStarted,
         timeFinished = timeFinished,
+        isFinished = isFinished,
         pointsMax = pointsMax,
-        pointsEarned = pointsEarned
+        pointsEarned = pointsEarned,
+        pointsCalculated = pointsCalculated
     )
 
 fun QuestionModel.toDto() =

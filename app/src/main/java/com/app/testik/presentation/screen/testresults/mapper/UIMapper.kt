@@ -14,13 +14,3 @@ fun TestPassedModel.toUIState() =
         pointsMax = pointsMax,
         pointsEarned = pointsEarned
     )
-
-fun TestResultsScreenUIState.toDomain() =
-    TestPassedModel(
-        recordId = recordId,
-        testId = testId,
-        title = title,
-        image = image,
-        pointsMax = pointsMax,
-        pointsEarned = pointsEarned
-    )

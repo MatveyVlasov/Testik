@@ -11,4 +11,6 @@ sealed class QuestionMainScreenEvent {
     object Loading : QuestionMainScreenEvent()
 
     data class NavigateToResults(val recordId: String) : QuestionMainScreenEvent()
+
+    object NavigateToTestsPassed : QuestionMainScreenEvent()
 }

@@ -13,6 +13,7 @@ import com.app.testik.presentation.screen.testspassed.model.TestPassedDelegateIt
 import com.app.testik.presentation.screen.testspassed.model.TestsPassedScreenEvent
 import com.app.testik.presentation.screen.testspassed.model.TestsPassedScreenUIState
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
+import com.app.testik.util.removeServiceItems
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,10 +47,6 @@ class TestsPassedViewModel @Inject constructor(
     private var snapshot: QuerySnapshot? = null
     private var job: Job? = null
 
-    init {
-        updateList()
-    }
-
     fun checkUser() {
         viewModelScope.launch {
             val newUser = getCurrentUserUseCase()
@@ -78,7 +75,7 @@ class TestsPassedViewModel @Inject constructor(
     }
 
     fun addTestToList(test: TestPassedDelegateItem) {
-        if (screenUIState.tests.isEmpty()) return
+        if (screenUIState.tests.removeServiceItems().isEmpty()) return
         val tests = screenUIState.tests.map { it }.toMutableList().also {
             it.add(0, test)
         }

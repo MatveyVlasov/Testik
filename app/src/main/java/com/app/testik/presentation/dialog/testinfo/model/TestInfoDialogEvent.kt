@@ -1,6 +1,7 @@
 package com.app.testik.presentation.dialog.testinfo.model
 
 import androidx.annotation.StringRes
+import com.app.testik.domain.model.TestPassedModel
 
 sealed class TestInfoDialogEvent {
 
@@ -8,5 +9,5 @@ sealed class TestInfoDialogEvent {
 
     data class ShowSnackbarByRes(@StringRes val message: Int) : TestInfoDialogEvent()
 
-    data class SuccessTestCreation(val id: String) : TestInfoDialogEvent()
+    data class SuccessTestCreation(val test: TestPassedModel) : TestInfoDialogEvent()
 }

@@ -7,8 +7,10 @@ data class TestPassedDelegateItem(
     val title: String,
     val image: String,
     val date: String,
-    val pointsMax: Int = 0,
-    val pointsEarned: Int = 0
+    val isFinished: Boolean,
+    val pointsMax: Int,
+    val pointsEarned: Int,
+    val pointsCalculated: Boolean
 ) : DelegateAdapterItem {
 
     override fun id() = recordId

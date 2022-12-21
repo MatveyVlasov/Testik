@@ -22,23 +22,27 @@ class TestPassedRepositoryImpl @Inject constructor(
     private val collection
         get() = firebaseFirestore.collection(COLLECTION_ID)
 
-    override suspend fun createTest(data: TestPassedDto): ApiResult<String> {
+    override suspend fun createTest(data: TestPassedDto): ApiResult<TestPassedDto> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
             with (data) {
+                val currentTime = timestamp
                 val newData = mapOf(
                     "testId" to testId,
                     "title" to title,
                     "image" to image,
                     "user" to user,
-                    "timeStarted" to timestamp,
-                    "timeFinished" to timestamp
+                    "timeStarted" to currentTime,
+                    "timeFinished" to currentTime,
+                    "pointsMax" to pointsMax
                 )
 
                 collection.add(newData).also {
                     it.await()
-                    return if (it.isSuccessful) ApiResult.Success(it.result.id)
+                    return if (it.isSuccessful) ApiResult.Success(
+                        data.copy(recordId = it.result.id, timeFinished = currentTime)
+                    )
                     else ApiResult.Error(it.exception?.message)
                 }
             }
@@ -48,33 +52,22 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun finishTest(data: TestPassedDto, questions: List<QuestionDto>): ApiResult<Unit> {
+    override suspend fun finishTest(recordId: String, questions: List<QuestionDto>): ApiResult<Unit> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
-        if (data.recordId.isEmpty()) return ApiResult.Error("No test found")
+        if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            with (data) {
-                var pointsMax = 0
-                var pointsEarned = 0
-                questions.forEach { question ->
-                    pointsMax += question.points
+            val (pointsEarned, pointsMax) = calculatePoints(questions)
 
-                    var isCorrect = true
-                    question.answers.forEach {
-                        isCorrect = isCorrect && it.isCorrect == it.isSelected
-                    }
-                    if (isCorrect) pointsEarned += question.points
-                }
+            val newData = mapOf(
+                "timeFinished" to timestamp,
+                "isFinished" to true,
+                "questions" to questions,
+                "pointsMax" to pointsMax,
+                "pointsEarned" to pointsEarned
+            )
 
-                val newData = mapOf(
-                    "timeFinished" to timestamp,
-                    "questions" to questions,
-                    "pointsMax" to pointsMax,
-                    "pointsEarned" to pointsEarned
-                )
-
-                collection.document(recordId).update(newData).execute()
-            }
+            collection.document(recordId).update(newData).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -142,6 +135,26 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun calculatePoints(recordId: String, questions: List<QuestionDto>): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+        if (recordId.isEmpty()) return ApiResult.Error("No test found")
+
+        return try {
+            val (pointsEarned, pointsMax) = calculatePoints(questions)
+
+            val newData = mapOf(
+                "questions" to questions,
+                "pointsMax" to pointsMax,
+                "pointsEarned" to pointsEarned,
+                "pointsCalculated" to true
+            )
+
+            collection.document(recordId).update(newData).execute()
+        } catch (e: Exception) {
+            ApiResult.Error(e.message)
+        }
+    }
+
     override suspend fun getTestQuestions(recordId: String): ApiResult<List<QuestionDto>> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
@@ -159,6 +172,22 @@ class TestPassedRepositoryImpl @Inject constructor(
     }
 
     private fun QuerySnapshot?.orderBy(field: String) = this?.documents?.last()?.data?.get(field)
+
+    private fun calculatePoints(questions: List<QuestionDto>): Pair<Int, Int> {
+        var pointsMax = 0
+        var pointsEarned = 0
+
+        questions.forEach { question ->
+            pointsMax += question.points
+
+            var isCorrect = true
+            question.answers.forEach {
+                isCorrect = isCorrect && it.isCorrect == it.isSelected
+            }
+            if (isCorrect) pointsEarned += question.points
+        }
+        return Pair(pointsEarned, pointsMax)
+    }
 
     companion object {
         private const val COLLECTION_ID = "testsPassed"

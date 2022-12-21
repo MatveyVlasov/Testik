@@ -1,5 +1,6 @@
 package com.app.testik.domain.usecase
 
+import com.app.testik.domain.mapper.toDomain
 import com.app.testik.domain.mapper.toDto
 import com.app.testik.domain.model.*
 import com.app.testik.domain.repository.AuthRepository
@@ -13,12 +14,12 @@ class CreateTestPassedUseCase @Inject constructor(
     private val testPassedRepository: TestPassedRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(data: TestPassedModel): Result<String> {
+    suspend operator fun invoke(data: TestPassedModel): Result<TestPassedModel> {
         val newData = data.copy(user = authRepository.getCurrentUser()!!.uid)
 
         return wrap(
             block = { testPassedRepository.createTest(newData.toDto()) },
-            mapper = { it.orEmpty() }
+            mapper = { it!!.toDomain() }
         )
     }
 }

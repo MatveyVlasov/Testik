@@ -10,6 +10,8 @@ fun TestPassedModel.toTestPassedItem() =
         title = title,
         image = image,
         date = timeFinished.toDate(),
+        isFinished = isFinished,
         pointsMax = pointsMax,
-        pointsEarned = pointsEarned
+        pointsEarned = pointsEarned,
+        pointsCalculated = pointsCalculated
     )

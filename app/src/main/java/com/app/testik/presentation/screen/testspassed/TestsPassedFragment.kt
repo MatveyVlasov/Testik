@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.app.testik.R
 import com.app.testik.databinding.FragmentTestsPassedBinding
-import com.app.testik.domain.model.TestPassedModel
 import com.app.testik.presentation.adapter.ErrorDelegateAdapter
 import com.app.testik.presentation.adapter.LoadingDelegateAdapter
 import com.app.testik.presentation.base.BaseFragment
@@ -19,7 +18,6 @@ import com.app.testik.presentation.screen.testspassed.adapter.TestPassedDelegate
 import com.app.testik.presentation.screen.testspassed.mapper.toTestPassedItem
 import com.app.testik.presentation.screen.testspassed.model.TestsPassedScreenEvent
 import com.app.testik.util.*
-import com.app.testik.util.Constants.INSERT_TEST_KEY
 import com.app.testik.util.delegateadapter.CompositeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -64,9 +62,9 @@ class TestsPassedFragment : BaseFragment<FragmentTestsPassedBinding>() {
             rvTests.adapter = testsAdapter
         }
 
-        arguments?.parcelable<TestPassedModel>(INSERT_TEST_KEY)?.let {
+        testToInsert?.let {
             viewModel.addTestToList(it.toTestPassedItem())
-            arguments = null
+            testToInsert = null
         }
     }
 

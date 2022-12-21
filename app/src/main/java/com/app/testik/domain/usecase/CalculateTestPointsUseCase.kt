@@ -7,14 +7,14 @@ import com.app.testik.domain.util.ResultWrapper
 import com.app.testik.domain.util.ResultWrapperImpl
 import javax.inject.Inject
 
-class FinishTestUseCase @Inject constructor(
+class CalculateTestPointsUseCase @Inject constructor(
     private val testPassedRepository: TestPassedRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
     suspend operator fun invoke(recordId: String, questions: List<QuestionModel>): Result<Unit> {
         return wrap(
             block = {
-                testPassedRepository.finishTest(
+                testPassedRepository.calculatePoints(
                     recordId = recordId,
                     questions = questions.map { it.toDto() }
                 )

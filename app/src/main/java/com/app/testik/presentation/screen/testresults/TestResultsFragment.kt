@@ -3,7 +3,6 @@ package com.app.testik.presentation.screen.testresults
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,11 +11,9 @@ import com.app.testik.R
 import com.app.testik.databinding.FragmentTestResultsBinding
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
-import com.app.testik.presentation.screen.testresults.mapper.toDomain
 import com.app.testik.presentation.screen.testresults.model.TestResultsScreenEvent
 import com.app.testik.presentation.screen.testresults.model.TestResultsScreenUIState
 import com.app.testik.util.*
-import com.app.testik.util.Constants.INSERT_TEST_KEY
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -91,7 +88,7 @@ class TestResultsFragment : BaseFragment<FragmentTestResultsBinding>() {
     private fun navigateToTestsPassed() {
         navController.popBackStack(R.id.mainFragment, inclusive = false)
 
-        val testToInsert = viewModel.screenUIState.toDomain()
-        setNavbarItem(R.id.testsPassedFragment, bundle = bundleOf(INSERT_TEST_KEY to testToInsert))
+        testToInsert = viewModel.testToInsert
+        setNavbarItem(R.id.testsPassedFragment)
     }
 }

@@ -47,10 +47,6 @@ class TestsCreatedViewModel @Inject constructor(
     private var snapshot: QuerySnapshot? = null
     private var job: Job? = null
 
-    init {
-        updateList()
-    }
-
     fun checkUser() {
         viewModelScope.launch {
             val newUser = getCurrentUserUseCase()

@@ -6,9 +6,9 @@ import com.google.firebase.firestore.Source
 
 interface TestPassedRepository {
 
-    suspend fun createTest(data: TestPassedDto): ApiResult<String>
+    suspend fun createTest(data: TestPassedDto): ApiResult<TestPassedDto>
 
-    suspend fun finishTest(data: TestPassedDto, questions: List<QuestionDto>): ApiResult<Unit>
+    suspend fun finishTest(recordId: String, questions: List<QuestionDto>): ApiResult<Unit>
 
     suspend fun getTestsByUser(uid: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsPassedDto>
 
@@ -17,6 +17,8 @@ interface TestPassedRepository {
     suspend fun deleteTest(recordId: String): ApiResult<Unit>
 
     suspend fun updateQuestions(recordId: String, questions: List<QuestionDto>): ApiResult<Unit>
+
+    suspend fun calculatePoints(recordId: String, questions: List<QuestionDto>): ApiResult<Unit>
 
     suspend fun getTestQuestions(recordId: String): ApiResult<List<QuestionDto>>
 }

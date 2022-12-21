@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.testik.R
+import com.app.testik.domain.model.TestPassedModel
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.*
@@ -11,7 +12,6 @@ import com.app.testik.presentation.mapper.toDomain
 import com.app.testik.presentation.mapper.toQuestionItem
 import com.app.testik.presentation.model.AnswerDelegateItem
 import com.app.testik.presentation.model.UIState
-import com.app.testik.presentation.screen.questionmain.mapper.toDomain
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenEvent
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,7 +42,9 @@ class QuestionMainViewModel @Inject constructor(
 
     private val args = QuestionMainFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    private var screenUIState = QuestionMainScreenUIState(recordId = args.id, testId = args.testId)
+    private var screenUIState = QuestionMainScreenUIState(test = args.test)
+
+    val testToInsert: TestPassedModel = args.test
 
     init {
         updateList()
@@ -55,14 +57,15 @@ class QuestionMainViewModel @Inject constructor(
         screenUIState = screenUIState.copy(questions = questions)
     }
 
-    fun saveAnswers(showInfo: Boolean = false) {
-        if (showInfo) emitEvent(QuestionMainScreenEvent.Loading)
+    fun saveAnswers(showInfo: Boolean = false, isExiting: Boolean = false) {
+        if (showInfo || isExiting) emitEvent(QuestionMainScreenEvent.Loading)
         viewModelScope.launch {
             updateAnswersUseCase(
-                recordId = screenUIState.recordId,
+                recordId = screenUIState.test.recordId,
                 questions = screenUIState.questions.map { it.toDomain() }
             ).onSuccess {
                 if (showInfo) emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.draft_saved))
+                if (isExiting) emitEvent(QuestionMainScreenEvent.NavigateToTestsPassed)
             }.onError {
                 handleError(it)
             }
@@ -73,10 +76,10 @@ class QuestionMainViewModel @Inject constructor(
         emitEvent(QuestionMainScreenEvent.Loading)
         viewModelScope.launch {
             finishTestUseCase(
-                data = screenUIState.toDomain(),
+                recordId = screenUIState.test.recordId,
                 questions = screenUIState.questions.map { it.toDomain() }
             ).onSuccess {
-                emitEvent(QuestionMainScreenEvent.NavigateToResults(screenUIState.recordId))
+                emitEvent(QuestionMainScreenEvent.NavigateToResults(screenUIState.test.recordId))
             }.onError {
                 handleError(it)
             }
@@ -85,7 +88,7 @@ class QuestionMainViewModel @Inject constructor(
 
     private fun updateList() {
         viewModelScope.launch {
-            getTestQuestionsUseCase(screenUIState.testId).onSuccess { list ->
+            getTestQuestionsUseCase(screenUIState.test.testId).onSuccess { list ->
                 updateScreenState(screenUIState.copy(questions = list.map { it.toQuestionItem() }))
                 saveAnswers()
             }.onError {

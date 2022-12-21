@@ -47,7 +47,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
         initListeners()
         collectData()
 
-        addBackPressedCallback { onBackPressed() }
+        addBackPressedCallback { confirmExit() }
     }
 
 
@@ -78,6 +78,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                 }
             })
 
+            btnExit.setOnClickListener { confirmExit() }
             btnFinish.setOnClickListener { confirmFinish() }
             btnSaveDraft.setOnClickListener { saveAnswers() }
             btnPrev.setOnClickListener { goToPreviousQuestion() }
@@ -119,6 +120,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
             is QuestionMainScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
             is QuestionMainScreenEvent.Loading -> Unit
             is QuestionMainScreenEvent.NavigateToResults -> navigateToResults(event.recordId)
+            is QuestionMainScreenEvent.NavigateToTestsPassed -> navigateToTestsPassed()
         }
         setLoadingState(event is QuestionMainScreenEvent.Loading)
     }
@@ -148,10 +150,6 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
         }
     }
 
-    private fun onBackPressed() {
-        navController.navigateUp()
-    }
-
     private fun updateAnswers(pos: Int) {
         (binding.pager.adapter as QuestionAdapter).getFragment(pos).also {
             viewModel.updateAnswers(pos, it.getAnswers())
@@ -169,13 +167,35 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
             message = R.string.finish_test_confirmation,
             positive = R.string.confirm,
             negative = R.string.cancel,
-            onPositiveClick = { finish() }
+            onPositiveClick = { finishTest() }
         )
     }
 
-    private fun finish() {
+    private fun finishTest() {
         updateAnswers(binding.pager.currentItem)
         viewModel.finish()
+    }
+
+    private fun confirmExit() {
+        showAlert(
+            title = R.string.exit_test,
+            message = R.string.exit_test_confirmation,
+            positive = R.string.confirm,
+            negative = R.string.cancel,
+            onPositiveClick = { exitTest() }
+        )
+    }
+
+    private fun exitTest() {
+        updateAnswers(binding.pager.currentItem)
+        viewModel.saveAnswers(isExiting = true)
+    }
+
+    private fun navigateToTestsPassed() {
+        navController.popBackStack(R.id.mainFragment, inclusive = false)
+
+        testToInsert = viewModel.testToInsert
+        setNavbarItem(R.id.testsPassedFragment)
     }
 
     private fun navigateToResults(recordId: String) {

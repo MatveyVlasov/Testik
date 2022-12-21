@@ -5,7 +5,6 @@ import android.content.ContextWrapper
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.annotation.IdRes
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -16,6 +15,7 @@ import com.app.testik.R
 import com.app.testik.data.repository.PreferencesRepositoryImpl
 import com.app.testik.databinding.ActivityMainBinding
 import com.app.testik.di.UtilsModule
+import com.app.testik.domain.model.TestPassedModel
 import com.app.testik.presentation.base.BaseActivity
 import com.app.testik.util.setAppLocale
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +27,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 //    @Inject
 //    lateinit var preferencesUseCase: PreferencesUseCase
 
-    lateinit var navController: NavController
+    var testToInsert: TestPassedModel? = null
+
+    private lateinit var navController: NavController
 
     override fun createBinding(inflater: LayoutInflater) = ActivityMainBinding.inflate(layoutInflater)
 
@@ -55,12 +57,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.progressBar.isVisible = isLoading
     }
 
-    fun setNavbarItem(@IdRes destination: Int, bundle: Bundle = bundleOf()) {
+    fun setNavbarItem(@IdRes destination: Int) {
         binding.bottomNavigationView.menu.findItem(destination).also {
             NavigationUI.onNavDestinationSelected(it, navController)
-        }
-        if (destination == R.id.testsPassedFragment) {
-            navController.navigate(destination, bundle)
         }
     }
 }

@@ -157,13 +157,8 @@
         android:label="QuestionMainFragment"
         tools:layout="@layout/fragment_question_main">
         <argument
-            android:name="id"
-            android:defaultValue=""
-            app:argType="string" />
-        <argument
-            android:name="testId"
-            android:defaultValue=""
-            app:argType="string" />
+            android:name="test"
+            app:argType="com.app.testik.domain.model.TestPassedModel" />
         <action
             android:id="@+id/toResults"
             app:destination="@id/testResultsFragment" />

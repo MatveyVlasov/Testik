@@ -176,6 +176,8 @@
     </plurals>
     <string name="start">Start</string>
 
+    <string name="exit_test">Exit test</string>
+    <string name="exit_test_confirmation">Do you really want to exit test? You will not be able to proceed</string>
     <string name="time_left">Time left</string>
     <string name="finish">Finish</string>
     <string name="finish_test">Finish test</string>
@@ -192,6 +194,7 @@
 
     <string name="go_home_to_take_test">You can choose a test to take on home screen</string>
     <string name="go_home">Go home</string>
+    <string name="test_not_finished">Test was not finished. Click to see more</string>
 
     <string name="test_results">Test Results</string>
     <string name="test_title">Test:</string>

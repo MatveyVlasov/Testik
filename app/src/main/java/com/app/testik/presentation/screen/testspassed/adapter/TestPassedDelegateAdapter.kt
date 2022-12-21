@@ -2,6 +2,7 @@ package com.app.testik.presentation.screen.testspassed.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.R
 import com.app.testik.databinding.ItemTestPassedBinding
@@ -26,12 +27,17 @@ class TestPassedDelegateAdapter(
 
         fun bind(test: TestPassedDelegateItem) {
 
+            val isPointsVisible = test.isFinished || test.pointsCalculated
+
             binding.apply {
                 loadTestImage(context = root.context, imageView = binding.ivImage, url = test.image)
 
                 tvTitle.text = test.title
                 tvDateData.text = test.date
                 tvPointsData.text = root.resources.getString(R.string.points_earned, test.pointsEarned, test.pointsMax)
+                tvPoints.isVisible = isPointsVisible
+                tvPointsData.isVisible = isPointsVisible
+                tvNotFinished.isVisible = !test.isFinished
 
                 root.setOnClickListener { onClick(test.recordId) }
             }

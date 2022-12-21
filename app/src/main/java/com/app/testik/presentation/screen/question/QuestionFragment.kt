@@ -54,8 +54,6 @@ class QuestionFragment(private val question: QuestionDelegateItem) : BaseFragmen
         initListeners()
         collectData()
 
-        addBackPressedCallback { onBackPressed() }
-
         if (savedInstanceState == null) viewModel.updateQuestion(question)
     }
 
@@ -126,9 +124,5 @@ class QuestionFragment(private val question: QuestionDelegateItem) : BaseFragmen
             it.putExtra(Constants.EXTRA_IMAGE_PATH, question.image)
             startActivity(it)
         }
-    }
-
-    private fun onBackPressed() {
-        navController.navigateUp()
     }
 }

@@ -25,7 +25,10 @@ import androidx.core.content.ContextCompat
 import com.app.testik.R
 import com.app.testik.data.model.ApiResult
 import com.app.testik.domain.model.UserModel
+import com.app.testik.presentation.model.ErrorItem
+import com.app.testik.presentation.model.LoadingItem
 import com.app.testik.util.Constants.USERNAME_GOOGLE_DELIMITER
+import com.app.testik.util.delegateadapter.DelegateAdapterItem
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
@@ -229,3 +232,8 @@ inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
     SDK_INT >= 33 -> getParcelable(key, T::class.java)
     else -> @Suppress("DEPRECATION") getParcelable(key) as? T
 }
+
+fun List<DelegateAdapterItem>.removeServiceItems(): List<DelegateAdapterItem> =
+    toMutableList().apply {
+        removeAll { it is LoadingItem || it is ErrorItem }
+    }

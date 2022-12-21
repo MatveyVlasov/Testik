@@ -26,12 +26,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <ImageButton
+            android:id="@+id/btnExit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_horizontal"
+            android:background="@drawable/ic_arrow_back"
+            android:backgroundTint="@color/black"
+            android:contentDescription="@string/exit_test" />
+
         <ImageView
             android:id="@+id/ivTimeIcon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/margin_horizontal"
+            android:layout_marginStart="8dp"
             android:src="@drawable/ic_time"
             android:contentDescription="@string/time_left" />
 
