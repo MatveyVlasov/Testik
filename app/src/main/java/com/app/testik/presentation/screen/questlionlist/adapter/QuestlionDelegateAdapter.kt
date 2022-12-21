@@ -28,7 +28,7 @@ class QuestionDelegateAdapter(
 
             binding.apply {
                 tvPointsData.text = test.points.toString()
-                tvPoints.text = binding.root.resources.getQuantityString(R.plurals.points_quantity, test.points)
+                tvPoints.text = root.resources.getQuantityString(R.plurals.points_quantity, test.points)
                 tvTitle.text = test.title
 
                 root.setOnClickListener { onClick(test) }

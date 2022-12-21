@@ -74,7 +74,7 @@ class TestResultsFragment : BaseFragment<FragmentTestResultsBinding>() {
             tvTitleData.text = data.title
             tvDateData.text = data.date
             tvTimeSpentData.text = data.timeSpent
-            tvPoints.text = getString(R.string.points_earned, data.pointsEarned, data.pointsMax)
+            tvPointsData.text = getString(R.string.points_earned, data.pointsEarned, data.pointsMax)
         }
         setLoadingState(false)
     }

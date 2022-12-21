@@ -196,5 +196,6 @@
     <string name="test_title">Test:</string>
     <string name="date">Date:</string>
     <string name="time_spent">Time spent:</string>
-    <string name="points_earned">Points: %d/%d</string>
+    <string name="points_title">Points:</string>
+    <string name="points_earned" translatable="false">%d/%d</string>
 </resources>

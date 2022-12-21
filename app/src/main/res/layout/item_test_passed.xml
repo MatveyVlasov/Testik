@@ -26,19 +26,95 @@
             android:scaleType="centerCrop"
             android:contentDescription="@string/test_image" />
 
-        <TextView
-            android:id="@+id/tvTitle"
-            style="@style/TitleTextView"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:layout_marginStart="8dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="14sp"
-            android:maxLines="3"
-            android:ellipsize="end"
-            tools:text="What do you know about our app?" />
+            android:layout_weight="5">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/TitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="What do you know about our app?" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="@dimen/margin_horizontal"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:text="@string/date"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvDateData"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="@dimen/margin_horizontal"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                app:layout_constraintTop_toTopOf="@id/tvDate"
+                app:layout_constraintStart_toEndOf="@id/tvDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="19.12.2022 13:29:00" />
+
+            <TextView
+                android:id="@+id/tvPoints"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:text="@string/points_title"
+                app:layout_constraintTop_toBottomOf="@id/tvDateData"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvPointsData"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="@dimen/margin_horizontal"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                app:layout_constraintTop_toTopOf="@id/tvPoints"
+                app:layout_constraintStart_toEndOf="@id/tvPoints"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="11/13" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/ivGrade"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            android:background="@drawable/rounded_rect_10_dp"
+            android:outlineProvider="background"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/test_image" />
 
     </LinearLayout>
 

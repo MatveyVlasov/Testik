@@ -117,11 +117,24 @@
             android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="@string/points_earned"
-            android:textStyle="italic"
+            android:text="@string/points_title"
             app:layout_constraintTop_toBottomOf="@id/tvTimeSpentData"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvPointsData"
+            style="@style/CustomTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="@dimen/margin_horizontal"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_constraintTop_toTopOf="@id/tvPoints"
+            app:layout_constraintStart_toEndOf="@id/tvPoints"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="11/13" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnOK"

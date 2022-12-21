@@ -194,5 +194,5 @@
     <string name="test_title">Тест:</string>
     <string name="date">Дата:</string>
     <string name="time_spent">Потрачено времени:</string>
-    <string name="points_earned">Баллов: %d/%d</string>
+    <string name="points_title">Баллов:</string>
 </resources>

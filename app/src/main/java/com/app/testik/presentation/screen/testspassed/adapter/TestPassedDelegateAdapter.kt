@@ -3,6 +3,7 @@ package com.app.testik.presentation.screen.testspassed.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.app.testik.R
 import com.app.testik.databinding.ItemTestPassedBinding
 import com.app.testik.presentation.screen.testspassed.model.TestPassedDelegateItem
 import com.app.testik.util.delegateadapter.DelegateAdapter
@@ -29,6 +30,8 @@ class TestPassedDelegateAdapter(
                 loadTestImage(context = root.context, imageView = binding.ivImage, url = test.image)
 
                 tvTitle.text = test.title
+                tvDateData.text = test.date
+                tvPointsData.text = root.resources.getString(R.string.points_earned, test.pointsEarned, test.pointsMax)
 
                 root.setOnClickListener { onClick(test.recordId) }
             }
