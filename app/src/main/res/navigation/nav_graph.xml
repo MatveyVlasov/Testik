@@ -168,13 +168,27 @@
         android:id="@+id/testsPassedFragment"
         android:name="com.app.testik.presentation.screen.testspassed.TestsPassedFragment"
         android:label="TestsPassedFragment"
-        tools:layout="@layout/fragment_tests_passed" />
+        tools:layout="@layout/fragment_tests_passed" >
+        <action
+            android:id="@+id/toTestPassed"
+            app:destination="@id/testPassedDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/testResultsFragment"
         android:name="com.app.testik.presentation.screen.testresults.TestResultsFragment"
         android:label="TestResultsFragment"
         tools:layout="@layout/fragment_test_results">
+        <argument
+            android:name="recordId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/testPassedDetailFragment"
+        android:name="com.app.testik.presentation.screen.testpasseddetail.TestPassedDetailFragment"
+        android:label="TestPassedDetailFragment"
+        tools:layout="@layout/fragment_test_passed_detail">
         <argument
             android:name="recordId"
             app:argType="string" />

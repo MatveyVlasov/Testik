@@ -77,11 +77,12 @@ fun QuestionDto.toDomain() =
         testId = testId,
         title = title,
         description = description,
-        points = points,
         image = image,
         type = type.toQuestionType(),
         answers = answers.map { it.toDomain(type.toQuestionType()) },
-        enteredAnswer = enteredAnswer
+        enteredAnswer = enteredAnswer,
+        pointsMax = pointsMax,
+        pointsEarned = pointsEarned
     )
 
 fun AnswerDto.toDomain(type: QuestionType) =

@@ -14,11 +14,12 @@ fun QuestionModel.toQuestionItem() =
         testId = testId,
         title = title,
         description = description,
-        points = points,
         image = image,
         type = type,
         answers = answers.map { it.toAnswerItem() },
-        enteredAnswer = enteredAnswer
+        enteredAnswer = enteredAnswer,
+        pointsMax = pointsMax,
+        pointsEarned = pointsEarned
     )
 
 fun QuestionDelegateItem.toDomain() =
@@ -27,11 +28,12 @@ fun QuestionDelegateItem.toDomain() =
         testId = testId,
         title = title,
         description = description,
-        points = points,
         image = image,
         type = type,
         answers = answers.map { it.toDomain() },
-        enteredAnswer = enteredAnswer
+        enteredAnswer = enteredAnswer,
+        pointsMax = pointsMax,
+        pointsEarned = pointsEarned
     )
 
 fun AnswerModel.toAnswerItem(): AnswerDelegateItem {

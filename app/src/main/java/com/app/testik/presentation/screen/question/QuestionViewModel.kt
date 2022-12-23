@@ -41,7 +41,7 @@ class QuestionViewModel @Inject constructor(
                 id = id,
                 testId = testId,
                 title = title,
-                points = points,
+                points = pointsMax,
                 description = description,
                 image = image,
                 type = type,

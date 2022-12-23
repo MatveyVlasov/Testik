@@ -2,6 +2,7 @@ package com.app.testik.util
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.addCallback
@@ -11,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.app.testik.R
+import com.app.testik.presentation.activity.ImageViewActivity
 import com.app.testik.util.Constants.LANGUAGES
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -193,3 +195,14 @@ fun Fragment.showChangeLanguageDialog(onSelected: (String) -> Unit) {
 }
 
 fun Fragment.getStringOrNull(@StringRes res: Int?) = if (res == null) null else getString(res)
+
+fun Fragment.viewImage(
+    image: String,
+    @StringRes title: Int = R.string.test_image
+) {
+    Intent(context, ImageViewActivity::class.java).also {
+        it.putExtra(Constants.EXTRA_IMAGE_TITLE, getString(title))
+        it.putExtra(Constants.EXTRA_IMAGE_PATH, image)
+        startActivity(it)
+    }
+}

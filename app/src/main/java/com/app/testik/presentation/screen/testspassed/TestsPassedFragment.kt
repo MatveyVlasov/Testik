@@ -33,7 +33,7 @@ class TestsPassedFragment : BaseFragment<FragmentTestsPassedBinding>() {
             .add(ErrorDelegateAdapter(viewModel::updateList))
             .add(LoadingDelegateAdapter())
             .add(
-                TestPassedDelegateAdapter { navigateToTest(it) }
+                TestPassedDelegateAdapter { navigateToTestPassed(it) }
             )
             .build()
     }
@@ -109,9 +109,9 @@ class TestsPassedFragment : BaseFragment<FragmentTestsPassedBinding>() {
         setNavbarItem(R.id.mainFragment)
     }
 
-    private fun navigateToTest(testId: String = "") {
-//        navController.navigate(
-//
-//        )
+    private fun navigateToTestPassed(recordId: String) {
+        navController.navigate(
+            TestsPassedFragmentDirections.toTestPassed(recordId)
+        )
     }
 }

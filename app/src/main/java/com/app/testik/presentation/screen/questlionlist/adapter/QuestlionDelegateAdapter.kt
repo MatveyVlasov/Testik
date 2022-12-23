@@ -24,16 +24,16 @@ class QuestionDelegateAdapter(
 
     inner class ViewHolder(private val binding: ItemQuestionBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(test: QuestionDelegateItem) {
+        fun bind(question: QuestionDelegateItem) {
 
             binding.apply {
-                tvPointsData.text = test.points.toString()
-                tvPoints.text = root.resources.getQuantityString(R.plurals.points_quantity, test.points)
-                tvTitle.text = test.title
+                tvPointsData.text = question.pointsMax.toString()
+                tvPoints.text = root.resources.getQuantityString(R.plurals.points_quantity, question.pointsMax)
+                tvTitle.text = question.title
 
-                root.setOnClickListener { onClick(test) }
+                root.setOnClickListener { onClick(question) }
 
-                ivDelete.setOnClickListener { onDeleteClick(test) }
+                ivDelete.setOnClickListener { onDeleteClick(question) }
             }
         }
     }

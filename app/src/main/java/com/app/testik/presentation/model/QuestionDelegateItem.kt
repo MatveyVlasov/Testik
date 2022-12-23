@@ -11,11 +11,12 @@ data class QuestionDelegateItem(
     val testId: String = "",
     val title: String = "",
     val description: String = "",
-    val points: Int = 1,
     val image: String = "",
     val type: QuestionType = QuestionType.SINGLE_CHOICE,
     val answers: List<AnswerDelegateItem> = emptyList(),
-    val enteredAnswer: String = ""
+    val enteredAnswer: String = "",
+    val pointsMax: Int = 1,
+    val pointsEarned: Int = 0
 ) : DelegateAdapterItem, Parcelable {
 
     override fun id() = id

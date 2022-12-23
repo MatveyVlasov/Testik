@@ -16,7 +16,6 @@ import com.app.testik.R
 import com.app.testik.databinding.FragmentQuestionEditBinding
 import com.app.testik.domain.model.QuestionType
 import com.app.testik.presentation.activity.ImageCropActivity
-import com.app.testik.presentation.activity.ImageViewActivity
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.adapter.answer.MultipleChoiceEditDelegateAdapter
@@ -28,7 +27,6 @@ import com.app.testik.util.*
 import com.app.testik.util.Constants.DELETE_QUESTION_RESULT_KEY
 import com.app.testik.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_PATH
-import com.app.testik.util.Constants.EXTRA_IMAGE_TITLE
 import com.app.testik.util.Constants.UPDATE_QUESTION_RESULT_KEY
 import com.app.testik.util.delegateadapter.CompositeAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -232,11 +230,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
     private fun viewImage() {
         if (viewModel.screenUIState.image.isEmpty()) return pickImage()
 
-        Intent(context, ImageViewActivity::class.java).also {
-            it.putExtra(EXTRA_IMAGE_TITLE, getString(R.string.test_image))
-            it.putExtra(EXTRA_IMAGE_PATH, viewModel.screenUIState.image)
-            startActivity(it)
-        }
+        viewImage(image = viewModel.screenUIState.image)
     }
 
     private fun deleteImage() {

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            app:title="@string/test_results"
+            app:titleTextColor="@color/black"
+            app:navigationIconTint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbar_height">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/ivImage"
+                android:layout_width="300dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_rect_20_dp"
+                android:outlineProvider="background"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/test_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_feed" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:text="@string/test_title"
+                app:layout_constraintTop_toBottomOf="@id/ivImage"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTitleData"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                app:layout_constraintTop_toTopOf="@id/tvTitle"
+                app:layout_constraintStart_toEndOf="@id/tvTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="What do you know about our app?" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:text="@string/date"
+                app:layout_constraintTop_toBottomOf="@id/tvTitleData"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvDateData"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                app:layout_constraintTop_toTopOf="@id/tvDate"
+                app:layout_constraintStart_toEndOf="@id/tvDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="19.12.2022 13:29:00" />
+
+            <TextView
+                android:id="@+id/tvTimeSpent"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:text="@string/time_spent"
+                app:layout_constraintTop_toBottomOf="@id/tvDateData"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTimeSpentData"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                app:layout_constraintTop_toTopOf="@id/tvTimeSpent"
+                app:layout_constraintStart_toEndOf="@id/tvTimeSpent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="00:05:30" />
+
+            <TextView
+                android:id="@+id/tvPoints"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:text="@string/points_title"
+                app:layout_constraintTop_toBottomOf="@id/tvTimeSpentData"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvPointsData"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                app:layout_constraintTop_toTopOf="@id/tvPoints"
+                app:layout_constraintStart_toEndOf="@id/tvPoints"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="11/13" />
+
+            <TextView
+                android:id="@+id/tvQuestionList"
+                style="@style/TitleTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:text="@string/question_list"
+                app:layout_constraintTop_toBottomOf="@id/tvPointsData"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvQuestions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:paddingVertical="8dp"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tvQuestionList"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:itemCount="13"
+                tools:listitem="@layout/item_question" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

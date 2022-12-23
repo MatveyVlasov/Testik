@@ -69,7 +69,6 @@ class TestResultsViewModel @Inject constructor(
             getTestInfoUseCase(testId = screenUIState.testId, source = Source.CACHE).onSuccess {
                 val screenState = screenUIState.copy(
                     title = it.title,
-                    image = it.image
                 )
                 updateScreenState(screenState)
             }.onError {

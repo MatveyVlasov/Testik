@@ -60,11 +60,12 @@ fun QuestionModel.toDto() =
         testId = testId,
         title = title,
         description = description,
-        points = points,
         image = image,
         type = type.title,
         answers = answers.map { it.toDto() },
-        enteredAnswer = enteredAnswer
+        enteredAnswer = enteredAnswer,
+        pointsMax = pointsMax,
+        pointsEarned = pointsEarned
     )
 
 fun AnswerModel.toDto() =

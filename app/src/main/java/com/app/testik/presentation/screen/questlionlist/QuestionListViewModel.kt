@@ -68,6 +68,8 @@ class QuestionListViewModel @Inject constructor(
     }
 
     fun saveQuestions() {
+        emitEvent(QuestionListScreenEvent.Loading)
+
         viewModelScope.launch {
             val questions = screenUIState.questions
                 .filterIsInstance<QuestionDelegateItem>()

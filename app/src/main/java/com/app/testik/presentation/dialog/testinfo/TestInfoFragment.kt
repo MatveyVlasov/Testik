@@ -1,6 +1,5 @@
 package com.app.testik.presentation.dialog.testinfo
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +11,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.app.testik.R
 import com.app.testik.databinding.FragmentTestInfoBinding
 import com.app.testik.domain.model.TestPassedModel
-import com.app.testik.presentation.activity.ImageViewActivity
 import com.app.testik.presentation.base.BaseBottomSheetDialogFragment
 import com.app.testik.presentation.dialog.testinfo.model.TestInfoDialogEvent
 import com.app.testik.presentation.dialog.testinfo.model.TestInfoDialogUIState
 import com.app.testik.presentation.model.onSuccess
 import com.app.testik.util.*
-import com.app.testik.util.Constants.EXTRA_IMAGE_PATH
-import com.app.testik.util.Constants.EXTRA_IMAGE_TITLE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -49,7 +45,7 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
     private fun initListeners() {
         binding.apply {
 
-            ivImage.setOnClickListener { viewImage() }
+            ivImage.setOnClickListener { viewImage(image = viewModel.screenUIState.image) }
             btnStart.setOnClickListener { viewModel.createTestPassed() }
         }
     }
@@ -99,14 +95,6 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
         loadTestImage(context = requireContext(), imageView = binding.ivImage, url = url)
 
         binding.ivImage.isVisible = url.isNotEmpty()
-    }
-
-    private fun viewImage() {
-        Intent(context, ImageViewActivity::class.java).also {
-            it.putExtra(EXTRA_IMAGE_TITLE, getString(R.string.test_image))
-            it.putExtra(EXTRA_IMAGE_PATH, viewModel.screenUIState.image)
-            startActivity(it)
-        }
     }
 
     private fun navigateToQuestionMain(test: TestPassedModel) {

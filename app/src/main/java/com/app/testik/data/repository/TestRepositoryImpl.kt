@@ -160,7 +160,7 @@ class TestRepositoryImpl @Inject constructor(
         return try {
             var pointsMax = 0
             questions.forEach {
-                pointsMax += it.points
+                pointsMax += it.pointsMax
             }
             val data = mapOf(
                 "questions" to questions,

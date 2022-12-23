@@ -52,7 +52,7 @@ class QuestionEditViewModel @Inject constructor(
                 testId = testId,
                 title = title,
                 description = description,
-                points = points.toString(),
+                points = pointsMax.toString(),
                 image = image,
                 type = type,
                 answers = answers

@@ -18,5 +18,7 @@
     <color name="blue_dark">#00008B</color>
     <color name="teal">#03DAC5</color>
 
+    <color name="correct">#00CC00</color>
+    <color name="wrong">#FF3333</color>
     <color name="error">#B3261E</color>
 </resources>

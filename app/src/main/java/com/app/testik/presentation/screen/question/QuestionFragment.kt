@@ -1,6 +1,5 @@
 package com.app.testik.presentation.screen.question
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.app.testik.R
 import com.app.testik.databinding.FragmentQuestionBinding
-import com.app.testik.presentation.activity.ImageViewActivity
 import com.app.testik.presentation.adapter.answer.MultipleChoiceDelegateAdapter
 import com.app.testik.presentation.adapter.answer.SingleChoiceDelegateAdapter
 import com.app.testik.presentation.base.BaseFragment
@@ -69,7 +67,9 @@ class QuestionFragment(private val question: QuestionDelegateItem) : BaseFragmen
 
     private fun initListeners() {
         binding.apply {
-            ivImage.setOnClickListener { viewImage() }
+            ivImage.setOnClickListener {
+                viewImage(image = viewModel.screenUIState.image, title = R.string.question_image)
+            }
         }
     }
 
@@ -116,13 +116,5 @@ class QuestionFragment(private val question: QuestionDelegateItem) : BaseFragmen
         loadQuestionImage(context = requireContext(), imageView = binding.ivImage, url = url)
 
         binding.ivImage.isVisible = url.isNotEmpty()
-    }
-
-    private fun viewImage() {
-        Intent(context, ImageViewActivity::class.java).also {
-            it.putExtra(Constants.EXTRA_IMAGE_TITLE, getString(R.string.question_image))
-            it.putExtra(Constants.EXTRA_IMAGE_PATH, question.image)
-            startActivity(it)
-        }
     }
 }

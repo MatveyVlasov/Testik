@@ -75,13 +75,6 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
 
         setupBottomNavigation(false)
         binding.apply {
-            toolbar.setNavigationOnClickListener { onBackPressed() }
-
-            btnSave.setOnClickListener {
-                setLoadingState(true)
-                viewModel.saveQuestions()
-            }
-
             rvQuestions.apply {
                 adapter = questionsAdapter
                 itemTouchHelper.attachToRecyclerView(this)
@@ -99,6 +92,10 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
 
     private fun initListeners() {
         binding.apply {
+            toolbar.setNavigationOnClickListener { onBackPressed() }
+
+            btnSave.setOnClickListener { viewModel.saveQuestions() }
+
             fabCreate.setOnClickListener { navigateToQuestion() }
         }
     }

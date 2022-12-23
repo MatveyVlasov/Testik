@@ -13,7 +13,7 @@ class GetTestInfoUseCase @Inject constructor(
     private val testRepository: TestRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(testId: String, source: Source): Result<TestModel> =
+    suspend operator fun invoke(testId: String, source: Source = Source.DEFAULT): Result<TestModel> =
         wrap(
             block = { testRepository.getTest(testId = testId, source = source) },
             mapper = { it!!.toDomain() }

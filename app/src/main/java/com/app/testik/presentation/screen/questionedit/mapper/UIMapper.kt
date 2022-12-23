@@ -12,10 +12,10 @@ fun QuestionEditScreenUIState.toDomain() =
         testId = testId,
         title = title,
         description = description,
-        points = points.toIntOrZero(),
         image = image,
         type = type,
-        answers = answers.map { it.toDomain() }
+        answers = answers.map { it.toDomain() },
+        pointsMax = points.toIntOrZero()
     )
 
 fun QuestionEditScreenUIState.toQuestionItem() =
@@ -24,8 +24,8 @@ fun QuestionEditScreenUIState.toQuestionItem() =
         testId = testId,
         title = title,
         description = description,
-        points = points.toIntOrZero(),
         image = image,
         type = type,
-        answers = answers
+        answers = answers,
+        pointsMax = points.toIntOrZero(),
     )
