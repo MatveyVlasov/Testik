@@ -124,31 +124,56 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="00:05:30" />
 
+            <antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator
+                android:id="@+id/progressPoints"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                app:direction="clockwise"
+                app:drawDot="false"
+                app:enableProgressAnimation="true"
+                app:fillBackground="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTimeSpentData"
+                app:progressBackgroundColor="@color/wrong"
+                app:progressBackgroundStrokeWidth="12dp"
+                app:progressCap="round"
+                app:progressColor="@color/correct"
+                app:progressStrokeWidth="12dp"
+                app:startAngle="270"
+                app:textColor="@color/black"
+                app:textSize="40sp" />
+
             <TextView
                 android:id="@+id/tvPoints"
                 style="@style/CustomTextView"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_horizontal"
                 android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="@dimen/margin_horizontal"
-                android:textSize="18sp"
                 android:text="@string/points_title"
-                app:layout_constraintTop_toBottomOf="@id/tvTimeSpentData"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/tvPointsData"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/progressPoints" />
 
             <TextView
                 android:id="@+id/tvPointsData"
                 style="@style/CustomTextView"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="6dp"
                 android:layout_marginEnd="@dimen/margin_horizontal"
-                android:textSize="18sp"
-                android:textStyle="italic"
-                app:layout_constraintTop_toTopOf="@id/tvPoints"
-                app:layout_constraintStart_toEndOf="@id/tvPoints"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="11/13" />
+                app:layout_constraintStart_toEndOf="@id/tvPoints"
+                app:layout_constraintTop_toTopOf="@id/tvPoints"
+                tools:text="11/13 " />
 
             <TextView
                 android:id="@+id/tvQuestionList"

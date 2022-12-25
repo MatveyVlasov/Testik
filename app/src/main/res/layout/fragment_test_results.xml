@@ -15,11 +15,11 @@
             style="@style/TitleTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="@string/test_results"
             android:textAlignment="center"
             android:textSize="24sp"
-            android:text="@string/test_results"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,12 +29,12 @@
             style="@style/CustomTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="@dimen/margin_horizontal"
-            android:textSize="18sp"
+            android:layout_marginTop="20dp"
             android:text="@string/test_title"
-            app:layout_constraintTop_toBottomOf="@id/tvResults"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvResults" />
 
         <TextView
             android:id="@+id/tvTitleData"
@@ -45,9 +45,9 @@
             android:layout_marginEnd="@dimen/margin_horizontal"
             android:textSize="18sp"
             android:textStyle="italic"
-            app:layout_constraintTop_toTopOf="@id/tvTitle"
-            app:layout_constraintStart_toEndOf="@id/tvTitle"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvTitle"
+            app:layout_constraintTop_toTopOf="@id/tvTitle"
             tools:text="What do you know about our app?" />
 
         <TextView
@@ -55,12 +55,12 @@
             style="@style/CustomTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="@dimen/margin_horizontal"
-            android:textSize="18sp"
+            android:layout_marginTop="8dp"
             android:text="@string/date"
-            app:layout_constraintTop_toBottomOf="@id/tvTitleData"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleData" />
 
         <TextView
             android:id="@+id/tvDateData"
@@ -71,9 +71,9 @@
             android:layout_marginEnd="@dimen/margin_horizontal"
             android:textSize="18sp"
             android:textStyle="italic"
-            app:layout_constraintTop_toTopOf="@id/tvDate"
-            app:layout_constraintStart_toEndOf="@id/tvDate"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvDate"
+            app:layout_constraintTop_toTopOf="@id/tvDate"
             tools:text="19.12.2022 13:29:00" />
 
         <TextView
@@ -81,12 +81,12 @@
             style="@style/CustomTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="@dimen/margin_horizontal"
-            android:textSize="18sp"
+            android:layout_marginTop="8dp"
             android:text="@string/time_spent"
-            app:layout_constraintTop_toBottomOf="@id/tvDateData"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDateData" />
 
         <TextView
             android:id="@+id/tvTimeSpentData"
@@ -97,36 +97,61 @@
             android:layout_marginEnd="@dimen/margin_horizontal"
             android:textSize="18sp"
             android:textStyle="italic"
-            app:layout_constraintTop_toTopOf="@id/tvTimeSpent"
-            app:layout_constraintStart_toEndOf="@id/tvTimeSpent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvTimeSpent"
+            app:layout_constraintTop_toTopOf="@id/tvTimeSpent"
             tools:text="00:05:30" />
+
+        <antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator
+            android:id="@+id/progressPoints"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            app:direction="clockwise"
+            app:drawDot="false"
+            app:enableProgressAnimation="true"
+            app:fillBackground="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTimeSpentData"
+            app:progressBackgroundColor="@color/wrong"
+            app:progressBackgroundStrokeWidth="12dp"
+            app:progressCap="round"
+            app:progressColor="@color/correct"
+            app:progressStrokeWidth="12dp"
+            app:startAngle="270"
+            app:textColor="@color/black"
+            app:textSize="40sp" />
 
         <TextView
             android:id="@+id/tvPoints"
             style="@style/CustomTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_horizontal"
             android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
-            android:textSize="18sp"
             android:text="@string/points_title"
-            app:layout_constraintTop_toBottomOf="@id/tvTimeSpentData"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/tvPointsData"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progressPoints" />
 
         <TextView
             android:id="@+id/tvPointsData"
             style="@style/CustomTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="6dp"
             android:layout_marginEnd="@dimen/margin_horizontal"
-            android:textSize="18sp"
-            android:textStyle="italic"
-            app:layout_constraintTop_toTopOf="@id/tvPoints"
-            app:layout_constraintStart_toEndOf="@id/tvPoints"
+            android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="11/13" />
+            app:layout_constraintStart_toEndOf="@id/tvPoints"
+            app:layout_constraintTop_toTopOf="@id/tvPoints"
+            tools:text="11/13 " />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnOK"
@@ -136,10 +161,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="@dimen/margin_bottom"
             android:text="@string/ok"
-            app:layout_constraintTop_toBottomOf="@id/tvPoints"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tvPointsData" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

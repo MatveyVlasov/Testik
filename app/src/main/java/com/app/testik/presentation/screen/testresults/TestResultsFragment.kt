@@ -72,6 +72,11 @@ class TestResultsFragment : BaseFragment<FragmentTestResultsBinding>() {
             tvDateData.text = data.date
             tvTimeSpentData.text = data.timeSpent
             tvPointsData.text = getString(R.string.points_earned, data.pointsEarned, data.pointsMax)
+
+            progressPoints.apply {
+                setProgress(data.pointsEarned.toDouble(), data.pointsMax.toDouble())
+                setProgressTextAdapter { getProgressPointsText(data.pointsEarned, data.pointsMax) }
+            }
         }
         setLoadingState(false)
     }
