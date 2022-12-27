@@ -2,7 +2,6 @@ package com.app.testik.data.repository
 
 import android.content.Context
 import com.app.testik.data.model.*
-import com.app.testik.data.repository.model.CalculationResult
 import com.app.testik.domain.repository.TestPassedRepository
 import com.app.testik.util.execute
 import com.app.testik.util.isOnline
@@ -58,14 +57,10 @@ class TestPassedRepositoryImpl @Inject constructor(
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            val calculationData = calculatePoints(questions)
+           // val calculationData = calculatePoints(questions)
 
             val newData = mapOf(
-                "timeFinished" to timestamp,
-                "isFinished" to true,
-                "questions" to calculationData.questions,
-                "pointsMax" to calculationData.pointsMax,
-                "pointsEarned" to calculationData.pointsEarned
+                "isFinished" to true
             )
 
             collection.document(recordId).update(newData).execute()
@@ -136,26 +131,6 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun calculatePoints(recordId: String, questions: List<QuestionDto>): ApiResult<Unit> {
-        if (!isOnline(context)) return ApiResult.NoInternetError()
-        if (recordId.isEmpty()) return ApiResult.Error("No test found")
-
-        return try {
-            val calculationData = calculatePoints(questions)
-
-            val newData = mapOf(
-                "questions" to calculationData.questions,
-                "pointsMax" to calculationData.pointsMax,
-                "pointsEarned" to calculationData.pointsEarned,
-                "pointsCalculated" to true
-            )
-
-            collection.document(recordId).update(newData).execute()
-        } catch (e: Exception) {
-            ApiResult.Error(e.message)
-        }
-    }
-
     override suspend fun getTestQuestions(recordId: String): ApiResult<List<QuestionDto>> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
@@ -173,32 +148,6 @@ class TestPassedRepositoryImpl @Inject constructor(
     }
 
     private fun QuerySnapshot?.orderBy(field: String) = this?.documents?.last()?.data?.get(field)
-
-    private fun calculatePoints(questions: List<QuestionDto>): CalculationResult {
-        val newQuestions = questions.toMutableList()
-        var pointsMax = 0
-        var pointsEarned = 0
-
-        questions.forEachIndexed { i, question ->
-            val points = question.pointsMax
-            pointsMax += points
-
-            var isCorrect = true
-            question.answers.forEach {
-                isCorrect = isCorrect && it.isCorrect == it.isSelected
-            }
-            if (isCorrect) {
-                pointsEarned += points
-                newQuestions[i] = newQuestions[i].copy(pointsEarned = points)
-            }
-        }
-
-        return CalculationResult(
-            questions = newQuestions,
-            pointsMax = pointsMax,
-            pointsEarned = pointsEarned
-        )
-    }
 
     companion object {
         private const val COLLECTION_ID = "testsPassed"
