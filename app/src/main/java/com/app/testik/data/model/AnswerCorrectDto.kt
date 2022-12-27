@@ -2,8 +2,8 @@ package com.app.testik.data.model
 
 import com.google.firebase.firestore.PropertyName
 
-data class AnswerDto(
+data class AnswerCorrectDto(
     val text: String = "",
-    @get:PropertyName("isSelected")
-    val isSelected: Boolean = false
+    @get:PropertyName("isCorrect")
+    val isCorrect: Boolean = false
 )

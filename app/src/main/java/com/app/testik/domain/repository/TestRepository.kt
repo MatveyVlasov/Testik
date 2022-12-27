@@ -1,9 +1,6 @@
 package com.app.testik.domain.repository
 
-import com.app.testik.data.model.ApiResult
-import com.app.testik.data.model.QuestionDto
-import com.app.testik.data.model.TestDto
-import com.app.testik.data.model.TestsDto
+import com.app.testik.data.model.*
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 
@@ -23,7 +20,7 @@ interface TestRepository {
 
     suspend fun deleteTest(testId: String): ApiResult<Unit>
 
-    suspend fun updateQuestions(testId: String, questions: List<QuestionDto>): ApiResult<Unit>
+    suspend fun updateQuestions(testId: String, data: TestQuestionsDto): ApiResult<Unit>
 
-    suspend fun getTestQuestions(testId: String): ApiResult<List<QuestionDto>>
+    suspend fun getTestQuestions(testId: String): ApiResult<TestQuestionsDto>
 }

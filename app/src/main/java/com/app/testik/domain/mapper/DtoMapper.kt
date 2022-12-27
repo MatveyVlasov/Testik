@@ -71,7 +71,10 @@ fun TestPassedDto.toDomain() =
         pointsCalculated = pointsCalculated
     )
 
-fun QuestionDto.toDomain() =
+fun TestQuestionsDto.toDomain() =
+    questions.mapIndexed { index, item -> item.toDomain(answersCorrect = answersCorrect[index].answersCorrect) }
+
+fun QuestionDto.toDomain(answersCorrect: List<AnswerCorrectDto>? = null) =
     QuestionModel(
         id = id,
         testId = testId,
@@ -79,13 +82,18 @@ fun QuestionDto.toDomain() =
         description = description,
         image = image,
         type = type.toQuestionType(),
-        answers = answers.map { it.toDomain(type.toQuestionType()) },
+        answers = answers.mapIndexed { index, item ->
+            item.toDomain(
+                type = type.toQuestionType(),
+                isCorrect = answersCorrect?.get(index)?.isCorrect ?: false
+            )
+        },
         enteredAnswer = enteredAnswer,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned
     )
 
-fun AnswerDto.toDomain(type: QuestionType) =
+fun AnswerDto.toDomain(type: QuestionType, isCorrect: Boolean) =
     AnswerModel(
         type = type,
         text = text,

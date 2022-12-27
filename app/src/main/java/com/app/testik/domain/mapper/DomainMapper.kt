@@ -55,6 +55,12 @@ fun TestPassedModel.toDto() =
         pointsCalculated = pointsCalculated
     )
 
+fun List<QuestionModel>.toDto() =
+    TestQuestionsDto(
+        questions = map { it.toDto() },
+        answersCorrect = map { it.answers.toDto() }
+    )
+
 fun QuestionModel.toDto() =
     QuestionDto(
         id = id,
@@ -69,9 +75,17 @@ fun QuestionModel.toDto() =
         pointsEarned = pointsEarned
     )
 
+fun List<AnswerModel>.toDto() =
+    AnswersCorrectDto(map { it.toDtoCorrect() })
+
 fun AnswerModel.toDto() =
     AnswerDto(
         text = text,
-        isCorrect = isCorrect,
         isSelected = isSelected
+    )
+
+fun AnswerModel.toDtoCorrect() =
+    AnswerCorrectDto(
+        text = text,
+        isCorrect = isCorrect
     )

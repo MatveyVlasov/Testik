@@ -34,7 +34,7 @@ class UpdateQuestionsUseCase @Inject constructor(
         }
 
         return wrap(
-            block = { testRepository.updateQuestions(testId = testId, questions = newQuestions.map { it.toDto() }) },
+            block = { testRepository.updateQuestions(testId = testId, data = newQuestions.toDto()) },
             mapper = { }
         ).onSuccess {
             if (hasImageErrors) return Result.Error("Some images were not saved due to an error")

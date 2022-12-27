@@ -154,38 +154,37 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateQuestions(testId: String, questions: List<QuestionDto>): ApiResult<Unit> {
+    override suspend fun updateQuestions(testId: String, data: TestQuestionsDto): ApiResult<Unit> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
             var pointsMax = 0
-            questions.forEach {
+            data.questions.forEach {
                 pointsMax += it.pointsMax
             }
-            val data = mapOf(
-                "questionsNum" to questions.size,
+            val newData = mapOf(
+                "questionsNum" to data.questions.size,
                 "pointsMax" to pointsMax,
                 "lastUpdated" to timestamp
             )
 
-            val questionsData = mapOf("questions" to questions)
-            val result = collection.document(testId).private.document("questions").set(questionsData).execute()
-            if (result is ApiResult.Success) collection.document(testId).update(data).execute()
+            val result = collection.document(testId).private.document("questions").set(data).execute()
+            if (result is ApiResult.Success) collection.document(testId).update(newData).execute()
             else result
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
     }
 
-    override suspend fun getTestQuestions(testId: String): ApiResult<List<QuestionDto>> {
+    override suspend fun getTestQuestions(testId: String): ApiResult<TestQuestionsDto> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
             collection.document(testId).private.document("questions").get().also {
                 it.await()
-                val questions = it.result.toObject(TestQuestionsDto::class.java)?.questions ?: emptyList()
-                return if (it.isSuccessful) ApiResult.Success(questions)
+                val data = it.result.toObject(TestQuestionsDto::class.java) ?: TestQuestionsDto()
+                return if (it.isSuccessful) ApiResult.Success(data)
                 else ApiResult.Error(it.exception?.message)
             }
         } catch (e: Exception) {

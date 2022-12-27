@@ -15,6 +15,6 @@ class GetTestQuestionsUseCase @Inject constructor(
     suspend operator fun invoke(testId: String): Result<List<QuestionModel>> =
         wrap(
             block = { testRepository.getTestQuestions(testId = testId) },
-            mapper = { it!!.map { question -> question.toDomain() } }
+            mapper = { it!!.toDomain() }
         )
 }
