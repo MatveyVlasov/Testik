@@ -23,6 +23,8 @@ module.exports = {
         "quotes": 0,
         "semi": 0,
         "max-len": 0,
+        "padded-blocks": 0,
+        "no-unused-vars": 1,
         "indent": ["error", 4],
     },
 };
