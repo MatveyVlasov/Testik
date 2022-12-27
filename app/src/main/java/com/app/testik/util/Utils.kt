@@ -29,6 +29,7 @@ import com.app.testik.util.Constants.USERNAME_GOOGLE_DELIMITER
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
@@ -105,6 +106,9 @@ suspend fun<T> Task<T>.execute(): ApiResult<Unit> {
     return if (isSuccessful) ApiResult.Success()
     else ApiResult.Error(exception?.message)
 }
+
+val DocumentReference.private
+    get() = collection("private")
 
 fun MaterialToolbar.setupLanguageItem(
     color: Int? = null,

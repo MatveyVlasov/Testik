@@ -103,6 +103,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                                 }
                                 questionsNumAdapter.submitList(questionsNumList.toList())
                             }
+                            setLoadingState(false)
                         }
                     }
                 }

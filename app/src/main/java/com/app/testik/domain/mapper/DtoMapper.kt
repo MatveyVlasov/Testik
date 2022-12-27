@@ -52,7 +52,7 @@ fun TestDto.toDomain() =
         category = category.toCategoryType(),
         image = image,
         isPublished = isPublished,
-        questionsNum = questions.size,
+        questionsNum = questionsNum,
         pointsMax = pointsMax
     )
 

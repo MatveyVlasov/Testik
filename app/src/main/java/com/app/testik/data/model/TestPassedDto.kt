@@ -12,7 +12,6 @@ data class TestPassedDto(
     val timeFinished: Long = 0L,
     @get:PropertyName("isFinished")
     val isFinished: Boolean = false,
-    val questions: List<EmptyDto> = emptyList(),
     val pointsMax: Int = 0,
     val pointsEarned: Int = 0,
     val pointsCalculated: Boolean = false

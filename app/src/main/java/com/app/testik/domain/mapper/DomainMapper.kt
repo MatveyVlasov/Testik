@@ -36,6 +36,7 @@ fun TestModel.toDto() =
         category = category.title,
         image = image,
         isPublished = isPublished,
+        questionsNum = questionsNum,
         pointsMax = pointsMax
     )
 

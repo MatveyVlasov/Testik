@@ -15,6 +15,7 @@ import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenEvent
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -26,7 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class QuestionMainViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getTestQuestionsUseCase: GetTestQuestionsUseCase,
+    private val getTestPassedQuestionsUseCase: GetTestPassedQuestionsUseCase,
     private val updateAnswersUseCase: UpdateAnswersUseCase,
     private val finishTestUseCase: FinishTestUseCase
 ) : ViewModel() {
@@ -47,7 +48,7 @@ class QuestionMainViewModel @Inject constructor(
     val testToInsert: TestPassedModel = args.test
 
     init {
-        updateList()
+        getQuestions()
     }
 
     fun updateAnswers(question: Int, answers: List<AnswerDelegateItem>) {
@@ -86,11 +87,16 @@ class QuestionMainViewModel @Inject constructor(
         }
     }
 
-    private fun updateList() {
+    private fun getQuestions() {
+        emitEvent(QuestionMainScreenEvent.Loading)
         viewModelScope.launch {
-            getTestQuestionsUseCase(screenUIState.test.testId).onSuccess { list ->
+            getTestPassedQuestionsUseCase(screenUIState.test.recordId).onSuccess { list ->
+                if (list.isEmpty()) {
+                    delay(1000)
+                    getQuestions()
+                    return@launch
+                }
                 updateScreenState(screenUIState.copy(questions = list.map { it.toQuestionItem() }))
-                saveAnswers()
             }.onError {
                 handleError(it)
             }

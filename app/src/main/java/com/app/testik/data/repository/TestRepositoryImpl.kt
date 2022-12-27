@@ -6,6 +6,7 @@ import com.app.testik.data.model.TestDto
 import com.app.testik.domain.repository.TestRepository
 import com.app.testik.util.execute
 import com.app.testik.util.isOnline
+import com.app.testik.util.private
 import com.app.testik.util.timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -163,11 +164,15 @@ class TestRepositoryImpl @Inject constructor(
                 pointsMax += it.pointsMax
             }
             val data = mapOf(
-                "questions" to questions,
+                "questionsNum" to questions.size,
                 "pointsMax" to pointsMax,
                 "lastUpdated" to timestamp
             )
-            collection.document(testId).update(data).execute()
+
+            val questionsData = mapOf("questions" to questions)
+            val result = collection.document(testId).private.document("questions").set(questionsData).execute()
+            if (result is ApiResult.Success) collection.document(testId).update(data).execute()
+            else result
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -177,7 +182,7 @@ class TestRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
-            collection.document(testId).get().also {
+            collection.document(testId).private.document("questions").get().also {
                 it.await()
                 val questions = it.result.toObject(TestQuestionsDto::class.java)?.questions ?: emptyList()
                 return if (it.isSuccessful) ApiResult.Success(questions)
