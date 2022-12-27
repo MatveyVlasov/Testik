@@ -77,16 +77,7 @@ exports.startTest = functions.https.onCall(async (data, context) => {
 
                 testRef.collection("private").doc("questions").get().then((docQuestions) => {
                     const questions = docQuestions.data().questions
-                    const newQuestions = []
-
-                    for (let i = 0; i < questions.length; ++i) {
-                        const q = questions[i]
-                        q.answers = q.answers.map((ans) => ({
-                            ...ans,
-                            isCorrect: false,
-                        }))
-                        newQuestions.push(questions[i])
-                    }
+                    const answersCorrect = docQuestions.data().answersCorrect
 
                     const newData = {
                         testId: testId,
@@ -96,13 +87,16 @@ exports.startTest = functions.https.onCall(async (data, context) => {
                         pointsMax: testData.pointsMax,
                         timeStarted: Date.now(),
                         timeFinished: Date.now(),
-                        questions: newQuestions,
+                        questions: questions,
                     }
 
                     db.collection("testsPassed").add(newData).then((ref) => {
                         ref.get().then((testPassed) => {
-                            resolve({
-                                recordId: testPassed.id,
+
+                            ref.collection("private").doc("answersCorrect").set({ answersCorrect: answersCorrect }).then((_1) => {
+                                resolve({
+                                    recordId: testPassed.id,
+                                })
                             })
                         })
                     })
