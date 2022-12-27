@@ -11,13 +11,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
+import com.google.firebase.functions.FirebaseFunctions
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class TestPassedRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val firebaseFirestore: FirebaseFirestore
+    private val firebaseFirestore: FirebaseFirestore,
+    private val firebaseFunctions: FirebaseFunctions
 ): TestPassedRepository {
 
     private val collection
@@ -28,26 +30,24 @@ class TestPassedRepositoryImpl @Inject constructor(
 
         try {
             with (data) {
-                val currentTime = timestamp
                 val newData = mapOf(
-                    "testId" to testId,
-                    "title" to title,
-                    "image" to image,
-                    "user" to user,
-                    "timeStarted" to currentTime,
-                    "timeFinished" to currentTime,
-                    "pointsMax" to pointsMax
+                    "testId" to testId
                 )
 
-                collection.add(newData).also {
+                firebaseFunctions.getHttpsCallable("startTest").call(newData).also {
                     it.await()
-                    return if (it.isSuccessful) ApiResult.Success(
-                        data.copy(recordId = it.result.id, timeFinished = currentTime)
-                    )
-                    else ApiResult.Error(it.exception?.message)
+                    return if (it.isSuccessful) {
+                        val result = it.result.data as Map<*, *>
+                        val recordId = (result["recordId"] as? String).orEmpty()
+                        ApiResult.Success(
+                            data.copy(recordId = recordId)
+                        )
+                    }
+                    else {
+                        ApiResult.Error(it.exception?.message)
+                    }
                 }
             }
-
         } catch (e: Exception) {
             return ApiResult.Error(e.message)
         }
