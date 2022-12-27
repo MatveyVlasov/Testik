@@ -15,6 +15,7 @@ import com.app.testik.presentation.screen.testedit.TestEditFragmentArgs
 import com.app.testik.util.getFullName
 import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -44,12 +45,17 @@ class TestInfoViewModel @Inject constructor(
     var screenUIState = TestInfoDialogUIState(id = args.testId)
         private set
 
+    private var job: Job? = null
+
     init {
         getTestInfo(source = Source.CACHE)
     }
 
     fun createTestPassed() {
-        viewModelScope.launch {
+        if (job?.isActive == true) return
+        emitEvent(TestInfoDialogEvent.Loading)
+
+        job = viewModelScope.launch {
             createTestPassedUseCase(screenUIState.toDomain()).onSuccess {
                 emitEvent(TestInfoDialogEvent.SuccessTestCreation(it))
             }.onError {

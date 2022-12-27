@@ -72,8 +72,14 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
         when (event) {
             is TestInfoDialogEvent.ShowSnackbar -> showSnackbar(message = event.message)
             is TestInfoDialogEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
+            is TestInfoDialogEvent.Loading -> Unit
             is TestInfoDialogEvent.SuccessTestCreation -> navigateToQuestionMain(event.test)
         }
+        setLoadingState(event is TestInfoDialogEvent.Loading)
+    }
+
+    private fun setLoadingState(isLoading: Boolean) {
+        binding.progressBar.isVisible = isLoading
     }
 
     private fun renderUIState(data: TestInfoDialogUIState) {
@@ -89,6 +95,7 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
         }
 
         loadImage(data.image)
+        setLoadingState(false)
     }
 
     private fun loadImage(url: String) {

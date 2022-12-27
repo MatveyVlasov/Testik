@@ -152,7 +152,8 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
     }
 
     private fun updateAnswers(pos: Int) {
-        (binding.pager.adapter as QuestionAdapter).getFragment(pos).also {
+        val adapter = binding.pager.adapter as? QuestionAdapter ?: return
+        adapter.getFragment(pos).also {
             viewModel.updateAnswers(pos, it.getAnswers())
         }
     }

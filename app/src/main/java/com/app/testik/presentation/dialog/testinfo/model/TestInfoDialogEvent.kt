@@ -9,5 +9,7 @@ sealed class TestInfoDialogEvent {
 
     data class ShowSnackbarByRes(@StringRes val message: Int) : TestInfoDialogEvent()
 
+    object Loading : TestInfoDialogEvent()
+
     data class SuccessTestCreation(val test: TestPassedModel) : TestInfoDialogEvent()
 }
