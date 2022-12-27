@@ -40,25 +40,79 @@ const db = admin.firestore()
 //         }, { merge: true })
 //     })
 
-exports.addQuestionsToTestPassed = functions.firestore
-    .document('testsPassed/{test}')
-    .onCreate(async (snap, context) => {
-        const data = snap.data()
+// exports.addQuestionsToTestPassed = functions.firestore
+//     .document('testsPassed/{test}')
+//     .onCreate(async (snap, context) => {
+//         const data = snap.data()
 
-        const test = await db.collection("tests").doc(data.testId).collection("private").doc("questions").get()
-        const questions = test.data().questions
-        const newQuestions = []
+//         const test = await db.collection("tests").doc(data.testId).collection("private").doc("questions").get()
+//         const questions = test.data().questions
+//         const newQuestions = []
 
-        for (let i = 0; i < questions.length; ++i) {
-            const q = questions[i]
-            q.answers = q.answers.map((ans) => ({
-                ...ans,
-                isCorrect: false,
-            }))
-            newQuestions.push(questions[i])
-        }
+//         for (let i = 0; i < questions.length; ++i) {
+//             const q = questions[i]
+//             q.answers = q.answers.map((ans) => ({
+//                 ...ans,
+//                 isCorrect: false,
+//             }))
+//             newQuestions.push(questions[i])
+//         }
 
-        return snap.ref.set({
-            questions: newQuestions,
-        }, { merge: true })
+//         return snap.ref.set({
+//             questions: newQuestions,
+//         }, { merge: true })
+//     })
+
+
+exports.startTest = functions.https.onCall(async (data, context) => {
+    const testId = data.testId || null
+
+    const testRef = db.collection("tests").doc(data.testId)
+
+    return new Promise((resolve, reject) => {
+
+        testRef.get().then((doc) => {
+            if (doc.exists) {
+                const testData = doc.data()
+
+                testRef.collection("private").doc("questions").get().then((docQuestions) => {
+                    const questions = docQuestions.data().questions
+                    const newQuestions = []
+
+                    for (let i = 0; i < questions.length; ++i) {
+                        const q = questions[i]
+                        q.answers = q.answers.map((ans) => ({
+                            ...ans,
+                            isCorrect: false,
+                        }))
+                        newQuestions.push(questions[i])
+                    }
+
+                    const newData = {
+                        testId: testId,
+                        user: context.auth.uid,
+                        title: testData.title,
+                        image: testData.image,
+                        pointsMax: testData.pointsMax,
+                        timeStarted: Date.now(),
+                        timeFinished: Date.now(),
+                        questions: newQuestions,
+                    }
+
+                    db.collection("testsPassed").add(newData).then((ref) => {
+                        ref.get().then((testPassed) => {
+                            resolve({
+                                recordId: testPassed.id,
+                            })
+                        })
+                    })
+                })
+            } else {
+                reject(new functions.https.HttpsError('not-found', 'Test not found'))
+            }
+        })
+    }).catch((err) => {
+        console.log('Error occurred', err);
+        throw err;
     })
+})
