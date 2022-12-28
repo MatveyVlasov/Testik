@@ -64,10 +64,10 @@ const db = admin.firestore()
 //     })
 
 
-exports.startTest = functions.https.onCall(async (data, context) => {
+exports.startTest = functions.https.onCall((data, context) => {
     const testId = data.testId || null
 
-    const testRef = db.collection("tests").doc(data.testId)
+    const testRef = db.collection("tests").doc(testId)
 
     return new Promise((resolve, reject) => {
 
@@ -93,12 +93,57 @@ exports.startTest = functions.https.onCall(async (data, context) => {
                     db.collection("testsPassed").add(newData).then((ref) => {
                         ref.get().then((testPassed) => {
 
-                            ref.collection("private").doc("answersCorrect").set({ answersCorrect: answersCorrect }).then((_1) => {
+                            ref.collection("private").doc("results").set({ answersCorrect: answersCorrect }).then((_1) => {
                                 resolve({
                                     recordId: testPassed.id,
                                 })
                             })
                         })
+                    })
+                })
+            } else {
+                reject(new functions.https.HttpsError('not-found', 'Test not found'))
+            }
+        })
+    }).catch((err) => {
+        console.log('Error occurred', err);
+        throw err;
+    })
+})
+
+
+exports.finishTest = functions.https.onCall((data, context) => {
+    const recordId = data.recordId || null
+    const questions = JSON.parse(data.questions) || null
+
+    const testRef = db.collection("testsPassed").doc(recordId)
+
+    return new Promise((resolve, reject) => {
+
+        testRef.collection("private").doc("results").get().then((doc) => {
+            if (doc.exists) {
+                const answersCorrect = doc.data().answersCorrect
+                const pointsPerQuestion = []
+
+                for (let i = 0; i < questions.length; ++i) {
+                    let isCorrect = true
+                    for (let j = 0; j < questions[i].answers.length; ++j) {
+                        isCorrect = isCorrect && answersCorrect[i].answers[j].isCorrect == questions[i].answers[j].isSelected
+                    }
+                    pointsPerQuestion.push(isCorrect? questions[i].pointsMax : 0)
+                }
+
+                testRef.collection("private").doc("results").update({ pointsPerQuestion: pointsPerQuestion }).then((_1) => {
+                    const pointsEarned = pointsPerQuestion.reduce((sum, a) => sum + a, 0)
+
+                    const newData = {
+                        questions: questions,
+                        pointsEarned: pointsEarned,
+                        isFinished: true,
+                        timeFinished: Date.now(),
+                    }
+                    testRef.update(newData).then((_1) => {
+                        resolve()
                     })
                 })
             } else {
