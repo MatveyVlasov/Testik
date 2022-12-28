@@ -33,6 +33,7 @@
     <string name="no_internet">Нет подключения к интернету</string>
     <string name="error_while_saving_image">Произошла ошибка при сохранении изображения</string>
     <string name="error_while_saving_images">Произошла ошибка при сохранении некоторых изображений</string>
+    <string name="error_while_loading_results">Произошла ошибка при загрузке результатов</string>
     <string name="blank_field_error">Это поле не может быть пустым</string>
     <string name="empty" />
     <string name="yes">Да</string>

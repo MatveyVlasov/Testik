@@ -26,4 +26,12 @@ fun AnswerDelegateItem.copy(text: String): AnswerDelegateItem {
     }
 }
 
+fun AnswerDelegateItem.copy(isCorrect: Boolean): AnswerDelegateItem {
+    return when (this) {
+        is SingleChoiceDelegateItem -> copy(isCorrect = isCorrect)
+        is MultipleChoiceDelegateItem -> copy(isCorrect = isCorrect)
+        else -> AnswerDelegateItem(id = id, text = text)
+    }
+}
+
 

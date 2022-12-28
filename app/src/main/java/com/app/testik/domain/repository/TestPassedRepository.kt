@@ -19,4 +19,6 @@ interface TestPassedRepository {
     suspend fun updateQuestions(recordId: String, questions: List<QuestionDto>): ApiResult<Unit>
 
     suspend fun getTestQuestions(recordId: String): ApiResult<List<QuestionDto>>
+
+    suspend fun getTestResults(recordId: String): ApiResult<ResultsDto>
 }

@@ -5,12 +5,14 @@ import com.app.testik.data.model.*
 import com.app.testik.domain.repository.TestPassedRepository
 import com.app.testik.util.execute
 import com.app.testik.util.isOnline
+import com.app.testik.util.private
 import com.app.testik.util.timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import com.google.firebase.functions.FirebaseFunctions
+import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -28,23 +30,21 @@ class TestPassedRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
-            with (data) {
-                val newData = mapOf(
-                    "testId" to testId
-                )
+            val newData = mapOf(
+                "testId" to data.testId
+            )
 
-                firebaseFunctions.getHttpsCallable("startTest").call(newData).also {
-                    it.await()
-                    return if (it.isSuccessful) {
-                        val result = it.result.data as Map<*, *>
-                        val recordId = (result["recordId"] as? String).orEmpty()
-                        ApiResult.Success(
-                            data.copy(recordId = recordId)
-                        )
-                    }
-                    else {
-                        ApiResult.Error(it.exception?.message)
-                    }
+            firebaseFunctions.getHttpsCallable("startTest").call(newData).also {
+                it.await()
+                return if (it.isSuccessful) {
+                    val result = it.result.data as Map<*, *>
+                    val recordId = (result["recordId"] as? String).orEmpty()
+                    ApiResult.Success(
+                        data.copy(recordId = recordId)
+                    )
+                }
+                else {
+                    ApiResult.Error(it.exception?.message)
                 }
             }
         } catch (e: Exception) {
@@ -57,13 +57,12 @@ class TestPassedRepositoryImpl @Inject constructor(
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-           // val calculationData = calculatePoints(questions)
-
             val newData = mapOf(
-                "isFinished" to true
+                "recordId" to recordId,
+                "questions" to Gson().toJson(questions)
             )
 
-            collection.document(recordId).update(newData).execute()
+            firebaseFunctions.getHttpsCallable("finishTest").call(newData).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -140,6 +139,21 @@ class TestPassedRepositoryImpl @Inject constructor(
                 it.await()
                 val questions = it.result.toObject(TestQuestionsDto::class.java)?.questions ?: emptyList()
                 return if (it.isSuccessful) ApiResult.Success(questions)
+                else ApiResult.Error(it.exception?.message)
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun getTestResults(recordId: String): ApiResult<ResultsDto> {
+        if (recordId.isEmpty()) return ApiResult.Error("No test found")
+
+        try {
+            collection.document(recordId).private.document("results").get().also {
+                it.await()
+                val results = it.result.toObject(ResultsDto::class.java) ?: ResultsDto()
+                return if (it.isSuccessful) ApiResult.Success(results)
                 else ApiResult.Error(it.exception?.message)
             }
         } catch (e: Exception) {

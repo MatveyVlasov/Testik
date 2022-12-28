@@ -72,7 +72,7 @@ fun TestPassedDto.toDomain() =
     )
 
 fun TestQuestionsDto.toDomain() =
-    questions.mapIndexed { index, item -> item.toDomain(answersCorrect = answersCorrect[index].answersCorrect) }
+    questions.mapIndexed { index, item -> item.toDomain(answersCorrect = answersCorrect[index].answers) }
 
 fun QuestionDto.toDomain(answersCorrect: List<AnswerCorrectDto>? = null) =
     QuestionModel(
@@ -99,6 +99,18 @@ fun AnswerDto.toDomain(type: QuestionType, isCorrect: Boolean) =
         text = text,
         isCorrect = isCorrect,
         isSelected = isSelected
+    )
+
+fun AnswerCorrectDto.toDomain() =
+    AnswerModel(
+        text = text,
+        isCorrect = isCorrect
+    )
+
+fun ResultsDto.toDomain() =
+    ResultsModel(
+        answersCorrect = answersCorrect.map { it.answers.map { answer -> answer.toDomain() } },
+        pointsPerQuestion = pointsPerQuestion
     )
 
 fun String.toCategoryType() =

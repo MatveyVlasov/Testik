@@ -1,5 +1,6 @@
 package com.app.testik.presentation.screen.testpasseddetail.model
 
+import com.app.testik.domain.model.ResultsModel
 import com.app.testik.util.delegateadapter.DelegateAdapterItem
 
 data class TestPassedDetailScreenUIState(
@@ -11,5 +12,6 @@ data class TestPassedDetailScreenUIState(
     val timeSpent: String = "",
     val pointsMax: Int = 0,
     val pointsEarned: Int = 0,
-    val questions: List<DelegateAdapterItem> = emptyList()
+    val questions: List<DelegateAdapterItem> = emptyList(),
+    val results: ResultsModel? = null
 )

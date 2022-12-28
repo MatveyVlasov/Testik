@@ -52,7 +52,7 @@ class TestResultsViewModel @Inject constructor(
         emitEvent(TestResultsScreenEvent.Loading)
 
         viewModelScope.launch {
-            getTestPassedInfoUseCase(recordId = screenUIState.recordId, source = Source.CACHE).onSuccess {
+            getTestPassedInfoUseCase(recordId = screenUIState.recordId).onSuccess {
                 testToInsert = it
                 screenUIState = it.toUIState()
                 getTestInfo()
