@@ -2,5 +2,9 @@
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@babel/eslint-parser": "^7.19.1"
+  },
+  "dependencies": {
+    "@firebase/rules-unit-testing": "^2.0.5",
+    "@firebase/testing": "^0.20.11"
   }
 }
