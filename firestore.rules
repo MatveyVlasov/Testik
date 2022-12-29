@@ -6,12 +6,20 @@ service cloud.firestore {
         return request.auth.uid != null;
     }
 
+    function isOwner(ownerId) {
+        return isLoggedIn() && request.auth.uid == ownerId;
+    }
+
     function hasRequiredFields(requiredFields) {
-        return request.resource.data.keys().hasAll(requiredFields)
+        return request.resource.data.keys().hasAll(requiredFields);
     }
 
     function verifyUnchangedFields(fields) {
-        return !request.resource.data.diff(resource.data).affectedKeys().hasAny(fields)
+        return resource == null || !request.resource.data.diff(resource.data).affectedKeys().hasAny(fields);
+    }
+
+    function verifyTimestamp(time) {
+        return request.time.toMillis() - time < 5000;
     }
 
     match /{document=**} {
@@ -20,9 +28,24 @@ service cloud.firestore {
 
     match /users/{userId} {
         allow read: if isLoggedIn();
-        allow create: if request.auth.uid == userId && hasRequiredFields(["email", "username"]) && request.auth.token.email == request.resource.data.email;
-        allow update: if request.auth.uid == userId && hasRequiredFields(["email", "username"]) && verifyUnchangedFields(["email"]);
-        allow delete: if request.auth.uid == userId;
+        allow create: if isOwner(userId) && hasRequiredFields(["email", "username"]) && request.auth.token.email == request.resource.data.email;
+        allow update: if isOwner(userId) && hasRequiredFields(["email", "username"]) && verifyUnchangedFields(["email"]);
+        allow delete: if isOwner(userId);
+    }
+
+    match /tests/{testId} {
+        function getAuthor() {
+            return get(/databases/$(database)/documents/tests/$(testId)).data.author;
+        }
+
+        allow read: if isLoggedIn();
+        allow create, update: if isOwner(request.resource.data.author) && hasRequiredFields(["author", "title", "category", "lastUpdated"])
+            && verifyUnchangedFields(["author"]) && verifyTimestamp(request.resource.data.lastUpdated);
+        allow delete: if isOwner(resource.data.author);
+
+        match /private/{document=**} {
+            allow read, write: if isOwner(getAuthor());
+        }
     }
   }
 }

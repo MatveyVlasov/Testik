@@ -29,7 +29,7 @@ describe("Users collection", () => {
         await firebase.assertSucceeds(doc.get())
     })
 
-    it("Can't read another user info when not logged in", async () => {
+    it("Can't read user info when not logged in", async () => {
         const db = getFirestore()
         const doc = db.collection(COLLECTION).doc(theirId)
         await firebase.assertFails(doc.get())
@@ -55,8 +55,8 @@ describe("Users collection", () => {
 
     it("Can't create user when not logged in", async () => {
         const db = getFirestore()
-        const doc = db.collection(COLLECTION).doc(myId)
-        await firebase.assertFails(doc.set({ email: myEmail, username: "username" }))
+        const doc = db.collection(COLLECTION).doc(theirId)
+        await firebase.assertFails(doc.set({ email: theirEmail, username: "username" }))
     })
 
     it("Can't create user without email", async () => {
@@ -74,7 +74,7 @@ describe("Users collection", () => {
     it("Can update user with my id", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc(myId)
-        await setupDoc.set({ email: myEmail, username: "username"})
+        await setupDoc.set({ email: myEmail, username: "username" })
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc(myId)
@@ -84,7 +84,7 @@ describe("Users collection", () => {
     it("Can't update user with their id", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc(theirId)
-        await setupDoc.set({ email: theirEmail, username: "username"})
+        await setupDoc.set({ email: theirEmail, username: "username" })
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc(theirId)
@@ -94,7 +94,7 @@ describe("Users collection", () => {
     it("Can't update email", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc(myId)
-        await setupDoc.set({ email: myEmail, username: "username"})
+        await setupDoc.set({ email: myEmail, username: "username" })
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc(myId)
@@ -104,7 +104,7 @@ describe("Users collection", () => {
     it("Can delete user with my id", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc(myId)
-        await setupDoc.set({ email: myEmail, username: "username"})
+        await setupDoc.set({ email: myEmail, username: "username" })
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc(myId)
@@ -118,6 +118,159 @@ describe("Users collection", () => {
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc(theirId)
+        await firebase.assertFails(doc.delete())
+    })
+})
+
+describe("Tests collection", () => {
+
+    const COLLECTION = "tests"
+
+    it("Can read their test info when logged in", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc(theirId)
+        await firebase.assertSucceeds(doc.get())
+    })
+
+    it("Can't read test info when not logged in", async () => {
+        const db = getFirestore()
+        const doc = db.collection(COLLECTION).doc(theirId)
+        await firebase.assertFails(doc.get())
+    })
+
+    it("Can create test with my id", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertSucceeds(doc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() }))
+    })
+
+    it("Can't create test with their id", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() }))
+    })
+
+    it("Can't create test when not logged in", async () => {
+        const db = getFirestore()
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() }))
+    })
+
+    it("Can't create test without author", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.set({ title: "title", category: "category", lastUpdated: Date.now() }))
+    })
+
+    it("Can't create test without title", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.set({ author: theirId, category: "category", lastUpdated: Date.now() }))
+    })
+
+    it("Can't create test with incorrect time", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000 }))
+    })
+
+    it("Can update my test", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("testId")
+        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertSucceeds(doc.update({ title: "newtitle", lastUpdated: Date.now() }))
+    })
+
+    it("Can't update their test", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("testId")
+        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.update({ title: "newtitle", lastUpdated: Date.now() }))
+    })
+
+    it("Can't update test author", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("testId")
+        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.update({ author: theirId, lastUpdated: Date.now() }))
+    })
+
+    it("Can't update test without timestamp", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("testId")
+        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.update({ title: "newtitle" }))
+    })
+
+    it("Can delete my test", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("testId")
+        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertSucceeds(doc.delete())
+    })
+
+    it("Can't delete their test", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("testId")
+        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.delete())
+    })
+
+    it("Can create test questions with my id", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("testId")
+        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId").collection("private").doc("questions")
+        await firebase.assertSucceeds(doc.set({ answersCorrect: "answers", questions: "questions" }))
+    })
+
+    it("Can't create test questions with their id", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("testId")
+        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId").collection("private").doc("questions")
+        await firebase.assertFails(doc.set({ answersCorrect: "answers", questions: "questions" }))
+    })
+
+    it("Can delete my test questions", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("testId")
+        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId").collection("private").doc("questions")
+        await firebase.assertSucceeds(doc.delete())
+    })
+
+    it("Can't delete their test questions", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("testId")
+        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId").collection("private").doc("questions")
         await firebase.assertFails(doc.delete())
     })
 })
