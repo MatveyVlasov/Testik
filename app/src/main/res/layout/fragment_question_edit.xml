@@ -116,6 +116,7 @@
                         android:id="@+id/etPoints"
                         style="@style/CustomTextInputEditText.LightGray"
                         android:inputType="number"
+                        android:maxLength="@integer/points_max_length"
                         tools:text="1" />
 
                 </com.google.android.material.textfield.TextInputLayout>

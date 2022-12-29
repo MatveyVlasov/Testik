@@ -31,7 +31,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="12sp"
-            android:maxLines="2"
+            android:maxLines="1"
             android:ellipsize="end"
             tools:text="What do you know about our app?" />
 
