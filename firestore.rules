@@ -36,7 +36,7 @@ service cloud.firestore {
 
     function validateStringSize(field, maxSize) {
         return !(field in request.resource.data)
-            || (request.resource.data[field] is string && request.resource.data[field].size() < maxSize);
+            || (request.resource.data[field] is string && request.resource.data[field].size() <= maxSize);
     }
 
     match /{document=**} {
