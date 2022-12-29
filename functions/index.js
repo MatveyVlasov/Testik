@@ -87,13 +87,14 @@ exports.startTest = functions.https.onCall((data, context) => {
                         pointsMax: testData.pointsMax,
                         timeStarted: Date.now(),
                         timeFinished: Date.now(),
+                        isFinished: false,
                         questions: questions,
                     }
 
                     db.collection("testsPassed").add(newData).then((ref) => {
                         ref.get().then((testPassed) => {
 
-                            ref.collection("private").doc("results").set({ answersCorrect: answersCorrect }).then((_1) => {
+                            ref.collection("private").doc("results").set({ testId: testId, answersCorrect: answersCorrect }).then((_1) => {
                                 resolve({
                                     recordId: testPassed.id,
                                 })

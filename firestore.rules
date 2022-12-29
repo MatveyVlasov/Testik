@@ -47,5 +47,24 @@ service cloud.firestore {
             allow read, write: if isOwner(getAuthor());
         }
     }
+
+    match /testsPassed/{recordId} {
+        function getAuthor(testId) {
+            return get(/databases/$(database)/documents/tests/$(testId)).data.author;
+        }
+
+        allow read: if isOwner(resource.data.user) || isOwner(getAuthor(resource.data.testId));
+        allow create: if false; // cloud functions only
+        allow update: if isOwner(resource.data.user) && !resource.data.isFinished
+            && hasRequiredFields(["user", "testId", "title", "questions", "timeStarted", "timeFinished", "isFinished", "pointsMax"])
+            && verifyUnchangedFields(["user", "testId", "title", "timeStarted", "isFinished", "pointsMax"])
+            && verifyTimestamp(request.resource.data.timeFinished);
+        allow delete: if false;
+
+        match /private/{document=**} {
+            allow read: if isOwner(getAuthor(resource.data.testId));
+            allow write: if false; // cloud functions only
+        }
+    }
   }
 }

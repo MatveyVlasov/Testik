@@ -125,6 +125,8 @@ describe("Users collection", () => {
 describe("Tests collection", () => {
 
     const COLLECTION = "tests"
+    const MY_TEST = { author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000}
+    const THEIR_TEST = { author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000}
 
     it("Can read their test info when logged in", async () => {
         const db = getFirestore(myAuth)
@@ -177,7 +179,7 @@ describe("Tests collection", () => {
     it("Can update my test", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc("testId")
-        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set(MY_TEST)
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId")
@@ -187,7 +189,7 @@ describe("Tests collection", () => {
     it("Can't update their test", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc("testId")
-        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set(THEIR_TEST)
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId")
@@ -197,7 +199,7 @@ describe("Tests collection", () => {
     it("Can't update test author", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc("testId")
-        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set(MY_TEST)
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId")
@@ -207,7 +209,7 @@ describe("Tests collection", () => {
     it("Can't update test without timestamp", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc("testId")
-        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set(MY_TEST)
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId")
@@ -217,7 +219,7 @@ describe("Tests collection", () => {
     it("Can delete my test", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc("testId")
-        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set(MY_TEST)
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId")
@@ -227,7 +229,7 @@ describe("Tests collection", () => {
     it("Can't delete their test", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc("testId")
-        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set(THEIR_TEST)
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId")
@@ -237,7 +239,7 @@ describe("Tests collection", () => {
     it("Can create test questions with my id", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc("testId")
-        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set(MY_TEST)
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId").collection("private").doc("questions")
@@ -247,7 +249,7 @@ describe("Tests collection", () => {
     it("Can't create test questions with their id", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc("testId")
-        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set(THEIR_TEST)
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId").collection("private").doc("questions")
@@ -257,7 +259,7 @@ describe("Tests collection", () => {
     it("Can delete my test questions", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc("testId")
-        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set(MY_TEST)
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId").collection("private").doc("questions")
@@ -267,10 +269,165 @@ describe("Tests collection", () => {
     it("Can't delete their test questions", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc("testId")
-        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set(THEIR_TEST)
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId").collection("private").doc("questions")
+        await firebase.assertFails(doc.delete())
+    })
+})
+
+describe("Tests passed collection", () => {
+
+    const COLLECTION = "testsPassed"
+    const MY_RECORD = { user: myId, testId: "testId", title: "title", questions: "questions",
+            timeStarted: Date.now() - 15000, timeFinished: Date.now() - 10000, isFinished: false, pointsMax: 5 }
+    const THEIR_RECORD = { user: theirId, testId: "testId", title: "title", questions: "questions",
+    timeStarted: Date.now() - 15000, timeFinished: Date.now() - 10000, isFinished: false, pointsMax: 5 }
+
+    it("Can read my test record", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc.set(MY_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId")
+        await firebase.assertSucceeds(doc.get())
+    })
+
+    it("Can't read their test record", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc.set(THEIR_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId")
+        await firebase.assertFails(doc.get())
+    })
+
+    it("Can read test record of my test", async () => {
+        const admin = getAdminFirestore()
+
+        const setupDoc = admin.collection("tests").doc("testId")
+        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const setupDoc2 = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc2.set(THEIR_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId")
+        await firebase.assertSucceeds(doc.get())
+    })
+
+    it("Can update my test record", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc.set(MY_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId")
+        await firebase.assertSucceeds(doc.update({ questions: "updatedQuestions", timeFinished: Date.now() }))
+    })
+
+    it("Can't update their test record", async () => {
+        const admin = getAdminFirestore()
+
+        const setupDoc = admin.collection("tests").doc("testId")
+        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const setupDoc2 = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc2.set(THEIR_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId")
+        await firebase.assertFails(doc.update({ questions: "updatedQuestions", timeFinished: Date.now() }))
+    })
+
+    it("Can't update test record without timestamp", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc.set(MY_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId")
+        await firebase.assertFails(doc.update({ questions: "updatedQuestions" }))
+    })
+
+    it("Can't update test record with incorrect timestamp", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc.set(MY_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId")
+        await firebase.assertFails(doc.update({ questions: "updatedQuestions", timeFinished: Date.now() - 10000 }))
+    })
+
+    it("Can't change test record testId", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc.set(MY_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId")
+        await firebase.assertFails(doc.update({ testId: "newTestId", timeFinished: Date.now() }))
+    })
+
+    it("Can't delete test record", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc.set(MY_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId")
+        await firebase.assertFails(doc.delete())
+    })
+
+    it("Can't read my test record results", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc.set(MY_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId").collection("private").doc("results")
+        await firebase.assertFails(doc.get())
+    })
+
+    it("Can read results of my test", async () => {
+        const admin = getAdminFirestore()
+
+        const setupDoc = admin.collection("tests").doc("testId")
+        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+
+        const setupDoc2 = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc2.set({ user: theirId, testId: "testId", title: "title", questions: "questions",
+        timeStarted: Date.now() - 15000, timeFinished: Date.now() - 10000, isFinished: false, pointsMax: 5 })
+
+        const setupDoc3 = admin.collection(COLLECTION).doc("recordId").collection("private").doc("results")
+        await setupDoc3.set({ testId: "testId", answersCorrect: "answers" })
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId").collection("private").doc("results")
+        await firebase.assertSucceeds(doc.get())
+    })
+
+    it("Can't edit my test results", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc.set(MY_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId").collection("private").doc("results")
+        await firebase.assertFails(doc.set({}))
+    })
+
+    it("Can't delete my test results", async () => {
+        const admin = getAdminFirestore()
+        const setupDoc = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc.set(MY_RECORD)
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId").collection("private").doc("results")
         await firebase.assertFails(doc.delete())
     })
 })
