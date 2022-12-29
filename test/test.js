@@ -71,6 +71,18 @@ describe("Users collection", () => {
         await firebase.assertFails(doc.set({ email: myEmail }))
     })
 
+    it("Can't create user with incorrect username type", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc(myId)
+        await firebase.assertFails(doc.set({ email: myEmail, username: 123 }))
+    })
+
+    it("Can't create user with too long username", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc(myId)
+        await firebase.assertFails(doc.set({ email: myEmail, username: "123".repeat(100) }))
+    })
+
     it("Can update user with my id", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc(myId)
@@ -167,13 +179,25 @@ describe("Tests collection", () => {
     it("Can't create test without title", async () => {
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId")
-        await firebase.assertFails(doc.set({ author: theirId, category: "category", lastUpdated: Date.now() }))
+        await firebase.assertFails(doc.set({ author: myId, category: "category", lastUpdated: Date.now() }))
     })
 
     it("Can't create test with incorrect time", async () => {
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("testId")
-        await firebase.assertFails(doc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000 }))
+        await firebase.assertFails(doc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000 }))
+    })
+
+    it("Can't create test with incorrect title type", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.set({ author: myId, title: 123, category: "category", lastUpdated: Date.now() }))
+    })
+
+    it("Can't create test with too long title", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("testId")
+        await firebase.assertFails(doc.set({ author: myId, title: "123".repeat(100), category: "category", lastUpdated: Date.now() }))
     })
 
     it("Can update my test", async () => {
