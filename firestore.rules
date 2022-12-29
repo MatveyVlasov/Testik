@@ -30,7 +30,7 @@ service cloud.firestore {
         allow read: if isLoggedIn();
         allow create: if isOwner(userId) && hasRequiredFields(["email", "username"]) && request.auth.token.email == request.resource.data.email;
         allow update: if isOwner(userId) && hasRequiredFields(["email", "username"]) && verifyUnchangedFields(["email"]);
-        allow delete: if isOwner(userId);
+        allow delete: if false;
     }
 
     match /tests/{testId} {

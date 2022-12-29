@@ -101,14 +101,14 @@ describe("Users collection", () => {
         await firebase.assertFails(doc.set({ email: "newEmail" }))
     })
 
-    it("Can delete user with my id", async () => {
+    it("Can't delete user", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc(myId)
         await setupDoc.set({ email: myEmail, username: "username" })
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc(myId)
-        await firebase.assertSucceeds(doc.delete())
+        await firebase.assertFails(doc.delete())
     })
 
     it("Can't delete user with their id", async () => {
