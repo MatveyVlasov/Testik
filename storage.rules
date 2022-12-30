@@ -25,7 +25,7 @@ service firebase.storage {
         match /avatars/{userId} {
             allow read: if isLoggedIn();
             allow create, update: if isOwner(userId) && validateSize() && isImage();
-            allow delete: if false;
+            allow delete: if isOwner(userId);
         }
 
         match /tests/{testId}/{imageId} {
