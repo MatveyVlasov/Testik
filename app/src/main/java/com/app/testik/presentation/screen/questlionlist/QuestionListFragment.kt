@@ -141,7 +141,7 @@ class QuestionListFragment : BaseFragment<FragmentQuestionListBinding>() {
         }
     }
 
-    private fun navigateToQuestion(question: QuestionDelegateItem = QuestionDelegateItem()) {
+    private fun navigateToQuestion(question: QuestionDelegateItem = QuestionDelegateItem(testId = viewModel.screenUIState.testId)) {
         navController.navigate(
             QuestionListFragmentDirections.toEditQuestion(question)
         )

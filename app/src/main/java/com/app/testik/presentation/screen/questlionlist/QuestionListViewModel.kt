@@ -46,7 +46,9 @@ class QuestionListViewModel @Inject constructor(
 
     private val args = QuestionListFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    private var screenUIState = QuestionListScreenUIState(testId = args.testId)
+    var screenUIState = QuestionListScreenUIState(testId = args.testId)
+        private set
+
     private var oldScreenUIState = QuestionListScreenUIState(testId = args.testId)
 
     init {

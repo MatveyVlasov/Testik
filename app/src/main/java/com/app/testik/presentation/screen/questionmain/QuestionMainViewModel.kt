@@ -112,6 +112,24 @@ class QuestionMainViewModel @Inject constructor(
             msg.contains("error occurred") -> {
                 emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.error_occurred))
             }
+            msg.contains("not logged in") -> {
+                emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.not_logged_in))
+            }
+            msg.contains("no access") -> {
+                emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.no_access))
+            }
+            msg.contains("test not found") -> {
+                emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.test_not_found))
+            }
+            msg.contains("test already finished") -> {
+                emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.test_already_finished))
+            }
+            msg.contains("incorrect number") -> {
+                emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.incorrect_questions_number))
+            }
+            msg.contains("invalid data type") -> {
+                emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.invalid_data_type))
+            }
             else -> emitEvent(QuestionMainScreenEvent.ShowSnackbar(error))
         }
     }

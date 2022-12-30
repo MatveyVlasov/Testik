@@ -106,6 +106,18 @@ class TestInfoViewModel @Inject constructor(
             msg.contains("error occurred") -> {
                 emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.error_occurred))
             }
+            msg.contains("not logged in") -> {
+                emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.not_logged_in))
+            }
+            msg.contains("test not found") -> {
+                emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.test_not_found))
+            }
+            msg.contains("no questions") -> {
+                emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.no_questions))
+            }
+            msg.contains("invalid data type") -> {
+                emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.invalid_data_type))
+            }
             else -> emitEvent(TestInfoDialogEvent.ShowSnackbar(error))
         }
     }

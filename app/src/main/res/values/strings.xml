@@ -38,6 +38,13 @@
     <string name="close">Close</string>
     <string name="info">Information</string>
 
+    <string name="not_logged_in">You are not logged in</string>
+    <string name="no_access">No access</string>
+    <string name="test_not_found">Test not found</string>
+    <string name="test_already_finished">Test already finished</string>
+    <string name="incorrect_questions_number">An error occurred (#100)</string>
+    <string name="invalid_data_type">An error occurred (#101)</string>
+
     <string name="account_login">Account Login</string>
     <string name="language">Language</string>
     <string name="email">Email</string>
