@@ -24,6 +24,8 @@ module.exports = {
         "semi": 0,
         "max-len": 0,
         "padded-blocks": 0,
+        "require-jsdoc": 0,
+        "operator-linebreak": 0,
         "guard-for-in": 1,
         "no-unused-vars": 1,
         "indent": ["error", 4],
