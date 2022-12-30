@@ -103,7 +103,7 @@ class ProfileViewModel @Inject constructor(
 
     fun deleteAccount() {
         viewModelScope.launch {
-            deleteUserUseCase(screenUIState.email).onSuccess {
+            deleteUserUseCase().onSuccess {
                 signOutUseCase().onSuccess {
                     emitEvent(ProfileScreenEvent.SuccessAccountDeletion)
                 }.onError {

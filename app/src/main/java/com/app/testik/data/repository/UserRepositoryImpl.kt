@@ -90,7 +90,10 @@ class UserRepositoryImpl @Inject constructor(
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
-            collection.document(uid).delete().execute()
+            val newData = mapOf(
+                "isDeleted" to true
+            )
+            collection.document(uid).update(newData).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }

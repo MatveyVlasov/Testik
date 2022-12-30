@@ -15,13 +15,15 @@ class DeleteUserUseCase @Inject constructor(
     private val storageRepository: StorageRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(uid: String): Result<Unit> {
+    suspend operator fun invoke(): Result<Unit> {
+        val uid = authRepository.getCurrentUser()?.uid ?: return Result.Error("An error occurred")
+
         return wrap(
-            block = { authRepository.deleteCurrentUser() },
+            block = { userRepository.deleteUser(uid) },
             mapper = { }
         ).onSuccess {
-            userRepository.deleteUser(uid)
             storageRepository.deleteAvatar(uid)
+            authRepository.deleteCurrentUser()
         }
     }
 }
