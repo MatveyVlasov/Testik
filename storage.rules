@@ -30,7 +30,7 @@ service firebase.storage {
 
         match /tests/{testId}/{imageId} {
             function getAuthor() {
-                return firestore.get(/databases/$(database)/documents/tests/$(testId)).data.author;
+                return firestore.get(/databases/(default)/documents/tests/$(testId)).data.author;
             }
 
             function isTestDeleted() {
