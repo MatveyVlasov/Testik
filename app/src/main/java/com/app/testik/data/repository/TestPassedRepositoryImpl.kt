@@ -120,7 +120,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            val data = mapOf("questions" to questions, "timeFinished" to timestampSystem)
+            val data = mapOf("questions" to questions, "timeFinished" to timestamp)
             collection.document(recordId).update(data).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)

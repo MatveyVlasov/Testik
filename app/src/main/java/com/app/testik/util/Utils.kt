@@ -30,7 +30,6 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,10 +37,7 @@ import java.util.*
 val randomId: String
     get() = UUID.randomUUID().toString()
 
-val timestamp: FieldValue
-    get() = FieldValue.serverTimestamp()
-
-val timestampSystem: Long
+val timestamp: Long
     get() = System.currentTimeMillis()
 
 val Int.px get() = (this * Resources.getSystem().displayMetrics.density).toInt()
