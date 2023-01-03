@@ -1,8 +1,11 @@
 package com.app.testik.presentation.activity
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import androidx.annotation.IdRes
 import androidx.core.view.isVisible
@@ -40,6 +43,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.bottomNavigationView.setupWithNavController(navController)
     }
 
+    override fun onStart() {
+        super.onStart()
+        checkTime()
+    }
+
     override fun attachBaseContext(newBase: Context) {
         val repository = PreferencesRepositoryImpl(UtilsModule.provideSharedPreferences(newBase))
 
@@ -60,6 +68,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     fun setNavbarItem(@IdRes destination: Int) {
         binding.bottomNavigationView.menu.findItem(destination).also {
             NavigationUI.onNavDestinationSelected(it, navController)
+        }
+    }
+
+    private fun checkTime() {
+        val isAutoTimeEnabled = Settings.Global.getInt(
+            contentResolver, Settings.Global.AUTO_TIME, 0
+        ) == 1
+
+        if (!isAutoTimeEnabled) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.time_settings)
+                .setMessage(R.string.enable_auto_time)
+                .setPositiveButton(R.string.go_to_settings) { _, _ -> startActivity(Intent(Settings.ACTION_DATE_SETTINGS), null) }
+                .setCancelable(false)
+                .show()
         }
     }
 }

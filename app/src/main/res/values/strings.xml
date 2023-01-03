@@ -38,6 +38,10 @@
     <string name="close">Close</string>
     <string name="info">Information</string>
 
+    <string name="time_settings">Time settings</string>
+    <string name="enable_auto_time">Please enable automatic time to make sure the app works correctly</string>
+    <string name="go_to_settings">Go to settings</string>
+
     <string name="not_logged_in">You are not logged in</string>
     <string name="no_access">No access</string>
     <string name="test_not_found">Test not found</string>
