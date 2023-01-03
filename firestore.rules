@@ -19,7 +19,7 @@ service cloud.firestore {
     }
 
     function verifyTimestamp(time) {
-        return request.time.toMillis() - time < 5000;
+        return request.time.toMillis() - time < 5000 && request.time.toMillis() - time > 0;
     }
 
     function isString(field) {
