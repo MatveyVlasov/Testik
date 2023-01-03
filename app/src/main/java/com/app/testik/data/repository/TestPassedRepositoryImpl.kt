@@ -3,10 +3,7 @@ package com.app.testik.data.repository
 import android.content.Context
 import com.app.testik.data.model.*
 import com.app.testik.domain.repository.TestPassedRepository
-import com.app.testik.util.execute
-import com.app.testik.util.isOnline
-import com.app.testik.util.private
-import com.app.testik.util.timestamp
+import com.app.testik.util.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -123,7 +120,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
-            val data = mapOf("questions" to questions, "timeFinished" to timestamp)
+            val data = mapOf("questions" to questions, "timeFinished" to timestampSystem)
             collection.document(recordId).update(data).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
