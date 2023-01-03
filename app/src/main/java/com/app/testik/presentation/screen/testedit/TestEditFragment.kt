@@ -96,8 +96,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
                     etDescription.clearFocus()
                     viewModel.discardChanges()
                     navigateToQuestionList()
-                }
-                else {
+                } else {
                     navigateToQuestionList()
                 }
             }

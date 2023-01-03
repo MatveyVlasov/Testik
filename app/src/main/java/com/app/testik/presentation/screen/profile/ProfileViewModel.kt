@@ -131,7 +131,8 @@ class ProfileViewModel @Inject constructor(
                 oldScreenUIState = screenState
                 updateScreenState(state = screenState)
             }.onError {
-                emitEvent(ProfileScreenEvent.ShowSnackbar(it))
+                if (it.contains("document from cache")) getUserInfo()
+                else emitEvent(ProfileScreenEvent.ShowSnackbar(it))
             }
         }
     }
