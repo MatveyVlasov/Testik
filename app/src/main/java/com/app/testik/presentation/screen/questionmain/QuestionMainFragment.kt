@@ -3,7 +3,10 @@ package com.app.testik.presentation.screen.questionmain
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.core.view.updateMargins
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -16,11 +19,13 @@ import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.screen.questionmain.adapter.QuestionAdapter
 import com.app.testik.presentation.screen.questionmain.adapter.QuestionNumberDelegateAdapter
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenEvent
+import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenUIState
 import com.app.testik.presentation.screen.questionmain.model.QuestionNumberDelegateItem
 import com.app.testik.presentation.screen.questionmain.model.toQuestionNumber
 import com.app.testik.util.*
 import com.app.testik.util.delegateadapter.CompositeAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -38,6 +43,18 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
     private var selectedItem = -1
     private var toast: Toast? = null
 
+    private val llInfoHeight
+        get() = if (binding.llInfo.isVisible) getDimens(R.dimen.ll_info_height).toInt()
+                else 0
+
+    private val rvQuestionsHeight
+        get() = if (binding.rvQuestions.isVisible) getDimens(R.dimen.rv_questions_height).toInt()
+                else 0
+
+    private val llActionsHeight
+        get() = if (binding.llActions.isVisible) getDimens(R.dimen.ll_actions_height).toInt()
+                else 0
+
     override fun createBinding(inflater: LayoutInflater) = FragmentQuestionMainBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +64,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
         initListeners()
         collectData()
 
-        addBackPressedCallback { confirmExit() }
+        addBackPressedCallback { onBackPressed() }
     }
 
 
@@ -64,6 +81,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
             pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+
                     if (selectedItem == position) return
                     if (selectedItem != -1) {
                         updateAnswers(selectedItem)
@@ -83,6 +101,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
             btnSaveDraft.setOnClickListener { saveAnswers() }
             btnPrev.setOnClickListener { goToPreviousQuestion() }
             btnNext.setOnClickListener { goToNextQuestion() }
+            btnGoBack.setOnClickListener { navController.navigateUp() }
         }
     }
 
@@ -96,12 +115,18 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                                 binding.pager.adapter =
                                     QuestionAdapter(
                                         fragment = this@QuestionMainFragment,
-                                        questions = data.questions
+                                        questions = data.questions,
+                                        isReviewMode = data.isReviewMode
                                     )
                                 questionsNumList = MutableList(data.questions.size) { num ->
                                     num.toQuestionNumber()
                                 }
                                 questionsNumAdapter.submitList(questionsNumList.toList())
+                                renderUIState(data)
+                                lifecycleScope.launch {
+                                    delay(10)
+                                    goToQuestion(data.startQuestion)
+                                }
                             }
                             setLoadingState(false)
                         }
@@ -112,6 +137,17 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                     viewModel.event.collect { handleEvent(it) }
                 }
             }
+        }
+    }
+
+    private fun renderUIState(data: QuestionMainScreenUIState) {
+        binding.apply {
+            llInfo.isVisible = !data.isReviewMode
+            btnSaveDraft.isVisible = !data.isReviewMode
+            btnGoBack.isVisible = data.isReviewMode
+
+            val params = (pager.layoutParams as ViewGroup.MarginLayoutParams)
+            params.updateMargins(top = llInfoHeight + rvQuestionsHeight, bottom = llActionsHeight)
         }
     }
 
@@ -152,6 +188,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
     }
 
     private fun updateAnswers(pos: Int) {
+        if (viewModel.screenUIState.isReviewMode) return
         val adapter = binding.pager.adapter as? QuestionAdapter ?: return
         adapter.getFragment(pos).also {
             viewModel.updateAnswers(pos, it.getAnswers())
@@ -191,6 +228,11 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
     private fun exitTest() {
         updateAnswers(binding.pager.currentItem)
         viewModel.saveAnswers(isExiting = true)
+    }
+
+    private fun onBackPressed() {
+        if (viewModel.screenUIState.isReviewMode) navController.navigateUp()
+        else confirmExit()
     }
 
     private fun navigateToTestsPassed() {

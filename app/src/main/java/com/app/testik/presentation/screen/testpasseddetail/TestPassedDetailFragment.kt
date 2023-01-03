@@ -111,8 +111,15 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
         loadTestImage(context = requireContext(), imageView = binding.ivImage, url = url)
 
     private fun navigateToQuestion(question: QuestionDelegateItem) {
-//        navController.navigate(
-//
-//        )
+        viewModel.testPassed?.let {
+            val questions = viewModel.screenUIState.questions.filterIsInstance<QuestionDelegateItem>().toTypedArray()
+            navController.navigate(
+                TestPassedDetailFragmentDirections.toQuestionMain(
+                    test = it,
+                    questions = questions,
+                    startQuestion = questionsAdapter.currentList.indexOf(question)
+                )
+            )
+        }
     }
 }

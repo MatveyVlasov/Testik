@@ -11,14 +11,12 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="72dp" />
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:id="@+id/llInfo"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_height="@dimen/ll_info_height"
         android:orientation="horizontal"
         android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
@@ -75,7 +73,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvQuestions"
         android:layout_width="match_parent"
-        android:layout_height="51dp"
+        android:layout_height="@dimen/rv_questions_height"
         android:paddingHorizontal="8dp"
         android:paddingVertical="8dp"
         android:clipToPadding="false"
@@ -92,7 +90,7 @@
     <LinearLayout
         android:id="@+id/llActions"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="@dimen/ll_actions_height"
         android:paddingBottom="@dimen/margin_bottom"
         android:paddingHorizontal="16dp"
         android:background="@color/white"
@@ -119,6 +117,17 @@
             android:layout_marginHorizontal="8dp"
             android:autoSizeTextType="uniform"
             android:text="@string/save_draft" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGoBack"
+            style="@style/CustomButton.PurpleDark"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="8dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/go_back_to_test_results"
+            android:visibility="gone"/>
 
         <ImageButton
             android:id="@+id/btnNext"

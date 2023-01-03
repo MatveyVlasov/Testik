@@ -5,5 +5,7 @@ import com.app.testik.presentation.model.QuestionDelegateItem
 
 data class QuestionMainScreenUIState(
     val test: TestPassedModel,
-    val questions: List<QuestionDelegateItem> = emptyList()
+    val questions: List<QuestionDelegateItem> = emptyList(),
+    val isReviewMode: Boolean = false,
+    val startQuestion: Int = 0
 )

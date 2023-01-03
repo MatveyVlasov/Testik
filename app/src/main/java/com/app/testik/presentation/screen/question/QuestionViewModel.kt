@@ -41,11 +41,12 @@ class QuestionViewModel @Inject constructor(
                 id = id,
                 testId = testId,
                 title = title,
-                points = pointsMax,
                 description = description,
                 image = image,
                 type = type,
-                answers = answers
+                answers = answers,
+                pointsMax = pointsMax,
+                pointsEarned = pointsEarned
             )
             updateScreenState(screenState)
         }

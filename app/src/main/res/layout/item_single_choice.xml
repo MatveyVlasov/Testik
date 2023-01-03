@@ -49,6 +49,28 @@
             android:src="@drawable/ic_delete_filled"
             android:contentDescription="@string/delete_question" />
 
+        <ImageView
+            android:id="@+id/ivCorrect"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/answer_icon_size"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/answer_icon_margin_start"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_correct"
+            android:contentDescription="@string/correct_answer"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/ivWrong"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/answer_icon_size"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/answer_icon_margin_start"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_wrong"
+            android:contentDescription="@string/wrong_answer"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -7,10 +7,11 @@ import com.app.testik.presentation.screen.question.QuestionFragment
 
 class QuestionAdapter(
     fragment: Fragment,
-    private val questions: List<QuestionDelegateItem>
+    private val questions: List<QuestionDelegateItem>,
+    private val isReviewMode: Boolean = false
 ) : FragmentStateAdapter(fragment) {
 
-    private val fragments = List(questions.size) {  QuestionFragment(questions[it]) }
+    private val fragments = List(questions.size) {  QuestionFragment(question = questions[it], isReviewMode = isReviewMode) }
 
     override fun getItemCount(): Int = questions.size
 

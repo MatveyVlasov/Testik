@@ -24,7 +24,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class QuestionFragment(private val question: QuestionDelegateItem) : BaseFragment<FragmentQuestionBinding>() {
+class QuestionFragment(
+    private val question: QuestionDelegateItem,
+    private val isReviewMode: Boolean
+) : BaseFragment<FragmentQuestionBinding>() {
 
     private val viewModel: QuestionViewModel by viewModels()
 
@@ -32,12 +35,14 @@ class QuestionFragment(private val question: QuestionDelegateItem) : BaseFragmen
         CompositeAdapter.Builder()
             .add(
                 SingleChoiceDelegateAdapter(
-                    onSelectClick = { item -> viewModel.onSelectClick(answer = item) }
+                    onSelectClick = { item -> viewModel.onSelectClick(answer = item) },
+                    isReviewMode = isReviewMode
                 )
             )
             .add(
                 MultipleChoiceDelegateAdapter(
-                    onSelectClick = { item, isChecked -> viewModel.onSelectClick(answer = item, isChecked = isChecked) }
+                    onSelectClick = { item, isChecked -> viewModel.onSelectClick(answer = item, isChecked = isChecked) },
+                    isReviewMode = isReviewMode
                 )
             )
             .build()
@@ -103,7 +108,10 @@ class QuestionFragment(private val question: QuestionDelegateItem) : BaseFragmen
 
     private fun renderUIState(data: QuestionScreenUIState) {
         binding.apply {
-            tvPoints.text = getString(R.string.points_num, data.points)
+            tvPointsData.text =
+                if (isReviewMode) getString(R.string.points_earned, data.pointsEarned, data.pointsMax)
+                else getString(R.string.num, data.pointsMax)
+
             tvTitle.text = data.title
             tvDescription.text = data.description
             tvType.setText(data.type.instruction)

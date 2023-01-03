@@ -159,6 +159,15 @@
         <argument
             android:name="test"
             app:argType="com.app.testik.domain.model.TestPassedModel" />
+        <argument
+            android:name="questions"
+            app:argType="com.app.testik.presentation.model.QuestionDelegateItem[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="startQuestion"
+            app:argType="integer"
+            android:defaultValue="0" />
         <action
             android:id="@+id/toResults"
             app:destination="@id/testResultsFragment" />
@@ -192,6 +201,9 @@
         <argument
             android:name="recordId"
             app:argType="string" />
+        <action
+            android:id="@+id/toQuestionMain"
+            app:destination="@id/questionMainFragment" />
     </fragment>
 
 </navigation>

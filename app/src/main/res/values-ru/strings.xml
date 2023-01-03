@@ -198,8 +198,6 @@
     <string name="go_to_next_question">Перейти к следующему вопросу</string>
     <string name="cannot_go_to_prev_question">Вы уже на первом вопросе</string>
     <string name="cannot_go_to_next_question">Вы уже на последнем вопросе</string>
-
-    <string name="points_num">Баллов: %d</string>
     <string name="submit">Подтвердить</string>
 
     <string name="go_home_to_take_test">Вы можете выбрать тест для прохождения на главной</string>
@@ -211,4 +209,8 @@
     <string name="date">Дата:</string>
     <string name="time_spent">Потрачено времени:</string>
     <string name="points_title">Баллов:</string>
+
+    <string name="correct_answer">Правильный ответ</string>
+    <string name="wrong_answer">Неправильный ответ</string>
+    <string name="go_back_to_test_results">Назад к результатам теста</string>
 </resources>

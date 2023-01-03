@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.testik.R
+import com.app.testik.domain.model.TestPassedModel
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.GetTestInfoUseCase
@@ -49,6 +50,8 @@ class TestPassedDetailViewModel @Inject constructor(
     var screenUIState = TestPassedDetailScreenUIState(recordId = args.recordId)
         private set
 
+    var testPassed: TestPassedModel? = null
+
     init {
         getRecordInfo()
     }
@@ -73,6 +76,7 @@ class TestPassedDetailViewModel @Inject constructor(
 
         viewModelScope.launch {
             getTestPassedInfoUseCase(recordId = screenUIState.recordId, source = Source.CACHE).onSuccess {
+                testPassed = it
                 screenUIState = it.toUIState()
                 getTestInfo()
             }.onError {

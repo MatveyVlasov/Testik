@@ -201,8 +201,7 @@
     <string name="go_to_next_question">Go to next question</string>
     <string name="cannot_go_to_prev_question">You are already on the first question</string>
     <string name="cannot_go_to_next_question">You are already on the last question</string>
-
-    <string name="points_num">Points: %d</string>
+    <string name="num" translatable="false">%d</string>
     <string name="submit">Submit</string>
 
     <string name="go_home_to_take_test">You can choose a test to take on home screen</string>
@@ -215,4 +214,8 @@
     <string name="time_spent">Time spent:</string>
     <string name="points_title">Points:</string>
     <string name="points_earned" translatable="false">%d/%d</string>
+
+    <string name="correct_answer">Correct answer</string>
+    <string name="wrong_answer">Wrong answer</string>
+    <string name="go_back_to_test_results">Go back to test results</string>
 </resources>
