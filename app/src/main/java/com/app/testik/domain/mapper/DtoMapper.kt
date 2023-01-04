@@ -68,7 +68,8 @@ fun TestPassedDto.toDomain() =
         isFinished = isFinished,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned,
-        pointsCalculated = pointsCalculated
+        pointsCalculated = pointsCalculated,
+        isDemo = isDemo
     )
 
 fun TestQuestionsDto.toDomain() =

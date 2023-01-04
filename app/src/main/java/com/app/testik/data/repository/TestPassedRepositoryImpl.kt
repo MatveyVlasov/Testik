@@ -23,12 +23,13 @@ class TestPassedRepositoryImpl @Inject constructor(
     private val collection
         get() = firebaseFirestore.collection(COLLECTION_ID)
 
-    override suspend fun createTest(data: TestPassedDto): ApiResult<TestPassedDto> {
+    override suspend fun startTest(data: TestPassedDto): ApiResult<TestPassedDto> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
             val newData = mapOf(
-                "testId" to data.testId
+                "testId" to data.testId,
+                "isDemo" to data.isDemo
             )
 
             firebaseFunctions.getHttpsCallable("startTest").call(newData).also {
@@ -94,6 +95,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         try {
             var query = collection
                 .whereEqualTo("user", uid)
+                .whereEqualTo("isDemo", false)
                 .orderBy("timeFinished", Query.Direction.DESCENDING)
 
             if (snapshot != null)

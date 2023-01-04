@@ -46,7 +46,7 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
         binding.apply {
 
             ivImage.setOnClickListener { viewImage(image = viewModel.screenUIState.image) }
-            btnStart.setOnClickListener { viewModel.createTestPassed() }
+            btnStart.setOnClickListener { viewModel.startTest() }
         }
     }
 

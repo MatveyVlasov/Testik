@@ -6,7 +6,7 @@ import com.google.firebase.firestore.Source
 
 interface TestPassedRepository {
 
-    suspend fun createTest(data: TestPassedDto): ApiResult<TestPassedDto>
+    suspend fun startTest(data: TestPassedDto): ApiResult<TestPassedDto>
 
     suspend fun finishTest(recordId: String, questions: List<QuestionDto>): ApiResult<Unit>
 

@@ -87,6 +87,9 @@
         <action
             android:id="@+id/toQuestionList"
             app:destination="@id/questionListFragment" />
+        <action
+            android:id="@+id/toTestInfo"
+            app:destination="@id/testInfoFragment" />
     </fragment>
 
     <fragment
@@ -101,6 +104,9 @@
         <action
             android:id="@+id/toQuestionList"
             app:destination="@id/questionListFragment" />
+        <action
+            android:id="@+id/toTestInfo"
+            app:destination="@id/testInfoFragment" />
     </fragment>
 
     <fragment
@@ -146,6 +152,10 @@
             android:name="testId"
             android:defaultValue=""
             app:argType="string" />
+        <argument
+            android:name="isDemo"
+            app:argType="boolean"
+            android:defaultValue="false" />
         <action
             android:id="@+id/toQuestionMain"
             app:destination="@id/questionMainFragment" />

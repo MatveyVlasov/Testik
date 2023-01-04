@@ -20,6 +20,7 @@ import com.app.testik.presentation.adapter.ErrorDelegateAdapter
 import com.app.testik.presentation.adapter.LoadingDelegateAdapter
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
+import com.app.testik.presentation.screen.testpasseddetail.TestPassedDetailFragmentDirections
 import com.app.testik.presentation.screen.testscreated.adapter.TestCreatedDelegateAdapter
 import com.app.testik.presentation.screen.testscreated.mapper.toTestCreatedItem
 import com.app.testik.presentation.screen.testscreated.model.TestCreatedDelegateItem
@@ -139,7 +140,7 @@ class TestsCreatedFragment : BaseFragment<FragmentTestsCreatedBinding>() {
                 when (menuItem.itemId) {
                     R.id.editTest -> navigateToTest(testId)
                     R.id.editQuestions -> navigateToQuestionList(testId)
-                    R.id.demo -> Unit
+                    R.id.demo -> navigateToTestInfo(testId)
                     R.id.delete -> confirmDeletion(testId)
                 }
                 return@setOnMenuItemClickListener true
@@ -158,6 +159,12 @@ class TestsCreatedFragment : BaseFragment<FragmentTestsCreatedBinding>() {
     private fun navigateToQuestionList(testId: String) {
         navController.navigate(
             TestsCreatedFragmentDirections.toQuestionList(testId)
+        )
+    }
+
+    private fun navigateToTestInfo(testId: String) {
+        navController.navigate(
+            TestPassedDetailFragmentDirections.toTestInfo(testId = testId, isDemo = true)
         )
     }
 

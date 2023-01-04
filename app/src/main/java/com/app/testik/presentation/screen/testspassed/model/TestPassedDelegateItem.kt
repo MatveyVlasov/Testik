@@ -10,7 +10,8 @@ data class TestPassedDelegateItem(
     val isFinished: Boolean,
     val pointsMax: Int,
     val pointsEarned: Int,
-    val pointsCalculated: Boolean
+    val pointsCalculated: Boolean,
+    val isDemo: Boolean
 ) : DelegateAdapterItem {
 
     override fun id() = recordId

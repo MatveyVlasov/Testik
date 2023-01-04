@@ -11,7 +11,6 @@ import com.app.testik.presentation.dialog.testinfo.mapper.toDomain
 import com.app.testik.presentation.dialog.testinfo.model.TestInfoDialogEvent
 import com.app.testik.presentation.dialog.testinfo.model.TestInfoDialogUIState
 import com.app.testik.presentation.model.UIState
-import com.app.testik.presentation.screen.testedit.TestEditFragmentArgs
 import com.app.testik.util.getFullName
 import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +27,7 @@ class TestInfoViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getTestInfoUseCase: GetTestInfoUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val createTestPassedUseCase: CreateTestPassedUseCase,
+    private val startTestUseCase: StartTestUseCase,
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<TestInfoDialogUIState>>
@@ -40,9 +39,9 @@ class TestInfoViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UIState<TestInfoDialogUIState>>(UIState.Loading)
     private val _event = MutableSharedFlow<TestInfoDialogEvent>()
 
-    private val args = TestEditFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private val args = TestInfoFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    var screenUIState = TestInfoDialogUIState(id = args.testId)
+    var screenUIState = TestInfoDialogUIState(id = args.testId, isDemo = args.isDemo)
         private set
 
     private var job: Job? = null
@@ -51,12 +50,12 @@ class TestInfoViewModel @Inject constructor(
         getTestInfo(source = Source.CACHE)
     }
 
-    fun createTestPassed() {
+    fun startTest() {
         if (job?.isActive == true) return
         emitEvent(TestInfoDialogEvent.Loading)
 
         job = viewModelScope.launch {
-            createTestPassedUseCase(screenUIState.toDomain()).onSuccess {
+            startTestUseCase(screenUIState.toDomain()).onSuccess {
                 emitEvent(TestInfoDialogEvent.SuccessTestCreation(it))
             }.onError {
                 handleError(it)
@@ -70,8 +69,7 @@ class TestInfoViewModel @Inject constructor(
 
         viewModelScope.launch {
             getTestInfoUseCase(testId = screenUIState.id, source = source).onSuccess {
-                val screenState = TestInfoDialogUIState(
-                    id = screenUIState.id,
+                val screenState = screenUIState.copy(
                     image = it.image,
                     title = it.title,
                     author = it.author,
@@ -108,6 +106,9 @@ class TestInfoViewModel @Inject constructor(
             }
             msg.contains("not logged in") -> {
                 emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.not_logged_in))
+            }
+            msg.contains("no access") -> {
+                emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.no_access))
             }
             msg.contains("test not found") -> {
                 emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.test_not_found))

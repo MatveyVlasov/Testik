@@ -108,10 +108,26 @@
                 style="@style/CustomTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:textSize="13sp"
                 android:textColor="@color/error"
                 android:text="@string/test_not_finished"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/tvPointsData"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tvDemo"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="13sp"
+                android:textColor="@color/error"
+                android:text="@string/test_demo"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tvNotFinished"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

@@ -68,7 +68,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.demo -> Unit
+                    R.id.demo -> navigateToTestInfo()
                     R.id.delete -> confirmDeletion()
                 }
                 return@setOnMenuItemClickListener true
@@ -201,6 +201,12 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
     private fun navigateToInfo(text: String) {
         navController.navigate(
             TestEditFragmentDirections.toInfo(text)
+        )
+    }
+
+    private fun navigateToTestInfo() {
+        navController.navigate(
+            TestEditFragmentDirections.toTestInfo(testId = viewModel.screenUIState.id, isDemo = true)
         )
     }
 

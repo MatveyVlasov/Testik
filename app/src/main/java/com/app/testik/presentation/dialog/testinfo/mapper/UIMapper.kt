@@ -8,5 +8,6 @@ fun TestInfoDialogUIState.toDomain() =
         testId = id,
         title = title,
         image = image,
-        pointsMax = pointsMax
+        pointsMax = pointsMax,
+        isDemo = isDemo
     )

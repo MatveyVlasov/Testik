@@ -52,7 +52,8 @@ fun TestPassedModel.toDto() =
         isFinished = isFinished,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned,
-        pointsCalculated = pointsCalculated
+        pointsCalculated = pointsCalculated,
+        isDemo = isDemo
     )
 
 fun List<QuestionModel>.toDto() =

@@ -35,9 +35,11 @@ class TestPassedDelegateAdapter(
                 tvTitle.text = test.title
                 tvDateData.text = test.date
                 tvPointsData.text = root.resources.getString(R.string.points_earned, test.pointsEarned, test.pointsMax)
+
                 tvPoints.isVisible = isPointsVisible
                 tvPointsData.isVisible = isPointsVisible
                 tvNotFinished.isVisible = !test.isFinished
+                tvDemo.isVisible = test.isDemo
 
                 root.setOnClickListener { onClick(test.recordId) }
             }

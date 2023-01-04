@@ -208,6 +208,7 @@
     <string name="go_home_to_take_test">You can choose a test to take on home screen</string>
     <string name="go_home">Go home</string>
     <string name="test_not_finished">Test was not finished. Click to see more</string>
+    <string name="test_demo">It is demo test. This record will be deleted soon</string>
 
     <string name="test_results">Test Results</string>
     <string name="test_title">Test:</string>
@@ -215,7 +216,7 @@
     <string name="time_spent">Time spent:</string>
     <string name="points_title">Points:</string>
     <string name="points_earned" translatable="false">%d/%d</string>
-    <string name="test_not_finished_detail">Test was not finished. We calculated your score based on the answers you submitted</string>
+    <string name="test_not_finished_detail">Test was not finished. Your points were calculated based on the answers you submitted</string>
 
     <string name="correct_answer">Correct answer</string>
     <string name="wrong_answer">Wrong answer</string>

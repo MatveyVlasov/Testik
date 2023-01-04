@@ -204,13 +204,14 @@
     <string name="go_home_to_take_test">Вы можете выбрать тест для прохождения на главной</string>
     <string name="go_home">На главную</string>
     <string name="test_not_finished">Тест не был завершён. Кликните для просмотра подробностей</string>
+    <string name="test_demo">Это демо тест. Запись о прохождении теста скоро будет удалена</string>
 
     <string name="test_results">Результаты теста</string>
     <string name="test_title">Тест:</string>
     <string name="date">Дата:</string>
     <string name="time_spent">Потрачено времени:</string>
     <string name="points_title">Баллов:</string>
-    <string name="test_not_finished_detail">Тест не был завершён. Мы подсчитали баллы на основе сохранённых ответов</string>
+    <string name="test_not_finished_detail">Тест не был завершён. Баллы подсчитаны на основе сохранённых ответов</string>
 
     <string name="correct_answer">Правильный ответ</string>
     <string name="wrong_answer">Неправильный ответ</string>

@@ -9,7 +9,7 @@ import com.app.testik.domain.util.ResultWrapper
 import com.app.testik.domain.util.ResultWrapperImpl
 import javax.inject.Inject
 
-class CreateTestPassedUseCase @Inject constructor(
+class StartTestUseCase @Inject constructor(
     private val authRepository: AuthRepository,
     private val testPassedRepository: TestPassedRepository
 ) : ResultWrapper by ResultWrapperImpl() {
@@ -18,7 +18,7 @@ class CreateTestPassedUseCase @Inject constructor(
         val newData = data.copy(user = authRepository.getCurrentUser()!!.uid)
 
         return wrap(
-            block = { testPassedRepository.createTest(newData.toDto()) },
+            block = { testPassedRepository.startTest(newData.toDto()) },
             mapper = { it!!.toDomain() }
         )
     }
