@@ -265,6 +265,17 @@ exports.calculatePoints = functions.https.onCall((data, context) => {
     })
 })
 
+exports.deleteDemoTests = functions.pubsub
+    .schedule('0 0 * * 1,4')
+    .onRun(async (context) => {
+        const tests = db.collection('testsPassed')
+        const demoTests = await tests.where('isDemo', '==', true).get()
+        demoTests.forEach((doc) => {
+            doc.ref.delete()
+        })
+        return null
+    })
+
 function isString(field) {
     return typeof field == "string"
 }
