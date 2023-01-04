@@ -157,7 +157,6 @@ exports.finishTest = functions.https.onCall((data, context) => {
             testRef.collection("private").doc("results").get().then((doc) => {
                 if (doc.exists) {
                     const answersCorrect = doc.data().answersCorrect
-                    const pointsPerQuestion = []
 
                     if (questions.length != answersCorrect.length) {
                         reject(new functions.https.HttpsError('failed-precondition', 'Incorrect number of questions'))
@@ -170,13 +169,7 @@ exports.finishTest = functions.https.onCall((data, context) => {
                         reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
                     }
 
-                    for (let i = 0; i < questions.length; ++i) {
-                        let isCorrect = true
-                        for (let j = 0; j < questions[i].answers.length; ++j) {
-                            isCorrect = isCorrect && answersCorrect[i].answers[j].isCorrect == questions[i].answers[j].isSelected
-                        }
-                        pointsPerQuestion.push(isCorrect? questions[i].pointsMax : 0)
-                    }
+                    const pointsPerQuestion = calculatePoints(questions, answersCorrect)
 
                     testRef.collection("private").doc("results").update({ pointsPerQuestion: pointsPerQuestion }).then((_1) => {
                         const pointsEarned = pointsPerQuestion.reduce((sum, a) => sum + a, 0)
@@ -189,6 +182,70 @@ exports.finishTest = functions.https.onCall((data, context) => {
                         }
                         testRef.update(newData).then((_1) => {
                             resolve()
+                        })
+                    })
+                } else {
+                    reject(new functions.https.HttpsError('not-found', 'Test not found'))
+                }
+            })
+        })
+    }).catch((err) => {
+        console.log('Error occurred', err);
+        throw err;
+    })
+})
+
+exports.calculatePoints = functions.https.onCall((data, context) => {
+
+    return new Promise((resolve, reject) => {
+
+        if (context.auth == null) {
+            reject(new functions.https.HttpsError('unauthenticated', 'Not logged in'))
+        }
+
+        const recordId = data.recordId || null
+
+        const testRef = db.collection("testsPassed").doc(recordId)
+
+        testRef.get().then((record) => {
+            const isCalculated = record.data().isCalculated
+            const isFinished = record.data().isFinished
+            const questions = record.data().questions
+
+            if (isCalculated) {
+                reject(new functions.https.HttpsError('failed-precondition', 'Points already calculated'))
+            }
+            if (isFinished) {
+                reject(new functions.https.HttpsError('failed-precondition', 'Test already finished'))
+            }
+
+            testRef.collection("private").doc("results").get().then((doc) => {
+                if (doc.exists) {
+                    const answersCorrect = doc.data().answersCorrect
+
+                    if (questions.length != answersCorrect.length) {
+                        reject(new functions.https.HttpsError('failed-precondition', 'Incorrect number of questions'))
+                    }
+                    try {
+                        for (let i = 0; i < questions.length; ++i) {
+                            if (!validateQuestionFields(questions[i])) throw new Error
+                        }
+                    } catch (err) {
+                        reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
+                    }
+
+                    const pointsPerQuestion = calculatePoints(questions, answersCorrect)
+
+                    testRef.collection("private").doc("results").update({ pointsPerQuestion: pointsPerQuestion }).then((_1) => {
+                        const pointsEarned = pointsPerQuestion.reduce((sum, a) => sum + a, 0)
+
+                        const newData = {
+                            questions: questions,
+                            pointsEarned: pointsEarned,
+                            pointsCalculated: true,
+                        }
+                        testRef.update(newData).then((_1) => {
+                            resolve({ pointsEarned: pointsEarned })
                         })
                     })
                 } else {
@@ -232,4 +289,17 @@ function validateQuestionFields(question) {
 
 function validateAnswerFields(answer) {
     return isString(answer.text) && isBoolean(answer.isSelected)
+}
+
+function calculatePoints(questions, answersCorrect) {
+    const pointsPerQuestion = []
+
+    for (let i = 0; i < questions.length; ++i) {
+        let isCorrect = true
+        for (let j = 0; j < questions[i].answers.length; ++j) {
+            isCorrect = isCorrect && answersCorrect[i].answers[j].isCorrect == questions[i].answers[j].isSelected
+        }
+        pointsPerQuestion.push(isCorrect? questions[i].pointsMax : 0)
+    }
+    return pointsPerQuestion
 }
