@@ -39,8 +39,7 @@ class TestPassedRepositoryImpl @Inject constructor(
                     ApiResult.Success(
                         data.copy(recordId = recordId)
                     )
-                }
-                else {
+                } else {
                     ApiResult.Error(it.exception?.message)
                 }
             }
@@ -62,6 +61,30 @@ class TestPassedRepositoryImpl @Inject constructor(
             firebaseFunctions.getHttpsCallable("finishTest").call(newData).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun calculatePoints(recordId: String): ApiResult<Int> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+        if (recordId.isEmpty()) return ApiResult.Error("No test found")
+
+        try {
+            val newData = mapOf(
+                "recordId" to recordId
+            )
+
+            firebaseFunctions.getHttpsCallable("calculatePoints").call(newData).also {
+                it.await()
+                return if (it.isSuccessful) {
+                    val result = it.result.data as Map<*, *>
+                    val pointsEarned = (result["pointsEarned"] as? Int).orZero()
+                    ApiResult.Success(pointsEarned)
+                } else {
+                    ApiResult.Error(it.exception?.message)
+                }
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
         }
     }
 

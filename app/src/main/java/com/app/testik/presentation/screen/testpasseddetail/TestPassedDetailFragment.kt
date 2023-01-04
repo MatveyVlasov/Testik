@@ -3,6 +3,7 @@ package com.app.testik.presentation.screen.testpasseddetail
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -93,6 +94,14 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
                 setProgress(data.pointsEarned.toDouble(), data.pointsMax.toDouble())
                 setProgressTextAdapter { getProgressPointsText(data.pointsEarned, data.pointsMax) }
             }
+
+            val showPoints = data.isFinished || data.pointsCalculated
+            progressPoints.isVisible = showPoints
+            tvPoints.isVisible = showPoints
+            tvPointsData.isVisible = showPoints
+            tvQuestionList.isVisible = showPoints
+
+            tvNotFinished.isVisible = !data.isFinished
         }
         loadImage(data.image)
         setLoadingState(false)

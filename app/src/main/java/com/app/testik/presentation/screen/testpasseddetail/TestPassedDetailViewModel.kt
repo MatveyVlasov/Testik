@@ -7,10 +7,7 @@ import com.app.testik.R
 import com.app.testik.domain.model.TestPassedModel
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
-import com.app.testik.domain.usecase.GetTestInfoUseCase
-import com.app.testik.domain.usecase.GetTestPassedInfoUseCase
-import com.app.testik.domain.usecase.GetTestPassedQuestionsUseCase
-import com.app.testik.domain.usecase.GetTestResultsUseCase
+import com.app.testik.domain.usecase.*
 import com.app.testik.presentation.mapper.toQuestionItem
 import com.app.testik.presentation.model.*
 import com.app.testik.presentation.screen.testpasseddetail.mapper.toUIState
@@ -33,7 +30,8 @@ class TestPassedDetailViewModel @Inject constructor(
     private val getTestInfoUseCase: GetTestInfoUseCase,
     private val getTestPassedInfoUseCase: GetTestPassedInfoUseCase,
     private val getTestPassedQuestionsUseCase: GetTestPassedQuestionsUseCase,
-    private val getTestResultsUseCase: GetTestResultsUseCase
+    private val getTestResultsUseCase: GetTestResultsUseCase,
+    private val calculatePointsUseCase: CalculatePointsUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<TestPassedDetailScreenUIState>>
@@ -75,7 +73,7 @@ class TestPassedDetailViewModel @Inject constructor(
         emitEvent(TestPassedDetailScreenEvent.Loading)
 
         viewModelScope.launch {
-            getTestPassedInfoUseCase(recordId = screenUIState.recordId, source = Source.CACHE).onSuccess {
+            getTestPassedInfoUseCase(recordId = screenUIState.recordId, source = Source.DEFAULT).onSuccess {
                 testPassed = it
                 screenUIState = it.toUIState()
                 getTestInfo()
@@ -91,7 +89,6 @@ class TestPassedDetailViewModel @Inject constructor(
         viewModelScope.launch {
             getTestInfoUseCase(testId = screenUIState.testId).onSuccess {
                 screenUIState = screenUIState.copy(
-                    title = it.title,
                     image = it.image
                 )
                 getResults()
@@ -102,6 +99,8 @@ class TestPassedDetailViewModel @Inject constructor(
     }
 
     private fun getResults() {
+        if (!screenUIState.isFinished && !screenUIState.pointsCalculated) return calculatePoints()
+
         viewModelScope.launch {
             getTestResultsUseCase(recordId = screenUIState.recordId).onSuccess {
                 screenUIState = screenUIState.copy(results = it)
@@ -109,6 +108,51 @@ class TestPassedDetailViewModel @Inject constructor(
             }.onError {
                 emitEvent(TestPassedDetailScreenEvent.ShowSnackbar(it))
             }
+        }
+    }
+
+    private fun calculatePoints() {
+        emitEvent(TestPassedDetailScreenEvent.Loading)
+
+        viewModelScope.launch {
+            calculatePointsUseCase(recordId = screenUIState.recordId).onSuccess {
+                screenUIState = screenUIState.copy(pointsEarned = it, pointsCalculated = true)
+                getResults()
+            }.onError {
+                handleError(it)
+                updateScreenState(screenUIState)
+            }
+        }
+    }
+
+    private fun handleError(error: String) {
+        val msg = error.lowercase()
+        when {
+            msg.contains("no internet") -> {
+                emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.no_internet))
+            }
+            msg.contains("error occurred") -> {
+                emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.error_occurred))
+            }
+            msg.contains("not logged in") -> {
+                emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.not_logged_in))
+            }
+            msg.contains("test not found") -> {
+                emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.test_not_found))
+            }
+            msg.contains("points already calculated") -> {
+                emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.points_already_calculated))
+            }
+            msg.contains("test already finished") -> {
+                emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.test_already_finished))
+            }
+            msg.contains("incorrect number") -> {
+                emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.incorrect_questions_number))
+            }
+            msg.contains("invalid data type") -> {
+                emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.invalid_data_type))
+            }
+            else -> emitEvent(TestPassedDetailScreenEvent.ShowSnackbar(error))
         }
     }
 

@@ -126,6 +126,22 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="00:05:30" />
 
+            <TextView
+                android:id="@+id/tvNotFinished"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:textColor="@color/error"
+                android:text="@string/test_not_finished_detail"
+                android:justificationMode="inter_word"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tvTimeSpentData"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
             <antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator
                 android:id="@+id/progressPoints"
                 android:layout_width="200dp"
@@ -138,7 +154,7 @@
                 app:fillBackground="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTimeSpentData"
+                app:layout_constraintTop_toBottomOf="@id/tvNotFinished"
                 app:progressBackgroundColor="@color/wrong"
                 app:progressBackgroundStrokeWidth="12dp"
                 app:progressCap="round"

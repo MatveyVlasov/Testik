@@ -51,6 +51,7 @@
     <string name="not_logged_in">Вы не авторизованы</string>
     <string name="no_access">Нет доступа</string>
     <string name="test_not_found">Тест не найден</string>
+    <string name="points_already_calculated">Баллы уже подсчитаны</string>
     <string name="test_already_finished">Тест уже завершён</string>
     <string name="incorrect_questions_number">Произошла ошибка (#100)</string>
     <string name="invalid_data_type">Произошла ошибка (#101)</string>
@@ -209,6 +210,7 @@
     <string name="date">Дата:</string>
     <string name="time_spent">Потрачено времени:</string>
     <string name="points_title">Баллов:</string>
+    <string name="test_not_finished_detail">Тест не был завершён. Мы подсчитали баллы на основе сохранённых ответов</string>
 
     <string name="correct_answer">Правильный ответ</string>
     <string name="wrong_answer">Неправильный ответ</string>

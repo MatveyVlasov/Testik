@@ -10,8 +10,10 @@ data class TestPassedDetailScreenUIState(
     val image: String = "",
     val date: String = "",
     val timeSpent: String = "",
+    val isFinished: Boolean = false,
     val pointsMax: Int = 0,
     val pointsEarned: Int = 0,
+    val pointsCalculated: Boolean = false,
     val questions: List<DelegateAdapterItem> = emptyList(),
     val results: ResultsModel? = null
 )

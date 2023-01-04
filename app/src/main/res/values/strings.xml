@@ -45,6 +45,7 @@
     <string name="not_logged_in">You are not logged in</string>
     <string name="no_access">No access</string>
     <string name="test_not_found">Test not found</string>
+    <string name="points_already_calculated">Points already calculated</string>
     <string name="test_already_finished">Test already finished</string>
     <string name="incorrect_questions_number">An error occurred (#100)</string>
     <string name="invalid_data_type">An error occurred (#101)</string>
@@ -214,6 +215,7 @@
     <string name="time_spent">Time spent:</string>
     <string name="points_title">Points:</string>
     <string name="points_earned" translatable="false">%d/%d</string>
+    <string name="test_not_finished_detail">Test was not finished. We calculated your score based on the answers you submitted</string>
 
     <string name="correct_answer">Correct answer</string>
     <string name="wrong_answer">Wrong answer</string>
