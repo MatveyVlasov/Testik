@@ -21,4 +21,5 @@
     <color name="correct">#00CC00</color>
     <color name="wrong">#FF3333</color>
     <color name="error">#B3261E</color>
+    <color name="link">#0000EE</color>
 </resources>

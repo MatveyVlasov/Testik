@@ -92,6 +92,8 @@ class TestResultsFragment : BaseFragment<FragmentTestResultsBinding>() {
 
     private fun navigateToTestsPassed() {
         navController.popBackStack(R.id.mainFragment, inclusive = false)
+        navController.popBackStack(R.id.testsPassedFragment, inclusive = false)
+        navController.popBackStack(R.id.testsCreatedFragment, inclusive = false)
 
         testToInsert = viewModel.testToInsert
         setNavbarItem(R.id.testsPassedFragment)

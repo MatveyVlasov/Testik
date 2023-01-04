@@ -204,6 +204,9 @@
         <action
             android:id="@+id/toQuestionMain"
             app:destination="@id/questionMainFragment" />
+        <action
+            android:id="@+id/toTestInfo"
+            app:destination="@id/testInfoFragment" />
     </fragment>
 
 </navigation>

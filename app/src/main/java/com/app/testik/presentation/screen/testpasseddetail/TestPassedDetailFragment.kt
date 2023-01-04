@@ -61,6 +61,8 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
             toolbar.setNavigationOnClickListener { navController.navigateUp() }
 
             ivImage.setOnClickListener { viewImage(image = viewModel.screenUIState.image) }
+
+            tvTitleData.setOnClickListener { navigateToTestInfo() }
         }
     }
 
@@ -130,5 +132,11 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
                 )
             )
         }
+    }
+
+    private fun navigateToTestInfo() {
+        navController.navigate(
+            TestPassedDetailFragmentDirections.toTestInfo(viewModel.screenUIState.testId)
+        )
     }
 }
