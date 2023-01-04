@@ -73,6 +73,7 @@ exports.startTest = functions.https.onCall((data, context) => {
         }
 
         const testId = data.testId || null
+        const isDemo = data.isDemo
 
         const testRef = db.collection("tests").doc(testId)
 
@@ -80,6 +81,10 @@ exports.startTest = functions.https.onCall((data, context) => {
         testRef.get().then((doc) => {
             if (doc.exists) {
                 const testData = doc.data()
+
+                if (isDemo && testData.author != context.auth.uid) {
+                    reject(new functions.https.HttpsError('permission-denied', 'No access'))
+                }
 
                 testRef.collection("private").doc("questions").get().then((docQuestions) => {
                     const questions = docQuestions.data().questions
@@ -106,6 +111,7 @@ exports.startTest = functions.https.onCall((data, context) => {
                         timeFinished: Date.now(),
                         isFinished: false,
                         questions: questions,
+                        isDemo: isDemo,
                     }
 
                     db.collection("testsPassed").add(newData).then((ref) => {
