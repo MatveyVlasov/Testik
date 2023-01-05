@@ -69,10 +69,12 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.demo -> navigateToTestInfo()
+                    R.id.results -> navigateToResults()
                     R.id.delete -> confirmDeletion()
                 }
                 return@setOnMenuItemClickListener true
             }
+            toolbar.showIcons()
 
             tvPublish.addInfoIcon { navigateToInfo(getString(R.string.publish_info)) }
         }
@@ -171,6 +173,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
                 toolbar.setTitle(R.string.test_creation)
                 toolbar.menu.findItem(R.id.delete).isVisible = false
                 toolbar.menu.findItem(R.id.demo).isVisible = false
+                toolbar.menu.findItem(R.id.results).isVisible = false
 
                 llPublish.isVisible = false
                 btnSave.setText(R.string.create_test)
@@ -179,6 +182,8 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
                 toolbar.setTitle(R.string.test_settings)
                 toolbar.menu.findItem(R.id.delete).isVisible = true
                 toolbar.menu.findItem(R.id.demo).isVisible = true
+                toolbar.menu.findItem(R.id.results).isVisible = true
+
 
                 llPublish.isVisible = true
                 btnSave.setText(R.string.save)
@@ -207,6 +212,12 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
     private fun navigateToTestInfo() {
         navController.navigate(
             TestEditFragmentDirections.toTestInfo(testId = viewModel.screenUIState.id, isDemo = true)
+        )
+    }
+
+    private fun navigateToResults() {
+        navController.navigate(
+            TestEditFragmentDirections.toResults(testId = viewModel.screenUIState.id)
         )
     }
 

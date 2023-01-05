@@ -6,6 +6,11 @@
       android:icon="@drawable/ic_preview" />
 
   <item
+      android:id="@+id/results"
+      android:title="@string/go_to_results"
+      android:icon="@drawable/ic_results" />
+
+  <item
       android:id="@+id/delete"
       android:title="@string/delete"
       android:icon="@drawable/ic_delete" />

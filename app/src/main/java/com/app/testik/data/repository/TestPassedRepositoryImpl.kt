@@ -114,6 +114,31 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getTests(testId: String, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsPassedDto> {
+        if (testId.isEmpty()) return ApiResult.Error("No test found")
+
+        try {
+            var query = collection
+                .whereEqualTo("testId", testId)
+                .whereEqualTo("isDemo", false)
+                .orderBy("timeFinished", Query.Direction.DESCENDING)
+
+            if (snapshot != null)
+                query = query.startAfter(snapshot.orderBy("timeFinished"))
+
+            query
+                .limit(limit)
+                .get()
+                .also {
+                    val newSnapshot = it.await()
+                    return if (it.isSuccessful) ApiResult.Success(TestsPassedDto(newSnapshot))
+                    else ApiResult.Error(it.exception?.message)
+                }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
+
     override suspend fun getTest(recordId: String, source: Source): ApiResult<TestPassedDto> {
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
 

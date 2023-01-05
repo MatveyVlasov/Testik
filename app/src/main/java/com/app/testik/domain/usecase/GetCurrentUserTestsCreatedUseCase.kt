@@ -11,7 +11,7 @@ import com.app.testik.util.Constants.QUERY_LIMIT
 import com.google.firebase.firestore.QuerySnapshot
 import javax.inject.Inject
 
-class GetCurrentUserCreatedTestsUseCase @Inject constructor(
+class GetCurrentUserTestsCreatedUseCase @Inject constructor(
     private val authRepository: AuthRepository,
     private val testRepository: TestRepository
 ) : ResultWrapper by ResultWrapperImpl() {

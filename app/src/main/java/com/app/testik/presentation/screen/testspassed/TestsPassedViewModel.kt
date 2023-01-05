@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TestsPassedViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val getCurrentUserPassedTestsUseCase: GetCurrentUserPassedTestsUseCase
+    private val getCurrentUserTestsPassedUseCase: GetCurrentUserTestsPassedUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<TestsPassedScreenUIState>>
@@ -64,7 +64,7 @@ class TestsPassedViewModel @Inject constructor(
         postItem(LoadingItem)
 
         job = viewModelScope.launch {
-            getCurrentUserPassedTestsUseCase(snapshot).onSuccess {
+            getCurrentUserTestsPassedUseCase(snapshot).onSuccess {
                 snapshot = it.snapshot
                 postListItems(it.tests.map { test -> test.toTestPassedItem() })
             }.onError {

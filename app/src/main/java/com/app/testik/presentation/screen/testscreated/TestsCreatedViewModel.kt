@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TestsCreatedViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val getCurrentUserCreatedTestsUseCase: GetCurrentUserCreatedTestsUseCase,
+    private val getCurrentUserTestsCreatedUseCase: GetCurrentUserTestsCreatedUseCase,
     private val deleteTestUseCase: DeleteTestUseCase
 ) : ViewModel() {
 
@@ -65,7 +65,7 @@ class TestsCreatedViewModel @Inject constructor(
         postItem(LoadingItem)
 
         job = viewModelScope.launch {
-            getCurrentUserCreatedTestsUseCase(snapshot).onSuccess {
+            getCurrentUserTestsCreatedUseCase(snapshot).onSuccess {
                 snapshot = it.snapshot
                 postListItems(it.tests.map { test -> test.toTestCreatedItem() })
             }.onError {

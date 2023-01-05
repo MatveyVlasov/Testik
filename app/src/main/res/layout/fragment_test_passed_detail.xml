@@ -76,6 +76,34 @@
                 tools:text="What do you know about our app?" />
 
             <TextView
+                android:id="@+id/tvUser"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:text="@string/user_title"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tvTitleData"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvUsername"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="@dimen/margin_horizontal"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/tvUser"
+                app:layout_constraintStart_toEndOf="@id/tvUser"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="john123 (John Doe)" />
+
+            <TextView
                 android:id="@+id/tvDate"
                 style="@style/CustomTextView"
                 android:layout_width="0dp"
@@ -84,7 +112,7 @@
                 android:layout_marginStart="@dimen/margin_horizontal"
                 android:textSize="18sp"
                 android:text="@string/date"
-                app:layout_constraintTop_toBottomOf="@id/tvTitleData"
+                app:layout_constraintTop_toBottomOf="@id/tvUsername"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView

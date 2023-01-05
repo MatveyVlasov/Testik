@@ -6,6 +6,7 @@ import com.app.testik.util.delegateadapter.DelegateAdapterItem
 data class TestPassedDetailScreenUIState(
     val recordId: String = "",
     val testId: String = "",
+    val username: String = "",
     val title: String = "",
     val image: String = "",
     val date: String = "",

@@ -21,6 +21,7 @@ import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.content.ContextCompat
 import com.app.testik.R
 import com.app.testik.data.model.ApiResult
@@ -139,6 +140,11 @@ fun MaterialToolbar.setupAvatarItem(
 }
 
 fun MaterialToolbar.getAvatarItem(): ImageView = menu.findItem(R.id.profile).actionView?.findViewById(R.id.ivAvatar)!!
+
+@SuppressLint("RestrictedApi")
+fun MaterialToolbar.showIcons() {
+    (menu as? MenuBuilder)?.setOptionalIconsVisible(true)
+}
 
 fun isOnline(context: Context): Boolean {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager

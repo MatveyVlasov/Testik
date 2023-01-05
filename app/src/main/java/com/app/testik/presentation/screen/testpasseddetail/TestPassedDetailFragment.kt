@@ -38,6 +38,8 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
             .build()
     }
 
+    private var enableProgressAnimation = true
+
     override fun createBinding(inflater: LayoutInflater) = FragmentTestPassedDetailBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,6 +90,7 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
     private fun renderUIState(data: TestPassedDetailScreenUIState) {
         binding.apply {
             tvTitleData.text = data.title
+            tvUsername.text = data.username
             tvDateData.text = data.date
             tvTimeSpentData.text = data.timeSpent
             tvPointsData.text = getString(R.string.points_earned, data.pointsEarned, data.pointsMax)
@@ -95,6 +98,9 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
             progressPoints.apply {
                 setProgress(data.pointsEarned.toDouble(), data.pointsMax.toDouble())
                 setProgressTextAdapter { getProgressPointsText(data.pointsEarned, data.pointsMax) }
+
+                isAnimationEnabled = enableProgressAnimation
+                enableProgressAnimation = false // animate only once
             }
 
             val showPoints = data.isFinished || data.pointsCalculated
@@ -102,6 +108,10 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
             tvPoints.isVisible = showPoints
             tvPointsData.isVisible = showPoints
             tvQuestionList.isVisible = showPoints
+
+            val showUser = data.username.isNotEmpty()
+            tvUser.isVisible = showUser
+            tvUsername.isVisible = showUser
 
             tvNotFinished.isVisible = !data.isFinished
         }

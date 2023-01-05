@@ -90,6 +90,9 @@
         <action
             android:id="@+id/toTestInfo"
             app:destination="@id/testInfoFragment" />
+        <action
+            android:id="@+id/toResults"
+            app:destination="@id/testsPassedUsersFragment" />
     </fragment>
 
     <fragment
@@ -107,6 +110,9 @@
         <action
             android:id="@+id/toTestInfo"
             app:destination="@id/testInfoFragment" />
+        <action
+            android:id="@+id/toResults"
+            app:destination="@id/testsPassedUsersFragment" />
     </fragment>
 
     <fragment
@@ -211,12 +217,29 @@
         <argument
             android:name="recordId"
             app:argType="string" />
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="" />
         <action
             android:id="@+id/toQuestionMain"
             app:destination="@id/questionMainFragment" />
         <action
             android:id="@+id/toTestInfo"
             app:destination="@id/testInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/testsPassedUsersFragment"
+        android:name="com.app.testik.presentation.screen.testspassedusers.TestsPassedUsersFragment"
+        android:label="TestsPassedUsersFragment"
+        tools:layout="@layout/fragment_tests_passed_users">
+        <argument
+            android:name="testId"
+            app:argType="string" />
+        <action
+            android:id="@+id/toTestPassed"
+            app:destination="@id/testPassedDetailFragment" />
     </fragment>
 
 </navigation>

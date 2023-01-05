@@ -9,56 +9,29 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/question_list"
+        app:title="@string/test_results"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvQuestions"
+        android:id="@+id/rvTests"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/margin_bottom"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:paddingVertical="8dp"
         android:clipToPadding="false"
+        android:paddingBottom="8dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toTopOf="@id/btnSave"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:itemCount="13"
-        tools:listitem="@layout/item_question"
-        tools:visibility="visible" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSave"
-        style="@style/CustomButton.PurpleDark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/save_questions"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_test_passed_user"
         tools:visibility="visible" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_bottom"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:src="@drawable/ic_add"
-        android:backgroundTint="@color/purple_dark"
-        android:contentDescription="@string/create_question"
-        app:tint="@color/white"
-        app:borderWidth="0dp"
-        app:layout_constraintBottom_toTopOf="@id/btnSave"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
-        android:id="@+id/llNoQuestions"
+        android:id="@+id/llNoTests"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
@@ -71,7 +44,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_question_mark"
+            android:src="@drawable/ic_results"
             app:tint="@color/blue_light" />
 
         <TextView
@@ -80,7 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:text="@string/no_questions" />
+            android:textColor="@color/purple"
+            android:text="@string/no_results" />
 
         <TextView
             android:id="@+id/tvDescription"
@@ -88,7 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="4dp"
-            android:text="@string/click_to_create_question" />
+            android:textColor="@color/purple"
+            android:text="@string/publish_or_share_test" />
 
     </LinearLayout>
 

@@ -45,7 +45,7 @@ class TestPassedDetailViewModel @Inject constructor(
 
     private val args = TestPassedDetailFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    var screenUIState = TestPassedDetailScreenUIState(recordId = args.recordId)
+    var screenUIState = TestPassedDetailScreenUIState(recordId = args.recordId, username = args.username)
         private set
 
     var testPassed: TestPassedModel? = null
@@ -75,7 +75,7 @@ class TestPassedDetailViewModel @Inject constructor(
         viewModelScope.launch {
             getTestPassedInfoUseCase(recordId = screenUIState.recordId, source = Source.DEFAULT).onSuccess {
                 testPassed = it
-                screenUIState = it.toUIState()
+                screenUIState = it.toUIState().copy(username = screenUIState.username)
                 getTestInfo()
             }.onError {
                 emitEvent(TestPassedDetailScreenEvent.ShowSnackbar(it))
