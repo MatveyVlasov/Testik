@@ -81,9 +81,9 @@ fun Long.toDate(): String {
 
 fun getTimeDifference(start: Long, end: Long): String {
     val diff = end - start
-    val seconds = diff / 1000
-    val minutes = seconds / 60
-    val hours = minutes / 60
+    val seconds = (diff / 1000) % 60
+    val minutes = (diff / 1000 / 60) % 60
+    val hours = diff / 1000 / 60 / 60
 
     return String.format("%02d:%02d:%02d", hours, minutes, seconds)
 }
