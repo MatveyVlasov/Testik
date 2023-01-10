@@ -81,8 +81,8 @@ exports.startTest = functions.https.onCall((data, context) => {
         testRef.get().then((doc) => {
             if (doc.exists) {
                 const testData = doc.data()
-                const isGradesEnabled = testData.isGradesEnabled
-                const grades = testData.grades
+                const isGradesEnabled = testData.isGradesEnabled || false
+                const grades = testData.grades || []
 
                 if (isDemo && testData.author != context.auth.uid) {
                     reject(new functions.https.HttpsError('permission-denied', 'No access'))
