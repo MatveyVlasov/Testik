@@ -69,6 +69,7 @@ fun TestPassedDto.toDomain() =
         pointsMax = pointsMax,
         pointsEarned = pointsEarned,
         pointsCalculated = pointsCalculated,
+        gradeEarned = gradeEarned,
         isDemo = isDemo
     )
 
@@ -119,3 +120,22 @@ fun String.toCategoryType() =
 
 fun String.toQuestionType() =
     QuestionType.values().find { it.title == this } ?: QuestionType.SINGLE_CHOICE
+
+fun GradesDto.toDomain() =
+    GradesModel(
+        isEnabled = isEnabled,
+        grades = grades.map { it.toDomain() }
+    )
+
+fun GradeDto.toDomain() =
+    GradeModel(
+        grade = grade,
+        pointsFrom = pointsFrom,
+        pointsTo = pointsTo
+    )
+
+fun PointsEarnedDto.toDomain() =
+    PointsEarnedModel(
+        pointsEarned = pointsEarned,
+        gradeEarned = gradeEarned
+    )

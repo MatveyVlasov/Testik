@@ -65,7 +65,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun calculatePoints(recordId: String): ApiResult<Int> {
+    override suspend fun calculatePoints(recordId: String): ApiResult<PointsEarnedDto> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
@@ -79,7 +79,10 @@ class TestPassedRepositoryImpl @Inject constructor(
                 return if (it.isSuccessful) {
                     val result = it.result.data as Map<*, *>
                     val pointsEarned = (result["pointsEarned"] as? Int).orZero()
-                    ApiResult.Success(pointsEarned)
+                    val gradeEarned = (result["gradeEarned"] as? String).orEmpty()
+                    ApiResult.Success(
+                        PointsEarnedDto(pointsEarned = pointsEarned, gradeEarned = gradeEarned)
+                    )
                 } else {
                     ApiResult.Error(it.exception?.message)
                 }

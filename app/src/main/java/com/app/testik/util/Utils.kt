@@ -240,6 +240,6 @@ inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
     else -> @Suppress("DEPRECATION") getParcelable(key) as? T
 }
 
-fun getProgressPointsText(pointsEarned: Int, pointsMax: Int): String {
-    return "${(pointsEarned.toDouble() / pointsMax * 100).toInt()}%"
+fun getProgressPointsText(pointsEarned: Int, pointsMax: Int, gradeEarned: String): String {
+    return gradeEarned.ifEmpty { "${(pointsEarned.toDouble() / pointsMax * 100).toInt()}%" }
 }

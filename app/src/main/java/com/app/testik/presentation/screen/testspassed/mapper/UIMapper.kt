@@ -14,5 +14,6 @@ fun TestPassedModel.toTestPassedItem() =
         pointsMax = pointsMax,
         pointsEarned = pointsEarned,
         pointsCalculated = pointsCalculated,
+        gradeEarned = gradeEarned,
         isDemo = isDemo
     )

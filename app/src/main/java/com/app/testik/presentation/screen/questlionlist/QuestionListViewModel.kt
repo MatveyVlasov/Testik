@@ -49,7 +49,7 @@ class QuestionListViewModel @Inject constructor(
     var screenUIState = QuestionListScreenUIState(testId = args.testId)
         private set
 
-    private var oldScreenUIState = QuestionListScreenUIState(testId = args.testId)
+    private var oldScreenUIState = screenUIState.copy()
 
     init {
         updateList(isFirstUpdate = true)
@@ -79,7 +79,7 @@ class QuestionListViewModel @Inject constructor(
 
             updateQuestionsUseCase(screenUIState.testId, questions).onSuccess {
                 updateList()
-                emitEvent(QuestionListScreenEvent.SuccessQuestionsSaving(questions.size))
+                emitEvent(QuestionListScreenEvent.SuccessQuestionsSave(questions.size))
             }.onError {
                 handleError(it)
             }
@@ -158,7 +158,7 @@ class QuestionListViewModel @Inject constructor(
     }
 
     private fun updateOldScreenState() {
-        oldScreenUIState = screenUIState.copy(questions = screenUIState.questions.toMutableList())
+        oldScreenUIState = screenUIState.copy(questions = screenUIState.questions.toList())
     }
 
     private fun updateScreenState(state: QuestionListScreenUIState) {

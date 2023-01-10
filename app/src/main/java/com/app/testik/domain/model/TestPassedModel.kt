@@ -16,5 +16,6 @@ data class TestPassedModel(
     val pointsMax: Int = 0,
     val pointsEarned: Int = 0,
     val pointsCalculated: Boolean = false,
+    val gradeEarned: String = "",
     val isDemo: Boolean = false
 ): Parcelable

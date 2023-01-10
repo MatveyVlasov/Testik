@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/ivImage"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/item_image_height"
             android:layout_weight="1"
             android:background="@drawable/rounded_rect_10_dp"
             android:outlineProvider="background"

@@ -189,6 +189,40 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateGrades(testId: String, data: GradesDto): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+        if (testId.isEmpty()) return ApiResult.Error("No test found")
+
+        return try {
+            val newData = mapOf(
+                "isGradesEnabled" to data.isEnabled,
+                "grades" to data.grades,
+                "lastUpdated" to timestamp
+            )
+
+            collection.document(testId).update(newData).execute()
+        } catch (e: Exception) {
+            ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun getTestGrades(testId: String): ApiResult<GradesDto> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
+        try {
+            collection.document(testId).get().also {
+                it.await()
+                it.result.toObject(TestDto::class.java)?.let { result ->
+                    val data = GradesDto(isEnabled = result.isGradesEnabled, grades = result.grades)
+                    return ApiResult.Success(data)
+                }
+                return ApiResult.Error(it.exception?.message)
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
+
     private fun QuerySnapshot?.orderBy(field: String) = this?.documents?.last()?.data?.get(field)
 
     companion object {

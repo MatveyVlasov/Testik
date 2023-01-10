@@ -12,5 +12,8 @@ data class TestDto(
     @get:PropertyName("isPublished")
     val isPublished: Boolean = false,
     val questionsNum: Int = 0,
-    val pointsMax: Int = 0
+    val pointsMax: Int = 0,
+    @get:PropertyName("isGradesEnabled")
+    val isGradesEnabled: Boolean = false,
+    val grades: List<GradeDto> = emptyList()
 )

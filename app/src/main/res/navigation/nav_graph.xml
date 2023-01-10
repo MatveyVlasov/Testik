@@ -113,6 +113,9 @@
         <action
             android:id="@+id/toResults"
             app:destination="@id/testsPassedUsersFragment" />
+        <action
+            android:id="@+id/toGradingSystem"
+            app:destination="@id/gradingSystemFragment" />
     </fragment>
 
     <fragment
@@ -240,6 +243,16 @@
         <action
             android:id="@+id/toTestPassed"
             app:destination="@id/testPassedDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/gradingSystemFragment"
+        android:name="com.app.testik.presentation.screen.gradingsystem.GradingSystemFragment"
+        android:label="GradingSystemFragment"
+        tools:layout="@layout/fragment_grading_system">
+        <argument
+            android:name="testId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

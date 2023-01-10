@@ -7,6 +7,7 @@
     <integer name="answer_max_length">75</integer>
     <integer name="description_max_length">1000</integer>
     <integer name="points_max_length">3</integer>
+    <integer name="grade_max_length">3</integer>
 
     <dimen name="editText_margin_bottom">12dp</dimen>
     <dimen name="margin_horizontal">16dp</dimen>
@@ -30,4 +31,6 @@
     <dimen name="ll_info_height">50dp</dimen>
     <dimen name="rv_questions_height">46dp</dimen>
     <dimen name="ll_actions_height">72dp</dimen>
+
+    <dimen name="item_image_height">50dp</dimen>
 </resources>

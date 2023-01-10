@@ -15,6 +15,7 @@ data class TestPassedDto(
     val pointsMax: Int = 0,
     val pointsEarned: Int = 0,
     val pointsCalculated: Boolean = false,
+    val gradeEarned: String = "",
     @get:PropertyName("isDemo")
     val isDemo: Boolean = false
 )

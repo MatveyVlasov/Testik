@@ -94,12 +94,19 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             btnEditQuestions.setOnClickListener {
                 if (viewModel.screenUIState.canSave) confirmExitWithoutSaving {
-                    etTitle.clearFocus()
-                    etDescription.clearFocus()
-                    viewModel.discardChanges()
+                    discardChanges()
                     navigateToQuestionList()
                 } else {
                     navigateToQuestionList()
+                }
+            }
+
+            btnEditGradingSystem.setOnClickListener {
+                if (viewModel.screenUIState.canSave) confirmExitWithoutSaving {
+                    discardChanges()
+                    navigateToGradingSystem()
+                } else {
+                    navigateToGradingSystem()
                 }
             }
 
@@ -169,26 +176,18 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
     private fun initializeViews() {
         binding.apply {
-            if (viewModel.screenUIState.id.isEmpty()) {
-                toolbar.setTitle(R.string.test_creation)
-                toolbar.menu.findItem(R.id.delete).isVisible = false
-                toolbar.menu.findItem(R.id.demo).isVisible = false
-                toolbar.menu.findItem(R.id.results).isVisible = false
+            val isTestCreated = viewModel.screenUIState.id.isNotEmpty()
 
-                llPublish.isVisible = false
-                btnSave.setText(R.string.create_test)
-                btnEditQuestions.isVisible = false
-            } else {
-                toolbar.setTitle(R.string.test_settings)
-                toolbar.menu.findItem(R.id.delete).isVisible = true
-                toolbar.menu.findItem(R.id.demo).isVisible = true
-                toolbar.menu.findItem(R.id.results).isVisible = true
+            toolbar.setTitle(if (isTestCreated) R.string.test_settings else R.string.test_creation)
+            btnSave.setText(if (isTestCreated) R.string.save else R.string.create_test)
 
+            toolbar.menu.findItem(R.id.delete).isVisible = isTestCreated
+            toolbar.menu.findItem(R.id.demo).isVisible = isTestCreated
+            toolbar.menu.findItem(R.id.results).isVisible = isTestCreated
 
-                llPublish.isVisible = true
-                btnSave.setText(R.string.save)
-                btnEditQuestions.isVisible = true
-            }
+            llPublish.isVisible = isTestCreated
+            btnEditQuestions.isVisible = isTestCreated
+            btnEditGradingSystem.isVisible = isTestCreated
         }
     }
 
@@ -218,6 +217,12 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
     private fun navigateToResults() {
         navController.navigate(
             TestEditFragmentDirections.toResults(testId = viewModel.screenUIState.id)
+        )
+    }
+
+    private fun navigateToGradingSystem() {
+        navController.navigate(
+            TestEditFragmentDirections.toGradingSystem(testId = viewModel.screenUIState.id)
         )
     }
 
@@ -286,16 +291,6 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
         )
     }
 
-    private fun confirmExitWithoutSaving(onPositiveClick: () -> Unit) {
-        showAlert(
-            title = R.string.unsaved_changes,
-            message = R.string.unsaved_changes_confirmation,
-            positive = R.string.confirm,
-            negative = R.string.cancel,
-            onPositiveClick = { onPositiveClick() }
-        )
-    }
-
     private fun confirmDeletion() {
         showAlert(
             title = R.string.delete_test,
@@ -304,5 +299,11 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             negative = R.string.cancel,
             onPositiveClick = viewModel::deleteTest
         )
+    }
+
+    private fun discardChanges() {
+        binding.etTitle.clearFocus()
+        binding.etDescription.clearFocus()
+        viewModel.discardChanges()
     }
 }

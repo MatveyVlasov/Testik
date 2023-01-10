@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/ivImage"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/item_image_height"
             android:layout_weight="1"
             android:background="@drawable/rounded_rect_10_dp"
             android:outlineProvider="background"
@@ -133,16 +133,18 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/ivGrade"
+        <TextView
+            android:id="@+id/tvGrade"
+            style="@style/CustomTextView.AutoSize.White"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/item_image_height"
             android:layout_weight="1"
-            android:visibility="invisible"
+            android:paddingVertical="2dp"
+            android:paddingHorizontal="4dp"
+            android:gravity="center"
             android:background="@drawable/rounded_rect_10_dp"
-            android:outlineProvider="background"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/test_image" />
+            android:backgroundTint="@color/blue_dark"
+            tools:text="A" />
 
     </LinearLayout>
 

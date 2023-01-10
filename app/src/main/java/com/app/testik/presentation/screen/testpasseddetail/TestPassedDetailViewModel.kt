@@ -116,7 +116,11 @@ class TestPassedDetailViewModel @Inject constructor(
 
         viewModelScope.launch {
             calculatePointsUseCase(recordId = screenUIState.recordId).onSuccess {
-                screenUIState = screenUIState.copy(pointsEarned = it, pointsCalculated = true)
+                screenUIState = screenUIState.copy(
+                    pointsCalculated = true,
+                    pointsEarned = it.pointsEarned,
+                    gradeEarned = it.gradeEarned
+                )
                 getResults()
             }.onError {
                 handleError(it)

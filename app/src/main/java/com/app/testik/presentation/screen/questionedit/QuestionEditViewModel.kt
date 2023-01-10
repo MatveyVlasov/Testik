@@ -13,6 +13,7 @@ import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenEvent
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenUIState
 import com.app.testik.util.Constants.MAX_DESCRIPTION_LENGTH
+import com.app.testik.util.removeExtraSpaces
 import com.app.testik.util.removeExtraSpacesAndBreaks
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -103,7 +104,7 @@ class QuestionEditViewModel @Inject constructor(
 
         val pos = screenUIState.answers.indexOf(item)
         val answers = screenUIState.answers.map { it }.toMutableList().also {
-            it[pos] = it[pos].copy(text = text.removeExtraSpacesAndBreaks())
+            it[pos] = it[pos].copy(text = text.removeExtraSpaces())
         }
         screenUIState = screenUIState.copy(answers = answers, canDiscard = true)
         emitEvent(QuestionEditScreenEvent.EnableDiscardButton)

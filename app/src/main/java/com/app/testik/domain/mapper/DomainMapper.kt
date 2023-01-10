@@ -53,6 +53,7 @@ fun TestPassedModel.toDto() =
         pointsMax = pointsMax,
         pointsEarned = pointsEarned,
         pointsCalculated = pointsCalculated,
+        gradeEarned = gradeEarned,
         isDemo = isDemo
     )
 
@@ -89,4 +90,11 @@ fun AnswerModel.toDtoCorrect() =
     AnswerCorrectDto(
         text = text,
         isCorrect = isCorrect
+    )
+
+fun GradeModel.toDto() =
+    GradeDto(
+        grade = grade,
+        pointsFrom = pointsFrom,
+        pointsTo = pointsTo
     )

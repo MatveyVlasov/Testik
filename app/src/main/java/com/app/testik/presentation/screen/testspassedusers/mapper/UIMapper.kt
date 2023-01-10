@@ -13,5 +13,6 @@ fun TestPassedModel.toTestPassedUserItem() =
         isFinished = isFinished,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned,
-        pointsCalculated = pointsCalculated
+        pointsCalculated = pointsCalculated,
+        gradeEarned = gradeEarned
     )

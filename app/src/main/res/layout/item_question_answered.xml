@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clPointsMax"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/item_image_height"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:background="@drawable/rounded_rect_10_dp"
@@ -73,7 +73,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clPoints"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/item_image_height"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:layout_gravity="center"

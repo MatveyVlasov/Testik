@@ -12,5 +12,6 @@ fun TestPassedModel.toUIState() =
         timeSpent = getTimeDifference(timeStarted, timeFinished),
         date = timeFinished.toDate(),
         pointsMax = pointsMax,
-        pointsEarned = pointsEarned
+        pointsEarned = pointsEarned,
+        gradeEarned = gradeEarned
     )

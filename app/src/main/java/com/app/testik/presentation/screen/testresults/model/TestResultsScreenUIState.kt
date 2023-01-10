@@ -7,5 +7,6 @@ data class TestResultsScreenUIState(
     val date: String = "",
     val timeSpent: String = "",
     val pointsMax: Int = 0,
-    val pointsEarned: Int = 0
+    val pointsEarned: Int = 0,
+    val gradeEarned: String = ""
 )

@@ -138,6 +138,7 @@
     <string name="publish_no_questions">Test with no questions cannot be published</string>
     <string name="create_test_success">Test successfully created</string>
     <string name="edit_questions">Edit questions</string>
+    <string name="edit_grading_system">Edit grading system</string>
 
     <string name="category_math">Math</string>
     <string name="category_history">History</string>
@@ -165,6 +166,7 @@
     <string name="answer_option">Answer option</string>
     <string name="answer_option_abc">Answer %s</string>
     <string name="add_answer_option">Add answer option</string>
+    <string name="delete_answer_option">Delete answer option</string>
     <string name="no_correct_answers">The question should contain at least one correct answer</string>
     <string name="type">Type</string>
     <string name="single_choice">Single choice</string>
@@ -227,4 +229,16 @@
     <string name="user_avatar">User Avatar</string>
     <string name="no_results">There are no results yet</string>
     <string name="publish_or_share_test">Publish your test or share the link directly</string>
+
+    <string name="grading_system">Grading System</string>
+    <string name="grading_system_enable">Enable grading system</string>
+    <string name="grading_system_info">If grading system is enabled, users receive grades after the test is completed\n\nIf grading system is disabled or there is no grade for specific amount of points, the percentage of correct answers is shown instead</string>
+    <string name="add_grade">Add grade</string>
+    <string name="grade">Grade</string>
+    <string name="points_from">Points (from)</string>
+    <string name="points_to">Points (to)</string>
+    <string name="delete_grade">Delete grade</string>
+    <string name="fill_in_empty_fields">Fill in empty fields or delete the corresponding rows</string>
+    <string name="correct_grades_incorrect_interval">Correct grades with invalid interval where points (from) > points (to)</string>
+    <string name="correct_grades_overlapping_intervals">Correct grades with overlapping intervals: %d (points) is in several intervals</string>
 </resources>

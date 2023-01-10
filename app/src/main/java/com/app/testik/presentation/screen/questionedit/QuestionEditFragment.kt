@@ -85,7 +85,6 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
     private fun initViews() {
 
         setupBottomNavigation(false)
-
         binding.apply {
 
             toolbar.setOnMenuItemClickListener {

@@ -11,6 +11,7 @@ data class TestPassedDelegateItem(
     val pointsMax: Int,
     val pointsEarned: Int,
     val pointsCalculated: Boolean,
+    val gradeEarned: String,
     val isDemo: Boolean
 ) : DelegateAdapterItem {
 

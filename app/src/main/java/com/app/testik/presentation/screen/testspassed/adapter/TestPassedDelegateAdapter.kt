@@ -41,6 +41,9 @@ class TestPassedDelegateAdapter(
                 tvNotFinished.isVisible = !test.isFinished
                 tvDemo.isVisible = test.isDemo
 
+                tvGrade.text = test.gradeEarned
+                tvGrade.isVisible = test.gradeEarned.isNotEmpty()
+
                 root.setOnClickListener { onClick(test.recordId) }
             }
         }

@@ -15,5 +15,6 @@ fun TestPassedModel.toUIState() =
         isFinished = isFinished,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned,
-        pointsCalculated = pointsCalculated
+        pointsCalculated = pointsCalculated,
+        gradeEarned = gradeEarned
     )

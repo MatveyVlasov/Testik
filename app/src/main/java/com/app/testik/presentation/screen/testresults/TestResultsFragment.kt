@@ -75,7 +75,13 @@ class TestResultsFragment : BaseFragment<FragmentTestResultsBinding>() {
 
             progressPoints.apply {
                 setProgress(data.pointsEarned.toDouble(), data.pointsMax.toDouble())
-                setProgressTextAdapter { getProgressPointsText(data.pointsEarned, data.pointsMax) }
+                setProgressTextAdapter {
+                    getProgressPointsText(
+                        pointsEarned = data.pointsEarned,
+                        pointsMax = data.pointsMax,
+                        gradeEarned = data.gradeEarned
+                    )
+                }
             }
         }
         setLoadingState(false)

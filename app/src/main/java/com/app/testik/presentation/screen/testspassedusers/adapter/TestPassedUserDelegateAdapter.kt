@@ -40,6 +40,9 @@ class TestPassedUserDelegateAdapter(
                 tvPointsData.isVisible = isPointsVisible
                 tvNotFinished.isVisible = !test.isFinished
 
+                tvGrade.text = test.gradeEarned
+                tvGrade.isVisible = test.gradeEarned.isNotEmpty()
+
                 root.setOnClickListener { onClick(test.recordId, test.username) }
             }
         }

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="@dimen/card_radius">
+
+    <LinearLayout
+        android:id="@+id/llGrade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingHorizontal="8dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilGrade"
+            style="@style/CustomTextInputLayout.LightGray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/grade"
+            app:expandedHintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etGrade"
+                style="@style/CustomTextInputEditText.LightGray"
+                android:inputType="text"
+                android:maxLength="@integer/grade_max_length" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="0dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPointsFrom"
+            style="@style/CustomTextInputLayout.LightGray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:hint="@string/points_from"
+            app:expandedHintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPointsFrom"
+                style="@style/CustomTextInputEditText.LightGray"
+                android:inputType="number"
+                android:maxLength="@integer/points_max_length" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="10dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginBottom="4dp"
+            app:dividerColor="@color/purple_dark" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPointsTo"
+            style="@style/CustomTextInputLayout.LightGray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:hint="@string/points_to"
+            app:expandedHintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPointsTo"
+                style="@style/CustomTextInputEditText.LightGray"
+                android:inputType="number"
+                android:maxLength="@integer/points_max_length" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="4dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="-4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_delete_filled"
+            android:contentDescription="@string/delete_grade" />
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
