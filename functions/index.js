@@ -81,19 +81,25 @@ exports.startTest = functions.https.onCall((data, context) => {
         testRef.get().then((doc) => {
             if (doc.exists) {
                 const testData = doc.data()
+                const isGradesEnabled = testData.isGradesEnabled
+                const grades = testData.grades
 
                 if (isDemo && testData.author != context.auth.uid) {
                     reject(new functions.https.HttpsError('permission-denied', 'No access'))
                 }
 
                 testRef.collection("private").doc("questions").get().then((docQuestions) => {
-                    const questions = docQuestions.data().questions
-                    const answersCorrect = docQuestions.data().answersCorrect
+                    const data = docQuestions.data()
+                    const questions = data.questions
+                    const answersCorrect = data.answersCorrect
 
                     if (questions.length == 0) {
                         reject(new functions.https.HttpsError('failed-precondition', 'No questions'))
                     }
                     try {
+                        for (let i = 0; i < grades.length; ++i) {
+                            if (!validateGradeFields(grades[i])) throw new Error
+                        }
                         for (let i = 0; i < questions.length; ++i) {
                             if (!validateQuestionFields(questions[i])) throw new Error
                         }
@@ -112,6 +118,11 @@ exports.startTest = functions.https.onCall((data, context) => {
                         isFinished: false,
                         questions: questions,
                         isDemo: isDemo,
+                        isGradesEnabled: isGradesEnabled,
+                    }
+
+                    if (isGradesEnabled) {
+                        newData.grades = grades
                     }
 
                     db.collection("testsPassed").add(newData).then((ref) => {
@@ -130,8 +141,8 @@ exports.startTest = functions.https.onCall((data, context) => {
             }
         })
     }).catch((err) => {
-        console.log('Error occurred', err);
-        throw err;
+        console.log('Error occurred', err)
+        throw err
     })
 })
 
@@ -150,8 +161,11 @@ exports.finishTest = functions.https.onCall((data, context) => {
         const testRef = db.collection("testsPassed").doc(recordId)
 
         testRef.get().then((record) => {
-            const user = record.data().user
-            const isFinished = record.data().isFinished
+            const data = record.data()
+            const user = data.user
+            const isFinished = data.isFinished
+            const isGradesEnabled = data.isGradesEnabled
+            const grades = data.grades
 
             if (user != context.auth.uid) {
                 reject(new functions.https.HttpsError('permission-denied', 'No access'))
@@ -186,6 +200,11 @@ exports.finishTest = functions.https.onCall((data, context) => {
                             isFinished: true,
                             timeFinished: Date.now(),
                         }
+
+                        if (isGradesEnabled) {
+                            newData.gradeEarned = getGrade(grades, pointsEarned)
+                        }
+
                         testRef.update(newData).then((_1) => {
                             resolve()
                         })
@@ -196,8 +215,8 @@ exports.finishTest = functions.https.onCall((data, context) => {
             })
         })
     }).catch((err) => {
-        console.log('Error occurred', err);
-        throw err;
+        console.log('Error occurred', err)
+        throw err
     })
 })
 
@@ -214,11 +233,14 @@ exports.calculatePoints = functions.https.onCall((data, context) => {
         const testRef = db.collection("testsPassed").doc(recordId)
 
         testRef.get().then((record) => {
-            const isCalculated = record.data().isCalculated
-            const isFinished = record.data().isFinished
-            const questions = record.data().questions
+            const data = record.data()
+            const pointsCalculated = data.pointsCalculated
+            const isFinished = data.isFinished
+            const questions = data.questions
+            const isGradesEnabled = data.isGradesEnabled
+            const grades = data.grades
 
-            if (isCalculated) {
+            if (pointsCalculated) {
                 reject(new functions.https.HttpsError('failed-precondition', 'Points already calculated'))
             }
             if (isFinished) {
@@ -250,8 +272,13 @@ exports.calculatePoints = functions.https.onCall((data, context) => {
                             pointsEarned: pointsEarned,
                             pointsCalculated: true,
                         }
+
+                        if (isGradesEnabled) {
+                            newData.gradeEarned = getGrade(grades, pointsEarned)
+                        }
+
                         testRef.update(newData).then((_1) => {
-                            resolve({ pointsEarned: pointsEarned })
+                            resolve({ pointsEarned: pointsEarned, gradeEarned: newData.gradeEarned })
                         })
                     })
                 } else {
@@ -260,8 +287,8 @@ exports.calculatePoints = functions.https.onCall((data, context) => {
             })
         })
     }).catch((err) => {
-        console.log('Error occurred', err);
-        throw err;
+        console.log('Error occurred', err)
+        throw err
     })
 })
 
@@ -308,6 +335,10 @@ function validateAnswerFields(answer) {
     return isString(answer.text) && isBoolean(answer.isSelected)
 }
 
+function validateGradeFields(grade) {
+    return isString(grade.grade) && isNumber(grade.pointsFrom) && isNumber(grade.pointsTo)
+}
+
 function calculatePoints(questions, answersCorrect) {
     const pointsPerQuestion = []
 
@@ -319,4 +350,13 @@ function calculatePoints(questions, answersCorrect) {
         pointsPerQuestion.push(isCorrect? questions[i].pointsMax : 0)
     }
     return pointsPerQuestion
+}
+
+function getGrade(grades, pointsEarned) {
+    for (let i = 0; i < grades.length; ++i) {
+        if (grades[i].pointsFrom <= pointsEarned && grades[i].pointsTo >= pointsEarned) {
+            return grades[i].grade
+        }
+    }
+    return ''
 }

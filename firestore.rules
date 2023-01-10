@@ -83,19 +83,19 @@ service cloud.firestore {
         function validateFields() {
             return isString("user") && isString("testId") && validateStringSize("title", 75) && isNumber("timeStarted")
                 && isNumber("timeFinished") && isBoolean("isFinished") && isNumber("pointsMax") && isNumber("pointsEarned")
-                && isString("image");
+                && isString("image") && isBoolean("isGradesEnabled");
         }
 
         allow read: if isOwner(resource.data.user) || isOwner(getAuthor(resource.data.testId));
         allow create: if false; // cloud functions only
         allow update: if isOwner(resource.data.user) && !resource.data.isFinished
             && hasRequiredFields(["user", "testId", "title", "questions", "timeStarted", "timeFinished", "isFinished", "pointsMax"])
-            && verifyUnchangedFields(["user", "testId", "title", "timeStarted", "isFinished", "pointsMax"])
+            && verifyUnchangedFields(["user", "testId", "title", "timeStarted", "isFinished", "pointsMax", "isGradesEnabled", "grades"])
             && verifyTimestamp(request.resource.data.timeFinished) && validateFields();
         allow delete: if false;
 
         match /private/{document=**} {
-            allow read: if isOwner(getAuthor(resource.data.testId));
+            allow read: if true // isOwner(getAuthor(resource.data.testId)); // TODO: check if test finished and author allows showing results
             allow write: if false; // cloud functions only
         }
     }
