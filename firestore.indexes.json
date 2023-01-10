@@ -23,6 +23,24 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "testId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "timeFinished",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "testsPassed",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "isDemo",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "user",
           "order": "ASCENDING"
         },
