@@ -20,14 +20,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivAvatar"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_rect_300_dp"
-            android:outlineProvider="background"
-            android:scaleType="centerCrop"
             android:src="@drawable/ic_profile_avatar"
             android:contentDescription="@string/avatar"
             app:layout_constraintEnd_toEndOf="parent"

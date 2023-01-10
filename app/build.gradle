@@ -103,6 +103,9 @@ dependencies {
     // image crop
     implementation 'com.vanniktech:android-image-cropper:4.5.0'
 
+    // Circle ImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:30.5.0')
     implementation 'com.google.firebase:firebase-auth-ktx'

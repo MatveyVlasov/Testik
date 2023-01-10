@@ -166,18 +166,24 @@ fun isOnline(context: Context): Boolean {
     return false
 }
 
-fun loadImage(context: Context, imageView: ImageView, url: String, @DrawableRes defaultImage: Int) {
+fun loadImage(
+    context: Context,
+    imageView: ImageView,
+    url: String,
+    @DrawableRes defaultImage: Int,
+    isClip: Boolean = true
+) {
     val image = url.ifBlank { defaultImage }
 
     Glide.with(context)
         .load(image)
         .into(imageView)
 
-    imageView.clipToOutline = true
+    imageView.clipToOutline = isClip
 }
 
 fun loadAvatar(context: Context, imageView: ImageView, url: String) =
-    loadImage(context = context, imageView = imageView, url = url, defaultImage = R.drawable.ic_profile_avatar)
+    loadImage(context = context, imageView = imageView, url = url, defaultImage = R.drawable.ic_profile_avatar, isClip = false)
 
 fun loadTestImage(context: Context, imageView: ImageView, url: String) =
     loadImage(context = context, imageView = imageView, url = url, defaultImage = R.drawable.ic_feed)

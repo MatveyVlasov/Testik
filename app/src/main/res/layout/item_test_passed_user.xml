@@ -16,15 +16,13 @@
         android:orientation="horizontal"
         android:background="@color/purple_AA">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivAvatar"
             android:layout_width="0dp"
             android:layout_height="@dimen/item_image_height"
             android:layout_weight="1"
-            android:background="@drawable/rounded_rect_300_dp"
-            android:outlineProvider="background"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/user_avatar" />
+            android:contentDescription="@string/user_avatar"
+            tools:src="@drawable/ic_profile_avatar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
