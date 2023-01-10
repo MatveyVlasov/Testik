@@ -2,6 +2,7 @@ package com.app.testik.presentation.screen.testspassed.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.R
@@ -42,7 +43,7 @@ class TestPassedDelegateAdapter(
                 tvDemo.isVisible = test.isDemo
 
                 tvGrade.text = test.gradeEarned
-                tvGrade.isVisible = test.gradeEarned.isNotEmpty()
+                tvGrade.isInvisible = test.gradeEarned.isEmpty()
 
                 root.setOnClickListener { onClick(test.recordId) }
             }
