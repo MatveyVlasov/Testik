@@ -64,233 +64,257 @@ const db = admin.firestore()
 //     })
 
 
-exports.startTest = functions.https.onCall((data, context) => {
+exports.startTest = functions
+    .runWith({
+        enforceAppCheck: true,
+    })
+    .https.onCall((data, context) => {
 
-    return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
-        if (context.auth == null) {
-            reject(new functions.https.HttpsError('unauthenticated', 'Not logged in'))
-        }
+            if (context.app == undefined) {
+                reject(new functions.https.HttpsError('failed-precondition', 'App not verified'))
+            }
 
-        const testId = data.testId || null
-        const isDemo = data.isDemo
+            if (context.auth == null) {
+                reject(new functions.https.HttpsError('unauthenticated', 'Not logged in'))
+            }
 
-        const testRef = db.collection("tests").doc(testId)
+            const testId = data.testId || null
+            const isDemo = data.isDemo
+
+            const testRef = db.collection("tests").doc(testId)
 
 
-        testRef.get().then((doc) => {
-            if (doc.exists) {
-                const testData = doc.data()
-                const isGradesEnabled = testData.isGradesEnabled || false
-                const grades = testData.grades || []
+            testRef.get().then((doc) => {
+                if (doc.exists) {
+                    const testData = doc.data()
+                    const isGradesEnabled = testData.isGradesEnabled || false
+                    const grades = testData.grades || []
 
-                if (isDemo && testData.author != context.auth.uid) {
-                    reject(new functions.https.HttpsError('permission-denied', 'No access'))
-                }
-
-                testRef.collection("private").doc("questions").get().then((docQuestions) => {
-                    const data = docQuestions.data()
-                    const questions = data.questions
-                    const answersCorrect = data.answersCorrect
-
-                    if (questions.length == 0) {
-                        reject(new functions.https.HttpsError('failed-precondition', 'No questions'))
+                    if (isDemo && testData.author != context.auth.uid) {
+                        reject(new functions.https.HttpsError('permission-denied', 'No access'))
                     }
-                    try {
-                        for (let i = 0; i < grades.length; ++i) {
-                            if (!validateGradeFields(grades[i])) throw new Error
+
+                    testRef.collection("private").doc("questions").get().then((docQuestions) => {
+                        const data = docQuestions.data()
+                        const questions = data.questions
+                        const answersCorrect = data.answersCorrect
+
+                        if (questions.length == 0) {
+                            reject(new functions.https.HttpsError('failed-precondition', 'No questions'))
                         }
-                        for (let i = 0; i < questions.length; ++i) {
-                            if (!validateQuestionFields(questions[i])) throw new Error
+                        try {
+                            for (let i = 0; i < grades.length; ++i) {
+                                if (!validateGradeFields(grades[i])) throw new Error
+                            }
+                            for (let i = 0; i < questions.length; ++i) {
+                                if (!validateQuestionFields(questions[i])) throw new Error
+                            }
+                        } catch (err) {
+                            reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
                         }
-                    } catch (err) {
-                        reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
-                    }
 
-                    const newData = {
-                        testId: testId,
-                        user: context.auth.uid,
-                        title: testData.title,
-                        image: testData.image,
-                        pointsMax: testData.pointsMax,
-                        timeStarted: Date.now(),
-                        timeFinished: Date.now(),
-                        isFinished: false,
-                        questions: questions,
-                        isDemo: isDemo,
-                        isGradesEnabled: isGradesEnabled,
-                    }
+                        const newData = {
+                            testId: testId,
+                            user: context.auth.uid,
+                            title: testData.title,
+                            image: testData.image,
+                            pointsMax: testData.pointsMax,
+                            timeStarted: Date.now(),
+                            timeFinished: Date.now(),
+                            isFinished: false,
+                            questions: questions,
+                            isDemo: isDemo,
+                            isGradesEnabled: isGradesEnabled,
+                        }
 
-                    if (isGradesEnabled) {
-                        newData.grades = grades
-                    }
+                        if (isGradesEnabled) {
+                            newData.grades = grades
+                        }
 
-                    db.collection("testsPassed").add(newData).then((ref) => {
-                        ref.get().then((testPassed) => {
+                        db.collection("testsPassed").add(newData).then((ref) => {
+                            ref.get().then((testPassed) => {
 
-                            ref.collection("private").doc("results").set({ testId: testId, answersCorrect: answersCorrect }).then((_1) => {
-                                resolve({
-                                    recordId: testPassed.id,
+                                ref.collection("private").doc("results").set({ testId: testId, answersCorrect: answersCorrect }).then((_1) => {
+                                    resolve({
+                                        recordId: testPassed.id,
+                                    })
                                 })
                             })
                         })
                     })
+                } else {
+                    reject(new functions.https.HttpsError('not-found', 'Test not found'))
+                }
+            })
+        }).catch((err) => {
+            console.log('Error occurred', err)
+            throw err
+        })
+    })
+
+
+exports.finishTest = functions
+    .runWith({
+        enforceAppCheck: true,
+    })
+    .https.onCall((data, context) => {
+
+        return new Promise((resolve, reject) => {
+
+            if (context.app == undefined) {
+                reject(new functions.https.HttpsError('failed-precondition', 'App not verified'))
+            }
+
+            if (context.auth == null) {
+                reject(new functions.https.HttpsError('unauthenticated', 'Not logged in'))
+            }
+
+            const recordId = data.recordId || null
+            const questions = JSON.parse(data.questions) || null
+
+            const testRef = db.collection("testsPassed").doc(recordId)
+
+            testRef.get().then((record) => {
+                const data = record.data()
+                const user = data.user
+                const isFinished = data.isFinished
+                const isGradesEnabled = data.isGradesEnabled
+                const grades = data.grades
+
+                if (user != context.auth.uid) {
+                    reject(new functions.https.HttpsError('permission-denied', 'No access'))
+                }
+                if (isFinished) {
+                    reject(new functions.https.HttpsError('failed-precondition', 'Test already finished'))
+                }
+
+                testRef.collection("private").doc("results").get().then((doc) => {
+                    if (doc.exists) {
+                        const answersCorrect = doc.data().answersCorrect
+
+                        if (questions.length != answersCorrect.length) {
+                            reject(new functions.https.HttpsError('failed-precondition', 'Incorrect number of questions'))
+                        }
+                        try {
+                            for (let i = 0; i < questions.length; ++i) {
+                                if (!validateQuestionFields(questions[i])) throw new Error
+                            }
+                        } catch (err) {
+                            reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
+                        }
+
+                        const pointsPerQuestion = calculatePoints(questions, answersCorrect)
+
+                        testRef.collection("private").doc("results").update({ pointsPerQuestion: pointsPerQuestion }).then((_1) => {
+                            const pointsEarned = pointsPerQuestion.reduce((sum, a) => sum + a, 0)
+
+                            const newData = {
+                                questions: questions,
+                                pointsEarned: pointsEarned,
+                                isFinished: true,
+                                timeFinished: Date.now(),
+                            }
+
+                            if (isGradesEnabled) {
+                                newData.gradeEarned = getGrade(grades, pointsEarned)
+                            }
+
+                            testRef.update(newData).then((_1) => {
+                                resolve()
+                            })
+                        })
+                    } else {
+                        reject(new functions.https.HttpsError('not-found', 'Test not found'))
+                    }
                 })
-            } else {
-                reject(new functions.https.HttpsError('not-found', 'Test not found'))
-            }
-        })
-    }).catch((err) => {
-        console.log('Error occurred', err)
-        throw err
-    })
-})
-
-
-exports.finishTest = functions.https.onCall((data, context) => {
-
-    return new Promise((resolve, reject) => {
-
-        if (context.auth == null) {
-            reject(new functions.https.HttpsError('unauthenticated', 'Not logged in'))
-        }
-
-        const recordId = data.recordId || null
-        const questions = JSON.parse(data.questions) || null
-
-        const testRef = db.collection("testsPassed").doc(recordId)
-
-        testRef.get().then((record) => {
-            const data = record.data()
-            const user = data.user
-            const isFinished = data.isFinished
-            const isGradesEnabled = data.isGradesEnabled
-            const grades = data.grades
-
-            if (user != context.auth.uid) {
-                reject(new functions.https.HttpsError('permission-denied', 'No access'))
-            }
-            if (isFinished) {
-                reject(new functions.https.HttpsError('failed-precondition', 'Test already finished'))
-            }
-
-            testRef.collection("private").doc("results").get().then((doc) => {
-                if (doc.exists) {
-                    const answersCorrect = doc.data().answersCorrect
-
-                    if (questions.length != answersCorrect.length) {
-                        reject(new functions.https.HttpsError('failed-precondition', 'Incorrect number of questions'))
-                    }
-                    try {
-                        for (let i = 0; i < questions.length; ++i) {
-                            if (!validateQuestionFields(questions[i])) throw new Error
-                        }
-                    } catch (err) {
-                        reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
-                    }
-
-                    const pointsPerQuestion = calculatePoints(questions, answersCorrect)
-
-                    testRef.collection("private").doc("results").update({ pointsPerQuestion: pointsPerQuestion }).then((_1) => {
-                        const pointsEarned = pointsPerQuestion.reduce((sum, a) => sum + a, 0)
-
-                        const newData = {
-                            questions: questions,
-                            pointsEarned: pointsEarned,
-                            isFinished: true,
-                            timeFinished: Date.now(),
-                        }
-
-                        if (isGradesEnabled) {
-                            newData.gradeEarned = getGrade(grades, pointsEarned)
-                        }
-
-                        testRef.update(newData).then((_1) => {
-                            resolve()
-                        })
-                    })
-                } else {
-                    reject(new functions.https.HttpsError('not-found', 'Test not found'))
-                }
             })
+        }).catch((err) => {
+            console.log('Error occurred', err)
+            throw err
         })
-    }).catch((err) => {
-        console.log('Error occurred', err)
-        throw err
     })
-})
 
-exports.calculatePoints = functions.https.onCall((data, context) => {
+exports.calculatePoints = functions
+    .runWith({
+        enforceAppCheck: true,
+    })
+    .https.onCall((data, context) => {
 
-    return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
-        if (context.auth == null) {
-            reject(new functions.https.HttpsError('unauthenticated', 'Not logged in'))
-        }
-
-        const recordId = data.recordId || null
-
-        const testRef = db.collection("testsPassed").doc(recordId)
-
-        testRef.get().then((record) => {
-            const data = record.data()
-            const pointsCalculated = data.pointsCalculated
-            const isFinished = data.isFinished
-            const questions = data.questions
-            const isGradesEnabled = data.isGradesEnabled
-            const grades = data.grades
-
-            if (pointsCalculated) {
-                reject(new functions.https.HttpsError('failed-precondition', 'Points already calculated'))
-            }
-            if (isFinished) {
-                reject(new functions.https.HttpsError('failed-precondition', 'Test already finished'))
+            if (context.app == undefined) {
+                reject(new functions.https.HttpsError('failed-precondition', 'App not verified'))
             }
 
-            testRef.collection("private").doc("results").get().then((doc) => {
-                if (doc.exists) {
-                    const answersCorrect = doc.data().answersCorrect
+            if (context.auth == null) {
+                reject(new functions.https.HttpsError('unauthenticated', 'Not logged in'))
+            }
 
-                    if (questions.length != answersCorrect.length) {
-                        reject(new functions.https.HttpsError('failed-precondition', 'Incorrect number of questions'))
-                    }
-                    try {
-                        for (let i = 0; i < questions.length; ++i) {
-                            if (!validateQuestionFields(questions[i])) throw new Error
-                        }
-                    } catch (err) {
-                        reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
-                    }
+            const recordId = data.recordId || null
 
-                    const pointsPerQuestion = calculatePoints(questions, answersCorrect)
+            const testRef = db.collection("testsPassed").doc(recordId)
 
-                    testRef.collection("private").doc("results").update({ pointsPerQuestion: pointsPerQuestion }).then((_1) => {
-                        const pointsEarned = pointsPerQuestion.reduce((sum, a) => sum + a, 0)
+            testRef.get().then((record) => {
+                const data = record.data()
+                const pointsCalculated = data.pointsCalculated
+                const isFinished = data.isFinished
+                const questions = data.questions
+                const isGradesEnabled = data.isGradesEnabled
+                const grades = data.grades
 
-                        const newData = {
-                            questions: questions,
-                            pointsEarned: pointsEarned,
-                            pointsCalculated: true,
-                        }
-
-                        if (isGradesEnabled) {
-                            newData.gradeEarned = getGrade(grades, pointsEarned)
-                        }
-
-                        testRef.update(newData).then((_1) => {
-                            resolve({ pointsEarned: pointsEarned, gradeEarned: newData.gradeEarned })
-                        })
-                    })
-                } else {
-                    reject(new functions.https.HttpsError('not-found', 'Test not found'))
+                if (pointsCalculated) {
+                    reject(new functions.https.HttpsError('failed-precondition', 'Points already calculated'))
                 }
+                if (isFinished) {
+                    reject(new functions.https.HttpsError('failed-precondition', 'Test already finished'))
+                }
+
+                testRef.collection("private").doc("results").get().then((doc) => {
+                    if (doc.exists) {
+                        const answersCorrect = doc.data().answersCorrect
+
+                        if (questions.length != answersCorrect.length) {
+                            reject(new functions.https.HttpsError('failed-precondition', 'Incorrect number of questions'))
+                        }
+                        try {
+                            for (let i = 0; i < questions.length; ++i) {
+                                if (!validateQuestionFields(questions[i])) throw new Error
+                            }
+                        } catch (err) {
+                            reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
+                        }
+
+                        const pointsPerQuestion = calculatePoints(questions, answersCorrect)
+
+                        testRef.collection("private").doc("results").update({ pointsPerQuestion: pointsPerQuestion }).then((_1) => {
+                            const pointsEarned = pointsPerQuestion.reduce((sum, a) => sum + a, 0)
+
+                            const newData = {
+                                questions: questions,
+                                pointsEarned: pointsEarned,
+                                pointsCalculated: true,
+                            }
+
+                            if (isGradesEnabled) {
+                                newData.gradeEarned = getGrade(grades, pointsEarned)
+                            }
+
+                            testRef.update(newData).then((_1) => {
+                                resolve({ pointsEarned: pointsEarned, gradeEarned: newData.gradeEarned })
+                            })
+                        })
+                    } else {
+                        reject(new functions.https.HttpsError('not-found', 'Test not found'))
+                    }
+                })
             })
+        }).catch((err) => {
+            console.log('Error occurred', err)
+            throw err
         })
-    }).catch((err) => {
-        console.log('Error occurred', err)
-        throw err
     })
-})
 
 exports.deleteDemoTests = functions.pubsub
     .schedule('0 0 * * 1,4')
