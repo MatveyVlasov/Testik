@@ -22,6 +22,23 @@ Testik - это приложение для создания и прохожде
 
 Скачать APK файл можно по <a href="testik.apk">ссылке</a>
 
+# Стек технологий
+
+<ul>
+    <li>Kotlin</li>
+    <li>MVVM</li>
+    <li>Clean Architecture</li>
+    <li>Hilt</li>
+    <li>Firebase</li>
+        <ul>
+            <li>Authentication</li>
+            <li>Firestore Database</li>
+            <li>Storage</li>
+            <li>Functions</li>
+        </ul>
+</ul>
+
+
 # Описание
 
 При первом входе в приложение пользователь попадает на экран авторизации. Здесь можно войти в аккаунт, изменить язык, перейти к восстановлению пароля 
