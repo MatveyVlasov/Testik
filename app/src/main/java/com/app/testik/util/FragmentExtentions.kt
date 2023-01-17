@@ -202,6 +202,8 @@ fun Fragment.viewImage(
     image: String,
     @StringRes title: Int = R.string.test_image
 ) {
+    if (image.isEmpty()) return
+
     Intent(context, ImageViewActivity::class.java).also {
         it.putExtra(Constants.EXTRA_IMAGE_TITLE, getString(title))
         it.putExtra(Constants.EXTRA_IMAGE_PATH, image)
