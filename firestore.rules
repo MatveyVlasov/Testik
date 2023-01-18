@@ -62,6 +62,7 @@ service cloud.firestore {
         function validateFields() {
             return isString("author") && validateStringSize("title", 75) && isString("category") && isNumber("lastUpdated")
                 && validateStringSize("description", 1000) && isString("image") && isBoolean("isPublished")
+                && isBoolean("isLinkEnabled") && isString("link")
                 && isNumber("pointsMax") && isNumber("questionsNum") && isBoolean("isGradesEnabled");
         }
 
