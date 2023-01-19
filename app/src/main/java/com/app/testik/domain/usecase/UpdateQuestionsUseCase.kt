@@ -24,7 +24,7 @@ class UpdateQuestionsUseCase @Inject constructor(
 
             wrap (
                 block = { storageRepository.uploadQuestionImage(testId = testId, questionId = question.id, image = question.image) },
-                mapper = { it.toString() }
+                mapper = { it.orEmpty() }
             ).onSuccess {
                 newQuestions[index] = newQuestions[index].copy(image = it)
             }.onError {

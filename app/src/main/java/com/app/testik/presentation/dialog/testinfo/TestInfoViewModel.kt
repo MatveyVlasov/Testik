@@ -52,6 +52,10 @@ class TestInfoViewModel @Inject constructor(
 
     fun startTest() {
         if (job?.isActive == true) return
+        if (screenUIState.questionsNum < 1) {
+            emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.no_questions))
+            return
+        }
         emitEvent(TestInfoDialogEvent.Loading)
 
         job = viewModelScope.launch {

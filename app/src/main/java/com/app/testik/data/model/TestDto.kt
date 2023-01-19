@@ -11,6 +11,9 @@ data class TestDto(
     val image: String = "",
     @get:PropertyName("isPublished")
     val isPublished: Boolean = false,
+    @get:PropertyName("isLinkEnabled")
+    val isLinkEnabled: Boolean = false,
+    val link: String = "",
     val questionsNum: Int = 0,
     val pointsMax: Int = 0,
     @get:PropertyName("isGradesEnabled")

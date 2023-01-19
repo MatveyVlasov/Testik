@@ -22,7 +22,7 @@ class UpdateUserUseCase @Inject constructor(
 
         wrap(
             block = { storageRepository.uploadAvatar(uid = uid, image = data.avatar) },
-            mapper = { it.toString() }
+            mapper = { it.orEmpty() }
         ).onSuccess { avatar ->
             val newData = data.copy(avatar = avatar)
             return updateUser(data = newData, uid = uid)

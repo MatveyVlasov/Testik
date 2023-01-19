@@ -19,7 +19,7 @@ class UpdateTestUseCase @Inject constructor(
 
         wrap(
             block = { storageRepository.uploadTestImage(testId = data.id, image = data.image) },
-            mapper = { it.toString() }
+            mapper = { it.orEmpty() }
         ).onSuccess { image ->
             val newData = data.copy(image = image)
             return updateTest(newData)

@@ -12,6 +12,8 @@ data class TestModel(
     val category: CategoryType = CategoryType.NOT_SELECTED,
     val image: String = "",
     val isPublished: Boolean = false,
+    val isLinkEnabled: Boolean = false,
+    val link: String = "",
     val questionsNum: Int = 0,
     val pointsMax: Int = 0
 ) : Parcelable

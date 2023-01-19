@@ -58,6 +58,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
             rvCategoryTests.adapter = categoryTestsAdapter
         }
+
+        testToShow?.let {
+            navigateToTest(it)
+            testToShow = null
+        }
     }
 
     private fun initListeners() {

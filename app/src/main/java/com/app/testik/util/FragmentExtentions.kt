@@ -2,11 +2,14 @@ package com.app.testik.util
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.annotation.*
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -194,6 +197,26 @@ fun Fragment.showChangeLanguageDialog(onSelected: (String) -> Unit) {
         },
         onItemClick = { selectedItem = it }
     )
+}
+
+fun Fragment.shareTestLink(link: String) {
+    val intent = Intent(Intent.ACTION_SEND).also {
+        it.type = "text/plain"
+        it.putExtra(Intent.EXTRA_TEXT, link)
+    }
+
+    if (isAdded) requireContext().startActivity(intent)
+}
+
+fun Fragment.copyToClipboard(
+    label: String,
+    text: String
+) {
+    val clipboard = getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+
+    ClipData.newPlainText(label, text).also {
+        clipboard.setPrimaryClip(it)
+    }
 }
 
 fun Fragment.getStringOrNull(@StringRes res: Int?) = if (res == null) null else getString(res)

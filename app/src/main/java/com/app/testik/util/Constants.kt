@@ -4,6 +4,9 @@ import com.app.testik.R
 
 object Constants {
 
+    const val DYNAMIC_LINKS_PREFIX = "https://testik.page.link"
+    const val APP_NOT_INSTALLED_LINK = "https://testik.com"
+
     val LANGUAGES = mapOf("en" to R.string.english, "ru" to R.string.russian)
 
     const val MIN_PASSWORD_LENGTH = 6

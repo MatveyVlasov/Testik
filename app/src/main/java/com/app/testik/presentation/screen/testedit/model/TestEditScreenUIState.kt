@@ -11,6 +11,8 @@ data class TestEditScreenUIState(
     val category: CategoryType = CategoryType.NOT_SELECTED,
     val image: String = "",
     val isPublished: Boolean = false,
+    val isTestLinkEnabled: Boolean = false,
+    val testLink: String = "",
     val questionsNum: Int = 0,
     val testUpdated: TestModel? = null,
     val canSave: Boolean = true,

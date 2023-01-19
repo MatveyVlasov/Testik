@@ -27,6 +27,12 @@ abstract class BaseFragment<T: ViewBinding> : Fragment() {
             (activity as? MainActivity)?.testToInsert = value
         }
 
+    protected var testToShow: String?
+        get() = (activity as? MainActivity)?.testToShow
+        set(value) {
+            (activity as? MainActivity)?.testToShow = value
+        }
+
     private var _binding: T? = null
 
     private val currentBackStackEntry: NavBackStackEntry by lazy {

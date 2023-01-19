@@ -11,5 +11,7 @@ fun TestEditScreenUIState.toDomain() =
         description = description,
         category = category,
         image = image,
-        isPublished = isPublished
+        isPublished = isPublished,
+        isLinkEnabled = isTestLinkEnabled,
+        link = testLink
     )

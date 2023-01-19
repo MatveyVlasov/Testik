@@ -43,6 +43,12 @@ fun TestsPassedDto.toDomain(): TestsPassedModel {
     )
 }
 
+fun TestCreationDto.toDomain() =
+    TestCreationModel(
+        id = id,
+        link = link
+    )
+
 fun TestDto.toDomain() =
     TestModel(
         id = id,
@@ -52,6 +58,8 @@ fun TestDto.toDomain() =
         category = category.toCategoryType(),
         image = image,
         isPublished = isPublished,
+        isLinkEnabled = isLinkEnabled,
+        link = link,
         questionsNum = questionsNum,
         pointsMax = pointsMax
     )

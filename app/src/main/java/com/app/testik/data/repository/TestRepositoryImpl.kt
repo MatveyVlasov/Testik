@@ -1,13 +1,15 @@
 package com.app.testik.data.repository
 
 import android.content.Context
+import androidx.core.net.toUri
 import com.app.testik.data.model.*
 import com.app.testik.data.model.TestDto
 import com.app.testik.domain.repository.TestRepository
-import com.app.testik.util.execute
-import com.app.testik.util.isOnline
-import com.app.testik.util.private
-import com.app.testik.util.timestamp
+import com.app.testik.util.*
+import com.app.testik.util.Constants.APP_NOT_INSTALLED_LINK
+import com.app.testik.util.Constants.DYNAMIC_LINKS_PREFIX
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.dynamiclinks.ktx.androidParameters
 import com.google.firebase.firestore.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
@@ -15,45 +17,39 @@ import javax.inject.Inject
 
 class TestRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val firebaseFirestore: FirebaseFirestore
+    private val firebaseFirestore: FirebaseFirestore,
+    private val firebaseDynamicLinks: FirebaseDynamicLinks
 ): TestRepository {
 
     private val collection
         get() = firebaseFirestore.collection(COLLECTION_ID)
 
-    override suspend fun createTest(data: TestDto): ApiResult<String> {
+    override suspend fun createTest(testId: String, data: TestDto): ApiResult<TestCreationDto> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
             with (data) {
+                val link = generateTestLink(testId) ?: return ApiResult.Error("An error occurred while generating test link")
+
                 val newData = mapOf(
                     "author" to author,
                     "title" to title,
+                    "image" to image,
                     "description" to description,
                     "category" to category,
+                    "link" to link,
                     "lastUpdated" to timestamp
                 )
 
-                collection.add(newData).also {
+                collection.document(testId).set(newData).also {
                     it.await()
-                    return if (it.isSuccessful) ApiResult.Success(it.result.id)
+                    return if (it.isSuccessful) ApiResult.Success(TestCreationDto(id = testId, link = link))
                     else ApiResult.Error(it.exception?.message)
                 }
             }
 
         } catch (e: Exception) {
             return ApiResult.Error(e.message)
-        }
-    }
-
-    override suspend fun updateTestImage(testId: String, image: String): ApiResult<Unit> {
-        if (testId.isEmpty()) return ApiResult.Error("No test found")
-
-        return try {
-            val data = mapOf("image" to image)
-            collection.document(testId).update(data).execute()
-        } catch (e: Exception) {
-            ApiResult.Error(e.message)
         }
     }
 
@@ -69,6 +65,8 @@ class TestRepositoryImpl @Inject constructor(
                     "category" to category,
                     "image" to image,
                     "isPublished" to isPublished,
+                    "isLinkEnabled" to isLinkEnabled,
+                    "link" to link,
                     "lastUpdated" to timestamp
                 )
 
@@ -221,6 +219,26 @@ class TestRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             return ApiResult.Error(e.message)
         }
+    }
+
+    private suspend fun generateTestLink(testId: String): String? {
+
+        firebaseDynamicLinks.createDynamicLink().apply {
+            link = "$DYNAMIC_LINKS_PREFIX/test/$testId".toUri()
+            domainUriPrefix = DYNAMIC_LINKS_PREFIX
+
+            androidParameters {
+                fallbackUrl = APP_NOT_INSTALLED_LINK.toUri()
+                build()
+            }
+
+            buildShortDynamicLink().also {
+                it.await()
+                if (it.isSuccessful) return it.result.shortLink.toString()
+            }
+        }
+
+        return null
     }
 
     private fun QuerySnapshot?.orderBy(field: String) = this?.documents?.last()?.data?.get(field)

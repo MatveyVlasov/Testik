@@ -26,6 +26,7 @@ import com.app.testik.util.Constants.EXTRA_IMAGE_CROPPED_PATH
 import com.app.testik.util.Constants.EXTRA_IMAGE_PATH
 import com.app.testik.util.Constants.UPDATE_TEST_RESULT_KEY
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.yanzhenjie.album.Album
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -77,6 +78,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             toolbar.showIcons()
 
             tvPublish.addInfoIcon { navigateToInfo(getString(R.string.publish_info)) }
+            tvTestLink.addInfoIcon { navigateToInfo(getString(R.string.test_link_info)) }
         }
     }
 
@@ -89,6 +91,13 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             etCategory.setOnClickListener { showChangeCategoryDialog() }
 
             switchPublish.setOnCheckedChangeListener { _, isChecked -> viewModel.onPublishChanged(isChecked) }
+            switchTestLink.setOnCheckedChangeListener { _, isChecked -> viewModel.onTestLinkEnabledChanged(isChecked) }
+
+            btnTestLinkCopy.setOnClickListener {
+                copyToClipboard(label = "Test link", text = viewModel.screenUIState.testLink)
+                showSnackbar(message = R.string.test_link_copied, duration = Snackbar.LENGTH_SHORT)
+            }
+            btnTestLinkShare.setOnClickListener { shareTestLink(viewModel.screenUIState.testLink) }
 
             btnSave.setOnClickListener { viewModel.save() }
 
@@ -164,6 +173,11 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             switchPublish.isChecked = data.isPublished
 
+            val isLinkEnabled = data.isTestLinkEnabled
+            switchTestLink.isChecked = isLinkEnabled
+            llTestLinkData.isVisible = isLinkEnabled
+            tvTestLinkData.text = data.testLink
+
             btnSave.isEnabled = data.canSave
         }
 
@@ -186,6 +200,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             toolbar.menu.findItem(R.id.results).isVisible = isTestCreated
 
             llPublish.isVisible = isTestCreated
+            llTestLink.isVisible = isTestCreated
             btnEditQuestions.isVisible = isTestCreated
             btnEditGradingSystem.isVisible = isTestCreated
         }

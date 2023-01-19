@@ -6,11 +6,9 @@ import com.google.firebase.firestore.Source
 
 interface TestRepository {
 
-    suspend fun createTest(data: TestDto): ApiResult<String>
+    suspend fun createTest(testId: String, data: TestDto): ApiResult<TestCreationDto>
 
     suspend fun updateTest(data: TestDto): ApiResult<Unit>
-
-    suspend fun updateTestImage(testId: String, image: String): ApiResult<Unit>
 
     suspend fun getTestsByAuthor(uid: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsDto>
 

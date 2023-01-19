@@ -7,5 +7,7 @@ fun TestModel.toTestCreatedItem() =
     TestCreatedDelegateItem(
         id = id,
         title = title,
-        image = image
+        image = image,
+        isLinkEnabled = isLinkEnabled,
+        link = link
     )

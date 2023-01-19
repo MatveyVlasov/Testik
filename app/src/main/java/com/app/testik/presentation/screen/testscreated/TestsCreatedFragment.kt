@@ -140,6 +140,7 @@ class TestsCreatedFragment : BaseFragment<FragmentTestsCreatedBinding>() {
                     R.id.editTest -> navigateToTest(testId)
                     R.id.editQuestions -> navigateToQuestionList(testId)
                     R.id.demo -> navigateToTestInfo(testId)
+                    R.id.share -> shareLink(testId)
                     R.id.results -> navigateToResults(testId)
                     R.id.delete -> confirmDeletion(testId)
                 }
@@ -172,6 +173,12 @@ class TestsCreatedFragment : BaseFragment<FragmentTestsCreatedBinding>() {
         navController.navigate(
             TestsCreatedFragmentDirections.toResults(testId = testId)
         )
+    }
+
+    private fun shareLink(testId: String) {
+        val test = getItem(testId) ?: return
+        if (!test.isLinkEnabled) return showSnackbar(message = R.string.enable_test_link)
+        shareTestLink(test.link)
     }
 
     private fun confirmDeletion(testId: String) {

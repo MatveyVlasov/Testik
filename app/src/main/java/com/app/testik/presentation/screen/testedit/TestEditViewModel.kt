@@ -73,6 +73,11 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(isPublished = isPublished))
     }
 
+    fun onTestLinkEnabledChanged(isTestLinkEnabled: Boolean) {
+        if (isTestLinkEnabled == screenUIState.isTestLinkEnabled) return
+        updateScreenState(screenUIState.copy(isTestLinkEnabled = isTestLinkEnabled))
+    }
+
     fun onQuestionsNumChanged(questionsNum: Int) {
         if (questionsNum == screenUIState.questionsNum) return
         val state = screenUIState.copy(questionsNum = questionsNum)
@@ -125,6 +130,8 @@ class TestEditViewModel @Inject constructor(
                     category = it.category,
                     image = it.image,
                     isPublished = it.isPublished,
+                    isTestLinkEnabled = it.isLinkEnabled,
+                    testLink = it.link,
                     questionsNum = it.questionsNum
                 )
                 if (isUpdated) screenState = screenState.copy(testUpdated = screenState.toDomain())
@@ -139,7 +146,7 @@ class TestEditViewModel @Inject constructor(
     private fun createTest() {
         viewModelScope.launch {
             createTestUseCase(screenUIState.toDomain()).onSuccess {
-                var screenState = screenUIState.copy(id = it)
+                var screenState = screenUIState.copy(id = it.id, testLink = it.link)
                 screenState = screenState.copy(testUpdated = screenState.toDomain())
                 oldScreenUIState = screenState
                 updateScreenState(screenState)

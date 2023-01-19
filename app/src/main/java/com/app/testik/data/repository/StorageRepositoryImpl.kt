@@ -3,7 +3,6 @@ package com.app.testik.data.repository
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.core.net.toUri
 import com.app.testik.data.model.ApiResult
 import com.app.testik.domain.repository.StorageRepository
@@ -22,12 +21,12 @@ class StorageRepositoryImpl @Inject constructor(
     private val firebaseStorage: FirebaseStorage
 ) : StorageRepository {
 
-    override suspend fun uploadAvatar(uid: String, image: String): ApiResult<Uri> {
+    override suspend fun uploadAvatar(uid: String, image: String): ApiResult<String> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
             val avatar = firebaseStorage.reference.child("avatars").child(uid).uploadImage(image)
-            ApiResult.Success(avatar)
+            ApiResult.Success(avatar.toString())
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -43,12 +42,13 @@ class StorageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun uploadTestImage(testId: String, image: String): ApiResult<Uri> {
+    override suspend fun uploadTestImage(testId: String, image: String): ApiResult<String> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
+        if (image.isEmpty()) return ApiResult.Success()
 
         return try {
             val testImage = firebaseStorage.reference.child("tests").child(testId).child(testId).uploadImage(image)
-            ApiResult.Success(testImage)
+            ApiResult.Success(testImage.toString())
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }
@@ -78,12 +78,12 @@ class StorageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun uploadQuestionImage(testId: String, questionId: String, image: String): ApiResult<Uri> {
+    override suspend fun uploadQuestionImage(testId: String, questionId: String, image: String): ApiResult<String> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
             val testImage = firebaseStorage.reference.child("tests").child(testId).child(questionId).uploadImage(image)
-            ApiResult.Success(testImage)
+            ApiResult.Success(testImage.toString())
         } catch (e: Exception) {
             ApiResult.Error(e.message)
         }

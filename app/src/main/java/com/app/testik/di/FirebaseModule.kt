@@ -2,6 +2,8 @@ package com.app.testik.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.functions.FirebaseFunctions
@@ -34,4 +36,8 @@ object FirebaseModule {
     @Provides
     @Singleton
     fun provideFirebaseFunctions(): FirebaseFunctions = Firebase.functions
+
+    @Provides
+    @Singleton
+    fun provideFirebaseDynamicLinks(): FirebaseDynamicLinks = Firebase.dynamicLinks
 }
