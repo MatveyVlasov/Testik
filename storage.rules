@@ -38,7 +38,8 @@ service firebase.storage {
             }
 
             allow read: if isLoggedIn();
-            allow create, update: if isOwner(getAuthor()) && validateSize() && isImage();
+            allow create: if validateSize() && isImage();
+            allow update: if isOwner(getAuthor()) && validateSize() && isImage();
             allow delete: if isTestDeleted();
         }
     }
