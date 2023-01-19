@@ -146,9 +146,15 @@ describe("Tests collection", () => {
         await firebase.assertSucceeds(doc.get())
     })
 
-    it("Can't read test info when not logged in", async () => {
+    it("Can read test info when not logged in", async () => {
         const db = getFirestore()
         const doc = db.collection(COLLECTION).doc(theirId)
+        await firebase.assertSucceeds(doc.get())
+    })
+
+    it("Can't read multiple tests info when not logged in", async () => {
+        const db = getFirestore()
+        const doc = db.collection(COLLECTION)
         await firebase.assertFails(doc.get())
     })
 
