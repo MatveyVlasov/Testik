@@ -129,7 +129,7 @@ class TestRepositoryImpl @Inject constructor(
         try {
             collection.document(testId).get(source).also {
                 it.await()
-                val test = it.result.toObject(TestDto::class.java)?.copy(id = testId)
+                val test = it.result.toObject(TestDto::class.java)?.copy(id = testId) ?: return ApiResult.Error("Test not found")
                 return if (it.isSuccessful) ApiResult.Success(test)
                 else ApiResult.Error(it.exception?.message)
             }

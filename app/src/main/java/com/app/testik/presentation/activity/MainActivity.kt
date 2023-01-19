@@ -117,7 +117,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 val link = uri.toString()
 
                 when {
-                    link.contains("test") -> {
+                    link.contains("test/") -> {
                         val testId = link.substring(link.lastIndexOf("/") + 1)
                         handleTestLink(testId)
                     }
