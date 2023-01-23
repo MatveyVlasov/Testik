@@ -28,6 +28,7 @@ module.exports = {
         "operator-linebreak": 0,
         "guard-for-in": 1,
         "no-unused-vars": 1,
+        "no-unreachable": 1,
         "indent": ["error", 4],
     },
 };
