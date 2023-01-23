@@ -213,6 +213,11 @@ exports.finishTest = functions
                             reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
                         }
 
+                        const unansweredQuestion = validateRequiredQuestions(questions)
+                        if (unansweredQuestion != -1) {
+                            reject(new functions.https.HttpsError('failed-precondition', `${unansweredQuestion}: question should be answered`))
+                        }
+
                         const pointsPerQuestion = calculatePoints(questions, answersCorrect)
 
                         testRef.collection("private").doc("results").update({ pointsPerQuestion: pointsPerQuestion }).then((_1) => {
@@ -358,6 +363,7 @@ function validateQuestionFields(question) {
         && isString(question.description)
         && isString(question.image)
         && isString(question.type)
+        && isBoolean(question.isRequired)
         && isString(question.enteredAnswer)
         && isNumber(question.pointsMax)
         && isNumber(question.pointsEarned)
@@ -369,6 +375,23 @@ function validateAnswerFields(answer) {
 
 function validateGradeFields(grade) {
     return isString(grade.grade) && isNumber(grade.pointsFrom) && isNumber(grade.pointsTo)
+}
+
+// returns number of unanswered question or -1 if all required questions answered
+function validateRequiredQuestions(questions) {
+    for (let i = 0; i < questions.length; ++i) {
+        let isSelected = false
+
+        for (let j = 0; j < questions[i].answers.length; ++j) {
+            if (questions[i].answers[j].isSelected) {
+                isSelected = true
+                break
+            }
+        }
+
+        if (questions[i].isRequired && !isSelected) return i
+    }
+    return -1
 }
 
 function calculatePoints(questions, answersCorrect) {
