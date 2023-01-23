@@ -45,6 +45,7 @@ class QuestionViewModel @Inject constructor(
                 explanation = explanation,
                 image = image,
                 type = type,
+                isRequired = isRequired,
                 answers = answers,
                 pointsMax = pointsMax,
                 pointsEarned = pointsEarned

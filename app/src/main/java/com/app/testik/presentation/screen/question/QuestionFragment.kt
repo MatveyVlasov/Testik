@@ -112,6 +112,8 @@ class QuestionFragment(
                 if (isReviewMode) getString(R.string.points_earned, data.pointsEarned, data.pointsMax)
                 else getString(R.string.num, data.pointsMax)
 
+            tvRequired.isVisible = data.isRequired
+
             tvTitle.text = data.title
             tvDescription.text = data.description
             tvType.setText(data.type.instruction)

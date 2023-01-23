@@ -74,6 +74,7 @@ fun QuestionModel.toDto() =
         description = description,
         image = image,
         type = type.title,
+        isRequired = isRequired,
         answers = answers.map { it.toDto() },
         enteredAnswer = enteredAnswer,
         pointsMax = pointsMax,

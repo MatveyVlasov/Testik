@@ -14,6 +14,7 @@ data class QuestionDelegateItem(
     val explanation: String = "",
     val image: String = "",
     val type: QuestionType = QuestionType.SINGLE_CHOICE,
+    val isRequired: Boolean = false,
     val answers: List<AnswerDelegateItem> = emptyList(),
     val enteredAnswer: String = "",
     val pointsMax: Int = 1,

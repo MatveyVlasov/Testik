@@ -57,6 +57,7 @@ class QuestionEditViewModel @Inject constructor(
                 points = pointsMax.toString(),
                 image = image,
                 type = type,
+                isRequired = isRequired,
                 answers = answers
             )
             oldScreenUIState = screenState
@@ -102,6 +103,11 @@ class QuestionEditViewModel @Inject constructor(
 
 
         updateScreenState(screenUIState.copy(type = type, answers = answers))
+    }
+
+    fun onRequiredChanged(isRequired: Boolean) {
+        if (isRequired == screenUIState.isRequired) return
+        updateScreenState(screenUIState.copy(isRequired = isRequired))
     }
 
     fun onAnswerTextChanged(answer: AnswerDelegateItem, text: String) {

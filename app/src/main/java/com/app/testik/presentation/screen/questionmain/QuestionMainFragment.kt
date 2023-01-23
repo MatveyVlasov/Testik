@@ -158,6 +158,10 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
             is QuestionMainScreenEvent.Loading -> Unit
             is QuestionMainScreenEvent.NavigateToResults -> navigateToResults(event.recordId)
             is QuestionMainScreenEvent.NavigateToTestsPassed -> navigateToTestsPassed()
+            is QuestionMainScreenEvent.UnansweredQuestion -> {
+                goToQuestion(event.num)
+                showSnackbar(message = getString(R.string.question_unanswered, event.num + 1))
+            }
         }
         setLoadingState(event is QuestionMainScreenEvent.Loading)
     }

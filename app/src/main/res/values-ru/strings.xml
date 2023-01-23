@@ -55,6 +55,7 @@
     <string name="test_already_finished">Тест уже завершён</string>
     <string name="incorrect_questions_number">Произошла ошибка (#100)</string>
     <string name="invalid_data_type">Произошла ошибка (#101)</string>
+    <string name="question_unanswered">Вы должны ответить на вопрос № %d</string>
 
     <string name="registration">Регистрация</string>
     <string name="repeat_password">Повторите пароль</string>
@@ -178,6 +179,8 @@
     <string name="type">Тип</string>
     <string name="single_choice">Одиночный выбор</string>
     <string name="multiple_choice">Множественный выбор</string>
+    <string name="required_question">Обязательный вопрос</string>
+    <string name="required_question_info">(обязательный вопрос)</string>
 
     <string name="single_choice_instruction">Выберите один ответ:</string>
     <string name="multiple_choice_instruction">Выберите один или несколько ответов:</string>

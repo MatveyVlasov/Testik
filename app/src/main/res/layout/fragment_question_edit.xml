@@ -151,6 +151,26 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <LinearLayout
+                    android:id="@+id/llRequired"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvRequired"
+                        style="@style/SwitchTextView"
+                        android:text="@string/required_question" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchRequired"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilInvisible"
                     style="@style/CustomTextInputLayout.LightGray"
@@ -161,6 +181,7 @@
                         style="@style/CustomTextInputEditText.LightGray" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

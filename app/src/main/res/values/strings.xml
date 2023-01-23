@@ -49,6 +49,7 @@
     <string name="test_already_finished">Test already finished</string>
     <string name="incorrect_questions_number">An error occurred (#100)</string>
     <string name="invalid_data_type">An error occurred (#101)</string>
+    <string name="question_unanswered">Question #%d should be answered</string>
 
     <string name="account_login">Account Login</string>
     <string name="language">Language</string>
@@ -183,6 +184,8 @@
     <string name="type">Type</string>
     <string name="single_choice">Single choice</string>
     <string name="multiple_choice">Multiple choice</string>
+    <string name="required_question">Required question</string>
+    <string name="required_question_info">(required question)</string>
 
     <string name="single_choice_instruction">Select one answer:</string>
     <string name="multiple_choice_instruction">Select one or more answers:</string>

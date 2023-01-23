@@ -27,6 +27,7 @@ fun QuestionEditScreenUIState.toQuestionItem() =
         explanation = explanation,
         image = image,
         type = type,
+        isRequired = isRequired,
         answers = answers,
         pointsMax = points.toIntOrZero(),
     )

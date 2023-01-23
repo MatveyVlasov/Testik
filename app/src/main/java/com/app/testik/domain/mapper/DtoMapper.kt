@@ -95,6 +95,7 @@ fun QuestionDto.toDomain(answersCorrect: List<AnswerCorrectDto>? = null, explana
         explanation = explanation,
         image = image,
         type = type.toQuestionType(),
+        isRequired = isRequired,
         answers = answers.mapIndexed { index, item ->
             item.toDomain(
                 type = type.toQuestionType(),

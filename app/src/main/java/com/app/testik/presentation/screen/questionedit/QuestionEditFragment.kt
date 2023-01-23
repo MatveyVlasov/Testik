@@ -123,6 +123,8 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             etDescription.addTextChangedListener { viewModel.onDescriptionChanged(it.toString()) }
             etExplanation.addTextChangedListener { viewModel.onExplanationChanged(it.toString()) }
             etPoints.addTextChangedListener { viewModel.onPointsChanged(it.toString()) }
+
+            switchRequired.setOnCheckedChangeListener { _, isChecked -> viewModel.onRequiredChanged(isChecked) }
         }
     }
 
@@ -162,6 +164,8 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             if (!etExplanation.isFocused) etExplanation.setText(data.explanation)
             if (!etPoints.isFocused) etPoints.setText(data.points)
             if (!etType.isFocused) etType.setText(data.type.description)
+
+            switchRequired.isChecked = data.isRequired
 
             tilTitle.error = getStringOrNull(data.titleError)
             tilDescription.error = getStringOrNull(data.descriptionError)

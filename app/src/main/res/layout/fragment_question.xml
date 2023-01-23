@@ -41,14 +41,27 @@
         <TextView
             android:id="@+id/tvPointsData"
             style="@style/CustomTextView.BlueDark"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:textSize="16sp"
             app:layout_constraintTop_toTopOf="@id/tvPoints"
             app:layout_constraintStart_toEndOf="@id/tvPoints"
-            app:layout_constraintEnd_toEndOf="parent"
             tools:text="1" />
+
+        <TextView
+            android:id="@+id/tvRequired"
+            style="@style/CustomTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textSize="16sp"
+            android:textColor="@color/purple_dark"
+            android:text="@string/required_question_info"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/tvPointsData"
+            app:layout_constraintStart_toEndOf="@id/tvPointsData"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/tvTitle"

@@ -14,6 +14,7 @@ import com.app.testik.presentation.model.AnswerDelegateItem
 import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenEvent
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenUIState
+import com.app.testik.util.toIntOrZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -135,6 +136,10 @@ class QuestionMainViewModel @Inject constructor(
             }
             msg.contains("invalid data type") -> {
                 emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.invalid_data_type))
+            }
+            msg.contains("should be answered") -> {
+                val questionNum = msg.takeWhile { c -> c != ':' }.toIntOrZero()
+                emitEvent(QuestionMainScreenEvent.UnansweredQuestion(questionNum))
             }
             else -> emitEvent(QuestionMainScreenEvent.ShowSnackbar(error))
         }
