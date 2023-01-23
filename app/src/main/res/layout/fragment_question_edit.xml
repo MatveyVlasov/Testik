@@ -106,6 +106,22 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilExplanation"
+                    style="@style/CustomTextInputLayout.LightGray"
+                    android:hint="@string/explanation_optional"
+                    app:startIconDrawable="@drawable/ic_description"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@integer/description_max_length"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etExplanation"
+                        style="@style/CustomTextInputEditText.LightGray"
+                        android:inputType="textMultiLine" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilPoints"
                     style="@style/CustomTextInputLayout.LightGray"
                     android:hint="@string/points"

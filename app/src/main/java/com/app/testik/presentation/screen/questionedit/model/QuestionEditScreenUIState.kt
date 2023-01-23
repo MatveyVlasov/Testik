@@ -9,11 +9,13 @@ data class QuestionEditScreenUIState(
     val testId: String = "",
     val title: String = "",
     val description: String = "",
+    val explanation: String = "",
     val points: String = "",
     val image: String = "",
     val canDiscard: Boolean = true,
     val type: QuestionType = QuestionType.SINGLE_CHOICE,
     val answers: List<AnswerDelegateItem> = emptyList(),
     @StringRes val titleError: Int? = null,
-    @StringRes val descriptionError: Int? = null
+    @StringRes val descriptionError: Int? = null,
+    @StringRes val explanationError: Int? = null
 )

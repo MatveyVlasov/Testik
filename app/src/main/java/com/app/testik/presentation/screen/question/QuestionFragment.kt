@@ -115,6 +115,9 @@ class QuestionFragment(
             tvTitle.text = data.title
             tvDescription.text = data.description
             tvType.setText(data.type.instruction)
+
+            llExplanation.isVisible = isReviewMode && data.explanation.isNotEmpty()
+            tvExplanationData.text = data.explanation
         }
 
         loadImage(question.image)

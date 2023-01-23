@@ -125,6 +125,8 @@
     <string name="description">Описание</string>
     <string name="description_optional">Описание (необязательно)</string>
     <string name="description_too_long">Описание слишком длинное</string>
+    <string name="explanation_optional">Объяснение ответа (необязательно)</string>
+    <string name="explanation_too_long">Объснение слишком длинное</string>
     <string name="points">Баллов</string>
     <string name="category">Категория</string>
     <string name="select_category">Выберите категорию</string>
@@ -165,6 +167,7 @@
 
     <string name="question_settings">Настройки вопроса</string>
     <string name="question_image">Изображение к вопросу</string>
+    <string name="explanation">Объяснение</string>
     <string name="discard_changes">Сбросить изменения</string>
 
     <string name="answer_option">Вариант ответа</string>

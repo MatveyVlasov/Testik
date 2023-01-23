@@ -105,6 +105,45 @@
             tools:itemCount="3"
             tools:listitem="@layout/item_single_choice" />
 
+        <LinearLayout
+            android:id="@+id/llExplanation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_rect_10_dp"
+            android:backgroundTint="@color/purple_light"
+            app:layout_constraintTop_toBottomOf="@id/rvAnswers"
+            app:layout_constraintBottom_toTopOf="@id/btnSubmit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tvExplanation"
+                style="@style/TitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/explanation"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tvExplanationData"
+                style="@style/CustomTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:layout_marginHorizontal="8dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="The correct answer is A because it cannot be wrong" />
+
+        </LinearLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSubmit"
             style="@style/CustomButton.PurpleDark"
@@ -114,7 +153,7 @@
             android:layout_marginBottom="@dimen/margin_bottom"
             android:text="@string/submit"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/rvAnswers"
+            app:layout_constraintTop_toBottomOf="@id/llExplanation"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

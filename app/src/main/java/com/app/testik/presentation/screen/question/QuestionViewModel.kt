@@ -42,6 +42,7 @@ class QuestionViewModel @Inject constructor(
                 testId = testId,
                 title = title,
                 description = description,
+                explanation = explanation,
                 image = image,
                 type = type,
                 answers = answers,

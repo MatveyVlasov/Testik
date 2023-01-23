@@ -8,6 +8,7 @@ data class QuestionScreenUIState(
     val testId: String = "",
     val title: String = "",
     val description: String = "",
+    val explanation: String = "",
     val image: String = "",
     val type: QuestionType = QuestionType.SINGLE_CHOICE,
     val answers: List<AnswerDelegateItem> = emptyList(),

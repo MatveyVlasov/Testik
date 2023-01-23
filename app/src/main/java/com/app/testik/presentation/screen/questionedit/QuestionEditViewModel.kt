@@ -53,6 +53,7 @@ class QuestionEditViewModel @Inject constructor(
                 testId = testId,
                 title = title,
                 description = description,
+                explanation = explanation,
                 points = pointsMax.toString(),
                 image = image,
                 type = type,
@@ -71,6 +72,11 @@ class QuestionEditViewModel @Inject constructor(
     fun onDescriptionChanged(description: String) {
         if (description == screenUIState.description) return
         updateScreenState(screenUIState.copy(description = description, descriptionError = null))
+    }
+
+    fun onExplanationChanged(explanation: String) {
+        if (explanation == screenUIState.explanation) return
+        updateScreenState(screenUIState.copy(explanation = explanation, explanationError = null))
     }
 
     fun onPointsChanged(points: String) {
@@ -174,12 +180,18 @@ class QuestionEditViewModel @Inject constructor(
     }
 
     fun validateData(): Boolean {
-        return checkDescriptionLength() && checkTitleNotBlank() && checkCorrectAnswers()
+        return checkDescriptionLength() && checkExplanationLength() && checkTitleNotBlank() && checkCorrectAnswers()
     }
 
     private fun checkDescriptionLength(): Boolean {
         return (screenUIState.description.length <= MAX_DESCRIPTION_LENGTH).also {
             if (!it) updateScreenState(screenUIState.copy(descriptionError = R.string.description_too_long))
+        }
+    }
+
+    private fun checkExplanationLength(): Boolean {
+        return (screenUIState.explanation.length <= MAX_DESCRIPTION_LENGTH).also {
+            if (!it) updateScreenState(screenUIState.copy(explanationError = R.string.explanation_too_long))
         }
     }
 

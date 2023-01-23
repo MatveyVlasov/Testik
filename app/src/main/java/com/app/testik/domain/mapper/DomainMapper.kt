@@ -62,7 +62,8 @@ fun TestPassedModel.toDto() =
 fun List<QuestionModel>.toDto() =
     TestQuestionsDto(
         questions = map { it.toDto() },
-        answersCorrect = map { it.answers.toDto() }
+        answersCorrect = map { it.answers.toDto() },
+        explanations = map { it.explanation }
     )
 
 fun QuestionModel.toDto() =
