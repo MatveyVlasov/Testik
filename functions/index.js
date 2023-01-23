@@ -100,6 +100,7 @@ exports.startTest = functions
                         const data = docQuestions.data()
                         const questions = data.questions
                         const answersCorrect = data.answersCorrect
+                        const explanations = data.explanations
 
                         if (questions.length == 0) {
                             reject(new functions.https.HttpsError('failed-precondition', 'No questions'))
@@ -110,6 +111,9 @@ exports.startTest = functions
                             }
                             for (let i = 0; i < questions.length; ++i) {
                                 if (!validateQuestionFields(questions[i])) throw new Error
+                            }
+                            for (let i = 0; i < explanations.length; ++i) {
+                                if (!isString(explanations[i])) throw new Error
                             }
                         } catch (err) {
                             reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
@@ -136,7 +140,11 @@ exports.startTest = functions
                         db.collection("testsPassed").add(newData).then((ref) => {
                             ref.get().then((testPassed) => {
 
-                                ref.collection("private").doc("results").set({ testId: testId, answersCorrect: answersCorrect }).then((_1) => {
+                                ref.collection("private").doc("results").set({
+                                    testId: testId,
+                                    answersCorrect: answersCorrect,
+                                    explanations: explanations,
+                                }).then((_1) => {
                                     resolve({
                                         recordId: testPassed.id,
                                     })
