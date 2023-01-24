@@ -352,6 +352,18 @@ function isBoolean(field) {
     return typeof field == "boolean"
 }
 
+function isStringOrUndefined(field) {
+    return field == undefined || typeof field == "string"
+}
+
+function isNumberOrUndefined(field) {
+    return field == undefined || typeof field == "number"
+}
+
+function isBooleanOrUndefined(field) {
+    return field == undefined || typeof field == "boolean"
+}
+
 function validateQuestionFields(question) {
     for (let i = 0; i < question.answers.length; ++i) {
         if (!validateAnswerFields(question.answers[i])) return false
@@ -370,7 +382,7 @@ function validateQuestionFields(question) {
 }
 
 function validateAnswerFields(answer) {
-    return isString(answer.text) && isBoolean(answer.isSelected)
+    return isStringOrUndefined(answer.text) && isBooleanOrUndefined(answer.isSelected)
 }
 
 function validateGradeFields(grade) {
@@ -380,6 +392,8 @@ function validateGradeFields(grade) {
 // returns number of unanswered question or -1 if all required questions answered
 function validateRequiredQuestions(questions) {
     for (let i = 0; i < questions.length; ++i) {
+        if (questions[i].enteredAnswer.length > 0) continue
+
         let isSelected = false
 
         for (let j = 0; j < questions[i].answers.length; ++j) {
@@ -398,11 +412,37 @@ function calculatePoints(questions, answersCorrect) {
     const pointsPerQuestion = []
 
     for (let i = 0; i < questions.length; ++i) {
-        let isCorrect = true
-        for (let j = 0; j < questions[i].answers.length; ++j) {
-            isCorrect = isCorrect && answersCorrect[i].answers[j].isCorrect == questions[i].answers[j].isSelected
+        const pointsMax = questions[i].pointsMax
+        let pointsEarned = 0
+
+        switch (questions[i].type) {
+        case 'short answer': {
+            let enteredAnswer = questions[i].enteredAnswer
+            const isMatch = questions[i].isMatch
+            const isCaseSensitive = questions[i].isCaseSensitive
+
+            if (!isCaseSensitive) enteredAnswer = enteredAnswer.toLowerCase()
+
+            for (let j = 0; j < answersCorrect[i].answers.length; ++j) {
+                let answer = answersCorrect[i].answers[j].text
+                if (!isCaseSensitive) answer = answer.toLowerCase()
+
+                if (isMatch && enteredAnswer == answer || !isMatch && enteredAnswer.includes(answer)) {
+                    pointsEarned = pointsMax
+                }
+            }
+            break
         }
-        pointsPerQuestion.push(isCorrect? questions[i].pointsMax : 0)
+        default: {
+            let isCorrect = true
+            for (let j = 0; j < questions[i].answers.length; ++j) {
+                isCorrect = isCorrect && answersCorrect[i].answers[j].isCorrect == questions[i].answers[j].isSelected
+            }
+            if (isCorrect) pointsEarned = pointsMax
+        }
+        }
+
+        pointsPerQuestion.push(pointsEarned)
     }
     return pointsPerQuestion
 }
