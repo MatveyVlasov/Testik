@@ -13,6 +13,9 @@ data class QuestionScreenUIState(
     val type: QuestionType = QuestionType.SINGLE_CHOICE,
     val isRequired: Boolean = false,
     val answers: List<AnswerDelegateItem> = emptyList(),
+    val enteredAnswer: String = "",
+    val isMatch: Boolean = false,
+    val isCaseSensitive: Boolean = false,
     val pointsMax: Int = 1,
     val pointsEarned: Int = 0
 )

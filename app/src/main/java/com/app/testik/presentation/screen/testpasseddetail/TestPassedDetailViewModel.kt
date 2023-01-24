@@ -4,12 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.testik.R
-import com.app.testik.domain.model.TestPassedModel
-import com.app.testik.domain.model.onError
-import com.app.testik.domain.model.onSuccess
+import com.app.testik.domain.model.*
 import com.app.testik.domain.usecase.*
 import com.app.testik.presentation.mapper.toQuestionItem
 import com.app.testik.presentation.model.*
+import com.app.testik.presentation.model.answer.ShortAnswerDelegateItem
 import com.app.testik.presentation.screen.testpasseddetail.mapper.toUIState
 import com.app.testik.presentation.screen.testpasseddetail.model.TestPassedDetailScreenEvent
 import com.app.testik.presentation.screen.testpasseddetail.model.TestPassedDetailScreenUIState
@@ -173,14 +172,23 @@ class TestPassedDetailViewModel @Inject constructor(
 
         val newList = mutableListOf<QuestionDelegateItem>()
         for ((index, question) in questions.withIndex()) {
+            val newQuestion = when (question.type) {
+                QuestionType.SHORT_ANSWER -> {
+                    question.copy(
+                        answers = results.answersCorrect[index].map { ShortAnswerDelegateItem(text = it.text) }
+                    )
+                }
+                else -> {
+                    question.copy(
+                        answers = question.answers.mapIndexed { itemIndex, item ->
+                            item.copy(isCorrect = results.answersCorrect[index][itemIndex].isCorrect)
+                        }
+                    )
+                }
+            }
+
             newList.add(
-                question.copy(
-                    answers = question.answers.mapIndexed { itemIndex, item ->
-                        item.copy(isCorrect = results.answersCorrect[index][itemIndex].isCorrect)
-                    },
-                    pointsEarned = results.pointsPerQuestion[index],
-                    explanation = results.explanations[index]
-                )
+                newQuestion.copy(pointsEarned = results.pointsPerQuestion[index], explanation = results.explanations[index])
             )
         }
         return newList

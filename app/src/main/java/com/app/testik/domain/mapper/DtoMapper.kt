@@ -86,8 +86,25 @@ fun TestQuestionsDto.toDomain() =
         item.toDomain(answersCorrect = answersCorrect[index].answers, explanation = explanations[index])
     }
 
-fun QuestionDto.toDomain(answersCorrect: List<AnswerCorrectDto>? = null, explanation: String = "") =
-    QuestionModel(
+fun QuestionDto.toDomain(
+    answersCorrect: List<AnswerCorrectDto>? = null,
+    explanation: String = ""
+): QuestionModel {
+    val answers = when(type.toQuestionType()) {
+        QuestionType.SHORT_ANSWER -> {
+            answersCorrect?.map { AnswerModel(type = QuestionType.SHORT_ANSWER, text = it.text) } ?: emptyList()
+        }
+        else -> {
+            answers.mapIndexed { index, item ->
+                item.toDomain(
+                    type = type.toQuestionType(),
+                    isCorrect = answersCorrect?.get(index)?.isCorrect ?: false
+                )
+            }
+        }
+    }
+
+    return QuestionModel(
         id = id,
         testId = testId,
         title = title,
@@ -96,16 +113,14 @@ fun QuestionDto.toDomain(answersCorrect: List<AnswerCorrectDto>? = null, explana
         image = image,
         type = type.toQuestionType(),
         isRequired = isRequired,
-        answers = answers.mapIndexed { index, item ->
-            item.toDomain(
-                type = type.toQuestionType(),
-                isCorrect = answersCorrect?.get(index)?.isCorrect ?: false
-            )
-        },
+        answers = answers,
         enteredAnswer = enteredAnswer,
+        isMatch = isMatch,
+        isCaseSensitive = isCaseSensitive,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned
     )
+}
 
 fun AnswerDto.toDomain(type: QuestionType, isCorrect: Boolean) =
     AnswerModel(

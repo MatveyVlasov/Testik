@@ -13,6 +13,10 @@ data class QuestionDto(
     val isRequired: Boolean = false,
     val answers: List<AnswerDto> = emptyList(),
     val enteredAnswer: String = "",
+    @get:PropertyName("isMatch")
+    val isMatch: Boolean = false,
+    @get:PropertyName("isCaseSensitive")
+    val isCaseSensitive: Boolean = false,
     val pointsMax: Int = 1,
     val pointsEarned: Int = 0
 )

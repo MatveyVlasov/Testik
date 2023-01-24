@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.app.testik.R
 import com.app.testik.databinding.FragmentQuestionBinding
+import com.app.testik.domain.model.QuestionType
 import com.app.testik.presentation.adapter.answer.MultipleChoiceDelegateAdapter
+import com.app.testik.presentation.adapter.answer.ShortAnswerDelegateAdapter
 import com.app.testik.presentation.adapter.answer.SingleChoiceDelegateAdapter
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.AnswerDelegateItem
@@ -29,6 +32,12 @@ class QuestionFragment(
     private val isReviewMode: Boolean
 ) : BaseFragment<FragmentQuestionBinding>() {
 
+    val answers: List<AnswerDelegateItem>
+        get() = viewModel.screenUIState.answers
+
+    val enteredAnswer: String
+        get() = viewModel.screenUIState.enteredAnswer
+
     private val viewModel: QuestionViewModel by viewModels()
 
     private val answersAdapter by lazy {
@@ -45,6 +54,7 @@ class QuestionFragment(
                     isReviewMode = isReviewMode
                 )
             )
+            .add(ShortAnswerDelegateAdapter())
             .build()
     }
 
@@ -60,8 +70,6 @@ class QuestionFragment(
         if (savedInstanceState == null) viewModel.updateQuestion(question)
     }
 
-    fun getAnswers(): List<AnswerDelegateItem> = viewModel.screenUIState.answers
-
     private fun initViews() {
 
         setupBottomNavigation(false)
@@ -75,6 +83,8 @@ class QuestionFragment(
             ivImage.setOnClickListener {
                 viewImage(image = viewModel.screenUIState.image, title = R.string.question_image)
             }
+
+            etAnswer.addTextChangedListener { viewModel.onAnswerChanged(it.toString()) }
         }
     }
 
@@ -117,6 +127,26 @@ class QuestionFragment(
             tvTitle.text = data.title
             tvDescription.text = data.description
             tvType.setText(data.type.instruction)
+
+            val isShortAnswerType = data.type == QuestionType.SHORT_ANSWER
+            rvAnswers.isVisible = !isShortAnswerType || isReviewMode
+            tilAnswer.isVisible = isShortAnswerType
+            etAnswer.isActivated = data.pointsEarned > 0
+            etAnswer.isEnabled = !isReviewMode
+            if (isReviewMode) {
+                etAnswer.setText(data.enteredAnswer)
+            }
+            tvCorrectAnswers.isVisible = isShortAnswerType && isReviewMode
+
+            if (isShortAnswerType) {
+                val msg = when {
+                    data.isMatch && !data.isCaseSensitive -> R.string.correct_answers
+                    data.isMatch && data.isCaseSensitive -> R.string.correct_answers_case
+                    !data.isMatch && !data.isCaseSensitive -> R.string.correct_answers_contains
+                    else -> R.string.correct_answers_contains_case
+                }
+                tvCorrectAnswers.setText(msg)
+            }
 
             llExplanation.isVisible = isReviewMode && data.explanation.isNotEmpty()
             tvExplanationData.text = data.explanation

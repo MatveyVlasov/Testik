@@ -66,8 +66,13 @@ fun List<QuestionModel>.toDto() =
         explanations = map { it.explanation }
     )
 
-fun QuestionModel.toDto() =
-    QuestionDto(
+fun QuestionModel.toDto(): QuestionDto {
+    val answers = when (type) {
+        QuestionType.SHORT_ANSWER -> emptyList()
+        else -> answers.map { it.toDto() }
+    }
+
+    return QuestionDto(
         id = id,
         testId = testId,
         title = title,
@@ -75,11 +80,14 @@ fun QuestionModel.toDto() =
         image = image,
         type = type.title,
         isRequired = isRequired,
-        answers = answers.map { it.toDto() },
+        answers = answers,
         enteredAnswer = enteredAnswer,
+        isMatch = isMatch,
+        isCaseSensitive = isCaseSensitive,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned
     )
+}
 
 fun List<AnswerModel>.toDto() =
     AnswersCorrectDto(map { it.toDtoCorrect() })

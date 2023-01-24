@@ -6,6 +6,7 @@ import com.app.testik.domain.model.QuestionType
 import com.app.testik.presentation.model.AnswerDelegateItem
 import com.app.testik.presentation.model.QuestionDelegateItem
 import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
+import com.app.testik.presentation.model.answer.ShortAnswerDelegateItem
 import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 
 fun QuestionModel.toQuestionItem() =
@@ -20,6 +21,8 @@ fun QuestionModel.toQuestionItem() =
         isRequired = isRequired,
         answers = answers.map { it.toAnswerItem() },
         enteredAnswer = enteredAnswer,
+        isMatch = isMatch,
+        isCaseSensitive = isCaseSensitive,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned
     )
@@ -36,6 +39,8 @@ fun QuestionDelegateItem.toDomain() =
         isRequired = isRequired,
         answers = answers.map { it.toDomain() },
         enteredAnswer = enteredAnswer,
+        isMatch = isMatch,
+        isCaseSensitive = isCaseSensitive,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned
     )
@@ -54,6 +59,8 @@ fun AnswerModel.toAnswerItem(): AnswerDelegateItem {
                 isCorrect = isCorrect,
                 isSelected = isSelected
             )
+        QuestionType.SHORT_ANSWER -> ShortAnswerDelegateItem(text = text)
+
     }
 }
 
@@ -71,6 +78,7 @@ fun AnswerDelegateItem.toDomain(): AnswerModel {
                 isCorrect = isCorrect,
                 isSelected = isSelected
             )
+        is ShortAnswerDelegateItem -> AnswerModel(text = text)
         else -> AnswerModel(text = text)
     }
 }

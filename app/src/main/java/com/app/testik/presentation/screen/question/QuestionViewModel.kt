@@ -9,6 +9,7 @@ import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
 import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 import com.app.testik.presentation.screen.question.model.QuestionScreenEvent
 import com.app.testik.presentation.screen.question.model.QuestionScreenUIState
+import com.app.testik.util.removeExtraSpaces
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,11 +48,19 @@ class QuestionViewModel @Inject constructor(
                 type = type,
                 isRequired = isRequired,
                 answers = answers,
+                enteredAnswer = enteredAnswer,
+                isMatch = isMatch,
+                isCaseSensitive = isCaseSensitive,
                 pointsMax = pointsMax,
                 pointsEarned = pointsEarned
             )
             updateScreenState(screenState)
         }
+    }
+
+    fun onAnswerChanged(enteredAnswer: String) {
+        if (enteredAnswer == screenUIState.enteredAnswer) return
+        updateScreenState(screenUIState.copy(enteredAnswer = enteredAnswer.removeExtraSpaces()))
     }
 
     fun onSelectClick(answer: SingleChoiceDelegateItem) {

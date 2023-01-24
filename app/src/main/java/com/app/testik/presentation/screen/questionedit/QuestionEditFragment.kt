@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,6 +20,7 @@ import com.app.testik.presentation.activity.ImageCropActivity
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.adapter.answer.MultipleChoiceEditDelegateAdapter
+import com.app.testik.presentation.adapter.answer.ShortAnswerEditDelegateAdapter
 import com.app.testik.presentation.adapter.answer.SingleChoiceEditDelegateAdapter
 import com.app.testik.presentation.screen.questionedit.mapper.toQuestionItem
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenEvent
@@ -62,6 +64,12 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
                     onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }
                 )
             )
+            .add(
+                ShortAnswerEditDelegateAdapter(
+                    onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
+                    onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }
+                )
+            )
             .build()
     }
 
@@ -96,6 +104,9 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
 
             rvAnswers.adapter = answersAdapter
             itemTouchHelper.attachToRecyclerView(rvAnswers)
+
+            tvMatch.addInfoIcon { navigateToInfo(getString(R.string.match_info)) }
+            tvCaseSensitive.addInfoIcon { navigateToInfo(getString(R.string.case_sensitive_info)) }
         }
     }
 
@@ -125,6 +136,8 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             etPoints.addTextChangedListener { viewModel.onPointsChanged(it.toString()) }
 
             switchRequired.setOnCheckedChangeListener { _, isChecked -> viewModel.onRequiredChanged(isChecked) }
+            switchMatch.setOnCheckedChangeListener { _, isChecked -> viewModel.onMatchChanged(isChecked) }
+            switchCaseSensitive.setOnCheckedChangeListener { _, isChecked -> viewModel.onCaseSensitiveChanged(isChecked) }
         }
     }
 
@@ -166,6 +179,12 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             if (!etType.isFocused) etType.setText(data.type.description)
 
             switchRequired.isChecked = data.isRequired
+            switchMatch.isChecked = data.isMatch
+            switchCaseSensitive.isChecked = data.isCaseSensitive
+
+            val isShortAnswerType = data.type == QuestionType.SHORT_ANSWER
+            llMatch.isVisible = isShortAnswerType
+            llCaseSensitive.isVisible = isShortAnswerType
 
             tilTitle.error = getStringOrNull(data.titleError)
             tilDescription.error = getStringOrNull(data.descriptionError)
@@ -283,5 +302,11 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             requestFocus()
             clearFocus()
         }
+    }
+
+    private fun navigateToInfo(text: String) {
+        navController.navigate(
+            QuestionEditFragmentDirections.toInfo(text)
+        )
     }
 }

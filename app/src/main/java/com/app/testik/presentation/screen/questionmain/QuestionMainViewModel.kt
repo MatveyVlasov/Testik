@@ -52,9 +52,9 @@ class QuestionMainViewModel @Inject constructor(
         getQuestions()
     }
 
-    fun updateAnswers(question: Int, answers: List<AnswerDelegateItem>) {
+    fun updateAnswers(question: Int, answers: List<AnswerDelegateItem>, enteredAnswer: String) {
         val questions = screenUIState.questions.toMutableList().also {
-            it[question] = it[question].copy(answers = answers)
+            it[question] = it[question].copy(answers = answers, enteredAnswer = enteredAnswer)
         }
         screenUIState = screenUIState.copy(questions = questions)
     }

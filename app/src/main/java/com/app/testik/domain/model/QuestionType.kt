@@ -17,5 +17,10 @@ enum class QuestionType(
         title = "multiple choice",
         description = R.string.multiple_choice,
         instruction = R.string.multiple_choice_instruction
+    ),
+    SHORT_ANSWER(
+        title = "short answer",
+        description = R.string.short_answer,
+        instruction = R.string.short_answer_instruction
     )
 }

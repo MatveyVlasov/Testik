@@ -195,7 +195,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
         if (viewModel.screenUIState.isReviewMode) return
         val adapter = binding.pager.adapter as? QuestionAdapter ?: return
         adapter.getFragment(pos).also {
-            viewModel.updateAnswers(pos, it.getAnswers())
+            viewModel.updateAnswers(question = pos, answers = it.answers, enteredAnswer = it.enteredAnswer)
         }
     }
 

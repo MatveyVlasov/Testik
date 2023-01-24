@@ -29,5 +29,7 @@ fun QuestionEditScreenUIState.toQuestionItem() =
         type = type,
         isRequired = isRequired,
         answers = answers,
+        isMatch = isMatch,
+        isCaseSensitive = isCaseSensitive,
         pointsMax = points.toIntOrZero(),
     )

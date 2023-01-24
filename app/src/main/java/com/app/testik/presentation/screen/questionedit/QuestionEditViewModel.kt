@@ -10,6 +10,7 @@ import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.model.copy
 import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
+import com.app.testik.presentation.model.answer.ShortAnswerDelegateItem
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenEvent
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenUIState
 import com.app.testik.util.Constants.MAX_DESCRIPTION_LENGTH
@@ -58,6 +59,8 @@ class QuestionEditViewModel @Inject constructor(
                 image = image,
                 type = type,
                 isRequired = isRequired,
+                isMatch = isMatch,
+                isCaseSensitive = isCaseSensitive,
                 answers = answers
             )
             oldScreenUIState = screenState
@@ -110,6 +113,16 @@ class QuestionEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(isRequired = isRequired))
     }
 
+    fun onMatchChanged(isMatch: Boolean) {
+        if (isMatch == screenUIState.isMatch) return
+        updateScreenState(screenUIState.copy(isMatch = isMatch))
+    }
+
+    fun onCaseSensitiveChanged(isCaseSensitive: Boolean) {
+        if (isCaseSensitive == screenUIState.isCaseSensitive) return
+        updateScreenState(screenUIState.copy(isCaseSensitive = isCaseSensitive))
+    }
+
     fun onAnswerTextChanged(answer: AnswerDelegateItem, text: String) {
         val item = screenUIState.answers.find { it.id == answer.id } ?: return
         if (text == item.text) return
@@ -146,6 +159,7 @@ class QuestionEditViewModel @Inject constructor(
             it.add(
                 when (screenUIState.type) {
                     QuestionType.MULTIPLE_CHOICE -> MultipleChoiceDelegateItem()
+                    QuestionType.SHORT_ANSWER -> ShortAnswerDelegateItem()
                     else -> SingleChoiceDelegateItem()
                 }
             )
@@ -214,6 +228,9 @@ class QuestionEditViewModel @Inject constructor(
             }
             QuestionType.MULTIPLE_CHOICE -> {
                 screenUIState.answers.filterIsInstance<MultipleChoiceDelegateItem>().any { it.isCorrect }
+            }
+            QuestionType.SHORT_ANSWER -> {
+                screenUIState.answers.isNotEmpty()
             }
         }
         return (hasCorrectAnswers).also {

@@ -11,6 +11,8 @@ data class QuestionModel(
     val isRequired: Boolean = false,
     val answers: List<AnswerModel> = emptyList(),
     val enteredAnswer: String = "",
+    val isMatch: Boolean = false,
+    val isCaseSensitive: Boolean = false,
     val pointsMax: Int = 1,
     val pointsEarned: Int = 0
 )

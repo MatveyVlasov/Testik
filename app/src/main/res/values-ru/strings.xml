@@ -171,19 +171,31 @@
     <string name="explanation">Объяснение</string>
     <string name="discard_changes">Сбросить изменения</string>
 
+    <string name="answer">Ответ</string>
     <string name="answer_option">Вариант ответа</string>
     <string name="answer_option_abc">Вариант %s</string>
     <string name="add_answer_option">Добавить вариант ответа</string>
     <string name="delete_answer_option">Удалить вариант ответа</string>
     <string name="no_correct_answers">Вопрос должен иметь хотя бы один правильный ответ</string>
     <string name="type">Тип</string>
-    <string name="single_choice">Одиночный выбор</string>
-    <string name="multiple_choice">Множественный выбор</string>
     <string name="required_question">Обязательный вопрос</string>
     <string name="required_question_info">(обязательный вопрос)</string>
+    <string name="match">Ответы должны совпадать</string>
+    <string name="match_info">Если активно, введённый ответ считается правильным, если полностью СОВПАДАЕТ с одним из вариантов ниже\n\nЕсли неактивно, введённый ответ считается правильным, если СОДЕРЖИТ один из вариантов ответа ниже</string>
+    <string name="case_sensitive">Ответы чувствительны к регистру</string>
+    <string name="case_sensitive_info">Если активно, при сравнении введённого ответа с правильными учитывается регистр букв</string>
+    <string name="correct_answers">Ответ должен совпадать с одним из перечисленных:</string>
+    <string name="correct_answers_contains">Ответ должен содержать один из перечисленных:</string>
+    <string name="correct_answers_case">Ответ должен совпадать с одним из перечисленных (чувствителен к регистру):</string>
+    <string name="correct_answers_contains_case">Ответ должен содержать один из перечисленных (чувствителен к регистру):</string>
+
+    <string name="single_choice">Одиночный выбор</string>
+    <string name="multiple_choice">Множественный выбор</string>
+    <string name="short_answer">Короткий ответ</string>
 
     <string name="single_choice_instruction">Выберите один ответ:</string>
     <string name="multiple_choice_instruction">Выберите один или несколько ответов:</string>
+    <string name="short_answer_instruction">Введите ответ:</string>
 
     <string name="more_tests">Больше тестов</string>
 

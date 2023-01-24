@@ -15,6 +15,8 @@ data class QuestionEditScreenUIState(
     val canDiscard: Boolean = true,
     val type: QuestionType = QuestionType.SINGLE_CHOICE,
     val isRequired: Boolean = false,
+    val isMatch: Boolean = false,
+    val isCaseSensitive: Boolean = false,
     val answers: List<AnswerDelegateItem> = emptyList(),
     @StringRes val titleError: Int? = null,
     @StringRes val descriptionError: Int? = null,

@@ -102,6 +102,43 @@
             app:layout_constraintTop_toBottomOf="@id/tvDescription"
             tools:text="Select one answer:" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilAnswer"
+            style="@style/CustomTextInputLayout.LightGray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginVertical="16dp"
+            android:hint="@string/answer"
+            android:visibility="gone"
+            app:errorEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/tvType"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAnswer"
+                style="@style/CustomTextInputEditText.LightGray"
+                android:textColor="@color/correct_wrong_selector"
+                android:inputType="textMultiLine"
+                android:maxLength="@integer/answer_max_length" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvCorrectAnswers"
+            style="@style/TitleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:text="@string/correct_answers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilAnswer" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAnswers"
             android:layout_width="match_parent"
@@ -111,7 +148,7 @@
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintVertical_bias="0"
-            app:layout_constraintTop_toBottomOf="@id/tvType"
+            app:layout_constraintTop_toBottomOf="@id/tvCorrectAnswers"
             app:layout_constraintBottom_toTopOf="@id/btnSubmit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
