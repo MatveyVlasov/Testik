@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="@dimen/card_radius">
+
+    <LinearLayout
+        android:id="@+id/llAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="8dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilAnswer"
+            style="@style/CustomTextInputLayout.LightGray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/text"
+            app:errorEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAnswer"
+                style="@style/CustomTextInputEditText.LightGray"
+                android:inputType="textMultiLine"
+                android:maxLength="@integer/answer_max_length" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="10dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginBottom="4dp"
+            app:dividerColor="@color/purple_dark" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilAnswerMatching"
+            style="@style/CustomTextInputLayout.LightGray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/text_matching"
+            app:errorEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAnswerMatching"
+                style="@style/CustomTextInputEditText.LightGray"
+                android:inputType="textMultiLine"
+                android:maxLength="@integer/answer_max_length" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="-8dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_delete_filled"
+            android:contentDescription="@string/delete_answer_option" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

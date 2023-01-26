@@ -2,11 +2,9 @@ package com.app.testik.presentation.screen.question
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.testik.presentation.model.AnswerDelegateItem
-import com.app.testik.presentation.model.QuestionDelegateItem
-import com.app.testik.presentation.model.UIState
-import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
-import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
+import com.app.testik.domain.model.QuestionType
+import com.app.testik.presentation.model.*
+import com.app.testik.presentation.model.answer.*
 import com.app.testik.presentation.screen.question.model.QuestionScreenEvent
 import com.app.testik.presentation.screen.question.model.QuestionScreenUIState
 import com.app.testik.util.removeExtraSpaces
@@ -38,7 +36,7 @@ class QuestionViewModel @Inject constructor(
 
     fun updateQuestion(question: QuestionDelegateItem) {
         question.apply {
-            val screenState = screenUIState.copy(
+            var screenState = screenUIState.copy(
                 id = id,
                 testId = testId,
                 title = title,
@@ -54,6 +52,17 @@ class QuestionViewModel @Inject constructor(
                 pointsMax = pointsMax,
                 pointsEarned = pointsEarned
             )
+
+            if (type == QuestionType.MATCHING) {
+                val answersMatching = mutableListOf<AnswerDelegateItem>()
+
+                screenState.answers.filterIsInstance<MatchingDelegateItem>().forEach {
+                    answersMatching.add(MatchingLeftDelegateItem(text = it.text))
+                    answersMatching.add(MatchingRightDelegateItem(textMatching = it.textMatching, textCorrect = it.textCorrect))
+                }
+
+                screenState = screenState.copy(answersMatching = answersMatching)
+            }
             updateScreenState(screenState)
         }
     }
@@ -79,6 +88,25 @@ class QuestionViewModel @Inject constructor(
             it[pos] = (it[pos] as MultipleChoiceDelegateItem).copy(isSelected = isChecked)
         }
         updateScreenState(screenUIState.copy(answers = answers))
+    }
+
+    fun moveAnswer(from: Int, to: Int) {
+        if (from % 2 == 0 || to % 2 == 0) return // left column not movable
+        val answersMatching = screenUIState.answersMatching.map { it }.toMutableList().also {
+            val item = it[from]
+            it[from] = it[to]
+            it[to] = item
+        }
+
+        val answers = screenUIState.answers.map { it }.filterIsInstance<MatchingDelegateItem>().toMutableList().also {
+            val from2 = from / 2
+            val to2 = to / 2
+            val item = it[from2]
+
+            it[from2] = it[from2].copy(textMatching = it[to2].textMatching)
+            it[to2] = it[to2].copy(textMatching = item.textMatching)
+        }
+        updateScreenState(screenUIState.copy(answersMatching = answersMatching, answers = answers))
     }
 
     private fun updateScreenState(state: QuestionScreenUIState) {

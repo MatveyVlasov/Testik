@@ -9,12 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.app.testik.R
 import com.app.testik.databinding.FragmentQuestionBinding
 import com.app.testik.domain.model.QuestionType
-import com.app.testik.presentation.adapter.answer.MultipleChoiceDelegateAdapter
-import com.app.testik.presentation.adapter.answer.ShortAnswerDelegateAdapter
-import com.app.testik.presentation.adapter.answer.SingleChoiceDelegateAdapter
+import com.app.testik.presentation.adapter.answer.*
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.AnswerDelegateItem
 import com.app.testik.presentation.model.QuestionDelegateItem
@@ -55,7 +55,13 @@ class QuestionFragment(
                 )
             )
             .add(ShortAnswerDelegateAdapter())
+            .add(MatchingLeftDelegateAdapter())
+            .add(MatchingRightDelegateAdapter(isReviewMode = isReviewMode))
             .build()
+    }
+
+    private val itemTouchHelper by lazy {
+        ItemTouchHelper(ItemTouchCallback { from, to -> viewModel.moveAnswer(from, to) })
     }
 
     override fun createBinding(inflater: LayoutInflater) = FragmentQuestionBinding.inflate(inflater)
@@ -94,7 +100,15 @@ class QuestionFragment(
                 launch {
                     viewModel.uiState.collect {
                         it.onSuccess { data ->
-                            answersAdapter.submitList(data.answers)
+                            if (data.type == QuestionType.MATCHING) {
+                                binding.rvAnswers.apply {
+                                    layoutManager = GridLayoutManager(requireContext(), 2)
+                                    if (!isReviewMode) itemTouchHelper.attachToRecyclerView(this)
+                                }
+                                answersAdapter.submitList(data.answersMatching)
+                            } else {
+                                answersAdapter.submitList(data.answers)
+                            }
                             renderUIState(data)
                         }
                     }

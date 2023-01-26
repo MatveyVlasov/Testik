@@ -189,13 +189,20 @@
     <string name="correct_answers_case">Ответ должен совпадать с одним из перечисленных (чувствителен к регистру):</string>
     <string name="correct_answers_contains_case">Ответ должен содержать один из перечисленных (чувствителен к регистру):</string>
 
+    <string name="text">Текст</string>
+    <string name="text_matching">Соответствующий текст</string>
+    <string name="move">Переместить</string>
+
+
     <string name="single_choice">Одиночный выбор</string>
     <string name="multiple_choice">Множественный выбор</string>
     <string name="short_answer">Короткий ответ</string>
+    <string name="matching">Соответствие</string>
 
     <string name="single_choice_instruction">Выберите один ответ:</string>
     <string name="multiple_choice_instruction">Выберите один или несколько ответов:</string>
     <string name="short_answer_instruction">Введите ответ:</string>
+    <string name="matching_instruction">Соотнесите предложения справа с предложениями слева:</string>
 
     <string name="more_tests">Больше тестов</string>
 

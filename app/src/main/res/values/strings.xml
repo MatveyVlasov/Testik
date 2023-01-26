@@ -194,13 +194,19 @@
     <string name="correct_answers_case">Answer should match one of these (case sensitive):</string>
     <string name="correct_answers_contains_case">Answer should contain one of these (case sensitive):</string>
 
+    <string name="text">Text</string>
+    <string name="text_matching">Matching text</string>
+    <string name="move">Move</string>
+
     <string name="single_choice">Single choice</string>
     <string name="multiple_choice">Multiple choice</string>
     <string name="short_answer">Short answer</string>
+    <string name="matching">Matching</string>
 
     <string name="single_choice_instruction">Select one answer:</string>
     <string name="multiple_choice_instruction">Select one or more answers:</string>
     <string name="short_answer_instruction">Enter answer:</string>
+    <string name="matching_instruction">Match sentences on the right with the ones on the left:</string>
 
     <string name="more_tests">More tests</string>
 

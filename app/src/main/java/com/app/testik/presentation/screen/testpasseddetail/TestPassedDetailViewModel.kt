@@ -8,7 +8,9 @@ import com.app.testik.domain.model.*
 import com.app.testik.domain.usecase.*
 import com.app.testik.presentation.mapper.toQuestionItem
 import com.app.testik.presentation.model.*
+import com.app.testik.presentation.model.answer.MatchingDelegateItem
 import com.app.testik.presentation.model.answer.ShortAnswerDelegateItem
+import com.app.testik.presentation.model.answer.copyCorrect
 import com.app.testik.presentation.screen.testpasseddetail.mapper.toUIState
 import com.app.testik.presentation.screen.testpasseddetail.model.TestPassedDetailScreenEvent
 import com.app.testik.presentation.screen.testpasseddetail.model.TestPassedDetailScreenUIState
@@ -176,6 +178,13 @@ class TestPassedDetailViewModel @Inject constructor(
                 QuestionType.SHORT_ANSWER -> {
                     question.copy(
                         answers = results.answersCorrect[index].map { ShortAnswerDelegateItem(text = it.text) }
+                    )
+                }
+                QuestionType.MATCHING -> {
+                    question.copy(
+                        answers = question.answers.mapIndexed { itemIndex, item ->
+                            (item as MatchingDelegateItem).copyCorrect(textCorrect = results.answersCorrect[index][itemIndex].textMatching)
+                        }
                     )
                 }
                 else -> {

@@ -92,7 +92,13 @@ fun QuestionDto.toDomain(
 ): QuestionModel {
     val answers = when(type.toQuestionType()) {
         QuestionType.SHORT_ANSWER -> {
-            answersCorrect?.map { AnswerModel(type = QuestionType.SHORT_ANSWER, text = it.text) } ?: emptyList()
+            answersCorrect?.map {
+                AnswerModel(
+                    type = QuestionType.SHORT_ANSWER,
+                    text = it.text,
+                    textMatching = it.textMatching
+                )
+            } ?: emptyList()
         }
         else -> {
             answers.mapIndexed { index, item ->
@@ -126,6 +132,7 @@ fun AnswerDto.toDomain(type: QuestionType, isCorrect: Boolean) =
     AnswerModel(
         type = type,
         text = text,
+        textMatching = textMatching,
         isCorrect = isCorrect,
         isSelected = isSelected
     )
@@ -133,6 +140,7 @@ fun AnswerDto.toDomain(type: QuestionType, isCorrect: Boolean) =
 fun AnswerCorrectDto.toDomain() =
     AnswerModel(
         text = text,
+        textMatching = textMatching,
         isCorrect = isCorrect
     )
 

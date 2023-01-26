@@ -22,5 +22,10 @@ enum class QuestionType(
         title = "short answer",
         description = R.string.short_answer,
         instruction = R.string.short_answer_instruction
+    ),
+    MATCHING(
+        title = "matching",
+        description = R.string.matching,
+        instruction = R.string.matching_instruction
     )
 }

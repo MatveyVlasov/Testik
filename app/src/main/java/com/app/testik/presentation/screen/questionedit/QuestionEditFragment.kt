@@ -17,6 +17,7 @@ import com.app.testik.R
 import com.app.testik.databinding.FragmentQuestionEditBinding
 import com.app.testik.domain.model.QuestionType
 import com.app.testik.presentation.activity.ImageCropActivity
+import com.app.testik.presentation.adapter.answer.MatchingEditDelegateAdapter
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.adapter.answer.MultipleChoiceEditDelegateAdapter
@@ -67,6 +68,13 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             .add(
                 ShortAnswerEditDelegateAdapter(
                     onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
+                    onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }
+                )
+            )
+            .add(
+                MatchingEditDelegateAdapter(
+                    onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
+                    onTextMatchingChanged = { item, text -> viewModel.onAnswerMatchingTextChanged(answer = item, text = text) },
                     onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }
                 )
             )

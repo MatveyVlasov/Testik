@@ -127,7 +127,6 @@ class GradingSystemViewModel @Inject constructor(
     }
 
     fun moveGrade(from: Int, to: Int) {
-        if (from == to) return
         val grades = screenUIState.grades.map { it }.toMutableList().also {
             val item = it[from]
             it.removeAt(from)

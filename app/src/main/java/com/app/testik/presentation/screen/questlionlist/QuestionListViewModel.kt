@@ -110,11 +110,10 @@ class QuestionListViewModel @Inject constructor(
     }
 
     fun moveQuestion(from: Int, to: Int) {
-        if (from == to) return
         val questions = screenUIState.questions.map { it }.toMutableList().also {
             val item = it[from]
-            it.removeAt(from)
-            it.add(to, item)
+            it[from] = it[to]
+            it[to] = item
         }
         updateScreenState(screenUIState.copy(questions = questions))
     }

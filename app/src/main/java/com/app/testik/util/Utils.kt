@@ -41,8 +41,6 @@ val randomId: String
 val timestamp: Long
     get() = System.currentTimeMillis()
 
-val Int.px get() = (this * Resources.getSystem().displayMetrics.density).toInt()
-
 fun Int?.orZero() = this ?: 0
 
 fun String.toIntOrZero() = this.toIntOrNull().orZero()
@@ -72,6 +70,8 @@ fun String.isEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches() && isNotBl
 fun Uri?.toAvatar() = toString().takeWhile { it != '=' }
 
 fun String.loadedFromServer() = startsWith("http")
+
+fun Int.toPx() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 fun Long.toDate(): String {
     SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault()).also {
@@ -223,7 +223,7 @@ fun TextView.addImage(
 @SuppressLint("SetTextI18n")
 fun TextView.addInfoIcon(onClick: () -> Unit) {
     val tag = "[ic_info]"
-    val imageSize = 16.px
+    val imageSize = 16.toPx()
 
     text = "$text $tag"
     addImage(

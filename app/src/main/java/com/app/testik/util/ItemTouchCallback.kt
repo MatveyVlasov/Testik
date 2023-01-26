@@ -17,7 +17,7 @@ class ItemTouchCallback(
         val from = viewHolder.absoluteAdapterPosition
         val to = target.absoluteAdapterPosition
 
-        onMove(from, to)
+        if (from != to) onMove(from, to)
         return true
     }
 

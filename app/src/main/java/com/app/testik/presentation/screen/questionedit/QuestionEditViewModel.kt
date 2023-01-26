@@ -6,11 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.app.testik.R
 import com.app.testik.domain.model.QuestionType
 import com.app.testik.presentation.model.AnswerDelegateItem
-import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 import com.app.testik.presentation.model.UIState
+import com.app.testik.presentation.model.answer.*
 import com.app.testik.presentation.model.copy
-import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
-import com.app.testik.presentation.model.answer.ShortAnswerDelegateItem
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenEvent
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenUIState
 import com.app.testik.util.Constants.MAX_DESCRIPTION_LENGTH
@@ -135,6 +133,18 @@ class QuestionEditViewModel @Inject constructor(
         emitEvent(QuestionEditScreenEvent.EnableDiscardButton)
     }
 
+    fun onAnswerMatchingTextChanged(answer: AnswerDelegateItem, text: String) {
+        val item = screenUIState.answers.find { it.id == answer.id } as? MatchingDelegateItem ?: return
+        if (text == item.textMatching) return
+
+        val pos = screenUIState.answers.indexOf(item)
+        val answers = screenUIState.answers.map { it }.toMutableList().also {
+            it[pos] = (it[pos] as MatchingDelegateItem).copyMatching(textMatching = text.removeExtraSpaces())
+        }
+        screenUIState = screenUIState.copy(answers = answers, canDiscard = true)
+        emitEvent(QuestionEditScreenEvent.EnableDiscardButton)
+    }
+
     fun onSelectClick(answer: SingleChoiceDelegateItem) {
         val answers = mutableListOf<AnswerDelegateItem>()
 
@@ -160,6 +170,7 @@ class QuestionEditViewModel @Inject constructor(
                 when (screenUIState.type) {
                     QuestionType.MULTIPLE_CHOICE -> MultipleChoiceDelegateItem()
                     QuestionType.SHORT_ANSWER -> ShortAnswerDelegateItem()
+                    QuestionType.MATCHING -> MatchingDelegateItem()
                     else -> SingleChoiceDelegateItem()
                 }
             )
@@ -175,7 +186,6 @@ class QuestionEditViewModel @Inject constructor(
     }
 
     fun moveAnswer(from: Int, to: Int) {
-        if (from == to) return
         val answers = screenUIState.answers.map { it }.toMutableList().also {
             val item = it[from]
             it.removeAt(from)
@@ -230,6 +240,9 @@ class QuestionEditViewModel @Inject constructor(
                 screenUIState.answers.filterIsInstance<MultipleChoiceDelegateItem>().any { it.isCorrect }
             }
             QuestionType.SHORT_ANSWER -> {
+                screenUIState.answers.isNotEmpty()
+            }
+            QuestionType.MATCHING -> {
                 screenUIState.answers.isNotEmpty()
             }
         }

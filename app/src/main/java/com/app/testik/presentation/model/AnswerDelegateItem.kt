@@ -1,6 +1,7 @@
 package com.app.testik.presentation.model
 
 import android.os.Parcelable
+import com.app.testik.presentation.model.answer.MatchingDelegateItem
 import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
 import com.app.testik.presentation.model.answer.ShortAnswerDelegateItem
 import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
@@ -24,6 +25,7 @@ fun AnswerDelegateItem.copy(text: String): AnswerDelegateItem {
         is SingleChoiceDelegateItem -> copy(text = text)
         is MultipleChoiceDelegateItem -> copy(text = text)
         is ShortAnswerDelegateItem -> copy(text = text)
+        is MatchingDelegateItem -> copy(text = text)
         else -> AnswerDelegateItem(id = id, text = text)
     }
 }
@@ -33,6 +35,7 @@ fun AnswerDelegateItem.copy(isCorrect: Boolean): AnswerDelegateItem {
         is SingleChoiceDelegateItem -> copy(isCorrect = isCorrect)
         is MultipleChoiceDelegateItem -> copy(isCorrect = isCorrect)
         is ShortAnswerDelegateItem -> copy()
+        is MatchingDelegateItem -> copy()
         else -> AnswerDelegateItem(id = id, text = text)
     }
 }

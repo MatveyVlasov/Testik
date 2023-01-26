@@ -95,12 +95,14 @@ fun List<AnswerModel>.toDto() =
 fun AnswerModel.toDto() =
     AnswerDto(
         text = text,
+        textMatching = textMatching,
         isSelected = isSelected
     )
 
 fun AnswerModel.toDtoCorrect() =
     AnswerCorrectDto(
         text = text,
+        textMatching = textMatching,
         isCorrect = isCorrect
     )
 
