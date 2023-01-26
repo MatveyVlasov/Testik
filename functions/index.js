@@ -108,6 +108,7 @@ exports.startTest = functions
                     if (questions.length == 0) {
                         return reject(new functions.https.HttpsError('failed-precondition', 'No questions'))
                     }
+
                     try {
                         for (let i = 0; i < grades.length; ++i) {
                             if (!validateGradeFields(grades[i])) throw new Error
@@ -120,6 +121,12 @@ exports.startTest = functions
                         }
                     } catch (err) {
                         return reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
+                    }
+
+                    for (let i = 0; i < questions.length; ++i) {
+                        switch (questions[i].type) {
+                        case 'matching': shuffleMatchingQuestion(questions[i])
+                        }
                     }
 
                     const newData = {
@@ -433,6 +440,14 @@ function calculatePoints(questions, answersCorrect) {
             }
             break
         }
+        case 'matching': {
+            let isCorrect = true
+            for (let j = 0; j < questions[i].answers.length; ++j) {
+                isCorrect = isCorrect && answersCorrect[i].answers[j].textMatching == questions[i].answers[j].textMatching
+            }
+            if (isCorrect) pointsEarned = pointsMax
+            break
+        }
         default: {
             let isCorrect = true
             for (let j = 0; j < questions[i].answers.length; ++j) {
@@ -454,4 +469,24 @@ function getGrade(grades, pointsEarned) {
         }
     }
     return ''
+}
+
+function shuffleMatchingQuestion(question) {
+    const textMatchingArray = []
+    for (let j = 0; j < question.answers.length; ++j) {
+        textMatchingArray.push(question.answers[j].textMatching)
+    }
+    shuffleArray(textMatchingArray)
+    for (let j = 0; j < question.answers.length; ++j) {
+        question.answers[j].textMatching = textMatchingArray[j]
+    }
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; --i) {
+        const j = Math.floor(Math.random() * (i + 1))
+        const temp = array[i]
+        array[i] = array[j]
+        array[j] = temp
+    }
 }
