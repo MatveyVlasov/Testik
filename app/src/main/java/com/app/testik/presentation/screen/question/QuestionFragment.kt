@@ -57,6 +57,7 @@ class QuestionFragment(
             .add(ShortAnswerDelegateAdapter())
             .add(MatchingLeftDelegateAdapter())
             .add(MatchingRightDelegateAdapter(isReviewMode = isReviewMode))
+            .add(OrderingDelegateAdapter(isReviewMode = isReviewMode))
             .build()
     }
 
@@ -107,6 +108,9 @@ class QuestionFragment(
                                 }
                                 answersAdapter.submitList(data.answersMatching)
                             } else {
+                                if (data.type == QuestionType.ORDERING && !isReviewMode) {
+                                    itemTouchHelper.attachToRecyclerView(binding.rvAnswers)
+                                }
                                 answersAdapter.submitList(data.answers)
                             }
                             renderUIState(data)

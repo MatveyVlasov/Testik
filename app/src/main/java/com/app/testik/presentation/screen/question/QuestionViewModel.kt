@@ -91,22 +91,34 @@ class QuestionViewModel @Inject constructor(
     }
 
     fun moveAnswer(from: Int, to: Int) {
-        if (from % 2 == 0 || to % 2 == 0) return // left column not movable
-        val answersMatching = screenUIState.answersMatching.map { it }.toMutableList().also {
+        if (screenUIState.type == QuestionType.MATCHING) {
+            if (from % 2 == 0 || to % 2 == 0) return // left column not movable
+
+            val answersMatching = screenUIState.answersMatching.map { it }.toMutableList().also {
+                val item = it[from]
+                it[from] = it[to]
+                it[to] = item
+            }
+
+            val answers = screenUIState.answers.map { it }.filterIsInstance<MatchingDelegateItem>()
+                .toMutableList().also {
+                val from2 = from / 2
+                val to2 = to / 2
+                val item = it[from2]
+
+                it[from2] = it[from2].copy(textMatching = it[to2].textMatching)
+                it[to2] = it[to2].copy(textMatching = item.textMatching)
+            }
+            updateScreenState(screenUIState.copy(answersMatching = answersMatching, answers = answers))
+            return
+        }
+
+        val answers = screenUIState.answers.map { it }.toMutableList().also {
             val item = it[from]
             it[from] = it[to]
             it[to] = item
         }
-
-        val answers = screenUIState.answers.map { it }.filterIsInstance<MatchingDelegateItem>().toMutableList().also {
-            val from2 = from / 2
-            val to2 = to / 2
-            val item = it[from2]
-
-            it[from2] = it[from2].copy(textMatching = it[to2].textMatching)
-            it[to2] = it[to2].copy(textMatching = item.textMatching)
-        }
-        updateScreenState(screenUIState.copy(answersMatching = answersMatching, answers = answers))
+        updateScreenState(screenUIState.copy(answers = answers))
     }
 
     private fun updateScreenState(state: QuestionScreenUIState) {

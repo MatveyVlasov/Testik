@@ -5,10 +5,7 @@ import com.app.testik.domain.model.QuestionModel
 import com.app.testik.domain.model.QuestionType
 import com.app.testik.presentation.model.AnswerDelegateItem
 import com.app.testik.presentation.model.QuestionDelegateItem
-import com.app.testik.presentation.model.answer.MatchingDelegateItem
-import com.app.testik.presentation.model.answer.MultipleChoiceDelegateItem
-import com.app.testik.presentation.model.answer.ShortAnswerDelegateItem
-import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
+import com.app.testik.presentation.model.answer.*
 
 fun QuestionModel.toQuestionItem() =
     QuestionDelegateItem(
@@ -62,6 +59,7 @@ fun AnswerModel.toAnswerItem(): AnswerDelegateItem {
             )
         QuestionType.SHORT_ANSWER -> ShortAnswerDelegateItem(text = text)
         QuestionType.MATCHING -> MatchingDelegateItem(text = text, textMatching = textMatching)
+        QuestionType.ORDERING -> OrderingDelegateItem(text = text)
     }
 }
 
@@ -81,6 +79,7 @@ fun AnswerDelegateItem.toDomain(): AnswerModel {
             )
         is ShortAnswerDelegateItem -> AnswerModel(text = text)
         is MatchingDelegateItem -> AnswerModel(text = text, textMatching = textMatching)
+        is OrderingDelegateItem -> AnswerModel(text = text)
         else -> AnswerModel(text = text)
     }
 }

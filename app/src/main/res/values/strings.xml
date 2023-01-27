@@ -202,11 +202,13 @@
     <string name="multiple_choice">Multiple choice</string>
     <string name="short_answer">Short answer</string>
     <string name="matching">Matching</string>
+    <string name="ordering">Ordering</string>
 
     <string name="single_choice_instruction">Select one answer:</string>
     <string name="multiple_choice_instruction">Select one or more answers:</string>
     <string name="short_answer_instruction">Enter answer:</string>
     <string name="matching_instruction">Match sentences on the right with the ones on the left:</string>
+    <string name="ordering_instruction">Put in the correct order:</string>
 
     <string name="more_tests">More tests</string>
 

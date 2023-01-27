@@ -198,11 +198,13 @@
     <string name="multiple_choice">Множественный выбор</string>
     <string name="short_answer">Короткий ответ</string>
     <string name="matching">Соответствие</string>
+    <string name="ordering">Последовательность</string>
 
     <string name="single_choice_instruction">Выберите один ответ:</string>
     <string name="multiple_choice_instruction">Выберите один или несколько ответов:</string>
     <string name="short_answer_instruction">Введите ответ:</string>
     <string name="matching_instruction">Соотнесите предложения справа с предложениями слева:</string>
+    <string name="ordering_instruction">Расположите в правильной последовательности:</string>
 
     <string name="more_tests">Больше тестов</string>
 

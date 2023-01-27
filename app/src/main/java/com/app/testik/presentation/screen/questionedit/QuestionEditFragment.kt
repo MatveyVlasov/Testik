@@ -17,12 +17,9 @@ import com.app.testik.R
 import com.app.testik.databinding.FragmentQuestionEditBinding
 import com.app.testik.domain.model.QuestionType
 import com.app.testik.presentation.activity.ImageCropActivity
-import com.app.testik.presentation.adapter.answer.MatchingEditDelegateAdapter
+import com.app.testik.presentation.adapter.answer.*
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
-import com.app.testik.presentation.adapter.answer.MultipleChoiceEditDelegateAdapter
-import com.app.testik.presentation.adapter.answer.ShortAnswerEditDelegateAdapter
-import com.app.testik.presentation.adapter.answer.SingleChoiceEditDelegateAdapter
 import com.app.testik.presentation.screen.questionedit.mapper.toQuestionItem
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenEvent
 import com.app.testik.presentation.screen.questionedit.model.QuestionEditScreenUIState
@@ -75,6 +72,12 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
                 MatchingEditDelegateAdapter(
                     onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
                     onTextMatchingChanged = { item, text -> viewModel.onAnswerMatchingTextChanged(answer = item, text = text) },
+                    onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }
+                )
+            )
+            .add(
+                OrderingEditDelegateAdapter(
+                    onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
                     onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }
                 )
             )

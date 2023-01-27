@@ -27,5 +27,10 @@ enum class QuestionType(
         title = "matching",
         description = R.string.matching,
         instruction = R.string.matching_instruction
+    ),
+    ORDERING(
+        title = "ordering",
+        description = R.string.ordering,
+        instruction = R.string.ordering_instruction
     )
 }

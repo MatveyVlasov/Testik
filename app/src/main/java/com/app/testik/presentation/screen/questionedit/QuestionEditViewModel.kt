@@ -171,6 +171,7 @@ class QuestionEditViewModel @Inject constructor(
                     QuestionType.MULTIPLE_CHOICE -> MultipleChoiceDelegateItem()
                     QuestionType.SHORT_ANSWER -> ShortAnswerDelegateItem()
                     QuestionType.MATCHING -> MatchingDelegateItem()
+                    QuestionType.ORDERING -> OrderingDelegateItem()
                     else -> SingleChoiceDelegateItem()
                 }
             )
@@ -188,8 +189,8 @@ class QuestionEditViewModel @Inject constructor(
     fun moveAnswer(from: Int, to: Int) {
         val answers = screenUIState.answers.map { it }.toMutableList().also {
             val item = it[from]
-            it.removeAt(from)
-            it.add(to, item)
+            it[from] = it[to]
+            it[to] = item
         }
         updateScreenState(screenUIState.copy(answers = answers))
     }
@@ -239,10 +240,7 @@ class QuestionEditViewModel @Inject constructor(
             QuestionType.MULTIPLE_CHOICE -> {
                 screenUIState.answers.filterIsInstance<MultipleChoiceDelegateItem>().any { it.isCorrect }
             }
-            QuestionType.SHORT_ANSWER -> {
-                screenUIState.answers.isNotEmpty()
-            }
-            QuestionType.MATCHING -> {
+            QuestionType.SHORT_ANSWER, QuestionType.MATCHING, QuestionType.ORDERING -> {
                 screenUIState.answers.isNotEmpty()
             }
         }
