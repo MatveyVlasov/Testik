@@ -125,7 +125,14 @@ exports.startTest = functions
 
                     for (let i = 0; i < questions.length; ++i) {
                         switch (questions[i].type) {
-                        case 'matching': shuffleMatchingQuestion(questions[i])
+                        case 'matching': {
+                            shuffleMatchingQuestion(questions[i])
+                            break
+                        }
+                        case 'ordering': {
+                            shuffleOrderingQuestion(questions[i])
+                            break
+                        }
                         }
                     }
 
@@ -448,6 +455,14 @@ function calculatePoints(questions, answersCorrect) {
             if (isCorrect) pointsEarned = pointsMax
             break
         }
+        case 'ordering': {
+            let isCorrect = true
+            for (let j = 0; j < questions[i].answers.length; ++j) {
+                isCorrect = isCorrect && answersCorrect[i].answers[j].text == questions[i].answers[j].text
+            }
+            if (isCorrect) pointsEarned = pointsMax
+            break
+        }
         default: {
             let isCorrect = true
             for (let j = 0; j < questions[i].answers.length; ++j) {
@@ -480,6 +495,10 @@ function shuffleMatchingQuestion(question) {
     for (let j = 0; j < question.answers.length; ++j) {
         question.answers[j].textMatching = textMatchingArray[j]
     }
+}
+
+function shuffleOrderingQuestion(question) {
+    shuffleArray(question.answers)
 }
 
 function shuffleArray(array) {
