@@ -8,6 +8,7 @@
     <integer name="description_max_length">1000</integer>
     <integer name="points_max_length">3</integer>
     <integer name="grade_max_length">3</integer>
+    <integer name="number_max_length">10</integer>
 
     <dimen name="editText_margin_bottom">12dp</dimen>
     <dimen name="margin_horizontal">16dp</dimen>

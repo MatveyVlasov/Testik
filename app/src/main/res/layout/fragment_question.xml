@@ -114,7 +114,7 @@
             app:errorEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/tvType"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toStartOf="@id/tvCorrectNumber">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etAnswer"
@@ -124,6 +124,21 @@
                 android:maxLength="@integer/answer_max_length" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvCorrectNumber"
+            style="@style/CustomTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="@dimen/margin_horizontal"
+            android:textSize="18sp"
+            android:textColor="@color/correct"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tilAnswer"
+            app:layout_constraintTop_toTopOf="@id/tilAnswer"
+            app:layout_constraintBottom_toBottomOf="@id/tilAnswer" />
 
         <TextView
             android:id="@+id/tvCorrectAnswers"

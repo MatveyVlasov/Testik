@@ -195,6 +195,9 @@ class TestPassedDetailViewModel @Inject constructor(
                         }
                     )
                 }
+                QuestionType.NUMBER -> {
+                    question.copy(correctNumber = results.answersCorrect[index][0].text.toDouble())
+                }
                 else -> {
                     question.copy(
                         answers = question.answers.mapIndexed { itemIndex, item ->

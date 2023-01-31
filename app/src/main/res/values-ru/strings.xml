@@ -188,6 +188,9 @@
     <string name="correct_answers_contains">Ответ должен содержать один из перечисленных:</string>
     <string name="correct_answers_case">Ответ должен совпадать с одним из перечисленных (чувствителен к регистру):</string>
     <string name="correct_answers_contains_case">Ответ должен содержать один из перечисленных (чувствителен к регистру):</string>
+    <string name="correct_number">Правильный ответ</string>
+    <string name="percentage_error">Погрешность (%)</string>
+    <string name="percentage_error_info">Если активно, введённый ответ считается правильным не только при полном равенстве, но и при небольшом (или большом - это вам решать) различии с правильным ответом\nНапример, если погрешность равна 5 (%), а правильный ответ - 200, тогда числа от 190 до 210 (включая обе границы) считаются верными</string>
 
     <string name="text">Текст</string>
     <string name="text_matching">Соответствующий текст</string>
@@ -199,12 +202,14 @@
     <string name="short_answer">Короткий ответ</string>
     <string name="matching">Соответствие</string>
     <string name="ordering">Последовательность</string>
+    <string name="number">Число</string>
 
     <string name="single_choice_instruction">Выберите один ответ:</string>
     <string name="multiple_choice_instruction">Выберите один или несколько ответов:</string>
     <string name="short_answer_instruction">Введите ответ:</string>
     <string name="matching_instruction">Соотнесите предложения справа с предложениями слева:</string>
     <string name="ordering_instruction">Расположите в правильной последовательности:</string>
+    <string name="number_instruction">Введите число:</string>
 
     <string name="more_tests">Больше тестов</string>
 

@@ -118,6 +118,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
 
             tvMatch.addInfoIcon { navigateToInfo(getString(R.string.match_info)) }
             tvCaseSensitive.addInfoIcon { navigateToInfo(getString(R.string.case_sensitive_info)) }
+            tvPercentageError.addInfoIcon { navigateToInfo(getString(R.string.percentage_error_info)) }
         }
     }
 
@@ -145,10 +146,13 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             etDescription.addTextChangedListener { viewModel.onDescriptionChanged(it.toString()) }
             etExplanation.addTextChangedListener { viewModel.onExplanationChanged(it.toString()) }
             etPoints.addTextChangedListener { viewModel.onPointsChanged(it.toString()) }
+            etCorrectNumber.addTextChangedListener { viewModel.onCorrectNumberChanged(it.toString()) }
+            etPercentageError.addTextChangedListener { viewModel.onPercentageErrorChanged(it.toString()) }
 
             switchRequired.setOnCheckedChangeListener { _, isChecked -> viewModel.onRequiredChanged(isChecked) }
             switchMatch.setOnCheckedChangeListener { _, isChecked -> viewModel.onMatchChanged(isChecked) }
             switchCaseSensitive.setOnCheckedChangeListener { _, isChecked -> viewModel.onCaseSensitiveChanged(isChecked) }
+            switchPercentageError.setOnCheckedChangeListener { _, isChecked -> viewModel.onPercentageErrorEnabledChanged(isChecked) }
         }
     }
 
@@ -188,14 +192,24 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             if (!etExplanation.isFocused) etExplanation.setText(data.explanation)
             if (!etPoints.isFocused) etPoints.setText(data.points)
             if (!etType.isFocused) etType.setText(data.type.description)
+            if (!etCorrectNumber.isFocused) etCorrectNumber.setText(data.correctNumber)
+            if (!etPercentageError.isFocused) etPercentageError.setText(data.percentageError)
 
             switchRequired.isChecked = data.isRequired
             switchMatch.isChecked = data.isMatch
             switchCaseSensitive.isChecked = data.isCaseSensitive
+            switchPercentageError.isChecked = data.percentageError != null
 
             val isShortAnswerType = data.type == QuestionType.SHORT_ANSWER
             llMatch.isVisible = isShortAnswerType
             llCaseSensitive.isVisible = isShortAnswerType
+
+            val isNumberType = data.type == QuestionType.NUMBER
+            rvAnswers.isVisible = !isNumberType
+            btnAddAnswer.isVisible = !isNumberType
+            tilCorrectNumber.isVisible = isNumberType
+            llPercentageError.isVisible = isNumberType
+            tilPercentageError.isVisible = isNumberType && data.percentageError != null
 
             tilTitle.error = getStringOrNull(data.titleError)
             tilDescription.error = getStringOrNull(data.descriptionError)

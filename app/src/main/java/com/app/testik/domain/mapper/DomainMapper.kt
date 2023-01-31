@@ -59,12 +59,21 @@ fun TestPassedModel.toDto() =
         isDemo = isDemo
     )
 
-fun List<QuestionModel>.toDto() =
-    TestQuestionsDto(
+fun List<QuestionModel>.toDto(): TestQuestionsDto {
+    val answersCorrect = map {
+        if (it.type == QuestionType.NUMBER) {
+            AnswersCorrectDto(answers = listOf(AnswerCorrectDto(text = it.correctNumber.toString())))
+        } else {
+            it.answers.toDto()
+        }
+    }
+
+    return TestQuestionsDto(
         questions = map { it.toDto() },
-        answersCorrect = map { it.answers.toDto() },
+        answersCorrect = answersCorrect,
         explanations = map { it.explanation }
     )
+}
 
 fun QuestionModel.toDto(): QuestionDto {
     val answers = when (type) {
@@ -84,6 +93,8 @@ fun QuestionModel.toDto(): QuestionDto {
         enteredAnswer = enteredAnswer,
         isMatch = isMatch,
         isCaseSensitive = isCaseSensitive,
+        correctNumber = correctNumber,
+        percentageError = percentageError,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned
     )

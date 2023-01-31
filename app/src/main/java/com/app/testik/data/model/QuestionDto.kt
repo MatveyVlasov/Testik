@@ -17,6 +17,8 @@ data class QuestionDto(
     val isMatch: Boolean = false,
     @get:PropertyName("isCaseSensitive")
     val isCaseSensitive: Boolean = false,
+    val correctNumber: Double = 0.0,
+    val percentageError: Double? = null,
     val pointsMax: Int = 1,
     val pointsEarned: Int = 0
 )

@@ -19,6 +19,8 @@ data class QuestionDelegateItem(
     val enteredAnswer: String = "",
     val isMatch: Boolean = false,
     val isCaseSensitive: Boolean = false,
+    val correctNumber: Double = 0.0,
+    val percentageError: Double? = null,
     val pointsMax: Int = 1,
     val pointsEarned: Int = 0
 ) : DelegateAdapterItem, Parcelable {

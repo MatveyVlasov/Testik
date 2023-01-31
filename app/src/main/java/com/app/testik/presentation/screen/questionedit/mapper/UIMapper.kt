@@ -31,5 +31,7 @@ fun QuestionEditScreenUIState.toQuestionItem() =
         answers = answers,
         isMatch = isMatch,
         isCaseSensitive = isCaseSensitive,
+        correctNumber = correctNumber.toDouble(),
+        percentageError = percentageError?.toDouble(),
         pointsMax = points.toIntOrZero(),
     )

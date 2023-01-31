@@ -21,6 +21,8 @@ fun QuestionModel.toQuestionItem() =
         enteredAnswer = enteredAnswer,
         isMatch = isMatch,
         isCaseSensitive = isCaseSensitive,
+        correctNumber = correctNumber,
+        percentageError = percentageError,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned
     )
@@ -39,6 +41,8 @@ fun QuestionDelegateItem.toDomain() =
         enteredAnswer = enteredAnswer,
         isMatch = isMatch,
         isCaseSensitive = isCaseSensitive,
+        correctNumber = correctNumber,
+        percentageError = percentageError,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned
     )
@@ -60,6 +64,7 @@ fun AnswerModel.toAnswerItem(): AnswerDelegateItem {
         QuestionType.SHORT_ANSWER -> ShortAnswerDelegateItem(text = text)
         QuestionType.MATCHING -> MatchingDelegateItem(text = text, textMatching = textMatching)
         QuestionType.ORDERING -> OrderingDelegateItem(text = text)
+        else -> AnswerDelegateItem()
     }
 }
 

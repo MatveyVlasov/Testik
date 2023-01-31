@@ -32,5 +32,10 @@ enum class QuestionType(
         title = "ordering",
         description = R.string.ordering,
         instruction = R.string.ordering_instruction
+    ),
+    NUMBER(
+        title = "number",
+        description = R.string.number,
+        instruction = R.string.number_instruction
     )
 }

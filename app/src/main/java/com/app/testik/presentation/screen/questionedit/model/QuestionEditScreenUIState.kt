@@ -17,6 +17,8 @@ data class QuestionEditScreenUIState(
     val isRequired: Boolean = false,
     val isMatch: Boolean = false,
     val isCaseSensitive: Boolean = false,
+    val correctNumber: String = "",
+    val percentageError: String? = null,
     val answers: List<AnswerDelegateItem> = emptyList(),
     @StringRes val titleError: Int? = null,
     @StringRes val descriptionError: Int? = null,

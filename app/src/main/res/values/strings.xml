@@ -193,6 +193,9 @@
     <string name="correct_answers_contains">Answer should contain one of these:</string>
     <string name="correct_answers_case">Answer should match one of these (case sensitive):</string>
     <string name="correct_answers_contains_case">Answer should contain one of these (case sensitive):</string>
+    <string name="correct_number">Correct number</string>
+    <string name="percentage_error">Percentage error</string>
+    <string name="percentage_error_info">If enabled, the entered answer considered correct not only when it equals to the correct one but also when it is slightly (or not slightly - it\'s up to you) different from the correct answer\nFor instance, if percentage error is set to 5 and correct answer is 200, the numbers from 190 to 210 (both inclusive) are correct</string>
 
     <string name="text">Text</string>
     <string name="text_matching">Matching text</string>
@@ -203,12 +206,14 @@
     <string name="short_answer">Short answer</string>
     <string name="matching">Matching</string>
     <string name="ordering">Ordering</string>
+    <string name="number">Number</string>
 
     <string name="single_choice_instruction">Select one answer:</string>
     <string name="multiple_choice_instruction">Select one or more answers:</string>
     <string name="short_answer_instruction">Enter answer:</string>
     <string name="matching_instruction">Match sentences on the right with the ones on the left:</string>
     <string name="ordering_instruction">Put in the correct order:</string>
+    <string name="number_instruction">Enter number:</string>
 
     <string name="more_tests">More tests</string>
 

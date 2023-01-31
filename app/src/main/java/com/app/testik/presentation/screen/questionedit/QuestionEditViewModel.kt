@@ -59,6 +59,8 @@ class QuestionEditViewModel @Inject constructor(
                 isRequired = isRequired,
                 isMatch = isMatch,
                 isCaseSensitive = isCaseSensitive,
+                correctNumber = correctNumber.toString(),
+                percentageError = percentageError?.toString(),
                 answers = answers
             )
             oldScreenUIState = screenState
@@ -84,6 +86,16 @@ class QuestionEditViewModel @Inject constructor(
     fun onPointsChanged(points: String) {
         if (points == screenUIState.points) return
         updateScreenState(screenUIState.copy(points = points))
+    }
+
+    fun onCorrectNumberChanged(correctNumber: String) {
+        if (correctNumber == screenUIState.correctNumber) return
+        updateScreenState(screenUIState.copy(correctNumber = correctNumber))
+    }
+
+    fun onPercentageErrorChanged(percentageError: String) {
+        if (screenUIState.percentageError == null || percentageError == screenUIState.percentageError) return
+        updateScreenState(screenUIState.copy(percentageError = percentageError))
     }
 
     fun onTypeChanged(type: QuestionType) {
@@ -119,6 +131,12 @@ class QuestionEditViewModel @Inject constructor(
     fun onCaseSensitiveChanged(isCaseSensitive: Boolean) {
         if (isCaseSensitive == screenUIState.isCaseSensitive) return
         updateScreenState(screenUIState.copy(isCaseSensitive = isCaseSensitive))
+    }
+
+    fun onPercentageErrorEnabledChanged(percentageErrorEnabled: Boolean) {
+        if (percentageErrorEnabled && screenUIState.percentageError != null) return
+        val percentageError = if (percentageErrorEnabled) "0" else null
+        updateScreenState(screenUIState.copy(percentageError = percentageError))
     }
 
     fun onAnswerTextChanged(answer: AnswerDelegateItem, text: String) {
@@ -243,6 +261,7 @@ class QuestionEditViewModel @Inject constructor(
             QuestionType.SHORT_ANSWER, QuestionType.MATCHING, QuestionType.ORDERING -> {
                 screenUIState.answers.isNotEmpty()
             }
+            QuestionType.NUMBER -> screenUIState.correctNumber.isNotEmpty()
         }
         return (hasCorrectAnswers).also {
             if (!it) emitEvent(QuestionEditScreenEvent.ShowSnackbarByRes(R.string.no_correct_answers))

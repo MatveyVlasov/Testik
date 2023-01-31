@@ -17,6 +17,8 @@ data class QuestionScreenUIState(
     val enteredAnswer: String = "",
     val isMatch: Boolean = false,
     val isCaseSensitive: Boolean = false,
+    val correctNumber: String = "",
+    val percentageError: String = "",
     val pointsMax: Int = 1,
     val pointsEarned: Int = 0
 )

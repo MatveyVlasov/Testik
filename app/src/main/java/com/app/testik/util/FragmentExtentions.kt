@@ -30,6 +30,8 @@ fun Fragment.getColor(@ColorRes colorResId: Int) = resources.getColor(colorResId
 
 fun Fragment.getDimens(@DimenRes dimenResId: Int) = resources.getDimension(dimenResId)
 
+fun Fragment.getInteger(@IntegerRes integerResId: Int) = resources.getInteger(integerResId)
+
 fun Fragment.getTypeface(@FontRes fontResId: Int) =
     ResourcesCompat.getFont(requireContext(), fontResId)
 

@@ -1,6 +1,8 @@
 package com.app.testik.presentation.screen.question
 
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
@@ -147,13 +149,20 @@ class QuestionFragment(
             tvType.setText(data.type.instruction)
 
             val isShortAnswerType = data.type == QuestionType.SHORT_ANSWER
-            rvAnswers.isVisible = !isShortAnswerType || isReviewMode
-            tilAnswer.isVisible = isShortAnswerType
+            val isNumberType = data.type == QuestionType.NUMBER
+
+            rvAnswers.isVisible = (!isShortAnswerType || isReviewMode) && !isNumberType
+            tilAnswer.isVisible = isShortAnswerType || isNumberType
+            tilAnswer.isExpandedHintEnabled = !isReviewMode
             etAnswer.isActivated = data.pointsEarned > 0
             etAnswer.isEnabled = !isReviewMode
-            if (isReviewMode) {
-                etAnswer.setText(data.enteredAnswer)
+            if (isReviewMode) etAnswer.setText(data.enteredAnswer)
+            if (isNumberType) {
+                etAnswer.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
+                etAnswer.filters += InputFilter.LengthFilter(getInteger(R.integer.number_max_length))
             }
+            tvCorrectNumber.isVisible = isNumberType && isReviewMode && data.pointsEarned == 0
+            tvCorrectNumber.text = data.correctNumber
             tvCorrectAnswers.isVisible = isShortAnswerType && isReviewMode
 
             if (isShortAnswerType) {

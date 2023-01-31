@@ -224,6 +224,61 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCorrectNumber"
+                    style="@style/CustomTextInputLayout.LightGray"
+                    android:hint="@string/correct_number"
+                    app:startIconDrawable="@drawable/ic_number"
+                    app:errorEnabled="false"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCorrectNumber"
+                        style="@style/CustomTextInputEditText.LightGray"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:maxLength="@integer/number_max_length"
+                        tools:text="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:id="@+id/llPercentageError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tvPercentageError"
+                        style="@style/SwitchTextView"
+                        android:text="@string/percentage_error" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchPercentageError"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPercentageError"
+                    style="@style/CustomTextInputLayout.LightGray"
+                    android:hint="@string/percentage_error"
+                    app:startIconDrawable="@drawable/ic_percent"
+                    app:errorEnabled="false"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPercentageError"
+                        style="@style/CustomTextInputEditText.LightGray"
+                        android:inputType="numberDecimal"
+                        android:maxLength="@integer/number_max_length"
+                        tools:text="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

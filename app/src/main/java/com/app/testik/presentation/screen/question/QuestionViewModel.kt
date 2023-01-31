@@ -49,6 +49,8 @@ class QuestionViewModel @Inject constructor(
                 enteredAnswer = enteredAnswer,
                 isMatch = isMatch,
                 isCaseSensitive = isCaseSensitive,
+                correctNumber = correctNumber.toString(),
+                percentageError = percentageError.toString(),
                 pointsMax = pointsMax,
                 pointsEarned = pointsEarned
             )
