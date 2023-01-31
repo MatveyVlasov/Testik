@@ -463,6 +463,21 @@ function calculatePoints(questions, answersCorrect) {
             if (isCorrect) pointsEarned = pointsMax
             break
         }
+        case 'number': {
+            const enteredAnswer = questions[i].enteredAnswer
+            const correctNumber = questions[i].correctNumber
+            const percentageError = questions[i].percentageError
+
+            if (percentageError == null) {
+                if (enteredAnswer == correctNumber) pointsEarned = pointsMax
+            } else {
+                const diff = correctNumber * percentageError / 100
+                if (enteredAnswer >= correctNumber - diff && enteredAnswer <= correctNumber + diff) {
+                    pointsEarned = pointsMax
+                }
+            }
+            break
+        }
         default: {
             let isCorrect = true
             for (let j = 0; j < questions[i].answers.length; ++j) {
