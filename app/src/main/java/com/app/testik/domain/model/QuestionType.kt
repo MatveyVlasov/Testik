@@ -37,5 +37,10 @@ enum class QuestionType(
         title = "number",
         description = R.string.number,
         instruction = R.string.number_instruction
+    ),
+    TRUE_FALSE(
+        title = "true false",
+        description = R.string.true_false,
+        instruction = R.string.true_false_instruction
     )
 }

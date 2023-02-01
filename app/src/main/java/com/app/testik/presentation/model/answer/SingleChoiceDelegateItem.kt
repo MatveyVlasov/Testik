@@ -8,5 +8,11 @@ data class SingleChoiceDelegateItem(
     override val text: String = "",
     val isCorrect: Boolean = false,
     val isSelected: Boolean = false
-) : AnswerDelegateItem(id = id, text = text)
+) : AnswerDelegateItem(id = id, text = text) {
+
+    companion object {
+        const val TRUE_DEFAULT = "true_default"
+        const val FALSE_DEFAULT = "false_default"
+    }
+}
 

@@ -200,6 +200,8 @@
     <string name="text">Text</string>
     <string name="text_matching">Matching text</string>
     <string name="move">Move</string>
+    <string name="true_text">True</string>
+    <string name="false_text">False</string>
 
     <string name="single_choice">Single choice</string>
     <string name="multiple_choice">Multiple choice</string>
@@ -207,6 +209,7 @@
     <string name="matching">Matching</string>
     <string name="ordering">Ordering</string>
     <string name="number">Number</string>
+    <string name="true_false">True or False</string>
 
     <string name="single_choice_instruction">Select one answer:</string>
     <string name="multiple_choice_instruction">Select one or more answers:</string>
@@ -214,6 +217,7 @@
     <string name="matching_instruction">Match sentences on the right with the ones on the left:</string>
     <string name="ordering_instruction">Put in the correct order:</string>
     <string name="number_instruction">Enter number:</string>
+    <string name="true_false_instruction">True or False?</string>
 
     <string name="more_tests">More tests</string>
 

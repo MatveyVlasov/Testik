@@ -110,6 +110,11 @@ class QuestionEditViewModel @Inject constructor(
                 screenUIState.answers.filterIsInstance<MultipleChoiceDelegateItem>().map {
                     SingleChoiceDelegateItem(id = it.id, text = it.text, isCorrect = false)
                 }
+            } else if (type == QuestionType.TRUE_FALSE) {
+                listOf(
+                    SingleChoiceDelegateItem(text = SingleChoiceDelegateItem.TRUE_DEFAULT),
+                    SingleChoiceDelegateItem(text = SingleChoiceDelegateItem.FALSE_DEFAULT)
+                )
             } else {
                 emptyList()
             }
@@ -252,7 +257,7 @@ class QuestionEditViewModel @Inject constructor(
 
     private fun checkCorrectAnswers(): Boolean {
         val hasCorrectAnswers = when (screenUIState.type) {
-            QuestionType.SINGLE_CHOICE -> {
+            QuestionType.SINGLE_CHOICE, QuestionType.TRUE_FALSE -> {
                 screenUIState.answers.filterIsInstance<SingleChoiceDelegateItem>().any { it.isCorrect }
             }
             QuestionType.MULTIPLE_CHOICE -> {

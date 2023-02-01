@@ -100,6 +100,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDescription"
+            app:layout_constraintBottom_toTopOf="@id/tilAnswer"
             tools:text="Select one answer:" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -113,6 +114,7 @@
             android:visibility="gone"
             app:errorEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/tvType"
+            app:layout_constraintBottom_toTopOf="@id/tvFalse"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvCorrectNumber">
 
@@ -141,6 +143,45 @@
             app:layout_constraintBottom_toBottomOf="@id/tilAnswer" />
 
         <TextView
+            android:id="@+id/tvFalse"
+            style="@style/CustomTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:layout_marginStart="@dimen/margin_horizontal"
+            android:layout_marginTop="20dp"
+            android:padding="4dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_rect_10_dp"
+            android:backgroundTint="@color/gray_background_selector"
+            android:textColor="@color/correct_wrong_selector"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvTrue"
+            app:layout_constraintTop_toBottomOf="@id/tilAnswer"
+            app:layout_constraintBottom_toTopOf="@id/tvCorrectAnswers" />
+
+        <TextView
+            android:id="@+id/tvTrue"
+            style="@style/CustomTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:layout_marginEnd="@dimen/margin_horizontal"
+            android:padding="4dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_rect_10_dp"
+            android:backgroundTint="@color/gray_background_selector"
+            android:textColor="@color/correct_wrong_selector"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvFalse"
+            app:layout_constraintTop_toTopOf="@id/tvFalse"
+            app:layout_constraintBottom_toBottomOf="@id/tvFalse" />
+
+        <TextView
             android:id="@+id/tvCorrectAnswers"
             style="@style/TitleTextView"
             android:layout_width="0dp"
@@ -152,7 +193,8 @@
             android:text="@string/correct_answers"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilAnswer" />
+            app:layout_constraintTop_toBottomOf="@id/tilAnswer"
+            app:layout_constraintBottom_toTopOf="@id/rvAnswers" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAnswers"

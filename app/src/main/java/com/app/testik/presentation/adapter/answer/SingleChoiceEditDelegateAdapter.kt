@@ -3,8 +3,10 @@ package com.app.testik.presentation.adapter.answer
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
+import com.app.testik.R
 import com.app.testik.databinding.ItemSingleChoiceBinding
 import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 import com.app.testik.util.delegateadapter.DelegateAdapter
@@ -12,7 +14,8 @@ import com.app.testik.util.delegateadapter.DelegateAdapter
 class SingleChoiceEditDelegateAdapter(
     val onTextChanged: (SingleChoiceDelegateItem, String) -> Unit,
     val onSelectClick: (SingleChoiceDelegateItem) -> Unit,
-    val onDeleteClick: (SingleChoiceDelegateItem) -> Unit
+    val onDeleteClick: (SingleChoiceDelegateItem) -> Unit,
+    val isTrueFalse: () -> Boolean
 ) : DelegateAdapter<SingleChoiceDelegateItem, SingleChoiceEditDelegateAdapter.ViewHolder>(
     SingleChoiceDelegateItem::class.java
 ) {
@@ -32,7 +35,18 @@ class SingleChoiceEditDelegateAdapter(
 
             binding.apply {
                 etAnswer.removeTextChangedListener(listener)
-                if (!etAnswer.isFocused) etAnswer.setText(answer.text)
+                if (!etAnswer.isFocused) {
+                    val text =
+                        if (isTrueFalse()) {
+                            when (answer.text) {
+                                SingleChoiceDelegateItem.TRUE_DEFAULT -> root.resources.getString(R.string.true_text)
+                                SingleChoiceDelegateItem.FALSE_DEFAULT -> root.resources.getString(R.string.false_text)
+                                else -> answer.text
+                            }
+                        }
+                        else answer.text
+                    etAnswer.setText(text)
+                }
                 listener = etAnswer.addTextChangedListener { onTextChanged(answer, it.toString()) }
 
                 btnSelect.setOnCheckedChangeListener(null)
@@ -45,6 +59,7 @@ class SingleChoiceEditDelegateAdapter(
                     llAnswer.clearFocus()
                     onDeleteClick(answer)
                 }
+                ivDelete.isVisible = !isTrueFalse()
             }
         }
     }

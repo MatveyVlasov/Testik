@@ -49,7 +49,7 @@ fun QuestionDelegateItem.toDomain() =
 
 fun AnswerModel.toAnswerItem(): AnswerDelegateItem {
     return when (type) {
-        QuestionType.SINGLE_CHOICE ->
+        QuestionType.SINGLE_CHOICE, QuestionType.TRUE_FALSE ->
             SingleChoiceDelegateItem(
                 text = text,
                 isCorrect = isCorrect,

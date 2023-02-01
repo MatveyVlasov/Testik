@@ -52,7 +52,8 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
                 SingleChoiceEditDelegateAdapter(
                     onTextChanged = { item, text -> viewModel.onAnswerTextChanged(answer = item, text = text) },
                     onSelectClick = { item -> viewModel.onSelectClick(answer = item) },
-                    onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) }
+                    onDeleteClick = { item -> viewModel.deleteAnswer(answer = item) },
+                    isTrueFalse = { viewModel.screenUIState.type == QuestionType.TRUE_FALSE }
                 )
             )
             .add(
@@ -219,6 +220,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
                 scrollView.fullScroll(View.FOCUS_UP)
             }
 
+            btnAddAnswer.isEnabled = data.type != QuestionType.TRUE_FALSE
             btnDiscard.isEnabled = data.canDiscard
         }
 

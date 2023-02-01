@@ -20,6 +20,7 @@ import com.app.testik.presentation.adapter.answer.*
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.AnswerDelegateItem
 import com.app.testik.presentation.model.QuestionDelegateItem
+import com.app.testik.presentation.model.answer.SingleChoiceDelegateItem
 import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.screen.question.model.QuestionScreenEvent
 import com.app.testik.presentation.screen.question.model.QuestionScreenUIState
@@ -94,6 +95,13 @@ class QuestionFragment(
             }
 
             etAnswer.addTextChangedListener { viewModel.onAnswerChanged(it.toString()) }
+
+            tvTrue.setOnClickListener {
+                viewModel.onSelectClick(viewModel.screenUIState.answers[0] as SingleChoiceDelegateItem)
+            }
+            tvFalse.setOnClickListener {
+                viewModel.onSelectClick(viewModel.screenUIState.answers[1] as SingleChoiceDelegateItem)
+            }
         }
     }
 
@@ -150,8 +158,9 @@ class QuestionFragment(
 
             val isShortAnswerType = data.type == QuestionType.SHORT_ANSWER
             val isNumberType = data.type == QuestionType.NUMBER
+            val isTrueFalseType = data.type == QuestionType.TRUE_FALSE
 
-            rvAnswers.isVisible = (!isShortAnswerType || isReviewMode) && !isNumberType
+            rvAnswers.isVisible = (!isShortAnswerType || isReviewMode) && !isNumberType && !isTrueFalseType
             tilAnswer.isVisible = isShortAnswerType || isNumberType
             tilAnswer.isExpandedHintEnabled = !isReviewMode
             etAnswer.isActivated = data.pointsEarned > 0
@@ -164,6 +173,30 @@ class QuestionFragment(
             tvCorrectNumber.isVisible = isNumberType && isReviewMode && data.pointsEarned == 0
             tvCorrectNumber.text = data.correctNumber
             tvCorrectAnswers.isVisible = isShortAnswerType && isReviewMode
+
+            tvFalse.isVisible = isTrueFalseType
+            tvTrue.isVisible = isTrueFalseType
+
+            if (isTrueFalseType && data.answers.size > 1) {
+                val answerTrue = data.answers[0] as SingleChoiceDelegateItem
+                val answerFalse = data.answers[1] as SingleChoiceDelegateItem
+
+                answerTrue.text.let {
+                    tvTrue.text = if (it == SingleChoiceDelegateItem.TRUE_DEFAULT) getString(R.string.true_text) else it
+                }
+                answerFalse.text.let {
+                    tvFalse.text = if (it == SingleChoiceDelegateItem.FALSE_DEFAULT) getString(R.string.false_text) else it
+                }
+
+                tvTrue.isEnabled = !isReviewMode || (!answerTrue.isSelected && !answerTrue.isCorrect)
+                tvFalse.isEnabled = !isReviewMode || (!answerFalse.isSelected && !answerFalse.isCorrect)
+
+                tvTrue.isSelected = answerTrue.isSelected
+                tvFalse.isSelected = answerFalse.isSelected
+
+                tvTrue.isActivated = answerTrue.isCorrect
+                tvFalse.isActivated = answerFalse.isCorrect
+            }
 
             if (isShortAnswerType) {
                 val msg = when {
