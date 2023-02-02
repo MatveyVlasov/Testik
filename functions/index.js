@@ -94,6 +94,8 @@ exports.startTest = functions
                 const testData = doc.data()
                 const isGradesEnabled = testData.isGradesEnabled || false
                 const grades = testData.grades || []
+                const isRandomQuestions = testData.isRandomQuestions
+                const isRandomAnswers = testData.isRandomAnswers
 
                 if (isDemo && testData.author != context.auth.uid) {
                     return reject(new functions.https.HttpsError('permission-denied', 'No access'))
@@ -123,6 +125,8 @@ exports.startTest = functions
                         return reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
                     }
 
+                    if (isRandomQuestions) shuffle(questions, answersCorrect, explanations)
+
                     for (let i = 0; i < questions.length; ++i) {
                         switch (questions[i].type) {
                         case 'matching': {
@@ -131,6 +135,11 @@ exports.startTest = functions
                         }
                         case 'ordering': {
                             shuffleOrderingQuestion(questions[i])
+                            break
+                        }
+                        case 'single choice':
+                        case 'multiple choice': {
+                            if (isRandomAnswers) shuffleChoiceQuestion(questions[i], answersCorrect[i])
                             break
                         }
                         }
@@ -411,6 +420,7 @@ function validateGradeFields(grade) {
 function validateRequiredQuestions(questions) {
     for (let i = 0; i < questions.length; ++i) {
         if (questions[i].enteredAnswer.length > 0) continue
+        if (questions[i].type == 'ordering' || questions[i].type == 'matching') continue
 
         let isSelected = false
 
@@ -520,11 +530,43 @@ function shuffleOrderingQuestion(question) {
     shuffleArray(question.answers)
 }
 
+function shuffleChoiceQuestion(question, answersCorrect) {
+    shuffle(question.answers, answersCorrect.answers)
+}
+
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; --i) {
         const j = Math.floor(Math.random() * (i + 1))
         const temp = array[i]
         array[i] = array[j]
         array[j] = temp
+    }
+}
+
+function shuffle(...args) {
+    let arrLength = 0
+    const argsLength = arguments.length
+    let rnd
+    let tmp
+
+    for (let index = 0; index < argsLength; index += 1) {
+        if (index === 0) {
+            arrLength = args[0].length
+        }
+
+        if (arrLength !== args[index].length) {
+            throw new RangeError("Array lengths do not match")
+        }
+    }
+
+    while (arrLength) {
+        rnd = Math.floor(Math.random() * arrLength)
+        arrLength -= 1
+
+        for (let argsIndex = 0; argsIndex < argsLength; argsIndex += 1) {
+            tmp = args[argsIndex][arrLength]
+            args[argsIndex][arrLength] = args[argsIndex][rnd]
+            args[argsIndex][rnd] = tmp
+        }
     }
 }
