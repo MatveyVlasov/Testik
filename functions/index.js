@@ -393,6 +393,10 @@ function validateQuestionFields(question) {
         && isString(question.enteredAnswer)
         && isNumber(question.pointsMax)
         && isNumber(question.pointsEarned)
+        && isBoolean(question.isMatch)
+        && isBoolean(question.isCaseSensitive)
+        && isNumber(question.correctNumber)
+        && isNumberOrUndefined(question.percentageError)
 }
 
 function validateAnswerFields(answer) {
