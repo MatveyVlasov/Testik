@@ -13,9 +13,12 @@ data class TestEditScreenUIState(
     val isPublished: Boolean = false,
     val isTestLinkEnabled: Boolean = false,
     val testLink: String = "",
+    val isRandomQuestions: Boolean = false,
+    val isRandomAnswers: Boolean = false,
     val questionsNum: Int = 0,
     val testUpdated: TestModel? = null,
-    val canSave: Boolean = true,
+    val canSave: Boolean = false,
+    val showMore: Boolean = false,
     @StringRes val titleError: Int? = null,
     @StringRes val descriptionError: Int? = null,
     @StringRes val categoryError: Int? = null

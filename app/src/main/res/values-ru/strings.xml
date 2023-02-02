@@ -143,6 +143,9 @@
     <string name="test_link_disabled">Ссылка на тест отключена</string>
     <string name="log_in_to_get_test">Пожалуйста, войдите в аккаунт, чтобы перейти к тесту</string>
     <string name="enable_test_link">Сделайте ссылку активной в настройках теста</string>
+    <string name="show_more_settings">Показать больше настроек</string>
+    <string name="random_question_order">Случайный порядок вопросов</string>
+    <string name="random_answer_order">Случайный порядок ответов</string>
     <string name="create_test_success">Тест успешно создан</string>
     <string name="edit_questions">Редактировать вопросы</string>
     <string name="edit_grading_system">Редактировать систему оценивания</string>

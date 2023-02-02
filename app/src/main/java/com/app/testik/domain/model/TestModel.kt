@@ -14,6 +14,8 @@ data class TestModel(
     val isPublished: Boolean = false,
     val isLinkEnabled: Boolean = false,
     val link: String = "",
+    val isRandomQuestions: Boolean = false,
+    val isRandomAnswers: Boolean = false,
     val questionsNum: Int = 0,
     val pointsMax: Int = 0
 ) : Parcelable

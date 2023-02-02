@@ -38,6 +38,8 @@ fun TestModel.toDto() =
         isPublished = isPublished,
         isLinkEnabled = isLinkEnabled,
         link = link,
+        isRandomQuestions = isRandomQuestions,
+        isRandomAnswers = isRandomAnswers,
         questionsNum = questionsNum,
         pointsMax = pointsMax
     )

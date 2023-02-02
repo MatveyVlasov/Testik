@@ -99,6 +99,11 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             }
             btnTestLinkShare.setOnClickListener { shareTestLink(viewModel.screenUIState.testLink) }
 
+            tvMoreSettings.setOnClickListener { viewModel.onShowMore() }
+
+            switchRandomizeQuestions.setOnCheckedChangeListener { _, isChecked -> viewModel.onRandomQuestionsChanged(isChecked) }
+            switchRandomizeAnswers.setOnCheckedChangeListener { _, isChecked -> viewModel.onRandomAnswersChanged(isChecked) }
+
             btnSave.setOnClickListener { viewModel.save() }
 
             btnEditQuestions.setOnClickListener {
@@ -177,6 +182,15 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             switchTestLink.isChecked = isLinkEnabled
             llTestLinkData.isVisible = isLinkEnabled
             tvTestLinkData.text = data.testLink
+
+            val showMore = data.showMore
+            val isTestCreated = viewModel.screenUIState.id.isNotEmpty()
+            tvMoreSettings.isVisible = !showMore && isTestCreated
+            llRandomizeQuestions.isVisible = showMore
+            llRandomizeAnswers.isVisible = showMore
+
+            switchRandomizeQuestions.isChecked = data.isRandomQuestions
+            switchRandomizeAnswers.isChecked = data.isRandomAnswers
 
             btnSave.isEnabled = data.canSave
         }

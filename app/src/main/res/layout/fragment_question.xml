@@ -206,7 +206,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintVertical_bias="0"
             app:layout_constraintTop_toBottomOf="@id/tvCorrectAnswers"
-            app:layout_constraintBottom_toTopOf="@id/btnSubmit"
+            app:layout_constraintBottom_toTopOf="@id/llExplanation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:itemCount="3"
@@ -216,13 +216,12 @@
             android:id="@+id/llExplanation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
+            android:layout_marginVertical="12dp"
             android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:orientation="vertical"
             android:background="@drawable/rounded_rect_10_dp"
             android:backgroundTint="@color/purple_light"
             app:layout_constraintTop_toBottomOf="@id/rvAnswers"
-            app:layout_constraintBottom_toTopOf="@id/btnSubmit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -250,20 +249,6 @@
                 tools:text="The correct answer is A because it cannot be wrong" />
 
         </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSubmit"
-            style="@style/CustomButton.PurpleDark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="@dimen/margin_bottom"
-            android:text="@string/submit"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/llExplanation"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

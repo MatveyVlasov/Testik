@@ -67,6 +67,8 @@ class TestRepositoryImpl @Inject constructor(
                     "isPublished" to isPublished,
                     "isLinkEnabled" to isLinkEnabled,
                     "link" to link,
+                    "isRandomQuestions" to isRandomQuestions,
+                    "isRandomAnswers" to isRandomAnswers,
                     "lastUpdated" to timestamp
                 )
 

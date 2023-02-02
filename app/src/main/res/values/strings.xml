@@ -148,6 +148,9 @@
     <string name="test_link_disabled">Test link is disabled</string>
     <string name="log_in_to_get_test">Please log in to get to the test</string>
     <string name="enable_test_link">Enable link in test settings</string>
+    <string name="show_more_settings">Show more settings</string>
+    <string name="random_question_order">Random question order</string>
+    <string name="random_answer_order">Random answer order</string>
     <string name="create_test_success">Test successfully created</string>
     <string name="edit_questions">Edit questions</string>
     <string name="edit_grading_system">Edit grading system</string>

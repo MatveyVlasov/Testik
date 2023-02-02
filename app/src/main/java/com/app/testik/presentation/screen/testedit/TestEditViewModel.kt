@@ -78,11 +78,26 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(isTestLinkEnabled = isTestLinkEnabled))
     }
 
+    fun onRandomQuestionsChanged(isRandomQuestions: Boolean) {
+        if (isRandomQuestions == screenUIState.isRandomQuestions) return
+        updateScreenState(screenUIState.copy(isRandomQuestions = isRandomQuestions))
+    }
+
+    fun onRandomAnswersChanged(isRandomAnswers: Boolean) {
+        if (isRandomAnswers == screenUIState.isRandomAnswers) return
+        updateScreenState(screenUIState.copy(isRandomAnswers = isRandomAnswers))
+    }
+
     fun onQuestionsNumChanged(questionsNum: Int) {
         if (questionsNum == screenUIState.questionsNum) return
         val state = screenUIState.copy(questionsNum = questionsNum)
         oldScreenUIState = state
         updateScreenState(state)
+    }
+
+    fun onShowMore() {
+        oldScreenUIState = oldScreenUIState.copy(showMore = true)
+        updateScreenState(screenUIState.copy(showMore = true))
     }
 
     fun loadImage(image: String) {
@@ -132,7 +147,10 @@ class TestEditViewModel @Inject constructor(
                     isPublished = it.isPublished,
                     isTestLinkEnabled = it.isLinkEnabled,
                     testLink = it.link,
-                    questionsNum = it.questionsNum
+                    isRandomQuestions = it.isRandomQuestions,
+                    isRandomAnswers = it.isRandomAnswers,
+                    questionsNum = it.questionsNum,
+                    showMore = screenUIState.showMore
                 )
                 if (isUpdated) screenState = screenState.copy(testUpdated = screenState.toDomain())
                 oldScreenUIState = screenState
@@ -213,7 +231,7 @@ class TestEditViewModel @Inject constructor(
     }
 
     private fun updateScreenState(state: TestEditScreenUIState) {
-        screenUIState = state.copy(canSave = state != oldScreenUIState)
+        screenUIState = state.copy(canSave = state != oldScreenUIState.copy(canSave = state.canSave))
         _uiState.value = UIState.Success(screenUIState)
     }
 

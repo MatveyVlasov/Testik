@@ -14,6 +14,10 @@ data class TestDto(
     @get:PropertyName("isLinkEnabled")
     val isLinkEnabled: Boolean = false,
     val link: String = "",
+    @get:PropertyName("isRandomQuestions")
+    val isRandomQuestions: Boolean = false,
+    @get:PropertyName("isRandomAnswers")
+    val isRandomAnswers: Boolean = false,
     val questionsNum: Int = 0,
     val pointsMax: Int = 0,
     @get:PropertyName("isGradesEnabled")
