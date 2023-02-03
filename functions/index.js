@@ -82,9 +82,9 @@ exports.startTest = functions
 
             const testId = data.testId || null
             const isDemo = data.isDemo
+            const passwordEntered = data.password
 
             const testRef = db.collection("tests").doc(testId)
-
 
             testRef.get().then((doc) => {
                 if (!doc.exists) {
@@ -101,78 +101,86 @@ exports.startTest = functions
                     return reject(new functions.https.HttpsError('permission-denied', 'No access'))
                 }
 
-                testRef.collection("private").doc("questions").get().then((docQuestions) => {
-                    const data = docQuestions.data()
-                    const questions = data.questions
-                    const answersCorrect = data.answersCorrect
-                    const explanations = data.explanations
+                testRef.collection("private").doc("password").get().then((docPassword) => {
+                    const password = docPassword.data().password
 
-                    if (questions.length == 0) {
-                        return reject(new functions.https.HttpsError('failed-precondition', 'No questions'))
+                    if (password.length > 0 && password != passwordEntered) {
+                        return reject(new functions.https.HttpsError('permission-denied', 'Incorrect password'))
                     }
 
-                    try {
-                        for (let i = 0; i < grades.length; ++i) {
-                            if (!validateGradeFields(grades[i])) throw new Error
+                    testRef.collection("private").doc("questions").get().then((docQuestions) => {
+                        const data = docQuestions.data()
+                        const questions = data.questions
+                        const answersCorrect = data.answersCorrect
+                        const explanations = data.explanations
+
+                        if (questions.length == 0) {
+                            return reject(new functions.https.HttpsError('failed-precondition', 'No questions'))
                         }
+
+                        try {
+                            for (let i = 0; i < grades.length; ++i) {
+                                if (!validateGradeFields(grades[i])) throw new Error
+                            }
+                            for (let i = 0; i < questions.length; ++i) {
+                                if (!validateQuestionFields(questions[i])) throw new Error
+                            }
+                            for (let i = 0; i < explanations.length; ++i) {
+                                if (!isString(explanations[i])) throw new Error
+                            }
+                        } catch (err) {
+                            return reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
+                        }
+
+                        if (isRandomQuestions) shuffle(questions, answersCorrect, explanations)
+
                         for (let i = 0; i < questions.length; ++i) {
-                            if (!validateQuestionFields(questions[i])) throw new Error
+                            switch (questions[i].type) {
+                            case 'matching': {
+                                shuffleMatchingQuestion(questions[i])
+                                break
+                            }
+                            case 'ordering': {
+                                shuffleOrderingQuestion(questions[i])
+                                break
+                            }
+                            case 'single choice':
+                            case 'multiple choice': {
+                                if (isRandomAnswers) shuffleChoiceQuestion(questions[i], answersCorrect[i])
+                                break
+                            }
+                            }
                         }
-                        for (let i = 0; i < explanations.length; ++i) {
-                            if (!isString(explanations[i])) throw new Error
+
+                        const newData = {
+                            testId: testId,
+                            user: context.auth.uid,
+                            title: testData.title,
+                            image: testData.image,
+                            pointsMax: testData.pointsMax,
+                            timeStarted: Date.now(),
+                            timeFinished: Date.now(),
+                            isFinished: false,
+                            questions: questions,
+                            isDemo: isDemo,
+                            isGradesEnabled: isGradesEnabled,
                         }
-                    } catch (err) {
-                        return reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
-                    }
 
-                    if (isRandomQuestions) shuffle(questions, answersCorrect, explanations)
-
-                    for (let i = 0; i < questions.length; ++i) {
-                        switch (questions[i].type) {
-                        case 'matching': {
-                            shuffleMatchingQuestion(questions[i])
-                            break
+                        if (isGradesEnabled) {
+                            newData.grades = grades
                         }
-                        case 'ordering': {
-                            shuffleOrderingQuestion(questions[i])
-                            break
-                        }
-                        case 'single choice':
-                        case 'multiple choice': {
-                            if (isRandomAnswers) shuffleChoiceQuestion(questions[i], answersCorrect[i])
-                            break
-                        }
-                        }
-                    }
 
-                    const newData = {
-                        testId: testId,
-                        user: context.auth.uid,
-                        title: testData.title,
-                        image: testData.image,
-                        pointsMax: testData.pointsMax,
-                        timeStarted: Date.now(),
-                        timeFinished: Date.now(),
-                        isFinished: false,
-                        questions: questions,
-                        isDemo: isDemo,
-                        isGradesEnabled: isGradesEnabled,
-                    }
+                        db.collection("testsPassed").add(newData).then((ref) => {
+                            ref.get().then((testPassed) => {
 
-                    if (isGradesEnabled) {
-                        newData.grades = grades
-                    }
-
-                    db.collection("testsPassed").add(newData).then((ref) => {
-                        ref.get().then((testPassed) => {
-
-                            ref.collection("private").doc("results").set({
-                                testId: testId,
-                                answersCorrect: answersCorrect,
-                                explanations: explanations,
-                            }).then((_1) => {
-                                return resolve({
-                                    recordId: testPassed.id,
+                                ref.collection("private").doc("results").set({
+                                    testId: testId,
+                                    answersCorrect: answersCorrect,
+                                    explanations: explanations,
+                                }).then((_1) => {
+                                    return resolve({
+                                        recordId: testPassed.id,
+                                    })
                                 })
                             })
                         })
