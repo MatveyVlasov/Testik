@@ -14,11 +14,11 @@ class StartTestUseCase @Inject constructor(
     private val testPassedRepository: TestPassedRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(data: TestPassedModel): Result<TestPassedModel> {
+    suspend operator fun invoke(data: TestPassedModel, password: String): Result<TestPassedModel> {
         val newData = data.copy(user = authRepository.getCurrentUser()!!.uid)
 
         return wrap(
-            block = { testPassedRepository.startTest(newData.toDto()) },
+            block = { testPassedRepository.startTest(data = newData.toDto(), password = password) },
             mapper = { it!!.toDomain() }
         )
     }

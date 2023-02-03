@@ -11,6 +11,7 @@ fun TestEditScreenUIState.toDomain() =
         description = description,
         category = category,
         image = image,
+        isPasswordEnabled = password.isNotEmpty(),
         isPublished = isPublished,
         isLinkEnabled = isTestLinkEnabled,
         link = testLink,

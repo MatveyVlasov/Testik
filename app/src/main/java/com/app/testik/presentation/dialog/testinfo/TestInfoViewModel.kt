@@ -50,16 +50,23 @@ class TestInfoViewModel @Inject constructor(
         getTestInfo(source = Source.CACHE)
     }
 
+    fun onPasswordChanged(password: String) {
+        if (password == screenUIState.password) return
+        updateScreenState(screenUIState.copy(password = password))
+    }
+
     fun startTest() {
         if (job?.isActive == true) return
         if (screenUIState.questionsNum < 1) {
             emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.no_questions))
             return
         }
+        if (!validateData()) return
+
         emitEvent(TestInfoDialogEvent.Loading)
 
         job = viewModelScope.launch {
-            startTestUseCase(screenUIState.toDomain()).onSuccess {
+            startTestUseCase(data = screenUIState.toDomain(), password = screenUIState.password).onSuccess {
                 emitEvent(TestInfoDialogEvent.SuccessTestCreation(it))
             }.onError {
                 handleError(it)
@@ -80,7 +87,8 @@ class TestInfoViewModel @Inject constructor(
                     description = it.description,
                     category = it.category,
                     questionsNum = it.questionsNum,
-                    pointsMax = it.pointsMax
+                    pointsMax = it.pointsMax,
+                    isPasswordEnabled = it.isPasswordEnabled
                 )
                 updateScreenState(screenState)
 
@@ -114,6 +122,9 @@ class TestInfoViewModel @Inject constructor(
             msg.contains("no access") -> {
                 emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.no_access))
             }
+            msg.contains("incorrect password") -> {
+                emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.incorrect_password))
+            }
             msg.contains("test not found") -> {
                 emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.test_not_found))
             }
@@ -124,6 +135,16 @@ class TestInfoViewModel @Inject constructor(
                 emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.invalid_data_type))
             }
             else -> emitEvent(TestInfoDialogEvent.ShowSnackbar(error))
+        }
+    }
+
+    private fun validateData(): Boolean {
+        return checkPasswordNotEmpty()
+    }
+
+    private fun checkPasswordNotEmpty(): Boolean {
+        return (!screenUIState.isPasswordEnabled || screenUIState.password.isNotEmpty()).also {
+            if (!it) emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.empty_test_password))
         }
     }
 

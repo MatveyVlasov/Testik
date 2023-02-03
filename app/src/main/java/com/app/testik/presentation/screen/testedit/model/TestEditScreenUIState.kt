@@ -8,6 +8,7 @@ data class TestEditScreenUIState(
     val id: String = "",
     val title: String = "",
     val description: String = "",
+    val password: String = "",
     val category: CategoryType = CategoryType.NOT_SELECTED,
     val image: String = "",
     val isPublished: Boolean = false,

@@ -29,7 +29,9 @@ class TestEditViewModel @Inject constructor(
     private val createTestUseCase: CreateTestUseCase,
     private val updateTestUseCase: UpdateTestUseCase,
     private val getTestInfoUseCase: GetTestInfoUseCase,
-    private val deleteTestUseCase: DeleteTestUseCase
+    private val deleteTestUseCase: DeleteTestUseCase,
+    private val updateTestPasswordUseCase: UpdateTestPasswordUseCase,
+    private val getTestPasswordUseCase: GetTestPasswordUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<TestEditScreenUIState>>
@@ -61,6 +63,11 @@ class TestEditViewModel @Inject constructor(
     fun onDescriptionChanged(description: String) {
         if (description == screenUIState.description) return
         updateScreenState(screenUIState.copy(description = description, descriptionError = null))
+    }
+
+    fun onPasswordChanged(password: String) {
+        if (password == screenUIState.password) return
+        updateScreenState(screenUIState.copy(password = password))
     }
 
     fun onCategoryChanged(category: CategoryType) {
@@ -138,8 +145,7 @@ class TestEditViewModel @Inject constructor(
 
         viewModelScope.launch {
             getTestInfoUseCase(testId = screenUIState.id, source = source).onSuccess {
-                var screenState = TestEditScreenUIState(
-                    id = screenUIState.id,
+                var screenState = screenUIState.copy(
                     title = it.title,
                     description = it.description,
                     category = it.category,
@@ -150,9 +156,10 @@ class TestEditViewModel @Inject constructor(
                     isRandomQuestions = it.isRandomQuestions,
                     isRandomAnswers = it.isRandomAnswers,
                     questionsNum = it.questionsNum,
-                    showMore = screenUIState.showMore
                 )
                 if (isUpdated) screenState = screenState.copy(testUpdated = screenState.toDomain())
+                else getPassword()
+
                 oldScreenUIState = screenState
                 updateScreenState(screenState)
             }.onError {
@@ -164,6 +171,8 @@ class TestEditViewModel @Inject constructor(
     private fun createTest() {
         viewModelScope.launch {
             createTestUseCase(screenUIState.toDomain()).onSuccess {
+                if (screenUIState.password.isNotEmpty()) updatePassword()
+
                 var screenState = screenUIState.copy(id = it.id, testLink = it.link)
                 screenState = screenState.copy(testUpdated = screenState.toDomain())
                 oldScreenUIState = screenState
@@ -178,8 +187,29 @@ class TestEditViewModel @Inject constructor(
     private fun updateTest() {
         viewModelScope.launch {
             updateTestUseCase(screenUIState.toDomain()).onSuccess {
+                updatePassword()
                 getTestInfo(isUpdated = true)
                 emitEvent(TestEditScreenEvent.ShowSnackbarByRes(R.string.saved))
+            }.onError {
+                handleError(it)
+            }
+        }
+    }
+
+    private fun updatePassword() {
+        viewModelScope.launch {
+            updateTestPasswordUseCase(testId = screenUIState.id, password = screenUIState.password).onError {
+                handleError(it)
+            }
+        }
+    }
+
+    private fun getPassword() {
+        viewModelScope.launch {
+            getTestPasswordUseCase(testId = screenUIState.id).onSuccess {
+                val screenState = screenUIState.copy(password = it)
+                oldScreenUIState = screenState
+                updateScreenState(screenState)
             }.onError {
                 handleError(it)
             }

@@ -104,6 +104,21 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPassword"
+                    style="@style/CustomTextInputLayout.LightGray"
+                    android:hint="@string/password_optional"
+                    app:startIconDrawable="@drawable/ic_lock"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPassword"
+                        style="@style/CustomTextInputEditText.LightGray"
+                        android:inputType="text"
+                        android:maxLength="@integer/field_max_length" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilCategory"
                     style="@style/CustomTextInputLayout.LightGray"
                     android:hint="@string/category"

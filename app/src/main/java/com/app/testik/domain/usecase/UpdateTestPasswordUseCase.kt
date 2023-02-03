@@ -1,20 +1,18 @@
 package com.app.testik.domain.usecase
 
-import com.app.testik.domain.mapper.toDomain
-import com.app.testik.domain.model.QuestionModel
 import com.app.testik.domain.model.Result
 import com.app.testik.domain.repository.TestRepository
 import com.app.testik.domain.util.ResultWrapper
 import com.app.testik.domain.util.ResultWrapperImpl
 import javax.inject.Inject
 
-class GetTestQuestionsUseCase @Inject constructor(
+class UpdateTestPasswordUseCase @Inject constructor(
     private val testRepository: TestRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(testId: String): Result<List<QuestionModel>> =
+    suspend operator fun invoke(testId: String, password: String): Result<Unit> =
         wrap(
-            block = { testRepository.getQuestions(testId = testId) },
-            mapper = { it!!.toDomain() }
+            block = { testRepository.updatePassword(testId = testId, password = password) },
+            mapper = { }
         )
 }

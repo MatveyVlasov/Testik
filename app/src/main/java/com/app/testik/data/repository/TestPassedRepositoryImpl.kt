@@ -23,13 +23,14 @@ class TestPassedRepositoryImpl @Inject constructor(
     private val collection
         get() = firebaseFirestore.collection(COLLECTION_ID)
 
-    override suspend fun startTest(data: TestPassedDto): ApiResult<TestPassedDto> {
+    override suspend fun startTest(data: TestPassedDto, password: String): ApiResult<TestPassedDto> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
             val newData = mapOf(
                 "testId" to data.testId,
-                "isDemo" to data.isDemo
+                "isDemo" to data.isDemo,
+                "password" to password
             )
 
             firebaseFunctions.getHttpsCallable("startTest").call(newData).also {
@@ -180,7 +181,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTestQuestions(recordId: String): ApiResult<List<QuestionDto>> {
+    override suspend fun getQuestions(recordId: String): ApiResult<List<QuestionDto>> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
@@ -196,7 +197,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTestResults(recordId: String): ApiResult<ResultsDto> {
+    override suspend fun getResults(recordId: String): ApiResult<ResultsDto> {
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         try {

@@ -126,6 +126,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             etTitle.addTextChangedListener { viewModel.onTitleChanged(it.toString()) }
             etDescription.addTextChangedListener { viewModel.onDescriptionChanged(it.toString()) }
+            etPassword.addTextChangedListener { viewModel.onPasswordChanged(it.toString()) }
         }
     }
 
@@ -170,6 +171,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
         binding.apply {
             if (!etTitle.isFocused) etTitle.setText(data.title)
             if (!etDescription.isFocused) etDescription.setText(data.description)
+            if (!etPassword.isFocused) etPassword.setText(data.password)
             if (!etCategory.isFocused) etCategory.setText(data.category.description)
 
             tilTitle.error = getStringOrNull(data.titleError)

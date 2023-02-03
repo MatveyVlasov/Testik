@@ -20,9 +20,13 @@ interface TestRepository {
 
     suspend fun updateQuestions(testId: String, data: TestQuestionsDto): ApiResult<Unit>
 
-    suspend fun getTestQuestions(testId: String): ApiResult<TestQuestionsDto>
+    suspend fun getQuestions(testId: String): ApiResult<TestQuestionsDto>
 
     suspend fun updateGrades(testId: String, data: GradesDto): ApiResult<Unit>
 
-    suspend fun getTestGrades(testId: String): ApiResult<GradesDto>
+    suspend fun getGrades(testId: String): ApiResult<GradesDto>
+
+    suspend fun updatePassword(testId: String, password: String): ApiResult<Unit>
+
+    suspend fun getPassword(testId: String): ApiResult<String>
 }

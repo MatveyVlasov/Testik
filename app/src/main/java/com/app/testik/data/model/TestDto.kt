@@ -9,6 +9,8 @@ data class TestDto(
     val description: String = "",
     val category: String = "",
     val image: String = "",
+    @get:PropertyName("isPasswordEnabled")
+    val isPasswordEnabled: Boolean = false,
     @get:PropertyName("isPublished")
     val isPublished: Boolean = false,
     @get:PropertyName("isLinkEnabled")

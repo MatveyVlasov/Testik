@@ -11,6 +11,7 @@ data class TestModel(
     val description: String = "",
     val category: CategoryType = CategoryType.NOT_SELECTED,
     val image: String = "",
+    val isPasswordEnabled: Boolean = false,
     val isPublished: Boolean = false,
     val isLinkEnabled: Boolean = false,
     val link: String = "",

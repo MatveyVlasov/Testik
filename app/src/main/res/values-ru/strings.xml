@@ -126,8 +126,7 @@
     <string name="description">Описание</string>
     <string name="description_optional">Описание (необязательно)</string>
     <string name="description_too_long">Описание слишком длинное</string>
-    <string name="explanation_optional">Объяснение ответа (необязательно)</string>
-    <string name="explanation_too_long">Объснение слишком длинное</string>
+    <string name="password_optional">Пароль (необязательно)</string>
     <string name="points">Баллов</string>
     <string name="category">Категория</string>
     <string name="select_category">Выберите категорию</string>
@@ -172,6 +171,8 @@
     <string name="question_settings">Настройки вопроса</string>
     <string name="question_image">Изображение к вопросу</string>
     <string name="explanation">Объяснение</string>
+    <string name="explanation_optional">Объяснение ответа (необязательно)</string>
+    <string name="explanation_too_long">Объснение слишком длинное</string>
     <string name="discard_changes">Сбросить изменения</string>
 
     <string name="answer">Ответ</string>
@@ -236,6 +237,7 @@
         <item quantity="many">%d баллов максимум</item>
     </plurals>
     <string name="start">Начать</string>
+    <string name="empty_test_password">Введите пароль, чтобы начать тест</string>
 
     <string name="exit_test">Прекратить прохождение теста</string>
     <string name="exit_test_confirmation">Вы действительно хотите прекратить прохождение теста? Вы не сможете продолжить позднее</string>

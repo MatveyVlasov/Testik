@@ -57,6 +57,7 @@ fun TestDto.toDomain() =
         description = description,
         category = category.toCategoryType(),
         image = image,
+        isPasswordEnabled = isPasswordEnabled,
         isPublished = isPublished,
         isLinkEnabled = isLinkEnabled,
         link = link,

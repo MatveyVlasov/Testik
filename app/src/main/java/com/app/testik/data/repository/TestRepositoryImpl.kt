@@ -11,6 +11,7 @@ import com.app.testik.util.Constants.DYNAMIC_LINKS_PREFIX
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ktx.androidParameters
 import com.google.firebase.firestore.*
+import com.google.firebase.firestore.ktx.getField
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -37,6 +38,7 @@ class TestRepositoryImpl @Inject constructor(
                     "image" to image,
                     "description" to description,
                     "category" to category,
+                    "isPasswordEnabled" to isPasswordEnabled,
                     "link" to link,
                     "lastUpdated" to timestamp
                 )
@@ -64,6 +66,7 @@ class TestRepositoryImpl @Inject constructor(
                     "description" to description,
                     "category" to category,
                     "image" to image,
+                    "isPasswordEnabled" to isPasswordEnabled,
                     "isPublished" to isPublished,
                     "isLinkEnabled" to isLinkEnabled,
                     "link" to link,
@@ -174,7 +177,7 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTestQuestions(testId: String): ApiResult<TestQuestionsDto> {
+    override suspend fun getQuestions(testId: String): ApiResult<TestQuestionsDto> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
@@ -206,7 +209,7 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTestGrades(testId: String): ApiResult<GradesDto> {
+    override suspend fun getGrades(testId: String): ApiResult<GradesDto> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         try {
@@ -215,6 +218,38 @@ class TestRepositoryImpl @Inject constructor(
                 it.result.toObject(TestDto::class.java)?.let { result ->
                     val data = GradesDto(isEnabled = result.isGradesEnabled, grades = result.grades)
                     return ApiResult.Success(data)
+                }
+                return ApiResult.Error(it.exception?.message)
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun updatePassword(testId: String, password: String): ApiResult<Unit> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+        if (testId.isEmpty()) return ApiResult.Error("No test found")
+
+        return try {
+            val newData = mapOf(
+                "password" to password
+            )
+
+            collection.document(testId).private.document("password").set(newData).execute()
+        } catch (e: Exception) {
+            ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun getPassword(testId: String): ApiResult<String> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
+        try {
+            collection.document(testId).private.document("password").get().also {
+                it.await()
+                if (it.isSuccessful) {
+                    val password = it.result.getField("password") as? String
+                    return ApiResult.Success(password.orEmpty())
                 }
                 return ApiResult.Error(it.exception?.message)
             }

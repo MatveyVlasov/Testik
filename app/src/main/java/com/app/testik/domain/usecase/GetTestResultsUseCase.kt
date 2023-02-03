@@ -14,7 +14,7 @@ class GetTestResultsUseCase @Inject constructor(
 
     suspend operator fun invoke(recordId: String): Result<ResultsModel> =
         wrap(
-            block = { testPassedRepository.getTestResults(recordId = recordId) },
+            block = { testPassedRepository.getResults(recordId = recordId) },
             mapper = { it!!.toDomain() }
         )
 }

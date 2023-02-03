@@ -154,13 +154,36 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="That's what you should know.\nFirst of all, there are 10 questions, and you have 10 minutes to answer all of them..." />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            style="@style/CustomTextInputLayout.LightGray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:hint="@string/password"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:errorEnabled="false"
+            app:layout_constraintTop_toTopOf="@id/btnStart"
+            app:layout_constraintBottom_toBottomOf="@id/btnStart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnStart">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                style="@style/CustomTextInputEditText.LightGray"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnStart"
             style="@style/CustomButton.PurpleDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="@dimen/margin_bottom"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/start"
             app:layout_constraintTop_toBottomOf="@id/tvDescription"
             app:layout_constraintBottom_toBottomOf="parent"
