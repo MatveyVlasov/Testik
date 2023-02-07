@@ -85,6 +85,11 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(isTestLinkEnabled = isTestLinkEnabled))
     }
 
+    fun onNavigationEnabledChanged(isNavigationEnabled: Boolean) {
+        if (isNavigationEnabled == screenUIState.isNavigationEnabled) return
+        updateScreenState(screenUIState.copy(isNavigationEnabled = isNavigationEnabled))
+    }
+
     fun onRandomQuestionsChanged(isRandomQuestions: Boolean) {
         if (isRandomQuestions == screenUIState.isRandomQuestions) return
         updateScreenState(screenUIState.copy(isRandomQuestions = isRandomQuestions))
@@ -153,6 +158,7 @@ class TestEditViewModel @Inject constructor(
                     isPublished = it.isPublished,
                     isTestLinkEnabled = it.isLinkEnabled,
                     testLink = it.link,
+                    isNavigationEnabled = it.isNavigationEnabled,
                     isRandomQuestions = it.isRandomQuestions,
                     isRandomAnswers = it.isRandomAnswers,
                     questionsNum = it.questionsNum,

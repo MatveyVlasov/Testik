@@ -13,7 +13,7 @@ import com.app.testik.util.toABC
 
 class MultipleChoiceDelegateAdapter(
     val onSelectClick: (MultipleChoiceDelegateItem, Boolean) -> Unit,
-    val isReviewMode: Boolean
+    val isReviewMode: () -> Boolean
 ) : DelegateAdapter<MultipleChoiceDelegateItem, MultipleChoiceDelegateAdapter.ViewHolder>(
     MultipleChoiceDelegateItem::class.java
 ) {
@@ -32,7 +32,7 @@ class MultipleChoiceDelegateAdapter(
             binding.apply {
                 etAnswer.setText(answer.text)
 
-                btnSelect.isEnabled = !isReviewMode
+                btnSelect.isEnabled = !isReviewMode()
                 btnSelect.setOnCheckedChangeListener(null)
                 btnSelect.isChecked = answer.isSelected
                 btnSelect.setOnCheckedChangeListener { _, isChecked ->
@@ -43,10 +43,10 @@ class MultipleChoiceDelegateAdapter(
                 etAnswer.isFocusable = false
                 ivDelete.isVisible = false
 
-                ivCorrect.isVisible = isReviewMode && answer.isCorrect
+                ivCorrect.isVisible = isReviewMode() && answer.isCorrect
                 ivWrong.visibility = when {
-                    isReviewMode && !answer.isCorrect && answer.isSelected -> View.VISIBLE
-                    isReviewMode && !answer.isCorrect && !answer.isSelected -> View.INVISIBLE
+                    isReviewMode() && !answer.isCorrect && answer.isSelected -> View.VISIBLE
+                    isReviewMode() && !answer.isCorrect && !answer.isSelected -> View.INVISIBLE
                     else -> View.GONE
                 }
             }

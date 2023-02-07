@@ -14,6 +14,7 @@ data class TestEditScreenUIState(
     val isPublished: Boolean = false,
     val isTestLinkEnabled: Boolean = false,
     val testLink: String = "",
+    val isNavigationEnabled: Boolean = true,
     val isRandomQuestions: Boolean = false,
     val isRandomAnswers: Boolean = false,
     val questionsNum: Int = 0,

@@ -109,7 +109,7 @@
             android:contentDescription="@string/go_to_prev_question" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSaveDraft"
+            android:id="@+id/btnSubmit"
             style="@style/CustomButton.PurpleDark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

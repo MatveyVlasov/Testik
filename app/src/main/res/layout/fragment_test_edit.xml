@@ -221,6 +221,25 @@
                     android:text="@string/show_more_settings" />
 
                 <LinearLayout
+                    android:id="@+id/llNavigateBetweenQuestions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvNavigateBetweenQuestions"
+                        style="@style/SwitchTextView"
+                        android:text="@string/navigation_between_questions" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchNavigateBetweenQuestions"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/llRandomizeQuestions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

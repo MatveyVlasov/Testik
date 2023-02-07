@@ -7,5 +7,7 @@ data class QuestionMainScreenUIState(
     val test: TestPassedModel,
     val questions: List<QuestionDelegateItem> = emptyList(),
     val isReviewMode: Boolean = false,
-    val startQuestion: Int = 0
+    val isReviewQuestionMode: Boolean = false,
+    val startQuestion: Int = 0,
+    val currentQuestion: Int = 0
 )

@@ -101,6 +101,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             tvMoreSettings.setOnClickListener { viewModel.onShowMore() }
 
+            switchNavigateBetweenQuestions.setOnCheckedChangeListener { _, isChecked -> viewModel.onNavigationEnabledChanged(isChecked) }
             switchRandomizeQuestions.setOnCheckedChangeListener { _, isChecked -> viewModel.onRandomQuestionsChanged(isChecked) }
             switchRandomizeAnswers.setOnCheckedChangeListener { _, isChecked -> viewModel.onRandomAnswersChanged(isChecked) }
 
@@ -188,9 +189,11 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             val showMore = data.showMore
             val isTestCreated = viewModel.screenUIState.id.isNotEmpty()
             tvMoreSettings.isVisible = !showMore && isTestCreated
+            llNavigateBetweenQuestions.isVisible = showMore
             llRandomizeQuestions.isVisible = showMore
             llRandomizeAnswers.isVisible = showMore
 
+            switchNavigateBetweenQuestions.isChecked = data.isNavigationEnabled
             switchRandomizeQuestions.isChecked = data.isRandomQuestions
             switchRandomizeAnswers.isChecked = data.isRandomAnswers
 

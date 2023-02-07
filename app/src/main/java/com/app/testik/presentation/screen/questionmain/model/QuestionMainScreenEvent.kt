@@ -12,6 +12,8 @@ sealed class QuestionMainScreenEvent {
 
     data class NavigateToResults(val recordId: String) : QuestionMainScreenEvent()
 
+    data class NavigateToQuestion(val num: Int) : QuestionMainScreenEvent()
+
     object NavigateToTestsPassed : QuestionMainScreenEvent()
 
     data class UnansweredQuestion(val num: Int) : QuestionMainScreenEvent()

@@ -9,7 +9,7 @@ import com.app.testik.presentation.model.answer.MatchingRightDelegateItem
 import com.app.testik.util.delegateadapter.DelegateAdapter
 
 class MatchingRightDelegateAdapter(
-    val isReviewMode: Boolean
+    val isReviewMode: () -> Boolean
 ) : DelegateAdapter<MatchingRightDelegateItem, MatchingRightDelegateAdapter.ViewHolder>(
     MatchingRightDelegateItem::class.java
 ) {
@@ -27,13 +27,13 @@ class MatchingRightDelegateAdapter(
 
             binding.apply {
                 tvText.text = answer.textMatching
-                tvText.isEnabled = !isReviewMode
+                tvText.isEnabled = !isReviewMode()
                 tvText.isActivated = answer.textMatching == answer.textCorrect
 
                 tvTextCorrect.text = answer.textCorrect
-                tvTextCorrect.isVisible = isReviewMode && answer.textMatching != answer.textCorrect
+                tvTextCorrect.isVisible = isReviewMode() && answer.textMatching != answer.textCorrect
 
-                ivMove.isVisible = !isReviewMode
+                ivMove.isVisible = !isReviewMode()
             }
         }
     }

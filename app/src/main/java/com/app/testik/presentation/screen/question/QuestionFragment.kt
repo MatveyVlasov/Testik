@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class QuestionFragment(
     private val question: QuestionDelegateItem,
-    private val isReviewMode: Boolean
+    private var isReviewMode: Boolean
 ) : BaseFragment<FragmentQuestionBinding>() {
 
     val answers: List<AnswerDelegateItem>
@@ -48,21 +48,23 @@ class QuestionFragment(
             .add(
                 SingleChoiceDelegateAdapter(
                     onSelectClick = { item -> viewModel.onSelectClick(answer = item) },
-                    isReviewMode = isReviewMode
+                    isReviewMode = { isReviewMode }
                 )
             )
             .add(
                 MultipleChoiceDelegateAdapter(
                     onSelectClick = { item, isChecked -> viewModel.onSelectClick(answer = item, isChecked = isChecked) },
-                    isReviewMode = isReviewMode
+                    isReviewMode = { isReviewMode }
                 )
             )
             .add(ShortAnswerDelegateAdapter())
             .add(MatchingLeftDelegateAdapter())
-            .add(MatchingRightDelegateAdapter(isReviewMode = isReviewMode))
-            .add(OrderingDelegateAdapter(isReviewMode = isReviewMode))
+            .add(MatchingRightDelegateAdapter(isReviewMode = { isReviewMode }))
+            .add(OrderingDelegateAdapter(isReviewMode = { isReviewMode }))
             .build()
     }
+
+    private var answersList: List<AnswerDelegateItem> = emptyList()
 
     private val itemTouchHelper by lazy {
         ItemTouchHelper(ItemTouchCallback { from, to -> viewModel.moveAnswer(from, to) })
@@ -78,6 +80,12 @@ class QuestionFragment(
         collectData()
 
         if (savedInstanceState == null) viewModel.updateQuestion(question)
+    }
+
+    fun updateQuestion(question: QuestionDelegateItem) {
+        isReviewMode = true
+        answersAdapter.submitList(null)
+        viewModel.updateQuestion(question.copy(title = question.title + " ")) // data not collected if item the same
     }
 
     private fun initViews() {
@@ -112,17 +120,17 @@ class QuestionFragment(
                     viewModel.uiState.collect {
                         it.onSuccess { data ->
                             if (data.type == QuestionType.MATCHING) {
-                                binding.rvAnswers.apply {
-                                    layoutManager = GridLayoutManager(requireContext(), 2)
-                                    if (!isReviewMode) itemTouchHelper.attachToRecyclerView(this)
-                                }
-                                answersAdapter.submitList(data.answersMatching)
+                                binding.rvAnswers.layoutManager = GridLayoutManager(requireContext(), 2)
+                                answersList = data.answersMatching
                             } else {
-                                if (data.type == QuestionType.ORDERING && !isReviewMode) {
-                                    itemTouchHelper.attachToRecyclerView(binding.rvAnswers)
-                                }
-                                answersAdapter.submitList(data.answers)
+                                answersList = data.answers
                             }
+                            if (data.type == QuestionType.MATCHING || data.type == QuestionType.ORDERING) {
+                                binding.rvAnswers.apply {
+                                    itemTouchHelper.attachToRecyclerView(if (isReviewMode) null else this)
+                                }
+                            }
+                            answersAdapter.submitList(answersList)
                             renderUIState(data)
                         }
                     }

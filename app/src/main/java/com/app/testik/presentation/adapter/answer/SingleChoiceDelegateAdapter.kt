@@ -13,7 +13,7 @@ import com.app.testik.util.toABC
 
 class SingleChoiceDelegateAdapter(
     val onSelectClick: (SingleChoiceDelegateItem) -> Unit,
-    val isReviewMode: Boolean
+    val isReviewMode: () -> Boolean
 ) : DelegateAdapter<SingleChoiceDelegateItem, SingleChoiceDelegateAdapter.ViewHolder>(
     SingleChoiceDelegateItem::class.java
 ) {
@@ -32,7 +32,7 @@ class SingleChoiceDelegateAdapter(
             binding.apply {
                 etAnswer.setText(answer.text)
 
-                btnSelect.isEnabled = !isReviewMode
+                btnSelect.isEnabled = !isReviewMode()
                 btnSelect.setOnCheckedChangeListener(null)
                 btnSelect.isChecked = answer.isSelected
                 btnSelect.setOnCheckedChangeListener { _, _ ->
@@ -43,10 +43,10 @@ class SingleChoiceDelegateAdapter(
                 etAnswer.isFocusable = false
                 ivDelete.isVisible = false
 
-                ivCorrect.isVisible = isReviewMode && answer.isCorrect
+                ivCorrect.isVisible = isReviewMode() && answer.isCorrect
                 ivWrong.visibility = when {
-                    isReviewMode && !answer.isCorrect && answer.isSelected -> View.VISIBLE
-                    isReviewMode && !answer.isCorrect && !answer.isSelected -> View.INVISIBLE
+                    isReviewMode() && !answer.isCorrect && answer.isSelected -> View.VISIBLE
+                    isReviewMode() && !answer.isCorrect && !answer.isSelected -> View.INVISIBLE
                     else -> View.GONE
                 }
             }

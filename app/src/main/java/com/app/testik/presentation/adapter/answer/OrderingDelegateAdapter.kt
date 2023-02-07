@@ -9,7 +9,7 @@ import com.app.testik.presentation.model.answer.OrderingDelegateItem
 import com.app.testik.util.delegateadapter.DelegateAdapter
 
 class OrderingDelegateAdapter(
-    val isReviewMode: Boolean
+    val isReviewMode: () -> Boolean
 ) : DelegateAdapter<OrderingDelegateItem, OrderingDelegateAdapter.ViewHolder>(
     OrderingDelegateItem::class.java
 ) {
@@ -27,13 +27,13 @@ class OrderingDelegateAdapter(
 
             binding.apply {
                 tvText.text = answer.text
-                tvText.isEnabled = !isReviewMode
+                tvText.isEnabled = !isReviewMode()
                 tvText.isActivated = answer.text == answer.textCorrect
 
                 tvTextCorrect.text = answer.textCorrect
-                tvTextCorrect.isVisible = isReviewMode && answer.text != answer.textCorrect
+                tvTextCorrect.isVisible = isReviewMode() && answer.text != answer.textCorrect
 
-                ivMove.isVisible = !isReviewMode
+                ivMove.isVisible = !isReviewMode()
             }
         }
     }

@@ -12,6 +12,7 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
+import org.json.JSONObject
 import javax.inject.Inject
 
 class TestPassedRepositoryImpl @Inject constructor(
@@ -38,9 +39,7 @@ class TestPassedRepositoryImpl @Inject constructor(
                 return if (it.isSuccessful) {
                     val result = it.result.data as Map<*, *>
                     val recordId = (result["recordId"] as? String).orEmpty()
-                    ApiResult.Success(
-                        data.copy(recordId = recordId)
-                    )
+                    getTest(recordId = recordId, source = Source.SERVER)
                 } else {
                     ApiResult.Error(it.exception?.message)
                 }
@@ -83,6 +82,43 @@ class TestPassedRepositoryImpl @Inject constructor(
                     val gradeEarned = (result["gradeEarned"] as? String).orEmpty()
                     ApiResult.Success(
                         PointsEarnedDto(pointsEarned = pointsEarned, gradeEarned = gradeEarned)
+                    )
+                } else {
+                    ApiResult.Error(it.exception?.message)
+                }
+            }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
+
+    override suspend fun submitQuestion(recordId: String, question: QuestionDto, num: Int): ApiResult<AnswerResultsDto> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+        if (recordId.isEmpty()) return ApiResult.Error("No test found")
+
+        try {
+            val newData = mapOf(
+                "recordId" to recordId,
+                "question" to Gson().toJson(question),
+                "num" to num
+            )
+
+            firebaseFunctions.getHttpsCallable("submitQuestion").call(newData).also {
+                it.await()
+                return if (it.isSuccessful) {
+                    val result = it.result.data as Map<*, *>
+                    val points = (result["points"] as? Int).orZero()
+                    val pointsEarned = (result["pointsEarned"] as? Int).orZero()
+                    val answersCorrect = Gson().fromJson(JSONObject(result["answersCorrect"] as Map<*, *>).toString(), AnswersCorrectDto::class.java)
+                    val explanation = (result["explanation"] as? String).orEmpty()
+
+                    ApiResult.Success(
+                        AnswerResultsDto(
+                            points = points,
+                            pointsEarned = pointsEarned,
+                            answersCorrect = answersCorrect,
+                            explanation = explanation
+                        )
                     )
                 } else {
                     ApiResult.Error(it.exception?.message)

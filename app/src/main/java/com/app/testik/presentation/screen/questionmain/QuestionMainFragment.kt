@@ -39,6 +39,8 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
             .build()
     }
 
+    private var questionsAdapter: QuestionAdapter? = null
+
     private var questionsNumList = mutableListOf<QuestionNumberDelegateItem>()
     private var selectedItem = -1
     private var toast: Toast? = null
@@ -98,7 +100,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
 
             btnExit.setOnClickListener { confirmExit() }
             btnFinish.setOnClickListener { confirmFinish() }
-            btnSaveDraft.setOnClickListener { saveAnswers() }
+            btnSubmit.setOnClickListener { saveAnswers() }
             btnPrev.setOnClickListener { goToPreviousQuestion() }
             btnNext.setOnClickListener { goToNextQuestion() }
             btnGoBack.setOnClickListener { navController.navigateUp() }
@@ -111,13 +113,14 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                 launch {
                     viewModel.uiState.collect {
                         it.onSuccess { data ->
-                            if (data.questions.isNotEmpty() && binding.pager.adapter == null) {
-                                binding.pager.adapter =
-                                    QuestionAdapter(
-                                        fragment = this@QuestionMainFragment,
-                                        questions = data.questions,
-                                        isReviewMode = data.isReviewMode
-                                    )
+                            if (questionsAdapter == null) {
+                                questionsAdapter = QuestionAdapter(
+                                    fragment = this@QuestionMainFragment,
+                                    questions = data.questions,
+                                    isReviewMode = data.isReviewMode
+                                )
+                                binding.pager.adapter = questionsAdapter
+
                                 questionsNumList = MutableList(data.questions.size) { num ->
                                     num.toQuestionNumber()
                                 }
@@ -127,9 +130,14 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                                     delay(10)
                                     goToQuestion(data.startQuestion)
                                 }
+                            } else if (data.isReviewQuestionMode) {
+                                val pos = data.currentQuestion
+
+                                questionsAdapter?.getFragment(pos)?.updateQuestion(data.questions[pos])
+                                setTextButtonSubmit(isNext = true)
                             }
-                            setLoadingState(false)
                         }
+                        setLoadingState(false)
                     }
                 }
 
@@ -143,11 +151,20 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
     private fun renderUIState(data: QuestionMainScreenUIState) {
         binding.apply {
             llInfo.isVisible = !data.isReviewMode
-            btnSaveDraft.isVisible = !data.isReviewMode
+            btnSubmit.isVisible = !data.isReviewMode
             btnGoBack.isVisible = data.isReviewMode
+
+            val isNavigationEnabled = data.test.isNavigationEnabled || data.isReviewMode
+            pager.isUserInputEnabled = isNavigationEnabled
+            rvQuestions.isVisible = isNavigationEnabled
+            btnFinish.isVisible = isNavigationEnabled
+            btnPrev.isVisible = isNavigationEnabled
+            btnNext.isVisible = isNavigationEnabled
 
             val params = (pager.layoutParams as ViewGroup.MarginLayoutParams)
             params.updateMargins(top = llInfoHeight + rvQuestionsHeight, bottom = llActionsHeight)
+
+            setTextButtonSubmit(isNext = data.isReviewQuestionMode)
         }
     }
 
@@ -157,6 +174,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
             is QuestionMainScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
             is QuestionMainScreenEvent.Loading -> Unit
             is QuestionMainScreenEvent.NavigateToResults -> navigateToResults(event.recordId)
+            is QuestionMainScreenEvent.NavigateToQuestion -> goToQuestion(event.num)
             is QuestionMainScreenEvent.NavigateToTestsPassed -> navigateToTestsPassed()
             is QuestionMainScreenEvent.UnansweredQuestion -> {
                 goToQuestion(event.num)
@@ -168,6 +186,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
 
     private fun goToQuestion(num: Int) {
         binding.pager.currentItem = num
+        setTextButtonSubmit()
     }
 
     private fun goToPreviousQuestion() {
@@ -193,7 +212,8 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
 
     private fun updateAnswers(pos: Int) {
         if (viewModel.screenUIState.isReviewMode) return
-        val adapter = binding.pager.adapter as? QuestionAdapter ?: return
+        val adapter = questionsAdapter ?: return
+
         adapter.getFragment(pos).also {
             viewModel.updateAnswers(question = pos, answers = it.answers, enteredAnswer = it.enteredAnswer)
         }
@@ -201,7 +221,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
 
     private fun saveAnswers() {
         updateAnswers(binding.pager.currentItem)
-        viewModel.saveAnswers(showInfo = true)
+        viewModel.submit()
     }
 
     private fun confirmFinish() {
@@ -250,5 +270,14 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
         navController.navigate(
             QuestionMainFragmentDirections.toResults(recordId)
         )
+    }
+
+    private fun setTextButtonSubmit(isNext: Boolean = false) {
+        val textSubmit =
+            if (viewModel.screenUIState.test.isNavigationEnabled) R.string.save_draft
+            else if (isNext) R.string.next
+            else R.string.submit
+
+        binding.btnSubmit.setText(textSubmit)
     }
 }

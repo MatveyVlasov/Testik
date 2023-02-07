@@ -12,6 +12,8 @@ interface TestPassedRepository {
 
     suspend fun calculatePoints(recordId: String): ApiResult<PointsEarnedDto>
 
+    suspend fun submitQuestion(recordId: String, question: QuestionDto, num: Int): ApiResult<AnswerResultsDto>
+
     suspend fun getTestsByUser(uid: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsPassedDto>
 
     suspend fun getTests(testId: String, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsPassedDto>

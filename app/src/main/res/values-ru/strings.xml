@@ -55,7 +55,9 @@
     <string name="test_already_finished">Тест уже завершён</string>
     <string name="incorrect_questions_number">Произошла ошибка (#100)</string>
     <string name="invalid_data_type">Произошла ошибка (#101)</string>
+    <string name="incorrect_question_number">Произошла ошибка (#102)</string>
     <string name="question_unanswered">Вы должны ответить на вопрос № %d</string>
+    <string name="question_unanswered_current">Вы должны ответить на данный вопрос</string>
 
     <string name="registration">Регистрация</string>
     <string name="repeat_password">Повторите пароль</string>
@@ -143,6 +145,7 @@
     <string name="log_in_to_get_test">Пожалуйста, войдите в аккаунт, чтобы перейти к тесту</string>
     <string name="enable_test_link">Сделайте ссылку активной в настройках теста</string>
     <string name="show_more_settings">Показать больше настроек</string>
+    <string name="navigation_between_questions">Навигация между вопросами</string>
     <string name="random_question_order">Случайный порядок вопросов</string>
     <string name="random_answer_order">Случайный порядок ответов</string>
     <string name="create_test_success">Тест успешно создан</string>
@@ -245,13 +248,14 @@
     <string name="finish">Завершить</string>
     <string name="finish_test">Завершить тест</string>
     <string name="finish_test_confirmation">Вы действительно хотите завершить тест? Вы больше не сможете редактировать свои ответы</string>
+    <string name="submit">Подтвердить</string>
+    <string name="next">Далее</string>
     <string name="save_draft">Сохранить черновик</string>
     <string name="draft_saved">Черновик сохранён</string>
     <string name="go_to_prev_question">Перейти к предыдущему вопросу</string>
     <string name="go_to_next_question">Перейти к следующему вопросу</string>
     <string name="cannot_go_to_prev_question">Вы уже на первом вопросе</string>
     <string name="cannot_go_to_next_question">Вы уже на последнем вопросе</string>
-    <string name="submit">Подтвердить</string>
 
     <string name="go_home_to_take_test">Вы можете выбрать тест для прохождения на главной</string>
     <string name="go_home">На главную</string>

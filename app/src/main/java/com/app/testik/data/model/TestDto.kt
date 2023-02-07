@@ -16,6 +16,8 @@ data class TestDto(
     @get:PropertyName("isLinkEnabled")
     val isLinkEnabled: Boolean = false,
     val link: String = "",
+    @get:PropertyName("isNavigationEnabled")
+    val isNavigationEnabled: Boolean = true,
     @get:PropertyName("isRandomQuestions")
     val isRandomQuestions: Boolean = false,
     @get:PropertyName("isRandomAnswers")

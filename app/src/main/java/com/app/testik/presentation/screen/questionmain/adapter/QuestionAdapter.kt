@@ -11,7 +11,9 @@ class QuestionAdapter(
     private val isReviewMode: Boolean = false
 ) : FragmentStateAdapter(fragment) {
 
-    private val fragments = List(questions.size) {  QuestionFragment(question = questions[it], isReviewMode = isReviewMode) }
+    private val fragments = List(questions.size) {
+        QuestionFragment(question = questions[it], isReviewMode = isReviewMode)
+    }
 
     override fun getItemCount(): Int = questions.size
 

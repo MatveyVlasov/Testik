@@ -61,6 +61,7 @@ fun TestDto.toDomain() =
         isPublished = isPublished,
         isLinkEnabled = isLinkEnabled,
         link = link,
+        isNavigationEnabled = isNavigationEnabled,
         isRandomQuestions = isRandomQuestions,
         isRandomAnswers = isRandomAnswers,
         questionsNum = questionsNum,
@@ -76,6 +77,7 @@ fun TestPassedDto.toDomain() =
         user = user,
         timeStarted = timeStarted,
         timeFinished = timeFinished,
+        isNavigationEnabled = isNavigationEnabled,
         isFinished = isFinished,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned,
@@ -179,4 +181,12 @@ fun PointsEarnedDto.toDomain() =
     PointsEarnedModel(
         pointsEarned = pointsEarned,
         gradeEarned = gradeEarned
+    )
+
+fun AnswerResultsDto.toDomain() =
+    AnswerResultsModel(
+        points = points,
+        pointsEarned = pointsEarned,
+        answersCorrect = answersCorrect?.answers?.map { answer -> answer.toDomain() } ?: emptyList(),
+        explanation = explanation
     )

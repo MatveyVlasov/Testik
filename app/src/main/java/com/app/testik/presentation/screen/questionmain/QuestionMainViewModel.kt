@@ -4,14 +4,18 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.testik.R
-import com.app.testik.domain.model.TestPassedModel
-import com.app.testik.domain.model.onError
-import com.app.testik.domain.model.onSuccess
+import com.app.testik.domain.model.*
 import com.app.testik.domain.usecase.*
 import com.app.testik.presentation.mapper.toDomain
 import com.app.testik.presentation.mapper.toQuestionItem
 import com.app.testik.presentation.model.AnswerDelegateItem
+import com.app.testik.presentation.model.QuestionDelegateItem
 import com.app.testik.presentation.model.UIState
+import com.app.testik.presentation.model.answer.MatchingDelegateItem
+import com.app.testik.presentation.model.answer.OrderingDelegateItem
+import com.app.testik.presentation.model.answer.ShortAnswerDelegateItem
+import com.app.testik.presentation.model.answer.copyCorrect
+import com.app.testik.presentation.model.copy
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenEvent
 import com.app.testik.presentation.screen.questionmain.model.QuestionMainScreenUIState
 import com.app.testik.util.toIntOrZero
@@ -29,7 +33,8 @@ class QuestionMainViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getTestPassedQuestionsUseCase: GetTestPassedQuestionsUseCase,
     private val updateAnswersUseCase: UpdateAnswersUseCase,
-    private val finishTestUseCase: FinishTestUseCase
+    private val finishTestUseCase: FinishTestUseCase,
+    private val submitQuestionUseCase: SubmitQuestionUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<QuestionMainScreenUIState>>
@@ -59,6 +64,12 @@ class QuestionMainViewModel @Inject constructor(
         screenUIState = screenUIState.copy(questions = questions)
     }
 
+    fun submit() {
+        if (screenUIState.test.isNavigationEnabled) saveAnswers(showInfo = true)
+        else if (screenUIState.isReviewQuestionMode) navigateToNextQuestion()
+        else submitQuestion()
+    }
+
     fun saveAnswers(showInfo: Boolean = false, isExiting: Boolean = false) {
         if (showInfo || isExiting) emitEvent(QuestionMainScreenEvent.Loading)
         viewModelScope.launch {
@@ -82,6 +93,27 @@ class QuestionMainViewModel @Inject constructor(
                 questions = screenUIState.questions.map { it.toDomain() }
             ).onSuccess {
                 emitEvent(QuestionMainScreenEvent.NavigateToResults(screenUIState.test.recordId))
+            }.onError {
+                handleError(it)
+            }
+        }
+    }
+
+    private fun submitQuestion() {
+        emitEvent(QuestionMainScreenEvent.Loading)
+        viewModelScope.launch {
+            val num = screenUIState.currentQuestion
+            submitQuestionUseCase(
+                recordId = screenUIState.test.recordId,
+                question = screenUIState.questions[num].toDomain(),
+                num = num
+            ).onSuccess {
+                if (num == screenUIState.questions.lastIndex && false) { // TODO check if results available
+                    emitEvent(QuestionMainScreenEvent.NavigateToResults(screenUIState.test.recordId))
+                } else {
+                    if (true) updateResults(it) // TODO check if results available
+                    else navigateToNextQuestion()
+                }
             }.onError {
                 handleError(it)
             }
@@ -137,12 +169,80 @@ class QuestionMainViewModel @Inject constructor(
             msg.contains("invalid data type") -> {
                 emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.invalid_data_type))
             }
+            msg.contains("incorrect question number") -> {
+                emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.incorrect_question_number))
+            }
             msg.contains("should be answered") -> {
-                val questionNum = msg.takeWhile { c -> c != ':' }.toIntOrZero()
-                emitEvent(QuestionMainScreenEvent.UnansweredQuestion(questionNum))
+                if (':' !in msg) {
+                    emitEvent(QuestionMainScreenEvent.ShowSnackbarByRes(R.string.question_unanswered_current))
+                }
+                else {
+                    val questionNum = msg.takeWhile { c -> c != ':' }.toIntOrZero()
+                    emitEvent(QuestionMainScreenEvent.UnansweredQuestion(questionNum))
+                }
             }
             else -> emitEvent(QuestionMainScreenEvent.ShowSnackbar(error))
         }
+    }
+
+    private fun navigateToNextQuestion() {
+        val pos = screenUIState.currentQuestion + 1
+        if (pos > screenUIState.questions.lastIndex) {
+            emitEvent(QuestionMainScreenEvent.NavigateToResults(screenUIState.test.recordId))
+            return
+        }
+        updateScreenState(screenUIState.copy(isReviewQuestionMode = false, currentQuestion = pos))
+        emitEvent(QuestionMainScreenEvent.NavigateToQuestion(pos))
+    }
+
+    private fun updateResults(results: AnswerResultsModel) {
+        val num = screenUIState.currentQuestion
+        val question = screenUIState.questions[num].copy(
+            explanation = results.explanation,
+            pointsEarned = results.points
+        )
+
+        val newQuestion = when (question.type) {
+            QuestionType.SHORT_ANSWER -> {
+                question.copy(
+                    answers = results.answersCorrect.map { ShortAnswerDelegateItem(text = it.text) }
+                )
+            }
+            QuestionType.MATCHING -> {
+                question.copy(
+                    answers = question.answers.mapIndexed { itemIndex, item ->
+                        (item as MatchingDelegateItem).copyCorrect(textCorrect = results.answersCorrect[itemIndex].textMatching)
+                    }
+                )
+            }
+            QuestionType.ORDERING -> {
+                question.copy(
+                    answers = question.answers.mapIndexed { itemIndex, item ->
+                        (item as OrderingDelegateItem).copyCorrect(textCorrect = results.answersCorrect[itemIndex].text)
+                    }
+                )
+            }
+            QuestionType.NUMBER -> {
+                question.copy(correctNumber = results.answersCorrect[0].text.toDouble())
+            }
+            else -> {
+                question.copy(
+                    answers = question.answers.mapIndexed { itemIndex, item ->
+                        item.copy(isCorrect = results.answersCorrect[itemIndex].isCorrect)
+                    },
+                )
+            }
+        }
+
+        updateQuestion(pos = num, newQuestion = newQuestion, isReviewQuestionMode = true)
+    }
+
+    private fun updateQuestion(pos: Int, newQuestion: QuestionDelegateItem, isReviewQuestionMode: Boolean = false) {
+        val questions = screenUIState.questions.map { it }.toMutableList().also {
+            it[pos] = newQuestion
+        }
+
+        updateScreenState(screenUIState.copy(questions = questions, isReviewQuestionMode = isReviewQuestionMode))
     }
 
     private fun updateScreenState(state: QuestionMainScreenUIState) {

@@ -49,7 +49,9 @@
     <string name="test_already_finished">Test already finished</string>
     <string name="incorrect_questions_number">An error occurred (#100)</string>
     <string name="invalid_data_type">An error occurred (#101)</string>
+    <string name="incorrect_question_number">An error occurred (#102)</string>
     <string name="question_unanswered">Question #%d should be answered</string>
+    <string name="question_unanswered_current">This question should be answered</string>
 
     <string name="account_login">Account Login</string>
     <string name="language">Language</string>
@@ -148,6 +150,7 @@
     <string name="log_in_to_get_test">Please log in to get to the test</string>
     <string name="enable_test_link">Enable link in test settings</string>
     <string name="show_more_settings">Show more settings</string>
+    <string name="navigation_between_questions">Navigation between questions</string>
     <string name="random_question_order">Random question order</string>
     <string name="random_answer_order">Random answer order</string>
     <string name="create_test_success">Test successfully created</string>
@@ -248,6 +251,8 @@
     <string name="finish">Finish</string>
     <string name="finish_test">Finish test</string>
     <string name="finish_test_confirmation">Do you really want to finish this test? You will not be able to edit your answers</string>
+    <string name="submit">Submit</string>
+    <string name="next">Next</string>
     <string name="save_draft">Save draft</string>
     <string name="draft_saved">Draft saved</string>
     <string name="go_to_prev_question">Go to previous question</string>
@@ -255,7 +260,6 @@
     <string name="cannot_go_to_prev_question">You are already on the first question</string>
     <string name="cannot_go_to_next_question">You are already on the last question</string>
     <string name="num" translatable="false">%d</string>
-    <string name="submit">Submit</string>
 
     <string name="go_home_to_take_test">You can choose a test to take on home screen</string>
     <string name="go_home">Go home</string>
