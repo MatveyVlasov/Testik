@@ -94,6 +94,7 @@ exports.startTest = functions
                 const testData = doc.data()
                 const isGradesEnabled = testData.isGradesEnabled || false
                 const grades = testData.grades || []
+                const isNavigationEnabled = testData.isNavigationEnabled
                 const isRandomQuestions = testData.isRandomQuestions
                 const isRandomAnswers = testData.isRandomAnswers
 
@@ -161,6 +162,7 @@ exports.startTest = functions
                             timeStarted: Date.now(),
                             timeFinished: Date.now(),
                             isFinished: false,
+                            isNavigationEnabled: isNavigationEnabled,
                             questions: questions,
                             isDemo: isDemo,
                             isGradesEnabled: isGradesEnabled,
@@ -360,6 +362,107 @@ exports.calculatePoints = functions
         })
     })
 
+exports.submitQuestion = functions
+    .runWith({
+        enforceAppCheck: true,
+    })
+    .https.onCall((data, context) => {
+
+        return new Promise((resolve, reject) => {
+
+            if (context.app == undefined) {
+                return reject(new functions.https.HttpsError('failed-precondition', 'App not verified'))
+            }
+
+            if (context.auth == null) {
+                return reject(new functions.https.HttpsError('unauthenticated', 'Not logged in'))
+            }
+
+            const recordId = data.recordId || null
+            const question = JSON.parse(data.question) || null
+            const num = data.num
+
+            const testRef = db.collection("testsPassed").doc(recordId)
+
+            testRef.get().then((record) => {
+                const testData = record.data()
+                const user = testData.user
+                const questions = testData.questions
+                const isFinished = testData.isFinished
+                const isGradesEnabled = testData.isGradesEnabled
+                const grades = testData.grades
+
+                if (user != context.auth.uid) {
+                    return reject(new functions.https.HttpsError('permission-denied', 'No access'))
+                }
+                if (isFinished) {
+                    return reject(new functions.https.HttpsError('failed-precondition', 'Test already finished'))
+                }
+
+                testRef.collection("private").doc("results").get().then((doc) => {
+                    if (!doc.exists) {
+                        return reject(new functions.https.HttpsError('not-found', 'Test not found'))
+                    }
+
+                    const answersCorrect = doc.data().answersCorrect
+                    const explanations = doc.data().explanations
+                    const pointsPerQuestion = doc.data().pointsPerQuestion || []
+
+                    if (num != pointsPerQuestion.length) {
+                        return reject(new functions.https.HttpsError('failed-precondition', `Incorrect question number`))
+                    }
+
+                    if (!validateQuestionFields(question)) {
+                        return reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
+                    }
+
+                    if (!validateRequiredQuestion(question)) {
+                        return reject(new functions.https.HttpsError('failed-precondition', `This question should be answered`))
+                    }
+
+                    const points = scoreQuestion(question, answersCorrect[num])
+                    pointsPerQuestion.push(points)
+
+                    testRef.collection("private").doc("results").update({ pointsPerQuestion: pointsPerQuestion }).then((_1) => {
+                        const pointsEarned = pointsPerQuestion.reduce((sum, a) => sum + a, 0)
+
+                        questions[num] = question
+
+                        const isFinished = num == questions.length - 1
+
+                        const newData = {
+                            questions: questions,
+                            pointsEarned: pointsEarned,
+                            isFinished: isFinished,
+                            timeFinished: Date.now(),
+                        }
+
+                        if (isFinished && isGradesEnabled) {
+                            newData.gradeEarned = getGrade(grades, pointsEarned)
+                        }
+
+                        testRef.update(newData).then((_1) => {
+                            const responseData = {
+                                points: points,
+                                pointsEarned: pointsEarned,
+                            }
+
+                            if (true) { // TODO check if results available
+                                responseData.answersCorrect = answersCorrect[num]
+                                responseData.explanation = explanations[num]
+                            }
+                            return resolve(responseData)
+                        })
+                    })
+                })
+            })
+        }).catch((err) => {
+            console.log('Error occurred', err)
+            throw err
+        })
+    })
+
+
 exports.deleteDemoTests = functions.pubsub
     .schedule('0 0 * * 1,4')
     .onRun(async (context) => {
@@ -427,91 +530,101 @@ function validateGradeFields(grade) {
 // returns number of unanswered question or -1 if all required questions answered
 function validateRequiredQuestions(questions) {
     for (let i = 0; i < questions.length; ++i) {
-        if (questions[i].enteredAnswer.length > 0) continue
-        if (questions[i].type == 'ordering' || questions[i].type == 'matching') continue
-
-        let isSelected = false
-
-        for (let j = 0; j < questions[i].answers.length; ++j) {
-            if (questions[i].answers[j].isSelected) {
-                isSelected = true
-                break
-            }
-        }
-
-        if (questions[i].isRequired && !isSelected) return i
+        if (!validateRequiredQuestion(questions[i])) return i
     }
     return -1
+}
+
+function validateRequiredQuestion(question) {
+    if (!question.isRequired) return true
+    if (question.enteredAnswer.length > 0) return true
+    if (question.type == 'ordering' || question.type == 'matching') return true
+
+    let isSelected = false
+
+    for (let j = 0; j < question.answers.length; ++j) {
+        if (question.answers[j].isSelected) {
+            isSelected = true
+            break
+        }
+    }
+
+    return isSelected
 }
 
 function calculatePoints(questions, answersCorrect) {
     const pointsPerQuestion = []
 
     for (let i = 0; i < questions.length; ++i) {
-        const pointsMax = questions[i].pointsMax
-        let pointsEarned = 0
-
-        switch (questions[i].type) {
-        case 'short answer': {
-            let enteredAnswer = questions[i].enteredAnswer
-            const isMatch = questions[i].isMatch
-            const isCaseSensitive = questions[i].isCaseSensitive
-
-            if (!isCaseSensitive) enteredAnswer = enteredAnswer.toLowerCase()
-
-            for (let j = 0; j < answersCorrect[i].answers.length; ++j) {
-                let answer = answersCorrect[i].answers[j].text
-                if (!isCaseSensitive) answer = answer.toLowerCase()
-
-                if (isMatch && enteredAnswer == answer || !isMatch && enteredAnswer.includes(answer)) {
-                    pointsEarned = pointsMax
-                }
-            }
-            break
-        }
-        case 'matching': {
-            let isCorrect = true
-            for (let j = 0; j < questions[i].answers.length; ++j) {
-                isCorrect = isCorrect && answersCorrect[i].answers[j].textMatching == questions[i].answers[j].textMatching
-            }
-            if (isCorrect) pointsEarned = pointsMax
-            break
-        }
-        case 'ordering': {
-            let isCorrect = true
-            for (let j = 0; j < questions[i].answers.length; ++j) {
-                isCorrect = isCorrect && answersCorrect[i].answers[j].text == questions[i].answers[j].text
-            }
-            if (isCorrect) pointsEarned = pointsMax
-            break
-        }
-        case 'number': {
-            const enteredAnswer = questions[i].enteredAnswer
-            const correctNumber = questions[i].correctNumber
-            const percentageError = questions[i].percentageError
-
-            if (percentageError == null) {
-                if (enteredAnswer == correctNumber) pointsEarned = pointsMax
-            } else {
-                const diff = correctNumber * percentageError / 100
-                if (enteredAnswer >= correctNumber - diff && enteredAnswer <= correctNumber + diff) {
-                    pointsEarned = pointsMax
-                }
-            }
-            break
-        }
-        default: {
-            let isCorrect = true
-            for (let j = 0; j < questions[i].answers.length; ++j) {
-                isCorrect = isCorrect && answersCorrect[i].answers[j].isCorrect == questions[i].answers[j].isSelected
-            }
-            if (isCorrect) pointsEarned = pointsMax
-        }
-        }
-
+        const pointsEarned = scoreQuestion(questions[i], answersCorrect[i])
         pointsPerQuestion.push(pointsEarned)
     }
     return pointsPerQuestion
+}
+
+function scoreQuestion(question, answersCorrect) {
+    const pointsMax = question.pointsMax
+    let pointsEarned = 0
+
+    switch (question.type) {
+    case 'short answer': {
+        let enteredAnswer = question.enteredAnswer
+        const isMatch = question.isMatch
+        const isCaseSensitive = question.isCaseSensitive
+
+        if (!isCaseSensitive) enteredAnswer = enteredAnswer.toLowerCase()
+
+        for (let j = 0; j < answersCorrect.answers.length; ++j) {
+            let answer = answersCorrect.answers[j].text
+            if (!isCaseSensitive) answer = answer.toLowerCase()
+
+            if (isMatch && enteredAnswer == answer || !isMatch && enteredAnswer.includes(answer)) {
+                pointsEarned = pointsMax
+            }
+        }
+        break
+    }
+    case 'matching': {
+        let isCorrect = true
+        for (let j = 0; j < question.answers.length; ++j) {
+            isCorrect = isCorrect && answersCorrect.answers[j].textMatching == question.answers[j].textMatching
+        }
+        if (isCorrect) pointsEarned = pointsMax
+        break
+    }
+    case 'ordering': {
+        let isCorrect = true
+        for (let j = 0; j < question.answers.length; ++j) {
+            isCorrect = isCorrect && answersCorrect.answers[j].text == question.answers[j].text
+        }
+        if (isCorrect) pointsEarned = pointsMax
+        break
+    }
+    case 'number': {
+        const enteredAnswer = question.enteredAnswer
+        const correctNumber = question.correctNumber
+        const percentageError = question.percentageError
+
+        if (percentageError == null) {
+            if (enteredAnswer == correctNumber) pointsEarned = pointsMax
+        } else {
+            const diff = correctNumber * percentageError / 100
+            if (enteredAnswer >= correctNumber - diff && enteredAnswer <= correctNumber + diff) {
+                pointsEarned = pointsMax
+            }
+        }
+        break
+    }
+    default: {
+        let isCorrect = true
+        for (let j = 0; j < question.answers.length; ++j) {
+            isCorrect = isCorrect && answersCorrect.answers[j].isCorrect == question.answers[j].isSelected
+        }
+        if (isCorrect) pointsEarned = pointsMax
+    }
+    }
+
+    return pointsEarned
 }
 
 function getGrade(grades, pointsEarned) {
