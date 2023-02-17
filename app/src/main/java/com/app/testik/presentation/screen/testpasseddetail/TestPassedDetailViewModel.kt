@@ -165,10 +165,7 @@ class TestPassedDetailViewModel @Inject constructor(
     private fun updateResults(questions: List<QuestionDelegateItem>): List<QuestionDelegateItem> {
         val results = screenUIState.results ?: return questions
 
-        if (results.answersCorrect.size < questions.size
-            || results.pointsPerQuestion.size < questions.size
-            || results.explanations.size < questions.size
-        ) {
+        if (results.answersCorrect.size < questions.size || results.explanations.size < questions.size) {
             emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.error_while_loading_results))
             return questions
         }
@@ -208,7 +205,10 @@ class TestPassedDetailViewModel @Inject constructor(
             }
 
             newList.add(
-                newQuestion.copy(pointsEarned = results.pointsPerQuestion[index], explanation = results.explanations[index])
+                newQuestion.copy(
+                    pointsEarned = results.pointsPerQuestion.getOrElse(index) { 0 },
+                    explanation = results.explanations[index]
+                )
             )
         }
         return newList
