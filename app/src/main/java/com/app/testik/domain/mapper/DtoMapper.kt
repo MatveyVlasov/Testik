@@ -95,7 +95,9 @@ fun QuestionDto.toDomain(
     answersCorrect: List<AnswerCorrectDto>? = null,
     explanation: String = ""
 ): QuestionModel {
-    val answers = when(type.toQuestionType()) {
+    val type = type.toQuestionType()
+
+    val answers = when(type) {
         QuestionType.SHORT_ANSWER -> {
             answersCorrect?.map {
                 AnswerModel(
@@ -108,12 +110,15 @@ fun QuestionDto.toDomain(
         else -> {
             answers.mapIndexed { index, item ->
                 item.toDomain(
-                    type = type.toQuestionType(),
+                    type = type,
                     isCorrect = answersCorrect?.get(index)?.isCorrect ?: false
                 )
             }
         }
     }
+
+    val correctNumber = if (type == QuestionType.NUMBER && answersCorrect?.isNotEmpty() == true) answersCorrect[0].text.toDouble()
+                        else 0.0
 
     return QuestionModel(
         id = id,
@@ -122,7 +127,7 @@ fun QuestionDto.toDomain(
         description = description,
         explanation = explanation,
         image = image,
-        type = type.toQuestionType(),
+        type = type,
         isRequired = isRequired,
         answers = answers,
         enteredAnswer = enteredAnswer,

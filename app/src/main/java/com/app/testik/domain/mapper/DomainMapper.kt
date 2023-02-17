@@ -98,7 +98,6 @@ fun QuestionModel.toDto(): QuestionDto {
         enteredAnswer = enteredAnswer,
         isMatch = isMatch,
         isCaseSensitive = isCaseSensitive,
-        correctNumber = correctNumber,
         percentageError = percentageError,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned
