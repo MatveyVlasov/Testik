@@ -433,6 +433,7 @@ exports.submitQuestion = functions
                         const newData = {
                             questions: questions,
                             pointsEarned: pointsEarned,
+                            pointsCalculated: true,
                             isFinished: isFinished,
                             timeFinished: Date.now(),
                         }
