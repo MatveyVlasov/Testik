@@ -515,7 +515,6 @@ function validateQuestionFields(question) {
         && isNumber(question.pointsEarned)
         && isBoolean(question.isMatch)
         && isBoolean(question.isCaseSensitive)
-        && isNumber(question.correctNumber)
         && isNumberOrUndefined(question.percentageError)
 }
 
@@ -602,7 +601,7 @@ function scoreQuestion(question, answersCorrect) {
     }
     case 'number': {
         const enteredAnswer = question.enteredAnswer
-        const correctNumber = question.correctNumber
+        const correctNumber = parseFloat(answersCorrect.answers[0].text)
         const percentageError = question.percentageError
 
         if (percentageError == null) {
