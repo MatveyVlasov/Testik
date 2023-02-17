@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class QuestionFragment(
     private val question: QuestionDelegateItem,
+    private val num: Int,
     private var isReviewMode: Boolean
 ) : BaseFragment<FragmentQuestionBinding>() {
 
@@ -154,11 +155,13 @@ class QuestionFragment(
 
     private fun renderUIState(data: QuestionScreenUIState) {
         binding.apply {
+            val numDisplayed = num + 1
+            tvQuestionData.text = numDisplayed.toString()
+            tvRequired.isVisible = data.isRequired
+
             tvPointsData.text =
                 if (isReviewMode) getString(R.string.points_earned, data.pointsEarned, data.pointsMax)
                 else getString(R.string.num, data.pointsMax)
-
-            tvRequired.isVisible = data.isRequired
 
             tvTitle.text = data.title
             tvDescription.text = data.description

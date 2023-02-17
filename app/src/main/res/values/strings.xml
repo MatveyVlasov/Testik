@@ -191,7 +191,7 @@
     <string name="no_correct_answers">The question should contain at least one correct answer</string>
     <string name="type">Type</string>
     <string name="required_question">Required question</string>
-    <string name="required_question_info">(required question)</string>
+    <string name="required_question_info">(required)</string>
     <string name="match">Answers should match</string>
     <string name="match_info">If enabled, the entered answer considered correct only if it MATCHES one of the answer options below\n\nIf disabled, the entered answer considered correct if it CONTAINS one of the answer options below</string>
     <string name="case_sensitive">Answers should be case sensitive</string>
@@ -267,6 +267,7 @@
     <string name="test_demo">It is demo test. This record will be deleted soon</string>
 
     <string name="test_results">Test Results</string>
+    <string name="question_title">Question:</string>
     <string name="test_title">Test:</string>
     <string name="user_title">User:</string>
     <string name="date">Date:</string>

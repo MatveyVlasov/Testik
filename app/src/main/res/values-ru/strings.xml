@@ -186,7 +186,7 @@
     <string name="no_correct_answers">Вопрос должен иметь хотя бы один правильный ответ</string>
     <string name="type">Тип</string>
     <string name="required_question">Обязательный вопрос</string>
-    <string name="required_question_info">(обязательный вопрос)</string>
+    <string name="required_question_info">(обязательный)</string>
     <string name="match">Ответы должны совпадать</string>
     <string name="match_info">Если активно, введённый ответ считается правильным, если полностью СОВПАДАЕТ с одним из вариантов ниже\n\nЕсли неактивно, введённый ответ считается правильным, если СОДЕРЖИТ один из вариантов ответа ниже</string>
     <string name="case_sensitive">Ответы чувствительны к регистру</string>
@@ -263,6 +263,7 @@
     <string name="test_demo">Это демо тест. Запись о прохождении теста скоро будет удалена</string>
 
     <string name="test_results">Результаты теста</string>
+    <string name="question_title">Вопрос:</string>
     <string name="test_title">Тест:</string>
     <string name="user_title">Пользователь:</string>
     <string name="date">Дата:</string>
