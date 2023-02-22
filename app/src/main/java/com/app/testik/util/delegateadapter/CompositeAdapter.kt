@@ -69,7 +69,7 @@ class CompositeAdapter(
                     positionForUpdate = maxOf(0, newItemCount - 3)
 
                     (it.last() as? ErrorItem?).let { error ->
-                        if (error?.message?.contains("empty") == true) {
+                        if (error?.message?.contains("empty") == true || error?.message?.contains("InvocationTargetException") == true) {
                             positionForUpdate = -1
                             newList = list.subList(0, list.lastIndex)
                         }

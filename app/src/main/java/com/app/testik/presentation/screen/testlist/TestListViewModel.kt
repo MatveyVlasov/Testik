@@ -1,0 +1,92 @@
+package com.app.testik.presentation.screen.testlist
+
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.app.testik.domain.model.onError
+import com.app.testik.domain.model.onSuccess
+import com.app.testik.domain.usecase.*
+import com.app.testik.presentation.model.ErrorItem
+import com.app.testik.presentation.model.LoadingItem
+import com.app.testik.presentation.model.UIState
+import com.app.testik.presentation.screen.testlist.mapper.toTestInfoItem
+import com.app.testik.presentation.screen.testlist.model.TestListScreenEvent
+import com.app.testik.presentation.screen.testlist.model.TestListScreenUIState
+import com.app.testik.util.delegateadapter.DelegateAdapterItem
+import com.google.firebase.firestore.QuerySnapshot
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+
+import javax.inject.Inject
+
+@HiltViewModel
+class TestListViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val getCategoryTestsUseCase: GetCategoryTestsUseCase
+) : ViewModel() {
+
+    val uiState: StateFlow<UIState<TestListScreenUIState>>
+        get() = _uiState
+
+    val event: SharedFlow<TestListScreenEvent>
+        get() = _event
+
+    private val _uiState = MutableStateFlow<UIState<TestListScreenUIState>>(UIState.Loading)
+    private val _event = MutableSharedFlow<TestListScreenEvent>()
+
+    private val args = TestListFragmentArgs.fromSavedStateHandle(savedStateHandle)
+
+    private var screenUIState = TestListScreenUIState(category = args.category)
+
+    private var snapshot: QuerySnapshot? = null
+    private var job: Job? = null
+
+
+    init {
+        updateList()
+    }
+
+    fun updateList() {
+        if (job?.isActive == true) return
+
+        postItem(LoadingItem)
+
+        job = viewModelScope.launch {
+            getCategoryTestsUseCase(categoryType = screenUIState.category, snapshot = snapshot).onSuccess {
+                snapshot = it.snapshot
+                postListItems(it.tests.map { test -> test.toTestInfoItem() })
+            }.onError {
+                postItem(ErrorItem(it))
+            }
+        }
+    }
+
+    private fun postItem(data: DelegateAdapterItem) = postListItems(listOf(data))
+
+    private fun postListItems(data: List<DelegateAdapterItem>) {
+        updateScreenState(
+            screenUIState.copy(
+                tests = screenUIState.tests.toMutableList().apply {
+                    removeAll { it is LoadingItem || it is ErrorItem }
+                    addAll(data)
+                }
+            )
+        )
+    }
+
+    private fun updateScreenState(state: TestListScreenUIState) {
+        screenUIState = state
+        _uiState.value = UIState.Success(screenUIState)
+    }
+
+    private fun emitEvent(event: TestListScreenEvent) {
+        viewModelScope.launch {
+            _event.emit(event)
+        }
+    }
+}

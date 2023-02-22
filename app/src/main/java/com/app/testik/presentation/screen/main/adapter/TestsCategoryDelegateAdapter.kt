@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.databinding.ItemTestsCategoryBinding
+import com.app.testik.domain.model.CategoryType
 import com.app.testik.presentation.screen.main.model.TestsCategoryDelegateItem
 import com.app.testik.util.delegateadapter.CompositeAdapter
 import com.app.testik.util.delegateadapter.DelegateAdapter
 
 class TestsCategoryDelegateAdapter(
-    val onTestClick: (String) -> Unit
-    //val onMoreClick: (String) -> Unit
+    val onTestClick: (String) -> Unit,
+    val onMoreClick: (CategoryType) -> Unit
 ) : DelegateAdapter<TestsCategoryDelegateItem, TestsCategoryDelegateAdapter.ViewHolder>(
         TestsCategoryDelegateItem::class.java
 ) {
@@ -42,6 +43,8 @@ class TestsCategoryDelegateAdapter(
 
             binding.apply {
                 tvCategoryTitle.setText(categoryTests.category.description)
+
+                ivMore.setOnClickListener { onMoreClick(categoryTests.category) }
             }
         }
     }

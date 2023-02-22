@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.app.testik.databinding.FragmentMainBinding
+import com.app.testik.domain.model.CategoryType
 import com.app.testik.presentation.base.BaseFragment
 import com.app.testik.presentation.model.onSuccess
 import com.app.testik.presentation.screen.main.adapter.TestsCategoryDelegateAdapter
@@ -28,7 +29,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     private val categoryTestsAdapter by lazy {
         CompositeAdapter.Builder()
             .add(
-                TestsCategoryDelegateAdapter { navigateToTest(it) }
+                TestsCategoryDelegateAdapter(
+                    onTestClick = { navigateToTest(it) },
+                    onMoreClick = { navigateToTestList(it) }
+                )
             )
             .build()
     }
@@ -112,6 +116,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     private fun navigateToTest(testId: String) {
         navController.navigate(
             MainFragmentDirections.toTestInfo(testId)
+        )
+    }
+
+    private fun navigateToTestList(category: CategoryType) {
+        navController.navigate(
+            MainFragmentDirections.toTestList(category)
         )
     }
 }

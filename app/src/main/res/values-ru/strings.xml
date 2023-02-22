@@ -131,6 +131,7 @@
     <string name="password_optional">Пароль (необязательно)</string>
     <string name="points">Баллов</string>
     <string name="category">Категория</string>
+    <string name="category_title">Категория:</string>
     <string name="select_category">Выберите категорию</string>
     <string name="select_question_type">Выберите тип вопроса</string>
     <string name="publish">Опубликовать</string>
@@ -224,6 +225,7 @@
     <string name="more_tests">Больше тестов</string>
 
     <string name="author">Автор</string>
+    <string name="author_title">Автор:</string>
     <plurals name="questions_num">
         <item quantity="one">%d вопрос</item>
         <item quantity="few">%d вопроса</item>

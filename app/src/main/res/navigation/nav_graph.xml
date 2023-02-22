@@ -54,6 +54,9 @@
         <action
             android:id="@+id/toTestInfo"
             app:destination="@id/testInfoFragment" />
+        <action
+            android:id="@+id/toTestList"
+            app:destination="@id/testListFragment" />
     </fragment>
 
     <fragment
@@ -253,6 +256,20 @@
         <argument
             android:name="testId"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/testListFragment"
+        android:name="com.app.testik.presentation.screen.testlist.TestListFragment"
+        android:label="TestListFragment"
+        tools:layout="@layout/fragment_test_list">
+        <action
+            android:id="@+id/toTestInfo"
+            app:destination="@id/testInfoFragment" />
+        <argument
+            android:name="category"
+            app:argType="com.app.testik.domain.model.CategoryType"
+            android:defaultValue="OTHER" />
     </fragment>
 
 </navigation>

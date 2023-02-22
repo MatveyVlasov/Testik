@@ -112,6 +112,7 @@ class TestRepositoryImpl @Inject constructor(
             var query = collection
                 .whereEqualTo("category", category)
                 .whereEqualTo("isPublished", true)
+                .orderBy("lastUpdated", Query.Direction.DESCENDING)
 
             if (snapshot != null)
                 query = query.startAfter(snapshot)
