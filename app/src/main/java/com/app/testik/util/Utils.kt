@@ -51,8 +51,8 @@ fun String.isUsername() = all { it.isDigitOrLatinLowercase() } && isNotBlank()
 
 fun String.toUsername() = filter { c -> c.isLetterOrDigit() || c == USERNAME_GOOGLE_DELIMITER }.lowercase()
 
-fun UserModel.getFullName(): String {
-    var name = username
+fun UserModel.getFullName(showUsername: Boolean = true): String {
+    var name = if (showUsername) username else ""
 
     if (firstName.isNotEmpty() && lastName.isNotEmpty()) name += " ($firstName $lastName)"
     else if (firstName.isNotEmpty()) name += " ($firstName)"

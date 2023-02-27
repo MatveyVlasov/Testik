@@ -297,4 +297,7 @@
     <string name="fill_in_empty_fields">Fill in empty fields or delete the corresponding rows</string>
     <string name="correct_grades_incorrect_interval">Correct grades with invalid interval where points (from) > points (to)</string>
     <string name="correct_grades_overlapping_intervals">Correct grades with overlapping intervals: %d (points) is in several intervals</string>
+
+    <string name="search">Search</string>
+    <string name="search_by_author">Search by author</string>
 </resources>

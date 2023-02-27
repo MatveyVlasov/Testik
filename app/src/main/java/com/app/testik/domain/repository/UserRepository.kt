@@ -14,4 +14,6 @@ interface UserRepository {
     suspend fun updateUser(data: UserDto, uid: String?): ApiResult<Unit>
 
     suspend fun deleteUser(uid: String?): ApiResult<Unit>
+
+    suspend fun getUsers(query: String): ApiResult<List<UserDto>>
 }

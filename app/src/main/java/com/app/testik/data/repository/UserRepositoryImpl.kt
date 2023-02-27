@@ -1,9 +1,7 @@
 package com.app.testik.data.repository
 
 import android.content.Context
-import com.app.testik.data.model.ApiResult
-import com.app.testik.data.model.RegistrationDto
-import com.app.testik.data.model.UserDto
+import com.app.testik.data.model.*
 import com.app.testik.domain.repository.UserRepository
 import com.app.testik.util.execute
 import com.app.testik.util.isOnline
@@ -99,7 +97,28 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getUsers(query: String): ApiResult<List<UserDto>> {
+        if (!isOnline(context)) return ApiResult.NoInternetError()
+
+         try {
+             collection
+                 .orderBy("username")
+                 .startAt(query)
+                 .endAt( query + END_CHARACTER)
+                 .get()
+                 .also {
+                     it.await()
+                     val users = it.result.toObjects(UserDto::class.java)
+                     return if (it.isSuccessful) ApiResult.Success(users)
+                     else ApiResult.Error(it.exception?.message)
+                 }
+        } catch (e: Exception) {
+            return ApiResult.Error(e.message)
+        }
+    }
+
     companion object {
         private const val COLLECTION_ID = "users"
+        private const val END_CHARACTER = "\uf8ff"
     }
 }

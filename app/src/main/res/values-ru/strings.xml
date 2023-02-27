@@ -292,4 +292,7 @@
     <string name="fill_in_empty_fields">Заполните пустые поля или удалите соответствующие строки</string>
     <string name="correct_grades_incorrect_interval">Исправьте оценки с некорректными интервалами, где баллы (от) > баллы (до)</string>
     <string name="correct_grades_overlapping_intervals">Избавьтесь от пересекающихся интервалов: %d (баллов) встречается несколько раз</string>
+
+    <string name="search">Поиск</string>
+    <string name="search_by_author">Поиск по автору</string>
 </resources>

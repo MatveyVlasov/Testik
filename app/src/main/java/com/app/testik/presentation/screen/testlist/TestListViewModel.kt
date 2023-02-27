@@ -21,13 +21,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
 import javax.inject.Inject
 
 @HiltViewModel
 class TestListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getCategoryTestsUseCase: GetCategoryTestsUseCase
+    private val getCategoryTestsUseCase: GetCategoryTestsUseCase,
+    private val getUsersUseCase: GetUsersUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<TestListScreenUIState>>
@@ -45,6 +45,7 @@ class TestListViewModel @Inject constructor(
 
     private var snapshot: QuerySnapshot? = null
     private var job: Job? = null
+    private var searchJob: Job? = null
 
 
     init {
@@ -62,6 +63,23 @@ class TestListViewModel @Inject constructor(
                 postListItems(it.tests.map { test -> test.toTestInfoItem() })
             }.onError {
                 postItem(ErrorItem(it))
+            }
+        }
+    }
+
+    fun getUsers(query: String) {
+        if (query.length < 3) {
+            updateScreenState(screenUIState.copy(users = emptyList()))
+            return
+        }
+        if (screenUIState.users.isEmpty() && query.length > screenUIState.lastQuery.length && screenUIState.lastQuery.isNotEmpty()) return
+        if (searchJob?.isActive == true) return
+
+        _uiState.value = UIState.Loading
+
+        searchJob = viewModelScope.launch {
+            getUsersUseCase(query = query).onSuccess {
+                updateScreenState(screenUIState.copy(users = it, lastQuery = query))
             }
         }
     }
