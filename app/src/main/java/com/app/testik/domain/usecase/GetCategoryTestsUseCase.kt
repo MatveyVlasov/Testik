@@ -15,13 +15,14 @@ class GetCategoryTestsUseCase @Inject constructor(
     private val testRepository: TestRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(categoryType: CategoryType, snapshot: QuerySnapshot? = null): Result<TestsModel> =
+    suspend operator fun invoke(categoryType: CategoryType, snapshot: QuerySnapshot? = null, author: String? = null): Result<TestsModel> =
         wrap(
             block = {
                 testRepository.getTestsByCategory(
                     category = categoryType.title,
                     limit = QUERY_LIMIT,
-                    snapshot = snapshot
+                    snapshot = snapshot,
+                    author = author
                 )
             },
             mapper = { it!!.toDomain() }

@@ -6,6 +6,7 @@ import com.app.testik.domain.model.*
 
 fun UserDto.toDomain() =
     UserModel(
+        uid = uid,
         email = email,
         username = username,
         firstName = firstName,

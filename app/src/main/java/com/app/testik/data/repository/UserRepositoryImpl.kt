@@ -26,6 +26,7 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             with(data) {
                 val userData = mapOf(
+                    "uid" to uid,
                     "email" to email,
                     "username" to username,
                     "avatar" to avatar

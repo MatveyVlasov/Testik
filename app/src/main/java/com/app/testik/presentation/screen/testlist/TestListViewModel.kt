@@ -41,7 +41,8 @@ class TestListViewModel @Inject constructor(
 
     private val args = TestListFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    private var screenUIState = TestListScreenUIState(category = args.category)
+    var screenUIState = TestListScreenUIState(category = args.category)
+        private set
 
     private var snapshot: QuerySnapshot? = null
     private var job: Job? = null
@@ -54,11 +55,18 @@ class TestListViewModel @Inject constructor(
 
     fun updateList() {
         if (job?.isActive == true) return
+        if (snapshot == null && screenUIState.tests.isNotEmpty()) {
+            screenUIState = screenUIState.copy(tests = emptyList())
+        }
 
         postItem(LoadingItem)
 
         job = viewModelScope.launch {
-            getCategoryTestsUseCase(categoryType = screenUIState.category, snapshot = snapshot).onSuccess {
+            getCategoryTestsUseCase(
+                categoryType = screenUIState.category,
+                snapshot = snapshot,
+                author = screenUIState.userSelected?.uid
+            ).onSuccess {
                 snapshot = it.snapshot
                 postListItems(it.tests.map { test -> test.toTestInfoItem() })
             }.onError {
@@ -82,6 +90,18 @@ class TestListViewModel @Inject constructor(
                 updateScreenState(screenUIState.copy(users = it, lastQuery = query))
             }
         }
+    }
+
+    fun selectUser(position: Int) {
+        snapshot = null
+        screenUIState = screenUIState.copy(userSelected = screenUIState.users[position])
+        updateList()
+    }
+
+    fun deselectUser() {
+        snapshot = null
+        screenUIState = screenUIState.copy(userSelected = null)
+        updateList()
     }
 
     private fun postItem(data: DelegateAdapterItem) = postListItems(listOf(data))

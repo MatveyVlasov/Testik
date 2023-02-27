@@ -107,12 +107,15 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTestsByCategory(category: String, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsDto> {
+    override suspend fun getTestsByCategory(category: String, limit: Long, snapshot: QuerySnapshot?, author: String?): ApiResult<TestsDto> {
         try {
             var query = collection
                 .whereEqualTo("category", category)
                 .whereEqualTo("isPublished", true)
-                .orderBy("lastUpdated", Query.Direction.DESCENDING)
+
+            if (author != null) query = query.whereEqualTo("author", author)
+
+            query = query.orderBy("lastUpdated", Query.Direction.DESCENDING)
 
             if (snapshot != null)
                 query = query.startAfter(snapshot)

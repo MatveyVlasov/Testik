@@ -8,5 +8,6 @@ data class TestListScreenUIState(
     val category: CategoryType,
     val tests: List<DelegateAdapterItem> = emptyList(),
     val users: List<UserModel> = emptyList(),
+    val userSelected: UserModel? = null,
     val lastQuery: String = ""
 )

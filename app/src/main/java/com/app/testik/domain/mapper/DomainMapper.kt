@@ -20,6 +20,7 @@ fun LoginModel.toDto() =
 
 fun UserModel.toDto() =
     UserDto(
+        uid = uid,
         email = email,
         username = username,
         firstName = firstName,

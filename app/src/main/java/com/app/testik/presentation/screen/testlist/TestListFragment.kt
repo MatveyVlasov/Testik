@@ -52,6 +52,8 @@ class TestListFragment : BaseFragment<FragmentTestListBinding>() {
 
     private lateinit var cursorAdapter: CursorAdapter
 
+    private lateinit var searchView: SearchView
+
     override fun createBinding(inflater: LayoutInflater) = FragmentTestListBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,7 +100,7 @@ class TestListFragment : BaseFragment<FragmentTestListBinding>() {
                 }
             }
 
-            val searchView = toolbar.menu.findItem(R.id.search).actionView as SearchView
+            searchView = toolbar.menu.findItem(R.id.search).actionView as SearchView
 
             searchView.queryHint = getString(R.string.search_by_author)
 
@@ -117,8 +119,6 @@ class TestListFragment : BaseFragment<FragmentTestListBinding>() {
         binding.apply {
 
             toolbar.setNavigationOnClickListener { onBackPressed() }
-
-            val searchView = toolbar.menu.findItem(R.id.search).actionView as SearchView
 
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -141,6 +141,7 @@ class TestListFragment : BaseFragment<FragmentTestListBinding>() {
                 }
 
                 override fun onSuggestionClick(position: Int): Boolean {
+                    viewModel.selectUser(position)
                     hideKeyboard()
                     return true
                 }
@@ -158,6 +159,11 @@ class TestListFragment : BaseFragment<FragmentTestListBinding>() {
                             testsAdapter.submitList(data.tests)
 
                             setupSearchHints(data.users)
+
+                            searchView.isVisible = data.userSelected == null
+                            data.userSelected?.let { user ->
+                                binding.toolbar.title = user.username
+                            }
 
                             val isListEmpty = data.tests.isEmpty()
                             binding.llNoTests.isVisible = isListEmpty
@@ -213,13 +219,17 @@ class TestListFragment : BaseFragment<FragmentTestListBinding>() {
     }
 
     private fun onBackPressed() {
-        val searchView = binding.toolbar.menu.findItem(R.id.search).actionView as SearchView
-        
-        if (!searchView.isIconified) {
-            searchView.setQuery("", false)
-            searchView.isIconified = true
-        } else {
+        if (searchView.isIconified) {
             navController.navigateUp()
+            return
         }
+
+        if (viewModel.screenUIState.userSelected != null) {
+            viewModel.deselectUser()
+            return
+        }
+
+        searchView.setQuery("", false)
+        searchView.isIconified = true
     }
 }
