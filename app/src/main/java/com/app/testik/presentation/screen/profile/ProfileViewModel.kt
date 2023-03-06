@@ -12,7 +12,6 @@ import com.app.testik.presentation.screen.profile.model.ProfileScreenEvent
 import com.app.testik.presentation.screen.profile.model.ProfileScreenUIState
 import com.app.testik.util.isUsername
 import com.app.testik.util.loadedFromServer
-import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +44,7 @@ class ProfileViewModel @Inject constructor(
     private var oldScreenUIState: ProfileScreenUIState? = null
 
     init {
-        getUserInfo(Source.CACHE)
+        getUserInfo(fromCache = true)
     }
 
     fun onUsernameChanged(username: String) {
@@ -115,11 +114,11 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun getUserInfo(source: Source = Source.DEFAULT, isAvatarUpdated: Boolean = false) {
+    private fun getUserInfo(fromCache: Boolean = false, isAvatarUpdated: Boolean = false) {
         emitEvent(ProfileScreenEvent.Loading)
 
         viewModelScope.launch {
-            getCurrentUserInfoUseCase(source).onSuccess {
+            getCurrentUserInfoUseCase(fromCache = fromCache).onSuccess {
                 val screenState = ProfileScreenUIState(
                     email = it.email,
                     username = it.username,

@@ -43,6 +43,8 @@ val timestamp: Long
 
 fun Int?.orZero() = this ?: 0
 
+fun Long?.orZero() = this ?: 0L
+
 fun String.toIntOrZero() = this.toIntOrNull().orZero()
 
 fun Char.isDigitOrLatinLowercase() = this.isDigit() || this in 'a'..'z'

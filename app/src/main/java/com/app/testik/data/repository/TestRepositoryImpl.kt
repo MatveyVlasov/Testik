@@ -108,7 +108,13 @@ class TestRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTestsByCategory(category: String, limit: Long, snapshot: QuerySnapshot?, author: String?): ApiResult<TestsDto> {
+    override suspend fun getTestsByCategory(
+        category: String,
+        limit: Long,
+        source: Source,
+        snapshot: QuerySnapshot?,
+        author: String?
+    ): ApiResult<TestsDto> {
         try {
             var query = collection.whereEqualTo("isPublished", true)
 
@@ -122,7 +128,7 @@ class TestRepositoryImpl @Inject constructor(
 
             query
                 .limit(limit)
-                .get()
+                .get(source)
                 .also {
                     val newSnapshot = it.await()
                     return if (it.isSuccessful) ApiResult.Success(TestsDto(newSnapshot))

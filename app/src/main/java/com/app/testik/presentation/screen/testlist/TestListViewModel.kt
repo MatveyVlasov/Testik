@@ -63,7 +63,7 @@ class TestListViewModel @Inject constructor(
 
         job = viewModelScope.launch {
             getCategoryTestsUseCase(
-                categoryType = screenUIState.category,
+                category = screenUIState.category,
                 snapshot = snapshot,
                 author = screenUIState.userSelected?.uid
             ).onSuccess {

@@ -11,5 +11,9 @@ class PreferencesUseCase @Inject constructor(
 
     fun getLanguage() = preferencesRepository.getLanguage()
 
+    fun setLastUpdatedTime() = preferencesRepository.setLastUpdatedTime()
+
+    fun getLastUpdatedTime() = preferencesRepository.getLastUpdatedTime()
+
     fun clear() = preferencesRepository.clear()
 }

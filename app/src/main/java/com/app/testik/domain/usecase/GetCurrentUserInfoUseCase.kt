@@ -15,12 +15,12 @@ class GetCurrentUserInfoUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(source: Source = Source.DEFAULT): Result<UserModel> =
+    suspend operator fun invoke(fromCache: Boolean = false): Result<UserModel> =
         wrap(
             block = {
                 userRepository.getUserInfo(
                     uid = authRepository.getCurrentUser()?.uid,
-                    source = source
+                    source = if (fromCache) Source.CACHE else Source.DEFAULT,
                 )
             },
             mapper = { it!!.toDomain() }

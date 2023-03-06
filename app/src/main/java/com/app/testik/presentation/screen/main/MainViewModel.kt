@@ -8,12 +8,12 @@ import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
 import com.app.testik.domain.usecase.GetCategoryTestsUseCase
 import com.app.testik.domain.usecase.GetCurrentUserInfoUseCase
+import com.app.testik.domain.usecase.PreferencesUseCase
 import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.main.mapper.toTestItem
 import com.app.testik.presentation.screen.main.model.MainScreenEvent
 import com.app.testik.presentation.screen.main.model.MainScreenUIState
-import com.app.testik.presentation.screen.questlionlist.model.QuestionListScreenEvent
-import com.google.firebase.firestore.Source
+import com.app.testik.util.timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getCurrentUserInfoUseCase: GetCurrentUserInfoUseCase,
-    private val getCategoryTestsUseCase: GetCategoryTestsUseCase
+    private val getCategoryTestsUseCase: GetCategoryTestsUseCase,
+    private val preferencesUseCase: PreferencesUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<MainScreenUIState>>
@@ -40,15 +41,15 @@ class MainViewModel @Inject constructor(
     private var screenUIState = MainScreenUIState()
 
     init {
-        getUserInfo(Source.CACHE)
-        getUserInfo()
-
-        getTests()
+        val lastUpdated = preferencesUseCase.getLastUpdatedTime()
+        val fromCache = timestamp - lastUpdated < UPDATE_INTERVAL
+        getUserInfo(fromCache = fromCache)
+        getTests(fromCache = fromCache)
     }
 
-    fun getUserInfo(source: Source = Source.DEFAULT) {
+    fun getUserInfo(fromCache: Boolean = false) {
         viewModelScope.launch {
-            getCurrentUserInfoUseCase(source).onSuccess {
+            getCurrentUserInfoUseCase(fromCache = fromCache).onSuccess {
                 updateScreenState(screenUIState.copy(avatar = it.avatar))
             }.onError {
                 handleError(it)
@@ -56,16 +57,17 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getTests() {
+    fun getTests(fromCache: Boolean = false) {
         _uiState.value = UIState.Loading
         for (item in screenUIState.categoryTests) {
-            getTestsByCategory(item.category)
+            getTestsByCategory(category = item.category, fromCache = fromCache)
         }
+        if (!fromCache) preferencesUseCase.setLastUpdatedTime()
     }
 
-    private fun getTestsByCategory(category: CategoryType) {
+    private fun getTestsByCategory(category: CategoryType, fromCache: Boolean = false) {
         viewModelScope.launch {
-            getCategoryTestsUseCase(category).onSuccess { data ->
+            getCategoryTestsUseCase(category = category, fromCache = fromCache).onSuccess { data ->
                 val categoryTests = screenUIState.categoryTests.map { it }.toMutableList().also { list ->
                     val pos = category.ordinal
                     list[pos] = list[pos].copy(tests = data.tests.map { it.toTestItem() })
@@ -98,5 +100,9 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _event.emit(event)
         }
+    }
+
+    companion object {
+        const val UPDATE_INTERVAL = 24 * 60 * 60 * 1000 // 24 hours
     }
 }

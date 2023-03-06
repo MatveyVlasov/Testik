@@ -12,7 +12,13 @@ interface TestRepository {
 
     suspend fun getTestsByAuthor(uid: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsDto>
 
-    suspend fun getTestsByCategory(category: String, limit: Long, snapshot: QuerySnapshot? = null, author: String? = null): ApiResult<TestsDto>
+    suspend fun getTestsByCategory(
+        category: String,
+        limit: Long,
+        source: Source,
+        snapshot: QuerySnapshot? = null,
+        author: String? = null
+    ): ApiResult<TestsDto>
 
     suspend fun getTest(testId: String, source: Source): ApiResult<TestDto>
 

@@ -4,6 +4,8 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.app.testik.domain.repository.PreferencesRepository
 import com.app.testik.util.Constants.LANGUAGES
+import com.app.testik.util.orZero
+import com.app.testik.util.timestamp
 import javax.inject.Inject
 
 class PreferencesRepositoryImpl @Inject constructor(
@@ -20,6 +22,12 @@ class PreferencesRepositoryImpl @Inject constructor(
 
     override fun getLanguage(): String = sharedPreferences.getString(LANGUAGE_KEY,"").orEmpty()
 
+    override fun setLastUpdatedTime() = sharedPreferences.edit {
+        putLong(LAST_UPDATED_KEY, timestamp)
+    }
+
+    override fun getLastUpdatedTime(): Long = sharedPreferences.getLong(LAST_UPDATED_KEY, 0L).orZero()
+
     override fun clear() = sharedPreferences.edit {
         clear()
     }
@@ -27,6 +35,8 @@ class PreferencesRepositoryImpl @Inject constructor(
     companion object {
         private const val LANGUAGE_KEY = "language"
         private const val DEFAULT_LANGUAGE = "en"
+
+        private const val LAST_UPDATED_KEY = "last_updated"
     }
 
 }

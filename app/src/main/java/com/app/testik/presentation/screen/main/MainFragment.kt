@@ -16,7 +16,6 @@ import com.app.testik.presentation.screen.main.model.MainScreenEvent
 import com.app.testik.util.*
 import com.app.testik.util.Constants.UPDATE_AVATAR_RESULT_KEY
 import com.app.testik.util.delegateadapter.CompositeAdapter
-import com.google.firebase.firestore.Source
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -48,7 +47,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
         addBackPressedCallback { showExitAlert() }
 
-        observeResult<Boolean>(UPDATE_AVATAR_RESULT_KEY) { if (it) viewModel.getUserInfo(source = Source.CACHE) }
+        observeResult<Boolean>(UPDATE_AVATAR_RESULT_KEY) { if (it) viewModel.getUserInfo(fromCache = true) }
     }
 
     private fun initViews() {
@@ -71,7 +70,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     private fun initListeners() {
         binding.apply {
-            swipeRefresh.setOnRefreshListener { viewModel.getTests() }
+            swipeRefresh.setOnRefreshListener { viewModel.getTests(fromCache = false) }
         }
     }
 
