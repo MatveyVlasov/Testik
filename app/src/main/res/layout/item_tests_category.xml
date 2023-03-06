@@ -45,4 +45,19 @@
         tools:itemCount="13"
         tools:listitem="@layout/item_test" />
 
+    <TextView
+        android:id="@+id/tvNoTests"
+        style="@style/CustomTextView.AutoSize"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/no_tests"
+        android:textColor="@color/purple"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/rvTests"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

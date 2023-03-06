@@ -80,9 +80,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.uiState.collect { state ->
-                        state.onSuccess {
-                            loadAvatar(it.avatar)
-                            categoryTestsAdapter.submitList(it.categoryTests)
+                        state.onSuccess { data ->
+                            loadAvatar(data.avatar)
+                            categoryTestsAdapter.submitList(
+                                data.categoryTests.filter {
+                                    it.tests.isNotEmpty() || it.category == CategoryType.ALL
+                                }
+                            )
                             binding.swipeRefresh.isRefreshing = false
                         }
                     }

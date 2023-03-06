@@ -2,6 +2,7 @@ package com.app.testik.presentation.screen.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.databinding.ItemTestsCategoryBinding
 import com.app.testik.domain.model.CategoryType
@@ -45,6 +46,10 @@ class TestsCategoryDelegateAdapter(
                 tvCategoryTitle.setText(categoryTests.category.description)
 
                 ivMore.setOnClickListener { onMoreClick(categoryTests.category) }
+
+                val isTestListEmpty = categoryTests.tests.isEmpty()
+                rvTests.isVisible = !isTestListEmpty
+                tvNoTests.isVisible = isTestListEmpty
             }
         }
     }

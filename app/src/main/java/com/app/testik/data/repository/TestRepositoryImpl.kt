@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.net.toUri
 import com.app.testik.data.model.*
 import com.app.testik.data.model.TestDto
+import com.app.testik.domain.model.CategoryType
 import com.app.testik.domain.repository.TestRepository
 import com.app.testik.util.*
 import com.app.testik.util.Constants.APP_NOT_INSTALLED_LINK
@@ -109,10 +110,9 @@ class TestRepositoryImpl @Inject constructor(
 
     override suspend fun getTestsByCategory(category: String, limit: Long, snapshot: QuerySnapshot?, author: String?): ApiResult<TestsDto> {
         try {
-            var query = collection
-                .whereEqualTo("category", category)
-                .whereEqualTo("isPublished", true)
+            var query = collection.whereEqualTo("isPublished", true)
 
+            if (category != CategoryType.ALL.title) query = query.whereEqualTo("category", category)
             if (author != null) query = query.whereEqualTo("author", author)
 
             query = query.orderBy("lastUpdated", Query.Direction.DESCENDING)

@@ -312,15 +312,17 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
     }
 
     private fun showChangeCategoryDialog() {
-        var selectedItem = viewModel.screenUIState.category.ordinal
+        var selectedItem = viewModel.screenUIState.category.ordinal - 1
 
         showSingleChoiceDialog(
             title = R.string.select_category,
             positive = R.string.confirm,
             negative = R.string.cancel,
-            items = CategoryType.values().filter { it.title.isNotEmpty() }.map { it.description },
+            items = CategoryType.values()
+                    .filter { it.title.isNotEmpty() && !it.title.startsWith("_") }
+                    .map { it.description },
             selectedItem = selectedItem,
-            onPositiveClick = { viewModel.onCategoryChanged(CategoryType.values()[selectedItem]) },
+            onPositiveClick = { viewModel.onCategoryChanged(CategoryType.values()[selectedItem + 1]) },
             onItemClick = { selectedItem = it }
         )
     }

@@ -158,8 +158,17 @@
     <string name="edit_questions">Edit questions</string>
     <string name="edit_grading_system">Edit grading system</string>
 
-    <string name="category_math">Math</string>
+    <string name="category_all">All Tests</string>
+    <string name="category_languages">Languages</string>
     <string name="category_history">History</string>
+    <string name="category_culture">Art &amp; Culture</string>
+    <string name="category_math">Math</string>
+    <string name="category_it">IT</string>
+    <string name="category_physics">Physics</string>
+    <string name="category_chemistry">Chemistry</string>
+    <string name="category_biology">Biology</string>
+    <string name="category_geography">Geography</string>
+    <string name="category_sport">Sport</string>
     <string name="category_other">Other</string>
 
     <string name="delete_test">Delete Test</string>
