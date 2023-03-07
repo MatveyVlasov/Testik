@@ -105,7 +105,8 @@ class UserRepositoryImpl @Inject constructor(
              collection
                  .orderBy("username")
                  .startAt(query)
-                 .endAt( query + END_CHARACTER)
+                 .endAt(query + END_CHARACTER)
+                 .limit(USERS_LIMIT)
                  .get()
                  .also {
                      it.await()
@@ -121,5 +122,6 @@ class UserRepositoryImpl @Inject constructor(
     companion object {
         private const val COLLECTION_ID = "users"
         private const val END_CHARACTER = "\uf8ff"
+        private const val USERS_LIMIT = 5L
     }
 }
