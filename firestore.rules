@@ -34,9 +34,13 @@ service cloud.firestore {
         return !(field in request.resource.data) || request.resource.data[field] is bool;
     }
 
-    function validateStringSize(field, maxSize) {
+    function validateStringMaxSize(field, maxSize) {
         return !(field in request.resource.data)
             || (request.resource.data[field] is string && request.resource.data[field].size() <= maxSize);
+    }
+
+    function validateStringMinSize(field, minSize) {
+        return request.resource.data[field] is string && request.resource.data[field].size() >= minSize;
     }
 
     match /{document=**} {
@@ -45,7 +49,7 @@ service cloud.firestore {
 
     match /users/{userId} {
         function validateFields() {
-            return validateStringSize("email", 50) && validateStringSize("username", 25) && isString("avatar");
+            return validateStringMaxSize("email", 50) && validateStringMaxSize("username", 25) && validateStringMinSize("username", 3) && isString("avatar");
         }
 
         allow read: if isLoggedIn();
@@ -60,8 +64,8 @@ service cloud.firestore {
         }
 
         function validateFields() {
-            return isString("author") && validateStringSize("title", 75) && isString("category") && isNumber("lastUpdated")
-                && validateStringSize("description", 1000) && isString("image") && isBoolean("isPasswordEnabled") && isBoolean("isPublished")
+            return isString("author") && validateStringMaxSize("title", 75) && isString("category") && isNumber("lastUpdated")
+                && validateStringMaxSize("description", 1000) && isString("image") && isBoolean("isPasswordEnabled") && isBoolean("isPublished")
                 && isBoolean("isLinkEnabled") && isString("link") && isBoolean("isNavigationEnabled")
                 && isBoolean("isRandomQuestions") && isBoolean("isRandomAnswers")
                 && isNumber("pointsMax") && isNumber("questionsNum") && isBoolean("isGradesEnabled");
@@ -84,7 +88,7 @@ service cloud.firestore {
         }
 
         function validateFields() {
-            return isString("user") && isString("testId") && validateStringSize("title", 75) && isNumber("timeStarted")
+            return isString("user") && isString("testId") && validateStringMaxSize("title", 75) && isNumber("timeStarted")
                 && isNumber("timeFinished") && isBoolean("isFinished") && isNumber("pointsMax") && isNumber("pointsEarned")
                 && isString("image") && isBoolean("isGradesEnabled");
         }

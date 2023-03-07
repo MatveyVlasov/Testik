@@ -83,6 +83,12 @@ describe("Users collection", () => {
         await firebase.assertFails(doc.set({ email: myEmail, username: "123".repeat(100) }))
     })
 
+    it("Can't create user with too short username", async () => {
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc(myId)
+        await firebase.assertFails(doc.set({ email: myEmail, username: "12" }))
+    })
+
     it("Can update user with my id", async () => {
         const admin = getAdminFirestore()
         const setupDoc = admin.collection(COLLECTION).doc(myId)
