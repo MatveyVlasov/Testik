@@ -16,7 +16,7 @@ interface TestPassedRepository {
 
     suspend fun getTestsByUser(uid: String?, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsPassedDto>
 
-    suspend fun getTests(testId: String, limit: Long, snapshot: QuerySnapshot? = null): ApiResult<TestsPassedDto>
+    suspend fun getTests(testId: String, limit: Long, snapshot: QuerySnapshot? = null, user: String? = null): ApiResult<TestsPassedDto>
 
     suspend fun getTest(recordId: String, source: Source): ApiResult<TestPassedDto>
 

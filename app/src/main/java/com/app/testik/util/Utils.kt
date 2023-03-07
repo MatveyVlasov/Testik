@@ -16,6 +16,8 @@ import android.text.style.ClickableSpan
 import android.util.Patterns
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.AttrRes
@@ -23,6 +25,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.content.ContextCompat
+import androidx.core.view.updateMargins
+import androidx.core.view.updatePadding
 import com.app.testik.R
 import com.app.testik.data.model.ApiResult
 import com.app.testik.domain.model.UserModel
@@ -250,4 +254,10 @@ inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
 
 fun getProgressPointsText(pointsEarned: Int, pointsMax: Int, gradeEarned: String): String {
     return gradeEarned.ifEmpty { "${(pointsEarned.toDouble() / pointsMax * 100).toInt()}%" }
+}
+
+fun EditText.setupSearchLayout() {
+    val params = (layoutParams as ViewGroup.MarginLayoutParams)
+    params.updateMargins(left = params.marginStart - 36.toPx())
+    updatePadding(left = paddingStart + 28.toPx())
 }

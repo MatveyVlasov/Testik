@@ -154,17 +154,19 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTests(testId: String, limit: Long, snapshot: QuerySnapshot?): ApiResult<TestsPassedDto> {
+    override suspend fun getTests(testId: String, limit: Long, snapshot: QuerySnapshot?, user: String?): ApiResult<TestsPassedDto> {
         if (testId.isEmpty()) return ApiResult.Error("No test found")
 
         try {
             var query = collection
                 .whereEqualTo("testId", testId)
                 .whereEqualTo("isDemo", false)
-                .orderBy("timeFinished", Query.Direction.DESCENDING)
 
-            if (snapshot != null)
-                query = query.startAfter(snapshot.orderBy("timeFinished"))
+            if (user != null) query = query.whereEqualTo("user", user)
+
+            query = query.orderBy("timeFinished", Query.Direction.DESCENDING)
+
+            if (snapshot != null) query = query.startAfter(snapshot.orderBy("timeFinished"))
 
             query
                 .limit(limit)

@@ -286,7 +286,7 @@
     <string name="time_spent">Time spent:</string>
     <string name="points_title">Points:</string>
     <string name="points_earned" translatable="false">%d/%d</string>
-    <string name="test_not_finished_detail">Test was not finished. Your points were calculated based on the answers you submitted</string>
+    <string name="test_not_finished_detail">Test was not finished. Points were calculated based on the answers you submitted</string>
 
     <string name="correct_answer">Correct answer</string>
     <string name="wrong_answer">Wrong answer</string>
@@ -310,4 +310,5 @@
 
     <string name="search">Search</string>
     <string name="search_by_author">Search by author</string>
+    <string name="search_by_user">Search by user</string>
 </resources>

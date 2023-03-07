@@ -14,13 +14,14 @@ class GetTestsPassedUseCase @Inject constructor(
     private val testPassedRepository: TestPassedRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(testId: String, snapshot: QuerySnapshot?): Result<TestsPassedModel> =
+    suspend operator fun invoke(testId: String, snapshot: QuerySnapshot?, user: String? = null): Result<TestsPassedModel> =
         wrap(
             block = {
                 testPassedRepository.getTests(
                     testId = testId,
                     limit = QUERY_LIMIT,
-                    snapshot = snapshot
+                    snapshot = snapshot,
+                    user = user
                 )
             },
             mapper = { it!!.toDomain() }

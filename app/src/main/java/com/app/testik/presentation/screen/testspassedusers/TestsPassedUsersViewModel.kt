@@ -29,7 +29,8 @@ import javax.inject.Inject
 class TestsPassedUsersViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getTestsPassedUseCase: GetTestsPassedUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val getUsersUseCase: GetUsersUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState<TestsPassedUsersScreenUIState>>
@@ -43,10 +44,12 @@ class TestsPassedUsersViewModel @Inject constructor(
 
     private val args = TestsPassedUsersFragmentArgs.fromSavedStateHandle(savedStateHandle)
 
-    private var screenUIState = TestsPassedUsersScreenUIState(testId = args.testId)
+    var screenUIState = TestsPassedUsersScreenUIState(testId = args.testId)
+        private set
 
     private var snapshot: QuerySnapshot? = null
     private var job: Job? = null
+    private var searchJob: Job? = null
 
     init {
         updateList()
@@ -55,10 +58,17 @@ class TestsPassedUsersViewModel @Inject constructor(
 
     fun updateList() {
         if (job?.isActive == true) return
+        if (snapshot == null && screenUIState.tests.isNotEmpty()) {
+            screenUIState = screenUIState.copy(tests = emptyList())
+        }
         postItem(LoadingItem)
 
         job = viewModelScope.launch {
-            getTestsPassedUseCase(testId = screenUIState.testId, snapshot = snapshot).onSuccess {
+            getTestsPassedUseCase(
+                testId = screenUIState.testId,
+                snapshot = snapshot,
+                user = screenUIState.userSelected?.uid
+            ).onSuccess {
                 snapshot = it.snapshot
                 var tests = it.tests.map { test -> test.toTestPassedUserItem() }
                 tests = updateUsersInfo(tests)
@@ -67,6 +77,36 @@ class TestsPassedUsersViewModel @Inject constructor(
                 postItem(ErrorItem(it))
             }
         }
+    }
+
+    fun getUsers(query: String) {
+        if (query == screenUIState.lastQuery) return
+        if (query.length < 3) {
+            if (screenUIState.users.isNotEmpty()) updateScreenState(screenUIState.copy(users = emptyList()))
+            return
+        }
+        if (screenUIState.users.isEmpty() && query.length > screenUIState.lastQuery.length && screenUIState.lastQuery.isNotEmpty()) return
+        if (searchJob?.isActive == true) return
+
+        _uiState.value = UIState.Loading
+
+        searchJob = viewModelScope.launch {
+            getUsersUseCase(query = query).onSuccess {
+                updateScreenState(screenUIState.copy(users = it, lastQuery = query))
+            }
+        }
+    }
+
+    fun selectUser(position: Int) {
+        snapshot = null
+        screenUIState = screenUIState.copy(userSelected = screenUIState.users[position])
+        updateList()
+    }
+
+    fun deselectUser() {
+        snapshot = null
+        screenUIState = screenUIState.copy(userSelected = null)
+        updateList()
     }
 
     private suspend fun updateUsersInfo(tests: List<TestPassedUserDelegateItem>): List<TestPassedUserDelegateItem> {

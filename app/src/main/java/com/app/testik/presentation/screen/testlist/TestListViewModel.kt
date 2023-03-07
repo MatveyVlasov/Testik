@@ -48,7 +48,6 @@ class TestListViewModel @Inject constructor(
     private var job: Job? = null
     private var searchJob: Job? = null
 
-
     init {
         updateList()
     }
@@ -76,8 +75,9 @@ class TestListViewModel @Inject constructor(
     }
 
     fun getUsers(query: String) {
+        if (query == screenUIState.lastQuery) return
         if (query.length < 3) {
-            updateScreenState(screenUIState.copy(users = emptyList()))
+            if (screenUIState.users.isNotEmpty()) updateScreenState(screenUIState.copy(users = emptyList()))
             return
         }
         if (screenUIState.users.isEmpty() && query.length > screenUIState.lastQuery.length && screenUIState.lastQuery.isNotEmpty()) return
