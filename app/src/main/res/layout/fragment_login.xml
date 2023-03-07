@@ -12,6 +12,8 @@
         app:menu="@menu/login_menu"
         app:navigationIcon="@drawable/logo"
         app:title="@string/account_login"
+        app:titleTextColor="@color/blue_dark"
+        app:navigationIconTint="@color/blue_dark"
         app:titleCentered="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

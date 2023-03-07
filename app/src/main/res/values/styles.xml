@@ -44,9 +44,10 @@
 
     <style name="CustomToolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:elevation">1dp</item>
-        <item name="titleTextColor">@color/blue_dark</item>
+        <item name="titleTextColor">@color/black</item>
         <item name="titleTextAppearance">@style/CustomToolbarTitle</item>
         <item name="navigationIcon">@drawable/ic_arrow_back</item>
+        <item name="navigationIconTint">@color/black</item>
     </style>
 
     <style name="CustomToolbarTitle" parent="@style/TextAppearance.MaterialComponents.Headline6">

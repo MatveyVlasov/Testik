@@ -16,9 +16,7 @@
             android:layout_height="@dimen/toolbar_height"
             app:titleCentered="true"
             app:title="@string/app_name"
-            app:titleTextColor="@color/black"
             app:navigationIcon="@drawable/logo"
-            app:navigationIconTint="@color/black"
             app:menu="@menu/main_menu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

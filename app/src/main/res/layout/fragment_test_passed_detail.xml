@@ -15,8 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
             app:title="@string/test_results"
-            app:titleTextColor="@color/black"
-            app:navigationIconTint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
