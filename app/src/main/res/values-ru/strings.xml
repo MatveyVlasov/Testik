@@ -18,6 +18,7 @@
     <string name="no_passwords_match">Пароли не совпадают</string>
     <string name="username_already_taken">Имя пользователя уже занято</string>
     <string name="username_badly_formatted">Имя пользователя должно содержать только маленькие латинские буквы и цифры</string>
+    <string name="username_too_short">Имя пользователя должно состоять как минимум из 3 символов</string>
 
     <string name="no_user">Пользователя с такой почтой не существует</string>
     <string name="incorrect_password">Пароль неверный</string>

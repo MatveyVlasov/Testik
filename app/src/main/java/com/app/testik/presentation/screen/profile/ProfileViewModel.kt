@@ -10,6 +10,7 @@ import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.profile.mapper.toDomain
 import com.app.testik.presentation.screen.profile.model.ProfileScreenEvent
 import com.app.testik.presentation.screen.profile.model.ProfileScreenUIState
+import com.app.testik.util.Constants
 import com.app.testik.util.isUsername
 import com.app.testik.util.loadedFromServer
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -159,12 +160,18 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun validateData(): Boolean {
-        return checkUsername()
+        return checkUsername() && checkUsernameLength()
     }
 
     private fun checkUsername(): Boolean {
         return (screenUIState.username.isUsername()).also {
             if (!it) updateScreenState(screenUIState.copy(usernameError = R.string.username_badly_formatted))
+        }
+    }
+
+    private fun checkUsernameLength(): Boolean {
+        return (screenUIState.username.length >= Constants.MIN_USERNAME_LENGTH).also {
+            if (!it) updateScreenState(screenUIState.copy(usernameError = R.string.username_too_short))
         }
     }
 

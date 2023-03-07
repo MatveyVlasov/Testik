@@ -10,6 +10,7 @@ object Constants {
     val LANGUAGES = mapOf("en" to R.string.english, "ru" to R.string.russian)
 
     const val MIN_PASSWORD_LENGTH = 6
+    const val MIN_USERNAME_LENGTH = 3
     const val MAX_DESCRIPTION_LENGTH = 1000
     const val USERNAME_GOOGLE_DELIMITER = '#'
     const val USERNAME_GOOGLE_ID_LENGTH = 4

@@ -11,6 +11,7 @@ import com.app.testik.presentation.screen.registration.mapper.toDomain
 import com.app.testik.presentation.screen.registration.model.RegistrationScreenEvent
 import com.app.testik.presentation.screen.registration.model.RegistrationScreenUIState
 import com.app.testik.util.Constants.MIN_PASSWORD_LENGTH
+import com.app.testik.util.Constants.MIN_USERNAME_LENGTH
 import com.app.testik.util.isEmail
 import com.app.testik.util.isUsername
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -87,7 +88,7 @@ class RegistrationViewModel @Inject constructor(
     }
 
     private fun validateData(): Boolean {
-        return checkEmail() && checkPasswordLength() && checkPasswordsMatch() && checkUsername()
+        return checkEmail() && checkPasswordLength() && checkPasswordsMatch() && checkUsername() && checkUsernameLength()
     }
 
     private fun checkEmail(): Boolean {
@@ -111,6 +112,12 @@ class RegistrationViewModel @Inject constructor(
     private fun checkUsername(): Boolean {
         return (screenUIState.username.isUsername()).also {
             if (!it) updateScreenState(screenUIState.copy(usernameError = R.string.username_badly_formatted))
+        }
+    }
+
+    private fun checkUsernameLength(): Boolean {
+        return (screenUIState.username.length >= MIN_USERNAME_LENGTH).also {
+            if (!it) updateScreenState(screenUIState.copy(usernameError = R.string.username_too_short))
         }
     }
 
