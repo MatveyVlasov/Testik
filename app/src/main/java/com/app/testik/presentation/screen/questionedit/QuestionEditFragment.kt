@@ -208,7 +208,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
 
             val isNumberType = data.type == QuestionType.NUMBER
             rvAnswers.isVisible = !isNumberType
-            btnAddAnswer.isVisible = !isNumberType
+            btnAddAnswer.isVisible = !isNumberType && data.type != QuestionType.TRUE_FALSE
             tilCorrectNumber.isVisible = isNumberType
             llPercentageError.isVisible = isNumberType
             tilPercentageError.isVisible = isNumberType && data.percentageError != null
@@ -221,7 +221,6 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
                 scrollView.fullScroll(View.FOCUS_UP)
             }
 
-            btnAddAnswer.isEnabled = data.type != QuestionType.TRUE_FALSE
             btnDiscard.isEnabled = data.canDiscard
         }
 

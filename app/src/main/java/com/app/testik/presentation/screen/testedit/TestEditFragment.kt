@@ -69,8 +69,8 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.demo -> navigateToTestInfo()
-                    R.id.results -> navigateToResults()
+                    R.id.demo -> navigate { navigateToTestInfo() }
+                    R.id.results -> navigate { navigateToResults() }
                     R.id.delete -> confirmDeletion()
                 }
                 return@setOnMenuItemClickListener true
@@ -108,21 +108,11 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             btnSave.setOnClickListener { viewModel.save() }
 
             btnEditQuestions.setOnClickListener {
-                if (viewModel.screenUIState.canSave) confirmExitWithoutSaving {
-                    viewModel.discardChanges()
-                    navigateToQuestionList()
-                } else {
-                    navigateToQuestionList()
-                }
+                navigate { navigateToQuestionList() }
             }
 
             btnEditGradingSystem.setOnClickListener {
-                if (viewModel.screenUIState.canSave) confirmExitWithoutSaving {
-                    viewModel.discardChanges()
-                    navigateToGradingSystem()
-                } else {
-                    navigateToGradingSystem()
-                }
+                navigate { navigateToGradingSystem() }
             }
 
             etTitle.addTextChangedListener { viewModel.onTitleChanged(it.toString()) }
@@ -337,5 +327,14 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             negative = R.string.cancel,
             onPositiveClick = viewModel::deleteTest
         )
+    }
+
+    private fun navigate(action: () -> Unit) {
+        if (viewModel.screenUIState.canSave) confirmExitWithoutSaving {
+            viewModel.discardChanges()
+            action()
+        } else {
+            action()
+        }
     }
 }
