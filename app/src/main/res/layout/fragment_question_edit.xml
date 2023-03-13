@@ -212,19 +212,9 @@
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilInvisible"
-                    style="@style/CustomTextInputLayout.LightGray"
-                    android:visibility="invisible">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etInvisible"
-                        style="@style/CustomTextInputEditText.LightGray" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilCorrectNumber"
                     style="@style/CustomTextInputLayout.LightGray"
+                    android:layout_marginTop="32dp"
                     android:hint="@string/correct_number"
                     app:startIconDrawable="@drawable/ic_number"
                     app:errorEnabled="false"
@@ -283,6 +273,7 @@
                 android:id="@+id/rvAnswers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
                 android:layout_marginHorizontal="@dimen/margin_horizontal"
                 android:paddingVertical="8dp"
                 android:clipToPadding="false"

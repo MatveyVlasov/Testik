@@ -109,7 +109,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             btnEditQuestions.setOnClickListener {
                 if (viewModel.screenUIState.canSave) confirmExitWithoutSaving {
-                    discardChanges()
+                    viewModel.discardChanges()
                     navigateToQuestionList()
                 } else {
                     navigateToQuestionList()
@@ -118,7 +118,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             btnEditGradingSystem.setOnClickListener {
                 if (viewModel.screenUIState.canSave) confirmExitWithoutSaving {
-                    discardChanges()
+                    viewModel.discardChanges()
                     navigateToGradingSystem()
                 } else {
                     navigateToGradingSystem()
@@ -170,10 +170,12 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
     private fun renderUIState(data: TestEditScreenUIState) {
         binding.apply {
-            if (!etTitle.isFocused) etTitle.setText(data.title)
-            if (!etDescription.isFocused) etDescription.setText(data.description)
-            if (!etPassword.isFocused) etPassword.setText(data.password)
-            if (!etCategory.isFocused) etCategory.setText(data.category.description)
+            viewModel.screenUIState.canSave.let {
+                if (!it || !etTitle.isFocused) etTitle.setText(data.title)
+                if (!it || !etDescription.isFocused) etDescription.setText(data.description)
+                if (!it || !etPassword.isFocused) etPassword.setText(data.password)
+                if (!it || !etCategory.isFocused) etCategory.setText(data.category.description)
+            }
 
             tilTitle.error = getStringOrNull(data.titleError)
             tilDescription.error = getStringOrNull(data.descriptionError)
@@ -335,11 +337,5 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             negative = R.string.cancel,
             onPositiveClick = viewModel::deleteTest
         )
-    }
-
-    private fun discardChanges() {
-        binding.etTitle.clearFocus()
-        binding.etDescription.clearFocus()
-        viewModel.discardChanges()
     }
 }

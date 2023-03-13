@@ -136,7 +136,6 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
             }
 
             btnDiscard.setOnClickListener {
-                clearFocus()
                 scrollView.fullScroll(View.FOCUS_UP)
                 viewModel.discardChanges()
             }
@@ -188,13 +187,15 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
 
     private fun renderUIState(data: QuestionEditScreenUIState) {
         binding.apply {
-            if (!etTitle.isFocused) etTitle.setText(data.title)
-            if (!etDescription.isFocused) etDescription.setText(data.description)
-            if (!etExplanation.isFocused) etExplanation.setText(data.explanation)
-            if (!etPoints.isFocused) etPoints.setText(data.points)
-            if (!etType.isFocused) etType.setText(data.type.description)
-            if (!etCorrectNumber.isFocused) etCorrectNumber.setText(data.correctNumber)
-            if (!etPercentageError.isFocused) etPercentageError.setText(data.percentageError)
+            data.canDiscard.let {
+                if (!it || !etTitle.isFocused) etTitle.setText(data.title)
+                if (!it || !etDescription.isFocused) etDescription.setText(data.description)
+                if (!it || !etExplanation.isFocused) etExplanation.setText(data.explanation)
+                if (!it || !etPoints.isFocused) etPoints.setText(data.points)
+                if (!it || !etType.isFocused) etType.setText(data.type.description)
+                if (!it || !etCorrectNumber.isFocused) etCorrectNumber.setText(data.correctNumber)
+                if (!it || !etPercentageError.isFocused) etPercentageError.setText(data.percentageError)
+            }
 
             switchRequired.isChecked = data.isRequired
             switchMatch.isChecked = data.isMatch
@@ -320,15 +321,7 @@ class QuestionEditFragment : BaseFragment<FragmentQuestionEditBinding>() {
     }
 
     private fun changeType(type: QuestionType) {
-        clearFocus()
         viewModel.onTypeChanged(type)
-    }
-
-    private fun clearFocus() {
-        binding.etInvisible.apply {
-            requestFocus()
-            clearFocus()
-        }
     }
 
     private fun navigateToInfo(text: String) {
