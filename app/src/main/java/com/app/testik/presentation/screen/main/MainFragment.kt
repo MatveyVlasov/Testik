@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.app.testik.R
 import com.app.testik.databinding.FragmentMainBinding
 import com.app.testik.domain.model.CategoryType
 import com.app.testik.presentation.base.BaseFragment
@@ -52,6 +53,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     private fun initViews() {
 
+        changeStatusBarColor(color = getColor(R.color.white), isLight = true)
         setupBottomNavigation(true)
         binding.apply {
             toolbar.setupAvatarItem { navigateToProfile() }

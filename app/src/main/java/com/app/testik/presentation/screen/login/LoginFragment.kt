@@ -58,6 +58,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun initViews() {
 
+        val statusBarColor = requireContext().getThemeColor(com.google.android.material.R.attr.colorPrimaryVariant)
+        changeStatusBarColor(color = statusBarColor, isLight = false)
         setupBottomNavigation(false)
         binding.apply {
             toolbar.setupLanguageItem (getColor(R.color.blue_dark)) {

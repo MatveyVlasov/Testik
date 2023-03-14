@@ -5,12 +5,14 @@ import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.annotation.*
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -234,4 +236,12 @@ fun Fragment.viewImage(
         it.putExtra(Constants.EXTRA_IMAGE_PATH, image)
         startActivity(it)
     }
+}
+
+fun Fragment.changeStatusBarColor(color: Int, isLight: Boolean) {
+    val window = activity?.window ?: return
+    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+    window.statusBarColor = color
+
+    WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = isLight
 }
