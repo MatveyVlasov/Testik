@@ -1,142 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/purple_light">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/registration"
-        app:titleTextColor="@color/blue_dark"
-        app:navigationIconTint="@color/blue_dark"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/purple_light">
 
-    <LinearLayout
-        android:id="@+id/llRegForm"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            app:title="@string/registration"
+            app:titleTextColor="@color/blue_dark"
+            app:navigationIconTint="@color/blue_dark" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="50dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/btnRegister"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintVertical_chainStyle="packed">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilEmail"
-            style="@style/CustomTextInputLayout"
-            android:hint="@string/email"
-            app:errorEnabled="true"
-            app:startIconDrawable="@drawable/ic_mail">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
-                style="@style/CustomTextInputEditText"
-                android:inputType="textEmailAddress"
-                android:maxLength="@integer/email_max_length" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPassword"
-            style="@style/CustomTextInputLayout"
-            android:layout_marginBottom="12dp"
-            android:hint="@string/password"
-            app:endIconMode="password_toggle"
-            app:errorEnabled="true"
-            app:startIconDrawable="@drawable/ic_lock">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPassword"
-                style="@style/CustomTextInputEditText"
-                android:inputType="textPassword" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPasswordRepeated"
-            style="@style/CustomTextInputLayout"
-            android:layout_marginBottom="12dp"
-            android:hint="@string/repeat_password"
-            app:endIconMode="password_toggle"
-            app:errorEnabled="true"
-            app:startIconDrawable="@drawable/ic_lock">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPasswordRepeated"
-                style="@style/CustomTextInputEditText"
-                android:inputType="textPassword" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilUsername"
-            style="@style/CustomTextInputLayout"
-            android:layout_marginBottom="12dp"
-            android:hint="@string/username"
-            app:errorEnabled="true"
-            app:startIconDrawable="@drawable/ic_lock">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etUsername"
-                style="@style/CustomTextInputEditText"
-                android:inputType="textPersonName"
-                android:maxLength="@integer/field_max_length" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnRegister"
-        style="@style/CustomButton.Purple"
-        android:layout_marginTop="24dp"
-        android:enabled="false"
-        android:text="@string/register_create"
-        app:layout_constraintBottom_toTopOf="@id/llHaveAccount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llRegForm" />
-
-    <LinearLayout
-        android:id="@+id/llHaveAccount"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbar_height"
         android:layout_marginBottom="@dimen/margin_bottom"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnRegister">
+        android:fillViewport="true"
+        android:background="@color/purple_light">
 
-        <TextView
-            android:id="@+id/tvHaveAccount"
-            style="@style/CustomTextView.AutoSize.BlueDark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="bottom|end"
-            android:text="@string/already_have_account" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvLogin"
-            style="@style/CustomTextView.AutoSize"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="4dp"
-            android:gravity="bottom"
-            android:text="@string/log_in"
-            android:textColor="@color/purple_dark" />
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llRegForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:layout_marginTop="50dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/btnRegister"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEmail"
+                    style="@style/CustomTextInputLayout"
+                    android:hint="@string/email"
+                    app:errorEnabled="true"
+                    app:startIconDrawable="@drawable/ic_mail">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmail"
+                        style="@style/CustomTextInputEditText"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="@integer/email_max_length" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPassword"
+                    style="@style/CustomTextInputLayout"
+                    android:layout_marginBottom="12dp"
+                    android:hint="@string/password"
+                    app:endIconMode="password_toggle"
+                    app:errorEnabled="true"
+                    app:startIconDrawable="@drawable/ic_lock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPassword"
+                        style="@style/CustomTextInputEditText"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPasswordRepeated"
+                    style="@style/CustomTextInputLayout"
+                    android:layout_marginBottom="12dp"
+                    android:hint="@string/repeat_password"
+                    app:endIconMode="password_toggle"
+                    app:errorEnabled="true"
+                    app:startIconDrawable="@drawable/ic_lock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPasswordRepeated"
+                        style="@style/CustomTextInputEditText"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilUsername"
+                    style="@style/CustomTextInputLayout"
+                    android:layout_marginBottom="12dp"
+                    android:hint="@string/username"
+                    app:errorEnabled="true"
+                    app:startIconDrawable="@drawable/ic_lock">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etUsername"
+                        style="@style/CustomTextInputEditText"
+                        android:inputType="textPersonName"
+                        android:maxLength="@integer/field_max_length" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRegister"
+                style="@style/CustomButton.Purple"
+                android:layout_marginTop="24dp"
+                android:enabled="false"
+                android:text="@string/register_create"
+                app:layout_constraintBottom_toTopOf="@id/llHaveAccount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llRegForm" />
+
+            <LinearLayout
+                android:id="@+id/llHaveAccount"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="@dimen/margin_bottom"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnRegister">
+
+                <TextView
+                    android:id="@+id/tvHaveAccount"
+                    style="@style/CustomTextView.AutoSize.BlueDark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom|end"
+                    android:text="@string/already_have_account" />
+
+                <TextView
+                    android:id="@+id/tvLogin"
+                    style="@style/CustomTextView.AutoSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
+                    android:gravity="bottom"
+                    android:text="@string/log_in"
+                    android:textColor="@color/purple_dark" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

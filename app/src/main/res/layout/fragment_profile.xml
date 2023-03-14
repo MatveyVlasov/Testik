@@ -1,156 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/toolbar_height"
             app:title="@string/profile"
-            app:menu="@menu/profile_menu"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:menu="@menu/profile_menu" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivAvatar"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_profile_avatar"
-            android:contentDescription="@string/avatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <ImageView
-            android:id="@+id/ivEditAvatar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="25dp"
-            android:layout_marginEnd="25dp"
-            android:src="@drawable/ic_edit_image"
-            android:contentDescription="@string/change_avatar"
-            app:layout_constraintBottom_toBottomOf="@id/ivAvatar"
-            app:layout_constraintEnd_toEndOf="@id/ivAvatar" />
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbar_height"
+        android:layout_marginBottom="@dimen/margin_bottom"
+        android:fillViewport="true"
+        android:background="@color/white">
 
-        <LinearLayout
-            android:id="@+id/llProfileForm"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="20dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivAvatar">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilEmail"
-                style="@style/CustomTextInputLayout.LightGray"
-                android:hint="@string/email"
-                app:startIconDrawable="@drawable/ic_mail">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivAvatar"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_profile_avatar"
+                android:contentDescription="@string/avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etEmail"
-                    style="@style/CustomTextInputEditText.LightGray"
-                    android:inputType="textEmailAddress"
-                    android:enabled="false" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilUsername"
-                style="@style/CustomTextInputLayout.LightGray"
-                android:hint="@string/username"
-                app:startIconDrawable="@drawable/ic_person"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etUsername"
-                    style="@style/CustomTextInputEditText.LightGray"
-                    android:inputType="textPersonName"
-                    android:maxLength="@integer/field_max_length" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:id="@+id/ivEditAvatar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginEnd="25dp"
+                android:src="@drawable/ic_edit_image"
+                android:contentDescription="@string/change_avatar"
+                app:layout_constraintBottom_toBottomOf="@id/ivAvatar"
+                app:layout_constraintEnd_toEndOf="@id/ivAvatar" />
 
             <LinearLayout
+                android:id="@+id/llProfileForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:showDividers="middle"
-                android:divider="@drawable/empty_divider"
-                android:baselineAligned="false">
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="20dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivAvatar">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilFirstName"
+                    android:id="@+id/tilEmail"
                     style="@style/CustomTextInputLayout.LightGray"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:hint="@string/first_name"
+                    android:hint="@string/email"
+                    app:startIconDrawable="@drawable/ic_mail">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmail"
+                        style="@style/CustomTextInputEditText.LightGray"
+                        android:inputType="textEmailAddress"
+                        android:enabled="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilUsername"
+                    style="@style/CustomTextInputLayout.LightGray"
+                    android:hint="@string/username"
                     app:startIconDrawable="@drawable/ic_person"
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etFirstName"
+                        android:id="@+id/etUsername"
                         style="@style/CustomTextInputEditText.LightGray"
                         android:inputType="textPersonName"
                         android:maxLength="@integer/field_max_length" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilLastName"
-                    style="@style/CustomTextInputLayout.LightGray"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:hint="@string/last_name"
-                    app:startIconDrawable="@drawable/ic_person"
-                    app:errorEnabled="true">
+                    android:showDividers="middle"
+                    android:divider="@drawable/empty_divider"
+                    android:baselineAligned="false">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etLastName"
-                        style="@style/CustomTextInputEditText.LightGray"
-                        android:inputType="textPersonName"
-                        android:maxLength="@integer/field_max_length" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilFirstName"
+                        style="@style/CustomTextInputLayout.LightGray"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:hint="@string/first_name"
+                        app:startIconDrawable="@drawable/ic_person"
+                        app:errorEnabled="true">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etFirstName"
+                            style="@style/CustomTextInputEditText.LightGray"
+                            android:inputType="textPersonName"
+                            android:maxLength="@integer/field_max_length" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilLastName"
+                        style="@style/CustomTextInputLayout.LightGray"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:hint="@string/last_name"
+                        app:startIconDrawable="@drawable/ic_person"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLastName"
+                            style="@style/CustomTextInputEditText.LightGray"
+                            android:inputType="textPersonName"
+                            android:maxLength="@integer/field_max_length" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                style="@style/CustomButton.PurpleDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/save"
+                app:layout_constraintTop_toBottomOf="@id/llProfileForm"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSave"
-            style="@style/CustomButton.PurpleDark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/save"
-            app:layout_constraintTop_toBottomOf="@id/llProfileForm"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnChangePassword"
+                style="@style/CustomButton.PurpleDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="@dimen/margin_bottom"
+                android:text="@string/change_password"
+                app:layout_constraintTop_toBottomOf="@id/btnSave"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnChangePassword"
-            style="@style/CustomButton.PurpleDark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="@dimen/margin_bottom"
-            android:text="@string/change_password"
-            app:layout_constraintTop_toBottomOf="@id/btnSave"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

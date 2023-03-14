@@ -14,9 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
-            app:title="@string/grading_system"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:title="@string/grading_system" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

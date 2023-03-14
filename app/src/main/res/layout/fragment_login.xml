@@ -1,176 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/purple_light">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/login_menu"
-        app:navigationIcon="@drawable/logo"
-        app:title="@string/account_login"
-        app:titleTextColor="@color/blue_dark"
-        app:navigationIconTint="@color/blue_dark"
-        app:titleCentered="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/purple_light">
 
-    <TextView
-        android:id="@+id/tvAppName"
-        style="@style/CustomTextView.BlueDark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:fontFamily="@font/merriweather_regular"
-        android:text="@string/app_name"
-        android:textSize="42sp"
-        app:layout_constraintBottom_toTopOf="@id/llLoginForm"
-        app:layout_constraintEnd_toEndOf="parent "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintVertical_chainStyle="packed" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            app:menu="@menu/login_menu"
+            app:navigationIcon="@drawable/logo"
+            app:title="@string/account_login"
+            app:titleCentered="true"
+            app:titleTextColor="@color/blue_dark"
+            app:navigationIconTint="@color/blue_dark" />
 
-    <LinearLayout
-        android:id="@+id/llLoginForm"
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="30dp"
-        android:orientation="vertical"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        app:layout_constraintBottom_toTopOf="@id/btnLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvAppName">
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilEmail"
-            style="@style/CustomTextInputLayout"
-            android:hint="@string/email"
-            app:startIconDrawable="@drawable/ic_mail"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
-                style="@style/CustomTextInputEditText"
-                android:inputType="textEmailAddress" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPassword"
-            style="@style/CustomTextInputLayout"
-            android:hint="@string/password"
-            app:startIconDrawable="@drawable/ic_lock"
-            app:endIconMode="password_toggle"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPassword"
-                style="@style/CustomTextInputEditText"
-                android:inputType="textPassword" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogin"
-        style="@style/CustomButton.Purple"
-        android:layout_marginTop="24dp"
-        android:text="@string/log_in"
-        android:enabled="false"
-        app:layout_constraintBottom_toTopOf="@id/btnLoginWithGoogle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llLoginForm" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLoginWithGoogle"
-        style="@style/CustomButton"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="30dp"
-        android:backgroundTint="@color/white"
-        android:text="@string/log_in_with_google"
-        android:textColor="@color/blue_dark"
-        android:autoSizeTextType="uniform"
-        android:maxLines="1"
-        app:icon="@drawable/ic_google"
-        app:iconGravity="start"
-        app:iconTint="@null"
-        app:layout_constraintBottom_toTopOf="@id/llNoAccount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
-
-    <LinearLayout
-        android:id="@+id/llNoAccount"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@id/llResetPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLoginWithGoogle"
-        app:layout_constraintVertical_chainStyle="packed">
-
-        <TextView
-            android:id="@+id/tvNoAccount"
-            style="@style/CustomTextView.AutoSize.BlueDark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="bottom|end"
-            android:text="@string/no_account" />
-
-        <TextView
-            android:id="@+id/tvRegister"
-            style="@style/CustomTextView.AutoSize"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="4dp"
-            android:gravity="bottom"
-            android:text="@string/register_create"
-            android:textColor="@color/purple_dark" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/llResetPassword"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbar_height"
         android:layout_marginBottom="@dimen/margin_bottom"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llNoAccount">
+        android:fillViewport="true"
+        android:background="@color/white">
 
-        <TextView
-            android:id="@+id/tvForgotPassword"
-            style="@style/CustomTextView.AutoSize.BlueDark"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="bottom|end"
-            android:text="@string/forgot_password" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/purple_light">
 
-        <TextView
-            android:id="@+id/tvResetPassword"
-            style="@style/CustomTextView.AutoSize"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:layout_marginStart="4dp"
-            android:text="@string/reset"
-            android:textColor="@color/purple_dark" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvAppName"
+                style="@style/CustomTextView.BlueDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/merriweather_regular"
+                android:text="@string/app_name"
+                android:textSize="42sp"
+                app:layout_constraintBottom_toTopOf="@id/llLoginForm"
+                app:layout_constraintEnd_toEndOf="parent "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:id="@+id/llLoginForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                app:layout_constraintBottom_toTopOf="@id/btnLogin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAppName">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEmail"
+                    style="@style/CustomTextInputLayout"
+                    android:hint="@string/email"
+                    app:startIconDrawable="@drawable/ic_mail"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmail"
+                        style="@style/CustomTextInputEditText"
+                        android:inputType="textEmailAddress" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPassword"
+                    style="@style/CustomTextInputLayout"
+                    android:hint="@string/password"
+                    app:startIconDrawable="@drawable/ic_lock"
+                    app:endIconMode="password_toggle"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPassword"
+                        style="@style/CustomTextInputEditText"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogin"
+                style="@style/CustomButton.Purple"
+                android:layout_marginTop="24dp"
+                android:text="@string/log_in"
+                android:enabled="false"
+                app:layout_constraintBottom_toTopOf="@id/btnLoginWithGoogle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llLoginForm" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLoginWithGoogle"
+                style="@style/CustomButton"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:backgroundTint="@color/white"
+                android:text="@string/log_in_with_google"
+                android:textColor="@color/blue_dark"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                app:icon="@drawable/ic_google"
+                app:iconGravity="start"
+                app:iconTint="@null"
+                app:layout_constraintBottom_toTopOf="@id/llNoAccount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+
+            <LinearLayout
+                android:id="@+id/llNoAccount"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toTopOf="@id/llResetPassword"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnLoginWithGoogle"
+                app:layout_constraintVertical_chainStyle="packed">
+
+                <TextView
+                    android:id="@+id/tvNoAccount"
+                    style="@style/CustomTextView.AutoSize.BlueDark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom|end"
+                    android:text="@string/no_account" />
+
+                <TextView
+                    android:id="@+id/tvRegister"
+                    style="@style/CustomTextView.AutoSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
+                    android:gravity="bottom"
+                    android:text="@string/register_create"
+                    android:textColor="@color/purple_dark" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llResetPassword"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="@dimen/margin_bottom"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llNoAccount">
+
+                <TextView
+                    android:id="@+id/tvForgotPassword"
+                    style="@style/CustomTextView.AutoSize.BlueDark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom|end"
+                    android:text="@string/forgot_password" />
+
+                <TextView
+                    android:id="@+id/tvResetPassword"
+                    style="@style/CustomTextView.AutoSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/reset"
+                    android:textColor="@color/purple_dark" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
