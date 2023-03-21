@@ -88,10 +88,11 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun resetPassword(email: String): ApiResult<Unit> {
+    override suspend fun resetPassword(email: String, language: String): ApiResult<Unit> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
 
         return try {
+            firebaseAuth.setLanguageCode(language)
             firebaseAuth.sendPasswordResetEmail(email).execute()
         } catch (e: Exception) {
             ApiResult.Error(e.message)

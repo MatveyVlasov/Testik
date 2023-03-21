@@ -7,12 +7,13 @@ import com.app.testik.domain.util.ResultWrapperImpl
 import javax.inject.Inject
 
 class ResetPasswordUseCase @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val preferencesUseCase: PreferencesUseCase
 ) : ResultWrapper by ResultWrapperImpl() {
 
     suspend operator fun invoke(email: String): Result<Unit> =
         wrap(
-            block = { authRepository.resetPassword(email) },
+            block = { authRepository.resetPassword(email = email, language = preferencesUseCase.getLanguage()) },
             mapper = { }
         )
 }
