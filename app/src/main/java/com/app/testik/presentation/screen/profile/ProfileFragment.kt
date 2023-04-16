@@ -58,6 +58,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private fun initViews() {
 
+        changeStatusBarColor(color = getColor(R.color.white), isLight = true)
         setupBottomNavigation(false)
         binding.apply {
             toolbar.setupLanguageItem(getColor(R.color.black)) {
