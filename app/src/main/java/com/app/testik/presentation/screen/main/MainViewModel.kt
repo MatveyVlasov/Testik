@@ -44,7 +44,8 @@ class MainViewModel @Inject constructor(
         val lastUpdated = preferencesUseCase.getLastUpdatedTime()
         val fromCache = timestamp - lastUpdated < UPDATE_INTERVAL
         getUserInfo(fromCache = fromCache)
-        getTests(fromCache = fromCache)
+        getTests(fromCache = true)
+        if (!fromCache) getTests(fromCache = fromCache)
     }
 
     fun getUserInfo(fromCache: Boolean = false) {
