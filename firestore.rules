@@ -67,6 +67,7 @@ service cloud.firestore {
             return isString("author") && validateStringMaxSize("title", 75) && isString("category") && isNumber("lastUpdated")
                 && validateStringMaxSize("description", 1000) && isString("image") && isBoolean("isPasswordEnabled") && isBoolean("isPublished")
                 && isBoolean("isLinkEnabled") && isString("link") && isBoolean("isNavigationEnabled")
+                && isBoolean("isResultsShown") && isBoolean("isCorrectAnswersShown") && isBoolean("isCorrectAnswersAfterQuestionShown")
                 && isBoolean("isRandomQuestions") && isBoolean("isRandomAnswers")
                 && isNumber("pointsMax") && isNumber("questionsNum") && isBoolean("isGradesEnabled");
         }
@@ -97,7 +98,7 @@ service cloud.firestore {
         allow create: if false; // cloud functions only
         allow update: if isOwner(resource.data.user) && !resource.data.isFinished
             && hasRequiredFields(["user", "testId", "title", "questions", "timeStarted", "timeFinished", "isFinished", "pointsMax"])
-            && verifyUnchangedFields(["user", "testId", "title", "timeStarted", "isFinished", "pointsMax", "isGradesEnabled", "grades"])
+            && verifyUnchangedFields(["user", "testId", "title", "timeStarted", "isFinished", "isResultsShown", "pointsMax", "isGradesEnabled", "grades"])
             && verifyTimestamp(request.resource.data.timeFinished) && validateFields();
         allow delete: if false;
 
