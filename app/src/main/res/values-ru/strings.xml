@@ -147,6 +147,8 @@
     <string name="log_in_to_get_test">Пожалуйста, войдите в аккаунт, чтобы перейти к тесту</string>
     <string name="enable_test_link">Сделайте ссылку активной в настройках теста</string>
     <string name="show_more_settings">Показать больше настроек</string>
+    <string name="show_results">Показывать результаты</string>
+    <string name="show_results_info">Пользователи увидят набранные баллы (только их общее количество, а не по каждому вопросу) после прохождения теста\n\nИзменение видимости результатов затрагивает всех пользователей, в том числе тех, кто прошёл тест ранее</string>
     <string name="navigation_between_questions">Навигация между вопросами</string>
     <string name="random_question_order">Случайный порядок вопросов</string>
     <string name="random_answer_order">Случайный порядок ответов</string>
@@ -281,6 +283,7 @@
     <string name="date">Дата:</string>
     <string name="time_spent">Потрачено времени:</string>
     <string name="points_title">Баллов:</string>
+    <string name="points_unavailable">Автор теста попросил не раскрывать количество баллов, которое вы набрали\nЕсли он передумает, мы вам сообщим :)</string>
     <string name="test_not_finished_detail">Тест не был завершён. Баллы подсчитаны на основе сохранённых ответов</string>
 
     <string name="correct_answer">Правильный ответ</string>

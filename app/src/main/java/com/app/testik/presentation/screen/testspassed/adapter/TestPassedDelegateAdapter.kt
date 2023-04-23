@@ -28,7 +28,7 @@ class TestPassedDelegateAdapter(
 
         fun bind(test: TestPassedDelegateItem) {
 
-            val isPointsVisible = test.isFinished || test.pointsCalculated
+            val isPointsVisible = test.isResultsShown && (test.isFinished || test.pointsCalculated)
 
             binding.apply {
                 loadTestImage(context = root.context, imageView = binding.ivImage, url = test.image)
@@ -43,7 +43,7 @@ class TestPassedDelegateAdapter(
                 tvDemo.isVisible = test.isDemo
 
                 tvGrade.text = test.gradeEarned
-                tvGrade.isInvisible = test.gradeEarned.isEmpty()
+                tvGrade.isInvisible = test.gradeEarned.isEmpty() || !test.isResultsShown
 
                 root.setOnClickListener { onClick(test.recordId) }
             }

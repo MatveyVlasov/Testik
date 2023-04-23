@@ -28,7 +28,9 @@
             android:id="@+id/clTestPassedDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/ivImage"
@@ -216,6 +218,21 @@
                 app:layout_constraintStart_toEndOf="@id/tvPoints"
                 app:layout_constraintTop_toTopOf="@id/tvPoints"
                 tools:text="11/13 " />
+
+            <TextView
+                android:id="@+id/tvPointsUnavailable"
+                style="@style/CustomTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:layout_marginTop="20dp"
+                android:text="@string/points_unavailable"
+                android:textColor="@color/error"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPointsData" />
 
             <TextView
                 android:id="@+id/tvQuestionList"

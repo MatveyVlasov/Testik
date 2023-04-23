@@ -89,6 +89,8 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
 
     private fun renderUIState(data: TestPassedDetailScreenUIState) {
         binding.apply {
+            clTestPassedDetail.isVisible = true
+
             tvTitleData.text = data.title
             tvUsername.text = data.username
             tvDateData.text = data.date
@@ -109,11 +111,13 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
                 enableProgressAnimation = false // animate only once
             }
 
-            val showPoints = data.isFinished || data.pointsCalculated
+            val showPoints = data.isResultsShown && (data.isFinished || data.pointsCalculated)
             progressPoints.isVisible = showPoints
             tvPoints.isVisible = showPoints
             tvPointsData.isVisible = showPoints
+            tvPointsUnavailable.isVisible = !showPoints
             tvQuestionList.isVisible = showPoints
+            rvQuestions.isVisible = showPoints
 
             val showUser = data.username.isNotEmpty()
             tvUser.isVisible = showUser
@@ -134,8 +138,11 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
         setLoadingState(event is TestPassedDetailScreenEvent.Loading)
     }
 
-    private fun loadImage(url: String) =
+    private fun loadImage(url: String) {
         loadTestImage(context = requireContext(), imageView = binding.ivImage, url = url)
+
+        binding.ivImage.isVisible = url.isNotEmpty()
+    }
 
     private fun navigateToQuestion(question: QuestionDelegateItem) {
         viewModel.testPassed?.let {

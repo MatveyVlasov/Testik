@@ -9,8 +9,10 @@ fun TestPassedModel.toUIState() =
     TestResultsScreenUIState(
         recordId = recordId,
         testId = testId,
+        title = title,
         timeSpent = getTimeDifference(timeStarted, timeFinished),
         date = timeFinished.toDate(),
+        isResultsShown = isResultsShown,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned,
         gradeEarned = gradeEarned

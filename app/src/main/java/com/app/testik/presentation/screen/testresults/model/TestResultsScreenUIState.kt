@@ -6,6 +6,7 @@ data class TestResultsScreenUIState(
     val title: String = "",
     val date: String = "",
     val timeSpent: String = "",
+    val isResultsShown: Boolean = true,
     val pointsMax: Int = 0,
     val pointsEarned: Int = 0,
     val gradeEarned: String = ""

@@ -8,6 +8,7 @@ data class TestPassedDelegateItem(
     val image: String,
     val date: String,
     val isFinished: Boolean,
+    val isResultsShown: Boolean,
     val pointsMax: Int,
     val pointsEarned: Int,
     val pointsCalculated: Boolean,

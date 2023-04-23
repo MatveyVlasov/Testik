@@ -79,6 +79,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             tvPublish.addInfoIcon { navigateToInfo(getString(R.string.publish_info)) }
             tvTestLink.addInfoIcon { navigateToInfo(getString(R.string.test_link_info)) }
+            tvShowResults.addInfoIcon { navigateToInfo(getString(R.string.show_results_info)) }
         }
     }
 
@@ -101,6 +102,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
 
             tvMoreSettings.setOnClickListener { viewModel.onShowMore() }
 
+            switchShowResults.setOnCheckedChangeListener { _, isChecked -> viewModel.onShowResultsChanged(isChecked) }
             switchNavigateBetweenQuestions.setOnCheckedChangeListener { _, isChecked -> viewModel.onNavigationEnabledChanged(isChecked) }
             switchRandomizeQuestions.setOnCheckedChangeListener { _, isChecked -> viewModel.onRandomQuestionsChanged(isChecked) }
             switchRandomizeAnswers.setOnCheckedChangeListener { _, isChecked -> viewModel.onRandomAnswersChanged(isChecked) }
@@ -181,10 +183,12 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             val showMore = data.showMore
             val isTestCreated = viewModel.screenUIState.id.isNotEmpty()
             tvMoreSettings.isVisible = !showMore && isTestCreated
+            llShowResults.isVisible = showMore
             llNavigateBetweenQuestions.isVisible = showMore
             llRandomizeQuestions.isVisible = showMore
             llRandomizeAnswers.isVisible = showMore
 
+            switchShowResults.isChecked = data.isResultsShown
             switchNavigateBetweenQuestions.isChecked = data.isNavigationEnabled
             switchRandomizeQuestions.isChecked = data.isRandomQuestions
             switchRandomizeAnswers.isChecked = data.isRandomAnswers

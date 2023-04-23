@@ -152,6 +152,8 @@
     <string name="log_in_to_get_test">Please log in to get to the test</string>
     <string name="enable_test_link">Enable link in test settings</string>
     <string name="show_more_settings">Show more settings</string>
+    <string name="show_results">Show results</string>
+    <string name="show_results_info">Users will see their points (total number only, not per question) after finishing the test\n\nWhen enabled/disabled, it affects all users, including the ones who took the test before the change</string>
     <string name="navigation_between_questions">Navigation between questions</string>
     <string name="random_question_order">Random question order</string>
     <string name="random_answer_order">Random answer order</string>
@@ -286,6 +288,7 @@
     <string name="time_spent">Time spent:</string>
     <string name="points_title">Points:</string>
     <string name="points_earned" translatable="false">%d/%d</string>
+    <string name="points_unavailable">The author of the test asked us not to reveal the number of points you have earned\nIf he changes his mind, we will let you know :)</string>
     <string name="test_not_finished_detail">Test was not finished. Points were calculated based on the answers you submitted</string>
 
     <string name="correct_answer">Correct answer</string>

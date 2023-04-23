@@ -6,13 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.app.testik.domain.model.TestPassedModel
 import com.app.testik.domain.model.onError
 import com.app.testik.domain.model.onSuccess
-import com.app.testik.domain.usecase.GetTestInfoUseCase
 import com.app.testik.domain.usecase.GetTestPassedInfoUseCase
 import com.app.testik.presentation.model.UIState
 import com.app.testik.presentation.screen.testresults.mapper.toUIState
 import com.app.testik.presentation.screen.testresults.model.TestResultsScreenEvent
 import com.app.testik.presentation.screen.testresults.model.TestResultsScreenUIState
-import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class TestResultsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getTestInfoUseCase: GetTestInfoUseCase,
     private val getTestPassedInfoUseCase: GetTestPassedInfoUseCase
 ) : ViewModel() {
 
@@ -53,23 +50,7 @@ class TestResultsViewModel @Inject constructor(
         viewModelScope.launch {
             getTestPassedInfoUseCase(recordId = screenUIState.recordId).onSuccess {
                 testToInsert = it
-                screenUIState = it.toUIState()
-                getTestInfo()
-            }.onError {
-                emitEvent(TestResultsScreenEvent.ShowSnackbar(it))
-            }
-        }
-    }
-
-    private fun getTestInfo() {
-        emitEvent(TestResultsScreenEvent.Loading)
-
-        viewModelScope.launch {
-            getTestInfoUseCase(testId = screenUIState.testId, source = Source.CACHE).onSuccess {
-                val screenState = screenUIState.copy(
-                    title = it.title,
-                )
-                updateScreenState(screenState)
+                updateScreenState(it.toUIState())
             }.onError {
                 emitEvent(TestResultsScreenEvent.ShowSnackbar(it))
             }

@@ -6,9 +6,12 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clTestResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/tvResults"
@@ -153,6 +156,21 @@
             app:layout_constraintTop_toTopOf="@id/tvPoints"
             tools:text="11/13 " />
 
+        <TextView
+            android:id="@+id/tvPointsUnavailable"
+            style="@style/CustomTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="@string/points_unavailable"
+            android:textColor="@color/error"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPointsData" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnOK"
             style="@style/CustomButton.PurpleDark"
@@ -164,7 +182,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvPointsData" />
+            app:layout_constraintTop_toBottomOf="@id/tvPointsUnavailable" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

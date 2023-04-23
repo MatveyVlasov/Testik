@@ -12,6 +12,7 @@ data class TestPassedDetailScreenUIState(
     val date: String = "",
     val timeSpent: String = "",
     val isFinished: Boolean = false,
+    val isResultsShown: Boolean = true,
     val pointsMax: Int = 0,
     val pointsEarned: Int = 0,
     val pointsCalculated: Boolean = false,

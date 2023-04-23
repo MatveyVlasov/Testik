@@ -11,6 +11,7 @@ fun TestPassedModel.toTestPassedItem() =
         image = image,
         date = timeFinished.toDate(),
         isFinished = isFinished,
+        isResultsShown = isResultsShown,
         pointsMax = pointsMax,
         pointsEarned = pointsEarned,
         pointsCalculated = pointsCalculated,

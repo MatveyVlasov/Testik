@@ -10,6 +10,8 @@ data class TestPassedDto(
     val user: String = "",
     val timeStarted: Long = 0L,
     val timeFinished: Long = 0L,
+    @get:PropertyName("isResultsShown")
+    val isResultsShown: Boolean = true,
     @get:PropertyName("isNavigationEnabled")
     val isNavigationEnabled: Boolean = true,
     @get:PropertyName("isFinished")

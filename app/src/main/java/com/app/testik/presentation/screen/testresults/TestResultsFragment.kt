@@ -3,6 +3,7 @@ package com.app.testik.presentation.screen.testresults
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -68,6 +69,8 @@ class TestResultsFragment : BaseFragment<FragmentTestResultsBinding>() {
 
     private fun renderUIState(data: TestResultsScreenUIState) {
         binding.apply {
+            clTestResults.isVisible = true
+
             tvTitleData.text = data.title
             tvDateData.text = data.date
             tvTimeSpentData.text = data.timeSpent
@@ -83,6 +86,12 @@ class TestResultsFragment : BaseFragment<FragmentTestResultsBinding>() {
                     )
                 }
             }
+
+            val showPoints = data.isResultsShown
+            tvPoints.isVisible = showPoints
+            tvPointsData.isVisible = showPoints
+            progressPoints.isVisible = showPoints
+            tvPointsUnavailable.isVisible = !showPoints
         }
         setLoadingState(false)
     }
