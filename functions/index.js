@@ -5,41 +5,6 @@ admin.initializeApp()
 
 const db = admin.firestore()
 
-// exports.calculateMaxPoints = functions.firestore
-//     .document('tests/{test}')
-//     .onWrite((change, context) => {
-//         const document = change.after.data()
-//         console.log("Look Start")
-//         if (document == undefined || document.pointsUpdated) return null
-
-//         const questions = document.questions
-//         if (questions == undefined) return null
-//         let pointsMax = 0
-//         for (let i = 0; i < questions.length; ++i) {
-//             pointsMax += questions[i].pointsMax
-//         }
-
-//         const data1 = change.after.ref.collection('private')
-//         const data2 = data1.doc('questions').get().then((doc) => {
-//             if (doc.exists) {
-//                 const data3 = doc.data()
-//                 if (data3 != undefined) {
-//                     const data4 = data3.questions
-//                     console.log(`${JSON.stringify(data4)}`)
-//                 }
-//             }
-//         }).catch((err) => {
-//             console.log('Error getting document', err);
-//             return null;
-//         })
-
-
-//         return change.after.ref.set({
-//             pointsMax: pointsMax,
-//             pointsUpdated: true,
-//         }, { merge: true })
-//     })
-
 // exports.addQuestionsToTestPassed = functions.firestore
 //     .document('testsPassed/{test}')
 //     .onCreate(async (snap, context) => {
@@ -94,6 +59,7 @@ exports.startTest = functions
                 const testData = doc.data()
                 const isGradesEnabled = testData.isGradesEnabled || false
                 const grades = testData.grades || []
+                const isResultsShown = testData.isResultsShown
                 const isNavigationEnabled = testData.isNavigationEnabled
                 const isRandomQuestions = testData.isRandomQuestions
                 const isRandomAnswers = testData.isRandomAnswers
@@ -162,6 +128,7 @@ exports.startTest = functions
                             timeStarted: Date.now(),
                             timeFinished: Date.now(),
                             isFinished: false,
+                            isResultsShown: isResultsShown,
                             isNavigationEnabled: isNavigationEnabled,
                             questions: questions,
                             isDemo: isDemo,
@@ -461,6 +428,37 @@ exports.submitQuestion = functions
             console.log('Error occurred', err)
             throw err
         })
+    })
+
+
+exports.changeResultsShown = functions.firestore
+    .document('tests/{test}')
+    .onWrite((change, context) => {
+
+        const documentOld = change.before.data()
+        const document = change.after.data()
+        if (document == undefined || document.isResultsShown == documentOld.isResultsShown) return null
+
+        const testId = change.after.id
+        const isResultsShown = document.isResultsShown
+
+        db.collection('testsPassed')
+            .where('testId', '==', testId)
+            .where('isResultsShown', '!=', isResultsShown)
+            .get()
+            .then((snapshot) => {
+                const docs = snapshot.docs
+
+                for (let i = 0; i < docs.length; ++i) {
+                    docs[i].ref.update({ isResultsShown: isResultsShown })
+                }
+            })
+            .catch((err) => {
+                console.log('Error getting document', err);
+                return null;
+            })
+
+        return null
     })
 
 
