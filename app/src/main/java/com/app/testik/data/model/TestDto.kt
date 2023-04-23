@@ -20,6 +20,8 @@ data class TestDto(
     val isResultsShown: Boolean = true,
     @get:PropertyName("isCorrectAnswersShown")
     val isCorrectAnswersShown: Boolean = true,
+    @get:PropertyName("isCorrectAnswersAfterQuestionShown")
+    val isCorrectAnswersAfterQuestionShown: Boolean = true,
     @get:PropertyName("isNavigationEnabled")
     val isNavigationEnabled: Boolean = true,
     @get:PropertyName("isRandomQuestions")

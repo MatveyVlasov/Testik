@@ -87,18 +87,38 @@ class TestEditViewModel @Inject constructor(
 
     fun onShowResultsChanged(isResultsShown: Boolean) {
         if (isResultsShown == screenUIState.isResultsShown) return
-        val isCorrectAnswersShown = screenUIState.isCorrectAnswersShown && isResultsShown
-        updateScreenState(screenUIState.copy(isResultsShown = isResultsShown, isCorrectAnswersShown = isCorrectAnswersShown))
+        updateScreenState(
+            screenUIState.copy(
+                isResultsShown = isResultsShown,
+                isCorrectAnswersShown = screenUIState.isCorrectAnswersShown && isResultsShown,
+                isCorrectAnswersAfterQuestionShown = screenUIState.isCorrectAnswersAfterQuestionShown && isResultsShown
+            )
+        )
     }
 
     fun onShowCorrectAnswersChanged(isCorrectAnswersShown: Boolean) {
         if (isCorrectAnswersShown == screenUIState.isCorrectAnswersShown) return
-        updateScreenState(screenUIState.copy(isCorrectAnswersShown = isCorrectAnswersShown))
+        updateScreenState(
+            screenUIState.copy(
+                isCorrectAnswersShown = isCorrectAnswersShown,
+                isCorrectAnswersAfterQuestionShown = screenUIState.isCorrectAnswersAfterQuestionShown && isCorrectAnswersShown
+            )
+        )
+    }
+
+    fun onShowCorrectAnswersAfterQuestionChanged(isCorrectAnswersAfterQuestionShown: Boolean) {
+        if (isCorrectAnswersAfterQuestionShown == screenUIState.isCorrectAnswersAfterQuestionShown) return
+        updateScreenState(screenUIState.copy(isCorrectAnswersAfterQuestionShown = isCorrectAnswersAfterQuestionShown))
     }
 
     fun onNavigationEnabledChanged(isNavigationEnabled: Boolean) {
         if (isNavigationEnabled == screenUIState.isNavigationEnabled) return
-        updateScreenState(screenUIState.copy(isNavigationEnabled = isNavigationEnabled))
+        updateScreenState(
+            screenUIState.copy(
+                isNavigationEnabled = isNavigationEnabled,
+                isCorrectAnswersAfterQuestionShown = screenUIState.isCorrectAnswersAfterQuestionShown && !isNavigationEnabled
+            )
+        )
     }
 
     fun onRandomQuestionsChanged(isRandomQuestions: Boolean) {
@@ -171,6 +191,7 @@ class TestEditViewModel @Inject constructor(
                     testLink = it.link,
                     isResultsShown = it.isResultsShown,
                     isCorrectAnswersShown = it.isCorrectAnswersShown,
+                    isCorrectAnswersAfterQuestionShown = it.isCorrectAnswersAfterQuestionShown,
                     isNavigationEnabled = it.isNavigationEnabled,
                     isRandomQuestions = it.isRandomQuestions,
                     isRandomAnswers = it.isRandomAnswers,

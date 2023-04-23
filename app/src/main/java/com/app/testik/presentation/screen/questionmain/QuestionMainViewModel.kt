@@ -107,12 +107,8 @@ class QuestionMainViewModel @Inject constructor(
                 question = screenUIState.questions[num].toDomain(),
                 num = num
             ).onSuccess {
-                if (num == screenUIState.questions.lastIndex && false) { // TODO check if results available
-                    emitEvent(QuestionMainScreenEvent.NavigateToResults(screenUIState.test.recordId))
-                } else {
-                    if (true) updateResults(it) // TODO check if results available
-                    else navigateToNextQuestion()
-                }
+                if (it.answersCorrect.isNotEmpty()) updateResults(it)
+                else navigateToNextQuestion()
             }.onError {
                 handleError(it)
             }

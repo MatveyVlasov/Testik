@@ -109,7 +109,10 @@ class TestPassedRepositoryImpl @Inject constructor(
                     val result = it.result.data as Map<*, *>
                     val points = (result["points"] as? Int).orZero()
                     val pointsEarned = (result["pointsEarned"] as? Int).orZero()
-                    val answersCorrect = Gson().fromJson(JSONObject(result["answersCorrect"] as Map<*, *>).toString(), AnswersCorrectDto::class.java)
+                    val answersCorrect = Gson().fromJson(
+                        JSONObject(result["answersCorrect"] as? Map<*, *> ?: emptyMap<Any, Any>()).toString(),
+                        AnswersCorrectDto::class.java
+                    )
                     val explanation = (result["explanation"] as? String).orEmpty()
 
                     ApiResult.Success(
