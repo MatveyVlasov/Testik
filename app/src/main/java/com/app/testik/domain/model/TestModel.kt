@@ -16,6 +16,7 @@ data class TestModel(
     val isLinkEnabled: Boolean = false,
     val link: String = "",
     val isResultsShown: Boolean = true,
+    val isCorrectAnswersShown: Boolean = true,
     val isNavigationEnabled: Boolean = true,
     val isRandomQuestions: Boolean = false,
     val isRandomAnswers: Boolean = false,

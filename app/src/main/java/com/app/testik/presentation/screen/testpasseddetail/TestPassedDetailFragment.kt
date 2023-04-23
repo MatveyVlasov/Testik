@@ -116,7 +116,7 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
             tvPoints.isVisible = showPoints
             tvPointsData.isVisible = showPoints
             tvPointsUnavailable.isVisible = !showPoints
-            tvQuestionList.isVisible = showPoints
+            tvQuestionList.isVisible = showPoints && data.questions.isNotEmpty()
             rvQuestions.isVisible = showPoints
 
             val showUser = data.username.isNotEmpty()

@@ -87,7 +87,13 @@ class TestEditViewModel @Inject constructor(
 
     fun onShowResultsChanged(isResultsShown: Boolean) {
         if (isResultsShown == screenUIState.isResultsShown) return
-        updateScreenState(screenUIState.copy(isResultsShown = isResultsShown))
+        val isCorrectAnswersShown = screenUIState.isCorrectAnswersShown && isResultsShown
+        updateScreenState(screenUIState.copy(isResultsShown = isResultsShown, isCorrectAnswersShown = isCorrectAnswersShown))
+    }
+
+    fun onShowCorrectAnswersChanged(isCorrectAnswersShown: Boolean) {
+        if (isCorrectAnswersShown == screenUIState.isCorrectAnswersShown) return
+        updateScreenState(screenUIState.copy(isCorrectAnswersShown = isCorrectAnswersShown))
     }
 
     fun onNavigationEnabledChanged(isNavigationEnabled: Boolean) {
@@ -164,6 +170,7 @@ class TestEditViewModel @Inject constructor(
                     isTestLinkEnabled = it.isLinkEnabled,
                     testLink = it.link,
                     isResultsShown = it.isResultsShown,
+                    isCorrectAnswersShown = it.isCorrectAnswersShown,
                     isNavigationEnabled = it.isNavigationEnabled,
                     isRandomQuestions = it.isRandomQuestions,
                     isRandomAnswers = it.isRandomAnswers,

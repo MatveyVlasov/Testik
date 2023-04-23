@@ -154,6 +154,8 @@
     <string name="show_more_settings">Show more settings</string>
     <string name="show_results">Show results</string>
     <string name="show_results_info">Users will see their points (total number only, not per question) after finishing the test\n\nWhen enabled/disabled, it affects all users, including the ones who took the test before the change</string>
+    <string name="show_correct_answers">Show correct answers</string>
+    <string name="show_correct_answers_info">If enabled, users finished the test can see their points and the correct answers for every question\n\nWhen enabled/disabled, it affects all users, including the ones who took the test before the change</string>
     <string name="navigation_between_questions">Navigation between questions</string>
     <string name="random_question_order">Random question order</string>
     <string name="random_answer_order">Random answer order</string>

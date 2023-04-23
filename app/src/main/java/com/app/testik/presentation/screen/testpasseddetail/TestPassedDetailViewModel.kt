@@ -107,7 +107,8 @@ class TestPassedDetailViewModel @Inject constructor(
                 screenUIState = screenUIState.copy(results = it)
                 updateList(isFirstUpdate = true)
             }.onError {
-                emitEvent(TestPassedDetailScreenEvent.ShowSnackbar(it))
+                if (it.contains("permission")) updateScreenState(screenUIState)
+                else emitEvent(TestPassedDetailScreenEvent.ShowSnackbar(it))
             }
         }
     }

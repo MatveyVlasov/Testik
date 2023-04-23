@@ -63,6 +63,7 @@ fun TestDto.toDomain() =
         isLinkEnabled = isLinkEnabled,
         link = link,
         isResultsShown = isResultsShown,
+        isCorrectAnswersShown = isCorrectAnswersShown,
         isNavigationEnabled = isNavigationEnabled,
         isRandomQuestions = isRandomQuestions,
         isRandomAnswers = isRandomAnswers,

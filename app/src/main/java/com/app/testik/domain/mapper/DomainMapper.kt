@@ -41,6 +41,7 @@ fun TestModel.toDto() =
         isLinkEnabled = isLinkEnabled,
         link = link,
         isResultsShown = isResultsShown,
+        isCorrectAnswersShown = isCorrectAnswersShown,
         isNavigationEnabled = isNavigationEnabled,
         isRandomQuestions = isRandomQuestions,
         isRandomAnswers = isRandomAnswers,
