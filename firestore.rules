@@ -102,7 +102,15 @@ service cloud.firestore {
         allow delete: if false;
 
         match /private/{document=**} {
-            allow read: if true // isOwner(getAuthor(resource.data.testId)); // TODO: check if test finished and author allows showing results
+
+            function canRead() {
+                let data = get(/databases/$(database)/documents/testsPassed/$(recordId)).data;
+                let isCorrectAnswersShown = get(/databases/$(database)/documents/tests/$(testId)).data.isCorrectAnswersShown;
+
+                return (!data.isDemo && isOwner(getAuthor(data.testId))) || ((data.isFinished || data.pointsCalculated) && isCorrectAnswersShown);
+            }
+
+            allow read: if canRead();
             allow write: if false; // cloud functions only
         }
     }

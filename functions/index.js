@@ -59,7 +59,8 @@ exports.startTest = functions
                 const testData = doc.data()
                 const isGradesEnabled = testData.isGradesEnabled || false
                 const grades = testData.grades || []
-                const isResultsShown = testData.isResultsShown
+                const isResultsShown = testData.isResultsShown || false
+                const isCorrectAnswersAfterQuestionShown = testData.isCorrectAnswersAfterQuestionShown || false
                 const isNavigationEnabled = testData.isNavigationEnabled
                 const isRandomQuestions = testData.isRandomQuestions
                 const isRandomAnswers = testData.isRandomAnswers
@@ -129,6 +130,7 @@ exports.startTest = functions
                             timeFinished: Date.now(),
                             isFinished: false,
                             isResultsShown: isResultsShown,
+                            isCorrectAnswersAfterQuestionShown: isCorrectAnswersAfterQuestionShown,
                             isNavigationEnabled: isNavigationEnabled,
                             questions: questions,
                             isDemo: isDemo,
@@ -355,6 +357,7 @@ exports.submitQuestion = functions
                 const testData = record.data()
                 const user = testData.user
                 const questions = testData.questions
+                const isCorrectAnswersAfterQuestionShown = testData.isCorrectAnswersAfterQuestionShown
                 const isFinished = testData.isFinished
                 const isGradesEnabled = testData.isGradesEnabled
                 const grades = testData.grades
@@ -412,10 +415,10 @@ exports.submitQuestion = functions
                         testRef.update(newData).then((_1) => {
                             const responseData = {
                                 points: points,
-                                pointsEarned: pointsEarned,
                             }
 
-                            if (true) { // TODO check if results available
+                            if (isCorrectAnswersAfterQuestionShown) {
+                                responseData.pointsEarned = pointsEarned
                                 responseData.answersCorrect = answersCorrect[num]
                                 responseData.explanation = explanations[num]
                             }
