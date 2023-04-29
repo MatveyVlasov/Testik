@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="4dp"
     app:cardCornerRadius="@dimen/card_radius">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -21,7 +21,34 @@
             android:outlineProvider="background"
             android:scaleType="centerCrop"
             android:contentDescription="@string/test_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:background="@color/purple_light" />
+
+        <ImageView
+            android:id="@+id/ivClosed"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/ic_closed"
+            android:contentDescription="@string/test_closed"
+            android:visibility="gone"
+            app:tint="@color/error"
+            app:layout_constraintTop_toTopOf="@id/ivImage"
+            app:layout_constraintEnd_toEndOf="@id/ivImage" />
+
+        <ImageView
+            android:id="@+id/ivPassword"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/ic_lock"
+            android:contentDescription="@string/test_password"
+            android:visibility="gone"
+            app:tint="@color/error"
+            app:layout_constraintTop_toTopOf="@id/ivImage"
+            app:layout_constraintEnd_toEndOf="@id/ivImage" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -33,8 +60,12 @@
             android:textSize="12sp"
             android:maxLines="1"
             android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/ivImage"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="What do you know about our app?" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

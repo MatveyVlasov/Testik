@@ -27,6 +27,30 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <ImageView
+            android:id="@+id/ivClosed"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="2dp"
+            android:src="@drawable/ic_closed"
+            android:contentDescription="@string/test_closed"
+            android:visibility="gone"
+            app:tint="@color/error"
+            app:layout_constraintTop_toTopOf="@id/ivImage"
+            app:layout_constraintEnd_toEndOf="@id/ivImage" />
+
+        <ImageView
+            android:id="@+id/ivPassword"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="2dp"
+            android:src="@drawable/ic_lock"
+            android:contentDescription="@string/test_password"
+            android:visibility="gone"
+            app:tint="@color/error"
+            app:layout_constraintTop_toTopOf="@id/ivImage"
+            app:layout_constraintEnd_toEndOf="@id/ivImage" />
+
         <TextView
             android:id="@+id/tvCategory"
             style="@style/CustomTextView"

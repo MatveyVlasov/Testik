@@ -11,6 +11,7 @@ data class TestEditScreenUIState(
     val password: String = "",
     val category: CategoryType = CategoryType.NOT_SELECTED,
     val image: String = "",
+    val isOpen: Boolean = false,
     val isPublished: Boolean = false,
     val isTestLinkEnabled: Boolean = false,
     val testLink: String = "",

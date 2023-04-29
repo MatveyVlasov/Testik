@@ -8,7 +8,9 @@ import kotlinx.parcelize.Parcelize
 data class TestDelegateItem(
     val id: String,
     val title: String,
-    val image: String
+    val image: String,
+    val isOpen: Boolean,
+    val isPasswordEnabled: Boolean
 ) : DelegateAdapterItem, Parcelable {
 
     override fun id() = id

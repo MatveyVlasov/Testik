@@ -68,6 +68,7 @@ class TestRepositoryImpl @Inject constructor(
                     "category" to category,
                     "image" to image,
                     "isPasswordEnabled" to isPasswordEnabled,
+                    "isOpen" to isOpen,
                     "isPublished" to isPublished,
                     "isLinkEnabled" to isLinkEnabled,
                     "link" to link,

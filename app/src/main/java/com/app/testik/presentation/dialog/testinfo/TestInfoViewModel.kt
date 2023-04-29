@@ -88,6 +88,7 @@ class TestInfoViewModel @Inject constructor(
                     category = it.category,
                     questionsNum = it.questionsNum,
                     pointsMax = it.pointsMax,
+                    isOpen = it.isOpen,
                     isPasswordEnabled = it.isPasswordEnabled
                 )
                 updateScreenState(screenState)
@@ -118,6 +119,9 @@ class TestInfoViewModel @Inject constructor(
             }
             msg.contains("not logged in") -> {
                 emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.not_logged_in))
+            }
+            msg.contains("test closed") -> {
+                emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.test_closed))
             }
             msg.contains("no access") -> {
                 emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.no_access))

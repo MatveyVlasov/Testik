@@ -44,10 +44,10 @@
     <string name="go_to_settings">Go to settings</string>
 
     <string name="not_logged_in">You are not logged in</string>
+    <string name="test_closed">Test is temporarily closed</string>
     <string name="no_access">No access</string>
-    <string name="test_not_found">Test not found</string>
-    <string name="points_already_calculated">Points already calculated</string>
-    <string name="test_already_finished">Test already finished</string>
+    <string name="test_not_found">Test is not found</string>
+    <string name="test_already_finished">Test is already finished</string>
     <string name="incorrect_questions_number">An error occurred (#100)</string>
     <string name="invalid_data_type">An error occurred (#101)</string>
     <string name="incorrect_question_number">An error occurred (#102)</string>
@@ -142,7 +142,9 @@
     <string name="select_question_type">Select type</string>
     <string name="publish">Publish</string>
     <string name="publish_info">Your test will be visible on main page</string>
-    <string name="publish_no_questions">Test with no questions cannot be published</string>
+    <string name="open">Open</string>
+    <string name="open_info">Users will be able to take the test</string>
+    <string name="open_no_questions">Test with no questions cannot be opened</string>
     <string name="test_link">Test link</string>
     <string name="test_link_info">You can share your test using generated link\n\nYou can disable the link for some time if necessary</string>
     <string name="test_link_copy">Copy test link</string>
@@ -262,6 +264,7 @@
     <string name="points_max_short" translatable="false">max</string>
     <string name="start">Start</string>
     <string name="empty_test_password">Enter password to start the test</string>
+    <string name="test_password">Test is password-protected</string>
 
     <string name="exit_test">Exit test</string>
     <string name="exit_test_confirmation">Do you really want to exit test? You will not be able to proceed</string>

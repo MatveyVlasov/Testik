@@ -154,6 +154,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="That's what you should know.\nFirst of all, there are 10 questions, and you have 10 minutes to answer all of them..." />
 
+        <TextView
+            android:id="@+id/tvClosed"
+            style="@style/TitleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:gravity="center"
+            android:textColor="@color/error"
+            android:text="@string/test_closed"
+            android:textSize="22sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvDescription"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
             style="@style/CustomTextInputLayout.LightGray"

@@ -96,7 +96,10 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
             tvDescription.isVisible = data.description.isNotEmpty()
             tvDescription.text = data.description
 
-            tilPassword.isVisible = data.isPasswordEnabled
+            val isOpen = data.isOpen
+            tvClosed.isVisible = !isOpen
+            btnStart.isVisible = isOpen
+            tilPassword.isVisible = isOpen && data.isPasswordEnabled
         }
 
         loadImage(data.image)

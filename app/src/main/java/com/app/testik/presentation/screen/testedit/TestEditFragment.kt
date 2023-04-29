@@ -77,6 +77,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             }
             toolbar.showIcons()
 
+            tvOpen.addInfoIcon { navigateToInfo(getString(R.string.open_info)) }
             tvPublish.addInfoIcon { navigateToInfo(getString(R.string.publish_info)) }
             tvTestLink.addInfoIcon { navigateToInfo(getString(R.string.test_link_info)) }
             tvShowResults.addInfoIcon { navigateToInfo(getString(R.string.show_results_info)) }
@@ -93,6 +94,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             ivEditImage.setOnClickListener { onChangeImage() }
             etCategory.setOnClickListener { showChangeCategoryDialog() }
 
+            switchOpen.setOnCheckedChangeListener { _, isChecked -> viewModel.onOpenChanged(isChecked) }
             switchPublish.setOnCheckedChangeListener { _, isChecked -> viewModel.onPublishChanged(isChecked) }
             switchTestLink.setOnCheckedChangeListener { _, isChecked -> viewModel.onTestLinkEnabledChanged(isChecked) }
 
@@ -177,6 +179,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             tilDescription.error = getStringOrNull(data.descriptionError)
             tilCategory.error = getStringOrNull(data.categoryError)
 
+            switchOpen.isChecked = data.isOpen
             switchPublish.isChecked = data.isPublished
 
             val isLinkEnabled = data.isTestLinkEnabled
@@ -225,6 +228,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             toolbar.menu.findItem(R.id.demo).isVisible = isTestCreated
             toolbar.menu.findItem(R.id.results).isVisible = isTestCreated
 
+            llOpen.isVisible = isTestCreated
             llPublish.isVisible = isTestCreated
             llTestLink.isVisible = isTestCreated
             btnEditQuestions.isVisible = isTestCreated

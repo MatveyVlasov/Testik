@@ -146,9 +146,7 @@ class TestPassedDetailViewModel @Inject constructor(
             msg.contains("test not found") -> {
                 emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.test_not_found))
             }
-            msg.contains("points already calculated") -> {
-                emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.points_already_calculated))
-            }
+            msg.contains("points already calculated") -> Unit
             msg.contains("test already finished") -> {
                 emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.test_already_finished))
             }

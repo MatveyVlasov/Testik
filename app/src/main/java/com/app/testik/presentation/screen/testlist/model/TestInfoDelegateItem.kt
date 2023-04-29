@@ -7,7 +7,9 @@ data class TestInfoDelegateItem(
     val id: String,
     val title: String,
     val image: String,
-    @StringRes val category: Int
+    @StringRes val category: Int,
+    val isOpen: Boolean,
+    val isPasswordEnabled: Boolean,
 ) : DelegateAdapterItem {
 
     override fun id() = id

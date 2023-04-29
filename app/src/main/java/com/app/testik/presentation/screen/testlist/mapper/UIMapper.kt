@@ -8,5 +8,7 @@ fun TestModel.toTestInfoItem() =
         id = id,
         title = title,
         image = image,
-        category = category.description
+        category = category.description,
+        isOpen = isOpen,
+        isPasswordEnabled = isPasswordEnabled
     )

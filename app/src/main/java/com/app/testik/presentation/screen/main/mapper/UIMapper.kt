@@ -7,5 +7,7 @@ fun TestModel.toTestItem() =
     TestDelegateItem(
         id = id,
         title = title,
-        image = image
+        image = image,
+        isOpen = isOpen,
+        isPasswordEnabled = isPasswordEnabled
     )

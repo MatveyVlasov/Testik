@@ -75,6 +75,11 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(category = category, categoryError = null))
     }
 
+    fun onOpenChanged(isOpen: Boolean) {
+        if (isOpen == screenUIState.isOpen) return
+        updateScreenState(screenUIState.copy(isOpen = isOpen))
+    }
+
     fun onPublishChanged(isPublished: Boolean) {
         if (isPublished == screenUIState.isPublished) return
         updateScreenState(screenUIState.copy(isPublished = isPublished))
@@ -186,6 +191,7 @@ class TestEditViewModel @Inject constructor(
                     description = it.description,
                     category = it.category,
                     image = it.image,
+                    isOpen = it.isOpen,
                     isPublished = it.isPublished,
                     isTestLinkEnabled = it.isLinkEnabled,
                     testLink = it.link,
@@ -295,8 +301,8 @@ class TestEditViewModel @Inject constructor(
     }
 
     private fun checkHasQuestions(): Boolean {
-        return (!screenUIState.isPublished || screenUIState.questionsNum > 0).also {
-            if (!it) emitEvent(TestEditScreenEvent.ShowSnackbarByRes(R.string.publish_no_questions))
+        return (!screenUIState.isOpen || screenUIState.questionsNum > 0).also {
+            if (!it) emitEvent(TestEditScreenEvent.ShowSnackbarByRes(R.string.open_no_questions))
         }
     }
 

@@ -2,6 +2,7 @@ package com.app.testik.presentation.screen.testlist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.databinding.ItemTestInfoBinding
 import com.app.testik.presentation.screen.testlist.model.TestInfoDelegateItem
@@ -30,6 +31,9 @@ class TestInfoDelegateAdapter(
 
                 tvTitle.text = test.title
                 tvCategory.setText(test.category)
+
+                ivClosed.isVisible = !test.isOpen
+                ivPassword.isVisible = test.isOpen && test.isPasswordEnabled
 
                 root.setOnClickListener { onClick(test.id) }
             }

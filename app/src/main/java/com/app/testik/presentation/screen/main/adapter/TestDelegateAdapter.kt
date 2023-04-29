@@ -2,6 +2,7 @@ package com.app.testik.presentation.screen.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.app.testik.databinding.ItemTestBinding
 import com.app.testik.presentation.screen.main.model.TestDelegateItem
@@ -29,6 +30,9 @@ class TestDelegateAdapter(
                 loadTestImage(context = root.context, imageView = binding.ivImage, url = test.image)
 
                 tvTitle.text = test.title
+
+                ivClosed.isVisible = !test.isOpen
+                ivPassword.isVisible = test.isOpen && test.isPasswordEnabled
 
                 root.setOnClickListener { onClick(test.id) }
             }

@@ -129,6 +129,26 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+
+                <LinearLayout
+                    android:id="@+id/llOpen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvOpen"
+                        style="@style/SwitchTextView"
+                        android:text="@string/open" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchOpen"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/llPublish"
                     android:layout_width="match_parent"

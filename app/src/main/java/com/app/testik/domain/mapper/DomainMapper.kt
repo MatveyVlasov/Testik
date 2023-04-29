@@ -37,6 +37,7 @@ fun TestModel.toDto() =
         category = category.title,
         image = image,
         isPasswordEnabled = isPasswordEnabled,
+        isOpen = isOpen,
         isPublished = isPublished,
         isLinkEnabled = isLinkEnabled,
         link = link,
