@@ -71,6 +71,7 @@ exports.startTest = functions
                 const grades = testData.grades || []
                 const isResultsShown = testData.isResultsShown || false
                 const isCorrectAnswersAfterQuestionShown = testData.isCorrectAnswersAfterQuestionShown || false
+                const isRetakingEnabled = testData.isRetakingEnabled || false
                 const isNavigationEnabled = testData.isNavigationEnabled
                 const isRandomQuestions = testData.isRandomQuestions
                 const isRandomAnswers = testData.isRandomAnswers
@@ -147,20 +148,55 @@ exports.startTest = functions
                             newData.grades = grades
                         }
 
-                        db.collection("testsPassed").add(newData).then((ref) => {
-                            ref.get().then((testPassed) => {
+                        if (!isRetakingEnabled && !isDemo) {
+                            db.collection('testsPassed')
+                                .where('user', '==', context.auth.uid)
+                                .where('testId', '==', testId)
+                                .where('isDemo', '==', false)
+                                .get()
+                                .then((snapshot) => {
+                                    const docs = snapshot.docs
 
-                                ref.collection("private").doc("results").set({
-                                    testId: testId,
-                                    answersCorrect: answersCorrect,
-                                    explanations: explanations,
-                                }).then((_1) => {
-                                    return resolve({
-                                        recordId: testPassed.id,
+                                    if (docs.length > 0) {
+                                        return reject(new functions.https.HttpsError('permission-denied', 'Test already taken'))
+                                    } else {
+                                        db.collection("testsPassed").add(newData).then((ref) => {
+                                            ref.get().then((testPassed) => {
+
+                                                ref.collection("private").doc("results").set({
+                                                    testId: testId,
+                                                    answersCorrect: answersCorrect,
+                                                    explanations: explanations,
+                                                }).then((_1) => {
+                                                    return resolve({
+                                                        recordId: testPassed.id,
+                                                    })
+                                                })
+                                            })
+                                        })
+                                    }
+
+                                })
+                                .catch((err) => {
+                                    console.log('Error getting document', err);
+                                    return null;
+                                })
+                        } else {
+                            db.collection("testsPassed").add(newData).then((ref) => {
+                                ref.get().then((testPassed) => {
+
+                                    ref.collection("private").doc("results").set({
+                                        testId: testId,
+                                        answersCorrect: answersCorrect,
+                                        explanations: explanations,
+                                    }).then((_1) => {
+                                        return resolve({
+                                            recordId: testPassed.id,
+                                        })
                                     })
                                 })
                             })
-                        })
+                        }
                     })
                 })
             })
