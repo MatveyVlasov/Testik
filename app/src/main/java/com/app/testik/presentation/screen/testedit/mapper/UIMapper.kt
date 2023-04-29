@@ -19,6 +19,7 @@ fun TestEditScreenUIState.toDomain() =
         isResultsShown = isResultsShown,
         isCorrectAnswersShown = isCorrectAnswersShown,
         isCorrectAnswersAfterQuestionShown = isCorrectAnswersAfterQuestionShown,
+        isRetakingEnabled = isRetakingEnabled,
         isNavigationEnabled = isNavigationEnabled,
         isRandomQuestions = isRandomQuestions,
         isRandomAnswers = isRandomAnswers

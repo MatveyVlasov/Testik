@@ -123,6 +123,9 @@ class TestInfoViewModel @Inject constructor(
             msg.contains("test closed") -> {
                 emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.test_closed))
             }
+            msg.contains("test already taken") -> {
+                emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.test_already_taken))
+            }
             msg.contains("no access") -> {
                 emitEvent(TestInfoDialogEvent.ShowSnackbarByRes(R.string.no_access))
             }

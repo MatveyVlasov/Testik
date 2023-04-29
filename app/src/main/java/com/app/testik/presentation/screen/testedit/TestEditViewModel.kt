@@ -116,6 +116,11 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(isCorrectAnswersAfterQuestionShown = isCorrectAnswersAfterQuestionShown))
     }
 
+    fun onRetakingChanged(isRetakingEnabled: Boolean) {
+        if (isRetakingEnabled == screenUIState.isRetakingEnabled) return
+        updateScreenState(screenUIState.copy(isRetakingEnabled = isRetakingEnabled))
+    }
+
     fun onNavigationEnabledChanged(isNavigationEnabled: Boolean) {
         if (isNavigationEnabled == screenUIState.isNavigationEnabled) return
         updateScreenState(
@@ -198,6 +203,7 @@ class TestEditViewModel @Inject constructor(
                     isResultsShown = it.isResultsShown,
                     isCorrectAnswersShown = it.isCorrectAnswersShown,
                     isCorrectAnswersAfterQuestionShown = it.isCorrectAnswersAfterQuestionShown,
+                    isRetakingEnabled = it.isRetakingEnabled,
                     isNavigationEnabled = it.isNavigationEnabled,
                     isRandomQuestions = it.isRandomQuestions,
                     isRandomAnswers = it.isRandomAnswers,

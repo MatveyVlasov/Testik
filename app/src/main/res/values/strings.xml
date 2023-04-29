@@ -45,6 +45,7 @@
 
     <string name="not_logged_in">You are not logged in</string>
     <string name="test_closed">Test is temporarily closed</string>
+    <string name="test_already_taken">You have already taken the test. Only one attempt is allowed</string>
     <string name="no_access">No access</string>
     <string name="test_not_found">Test is not found</string>
     <string name="test_already_finished">Test is already finished</string>
@@ -160,6 +161,8 @@
     <string name="show_correct_answers_info">If enabled, users finished the test can see their points and the correct answers for every question\n\nWhen enabled/disabled, it affects all users, including the ones who took the test before the change</string>
     <string name="show_correct_answers_after_question">Show correct answers after each question</string>
     <string name="show_correct_answers_after_question_info">If enabled, the correct answers are shown after submitting each question\n\nIt is unavailable when navigation between questions is enabled</string>
+    <string name="retaking">Test retaking</string>
+    <string name="retaking_info">If enabled, users can take the test an unlimited number of times\n\nOtherwise, only one attempt is allowed</string>
     <string name="navigation_between_questions">Navigation between questions</string>
     <string name="random_question_order">Random question order</string>
     <string name="random_answer_order">Random answer order</string>

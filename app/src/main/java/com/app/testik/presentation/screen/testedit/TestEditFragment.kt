@@ -83,6 +83,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             tvShowResults.addInfoIcon { navigateToInfo(getString(R.string.show_results_info)) }
             tvShowCorrectAnswers.addInfoIcon { navigateToInfo(getString(R.string.show_correct_answers_info)) }
             tvShowCorrectAnswersAfterQuestion.addInfoIcon { navigateToInfo(getString(R.string.show_correct_answers_after_question_info)) }
+            tvRetaking.addInfoIcon { navigateToInfo(getString(R.string.retaking_info)) }
         }
     }
 
@@ -109,6 +110,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             switchShowResults.setOnCheckedChangeListener { _, isChecked -> viewModel.onShowResultsChanged(isChecked) }
             switchShowCorrectAnswers.setOnCheckedChangeListener { _, isChecked -> viewModel.onShowCorrectAnswersChanged(isChecked) }
             switchShowCorrectAnswersAfterQuestion.setOnCheckedChangeListener { _, isChecked -> viewModel.onShowCorrectAnswersAfterQuestionChanged(isChecked) }
+            switchRetaking.setOnCheckedChangeListener { _, isChecked -> viewModel.onRetakingChanged(isChecked) }
             switchNavigateBetweenQuestions.setOnCheckedChangeListener { _, isChecked -> viewModel.onNavigationEnabledChanged(isChecked) }
             switchRandomizeQuestions.setOnCheckedChangeListener { _, isChecked -> viewModel.onRandomQuestionsChanged(isChecked) }
             switchRandomizeAnswers.setOnCheckedChangeListener { _, isChecked -> viewModel.onRandomAnswersChanged(isChecked) }
@@ -193,6 +195,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             llShowResults.isVisible = showMore
             llShowCorrectAnswers.isVisible = showMore
             llShowCorrectAnswersAfterQuestion.isVisible = showMore
+            llRetaking.isVisible = showMore
             llNavigateBetweenQuestions.isVisible = showMore
             llRandomizeQuestions.isVisible = showMore
             llRandomizeAnswers.isVisible = showMore
@@ -200,6 +203,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             switchShowResults.isChecked = data.isResultsShown
             switchShowCorrectAnswers.isChecked = data.isCorrectAnswersShown
             switchShowCorrectAnswersAfterQuestion.isChecked = data.isCorrectAnswersAfterQuestionShown
+            switchRetaking.isChecked = data.isRetakingEnabled
             switchNavigateBetweenQuestions.isChecked = data.isNavigationEnabled
             switchRandomizeQuestions.isChecked = data.isRandomQuestions
             switchRandomizeAnswers.isChecked = data.isRandomAnswers

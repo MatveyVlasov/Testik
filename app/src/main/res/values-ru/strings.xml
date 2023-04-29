@@ -51,6 +51,7 @@
 
     <string name="not_logged_in">Вы не авторизованы</string>
     <string name="test_closed">Тест временно закрыт</string>
+    <string name="test_already_taken">Вы уже проходили тест. Разрешена только одна попытка</string>
     <string name="no_access">Нет доступа</string>
     <string name="test_not_found">Тест не найден</string>
     <string name="test_already_finished">Тест уже завершён</string>
@@ -155,6 +156,8 @@
     <string name="show_correct_answers_info">Если активно, пользователи, прошедшие тест, могут посмотреть количество набранных баллов, а также правильные ответы для каждого вопроса\n\nИзменение видимости ответов затрагивает всех пользователей, в том числе тех, кто прошёл тест ранее</string>
     <string name="show_correct_answers_after_question">Показывать правильные ответы после каждого вопроса</string>
     <string name="show_correct_answers_after_question_info">Если активно, правильные ответы показываются после ответа на каждый вопрос\n\nНедоступно, если включена навигация между вопросами</string>
+    <string name="retaking">Повторное прохождение теста</string>
+    <string name="retaking_info">Если активно, пользователи могут проходить тест неограниченное количество раз\n\nВ противном случае доступна лишь одна попытка</string>
     <string name="navigation_between_questions">Навигация между вопросами</string>
     <string name="random_question_order">Случайный порядок вопросов</string>
     <string name="random_answer_order">Случайный порядок ответов</string>
