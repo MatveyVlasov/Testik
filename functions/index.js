@@ -57,6 +57,16 @@ exports.startTest = functions
                 }
 
                 const testData = doc.data()
+                const isOpen = testData.isOpen || false
+
+                if (!isOpen) {
+                    return reject(new functions.https.HttpsError('failed-precondition', 'Test closed'))
+                }
+
+                if (isDemo && testData.author != context.auth.uid) {
+                    return reject(new functions.https.HttpsError('permission-denied', 'No access'))
+                }
+
                 const isGradesEnabled = testData.isGradesEnabled || false
                 const grades = testData.grades || []
                 const isResultsShown = testData.isResultsShown || false
@@ -64,10 +74,6 @@ exports.startTest = functions
                 const isNavigationEnabled = testData.isNavigationEnabled
                 const isRandomQuestions = testData.isRandomQuestions
                 const isRandomAnswers = testData.isRandomAnswers
-
-                if (isDemo && testData.author != context.auth.uid) {
-                    return reject(new functions.https.HttpsError('permission-denied', 'No access'))
-                }
 
                 testRef.collection("private").doc("password").get().then((docPassword) => {
                     const password = docPassword.data().password
