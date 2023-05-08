@@ -15,6 +15,38 @@
       ]
     },
     {
+      "collectionGroup": "tests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "category",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "isPublished",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lastUpdated",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "isPublished",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lastUpdated",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "testsPassed",
       "queryScope": "COLLECTION",
       "fields": [
@@ -47,6 +79,20 @@
         {
           "fieldPath": "timeFinished",
           "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "testsPassed",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "testId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "isResultsShown",
+          "order": "ASCENDING"
         }
       ]
     },
