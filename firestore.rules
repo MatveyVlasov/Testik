@@ -18,6 +18,10 @@ service cloud.firestore {
         return resource == null || !request.resource.data.diff(resource.data).affectedKeys().hasAny(fields);
     }
 
+    function verifyChangingFields(fields) {
+        return resource == null || request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields);
+    }
+
     function verifyTimestamp(time) {
         return request.time.toMillis() - time < 5000 && request.time.toMillis() - time > 0;
     }
@@ -89,17 +93,13 @@ service cloud.firestore {
         }
 
         function validateFields() {
-            return isString("user") && isString("testId") && validateStringMaxSize("title", 75) && isNumber("timeStarted")
-                && isNumber("timeFinished") && isBoolean("isFinished") && isNumber("pointsMax") && isNumber("pointsEarned")
-                && isString("image") && isBoolean("isGradesEnabled");
+            return isNumber("timeFinished");
         }
 
         allow read: if isOwner(resource.data.user) || isOwner(getAuthor(resource.data.testId));
         allow create: if false; // cloud functions only
-        allow update: if isOwner(resource.data.user) && !resource.data.isFinished
-            && hasRequiredFields(["user", "testId", "title", "questions", "timeStarted", "timeFinished", "isFinished", "pointsMax"])
-            && verifyUnchangedFields(["user", "testId", "title", "timeStarted", "isFinished", "isResultsShown", "pointsMax", "isGradesEnabled", "grades"])
-            && verifyTimestamp(request.resource.data.timeFinished) && validateFields();
+        allow update: if isOwner(resource.data.user) && !resource.data.isFinished && verifyChangingFields(["timeFinished", "questions"])
+                         && verifyTimestamp(request.resource.data.timeFinished) && validateFields();
         allow delete: if false;
 
         match /private/{document=**} {

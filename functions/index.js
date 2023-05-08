@@ -75,6 +75,8 @@ exports.startTest = functions
                 const isNavigationEnabled = testData.isNavigationEnabled
                 const isRandomQuestions = testData.isRandomQuestions
                 const isRandomAnswers = testData.isRandomAnswers
+                const timeLimit = testData.timeLimit
+                const timeLimitQuestion = isNavigationEnabled? 0 : testData.timeLimitQuestion
 
                 testRef.collection("private").doc("password").get().then((docPassword) => {
                     const password = docPassword.data().password
@@ -127,14 +129,18 @@ exports.startTest = functions
                             }
                         }
 
+                        const now = Date.now()
                         const newData = {
                             testId: testId,
                             user: context.auth.uid,
                             title: testData.title,
                             image: testData.image,
                             pointsMax: testData.pointsMax,
-                            timeStarted: Date.now(),
-                            timeFinished: Date.now(),
+                            timeStarted: now,
+                            timeLastSubmisson: now,
+                            timeFinished: now,
+                            timeLimit: timeLimit,
+                            timeLimitQuestion: timeLimitQuestion,
                             isFinished: false,
                             isResultsShown: isResultsShown,
                             isCorrectAnswersAfterQuestionShown: isCorrectAnswersAfterQuestionShown,
@@ -225,6 +231,7 @@ exports.finishTest = functions
 
             const recordId = data.recordId || null
             const questions = JSON.parse(data.questions) || null
+            const isTimerFinished = data.isTimerFinished
 
             const testRef = db.collection("testsPassed").doc(recordId)
 
@@ -232,14 +239,21 @@ exports.finishTest = functions
                 const data = record.data()
                 const user = data.user
                 const isFinished = data.isFinished
+                const timeLimit = data.timeLimit
+                const timeStarted = data.timeStarted
                 const isGradesEnabled = data.isGradesEnabled
                 const grades = data.grades
 
                 if (user != context.auth.uid) {
                     return reject(new functions.https.HttpsError('permission-denied', 'No access'))
                 }
+
                 if (isFinished) {
                     return reject(new functions.https.HttpsError('failed-precondition', 'Test already finished'))
+                }
+
+                if (timeLimit > 0 && Date.now() - timeStarted > timeLimit + 15000) {
+                    return reject(new functions.https.HttpsError('failed-precondition', 'Too late'))
                 }
 
                 testRef.collection("private").doc("results").get().then((doc) => {
@@ -260,9 +274,11 @@ exports.finishTest = functions
                         return reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
                     }
 
-                    const unansweredQuestion = validateRequiredQuestions(questions)
-                    if (unansweredQuestion != -1) {
-                        return reject(new functions.https.HttpsError('failed-precondition', `${unansweredQuestion}: question should be answered`))
+                    if (!isTimerFinished) {
+                        const unansweredQuestion = validateRequiredQuestions(questions)
+                        if (unansweredQuestion != -1) {
+                            return reject(new functions.https.HttpsError('failed-precondition', `${unansweredQuestion}: question should be answered`))
+                        }
                     }
 
                     const pointsPerQuestion = calculatePoints(questions, answersCorrect)
@@ -317,6 +333,9 @@ exports.calculatePoints = functions
                 const data = record.data()
                 const pointsCalculated = data.pointsCalculated
                 const isFinished = data.isFinished
+                const timeStarted = data.timeStarted
+                const timeFinished = data.timeFinished
+                const timeLimit = data.timeLimit
                 const questions = data.questions
                 const isGradesEnabled = data.isGradesEnabled
                 const grades = data.grades
@@ -324,8 +343,13 @@ exports.calculatePoints = functions
                 if (pointsCalculated) {
                     return reject(new functions.https.HttpsError('failed-precondition', 'Points already calculated'))
                 }
+
                 if (isFinished) {
                     return reject(new functions.https.HttpsError('failed-precondition', 'Test already finished'))
+                }
+
+                if (timeLimit > 0 && timeFinished - timeStarted > timeLimit + 15000) {
+                    return reject(new functions.https.HttpsError('failed-precondition', 'Too late calculate'))
                 }
 
                 testRef.collection("private").doc("results").get().then((doc) => {
@@ -392,6 +416,7 @@ exports.submitQuestion = functions
             const recordId = data.recordId || null
             const question = JSON.parse(data.question) || null
             const num = data.num
+            const isTimerFinished = data.isTimerFinished
 
             const testRef = db.collection("testsPassed").doc(recordId)
 
@@ -401,15 +426,26 @@ exports.submitQuestion = functions
                 const questions = testData.questions
                 const isCorrectAnswersAfterQuestionShown = testData.isCorrectAnswersAfterQuestionShown
                 const isFinished = testData.isFinished
+                const timeLimit = testData.timeLimit
+                const timeLimitQuestion = testData.timeLimitQuestion
+                const timeStarted = testData.timeStarted
+                const timeLastSubmisson = testData.timeLastSubmisson
                 const isGradesEnabled = testData.isGradesEnabled
                 const grades = testData.grades
 
                 if (user != context.auth.uid) {
                     return reject(new functions.https.HttpsError('permission-denied', 'No access'))
                 }
+
                 if (isFinished) {
                     return reject(new functions.https.HttpsError('failed-precondition', 'Test already finished'))
                 }
+
+                if (timeLimit > 0 && Date.now() - timeStarted > timeLimit + 15000) {
+                    return reject(new functions.https.HttpsError('failed-precondition', 'Too late submit'))
+                }
+
+                const isLateSubmission = timeLimitQuestion > 0 && Date.now() - timeLastSubmisson > timeLimitQuestion + 7500
 
                 testRef.collection("private").doc("results").get().then((doc) => {
                     if (!doc.exists) {
@@ -428,11 +464,11 @@ exports.submitQuestion = functions
                         return reject(new functions.https.HttpsError('failed-precondition', 'Invalid data type'))
                     }
 
-                    if (!validateRequiredQuestion(question)) {
+                    if (isTimerFinished && !validateRequiredQuestion(question)) {
                         return reject(new functions.https.HttpsError('failed-precondition', `This question should be answered`))
                     }
 
-                    const points = scoreQuestion(question, answersCorrect[num])
+                    const points = isLateSubmission? 0 : scoreQuestion(question, answersCorrect[num])
                     pointsPerQuestion.push(points)
 
                     testRef.collection("private").doc("results").update({ pointsPerQuestion: pointsPerQuestion }).then((_1) => {
@@ -443,20 +479,26 @@ exports.submitQuestion = functions
                         const isFinished = num == questions.length - 1
 
                         const newData = {
-                            questions: questions,
                             pointsEarned: pointsEarned,
                             pointsCalculated: true,
                             isFinished: isFinished,
+                            timeLastSubmisson: Date.now(),
                             timeFinished: Date.now(),
+                        }
+
+                        if (!isLateSubmission) {
+                            newData.questions = questions
                         }
 
                         if (isFinished && isGradesEnabled) {
                             newData.gradeEarned = getGrade(grades, pointsEarned)
                         }
 
+
                         testRef.update(newData).then((_1) => {
                             const responseData = {
                                 points: points,
+                                isLateSubmission: isLateSubmission,
                             }
 
                             if (isCorrectAnswersAfterQuestionShown) {
