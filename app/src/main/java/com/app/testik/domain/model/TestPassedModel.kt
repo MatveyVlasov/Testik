@@ -12,6 +12,8 @@ data class TestPassedModel(
     val user: String = "",
     val timeStarted: Long = 0L,
     val timeFinished: Long = 0L,
+    val timeLimit: Long = 0L,
+    val timeLimitQuestion: Long = 0L,
     val isResultsShown: Boolean = true,
     val isNavigationEnabled: Boolean = true,
     val isFinished: Boolean = false,

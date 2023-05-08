@@ -92,6 +92,15 @@ class TestInfoFragment : BaseBottomSheetDialogFragment<FragmentTestInfoBinding>(
             tvAuthor.text = data.authorName
             tvQuestionsNum.text = resources.getQuantityString(R.plurals.questions_num, data.questionsNum, data.questionsNum)
             tvPointsNum.text = resources.getQuantityString(R.plurals.points_max, data.pointsMax, data.pointsMax)
+
+            var timeLimit = data.timeLimit.let {
+                if (it == 0L) "" else getStringFromMillis(millis = it, resources = resources)
+            }
+            if (data.isTimeLimitQuestion) timeLimit += getString(R.string.time_limit_per_question)
+            tvTimeLimit.text = timeLimit
+            tvTimeLimit.isVisible = timeLimit.isNotEmpty()
+            ivTimeLimitIcon.isVisible = timeLimit.isNotEmpty()
+
             tvDescriptionTitle.isVisible = data.description.isNotEmpty()
             tvDescription.isVisible = data.description.isNotEmpty()
             tvDescription.text = data.description

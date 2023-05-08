@@ -49,14 +49,15 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun finishTest(recordId: String, questions: List<QuestionDto>): ApiResult<Unit> {
+    override suspend fun finishTest(recordId: String, questions: List<QuestionDto>, isTimerFinished: Boolean): ApiResult<Unit> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
         return try {
             val newData = mapOf(
                 "recordId" to recordId,
-                "questions" to Gson().toJson(questions)
+                "questions" to Gson().toJson(questions),
+                "isTimerFinished" to isTimerFinished
             )
 
             firebaseFunctions.getHttpsCallable("finishTest").call(newData).execute()
@@ -92,7 +93,7 @@ class TestPassedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun submitQuestion(recordId: String, question: QuestionDto, num: Int): ApiResult<AnswerResultsDto> {
+    override suspend fun submitQuestion(recordId: String, question: QuestionDto, num: Int, isTimerFinished: Boolean): ApiResult<AnswerResultsDto> {
         if (!isOnline(context)) return ApiResult.NoInternetError()
         if (recordId.isEmpty()) return ApiResult.Error("No test found")
 
@@ -100,7 +101,8 @@ class TestPassedRepositoryImpl @Inject constructor(
             val newData = mapOf(
                 "recordId" to recordId,
                 "question" to Gson().toJson(question),
-                "num" to num
+                "num" to num,
+                "isTimerFinished" to isTimerFinished
             )
 
             firebaseFunctions.getHttpsCallable("submitQuestion").call(newData).also {
@@ -108,6 +110,7 @@ class TestPassedRepositoryImpl @Inject constructor(
                 return if (it.isSuccessful) {
                     val result = it.result.data as Map<*, *>
                     val points = (result["points"] as? Int).orZero()
+                    val isLateSubmission = result["isLateSubmission"] as? Boolean ?: false
                     val pointsEarned = (result["pointsEarned"] as? Int).orZero()
                     val answersCorrect = Gson().fromJson(
                         JSONObject(result["answersCorrect"] as? Map<*, *> ?: emptyMap<Any, Any>()).toString(),
@@ -118,6 +121,7 @@ class TestPassedRepositoryImpl @Inject constructor(
                     ApiResult.Success(
                         AnswerResultsDto(
                             points = points,
+                            isLateSubmission = isLateSubmission,
                             pointsEarned = pointsEarned,
                             answersCorrect = answersCorrect,
                             explanation = explanation

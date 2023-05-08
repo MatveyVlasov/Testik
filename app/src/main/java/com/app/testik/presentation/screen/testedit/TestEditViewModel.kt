@@ -13,6 +13,7 @@ import com.app.testik.presentation.screen.testedit.mapper.toDomain
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenEvent
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenUIState
 import com.app.testik.util.Constants.MAX_DESCRIPTION_LENGTH
+import com.app.testik.util.getHoursAndMinutes
 import com.app.testik.util.removeExtraSpacesAndBreaks
 import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -141,6 +142,18 @@ class TestEditViewModel @Inject constructor(
         updateScreenState(screenUIState.copy(isRandomAnswers = isRandomAnswers))
     }
 
+    fun onTimeLimitChanged(isTimeLimitEnabled: Boolean) {
+        if (isTimeLimitEnabled == screenUIState.isTimeLimitEnabled) return
+        updateScreenState(screenUIState.copy(isTimeLimitEnabled = isTimeLimitEnabled))
+    }
+
+    fun onTimeLimitChanged(hours: Int, minutes: Int, isLimitPerQuestion: Boolean = false) {
+        updateScreenState(
+            if (isLimitPerQuestion) screenUIState.copy(timeLimitQuestionHours = hours, timeLimitQuestionMinutes = minutes)
+            else screenUIState.copy(timeLimitHours = hours, timeLimitMinutes = minutes)
+        )
+    }
+
     fun onQuestionsNumChanged(questionsNum: Int) {
         if (questionsNum == screenUIState.questionsNum) return
         val state = screenUIState.copy(questionsNum = questionsNum)
@@ -191,6 +204,9 @@ class TestEditViewModel @Inject constructor(
 
         viewModelScope.launch {
             getTestInfoUseCase(testId = screenUIState.id, source = source).onSuccess {
+                val (timeLimitHours, timeLimitMinutes) = getHoursAndMinutes(it.timeLimit)
+                val (timeLimitQuestionHours, timeLimitQuestionMinutes) = getHoursAndMinutes(it.timeLimitQuestion)
+
                 var screenState = screenUIState.copy(
                     title = it.title,
                     description = it.description,
@@ -207,6 +223,11 @@ class TestEditViewModel @Inject constructor(
                     isNavigationEnabled = it.isNavigationEnabled,
                     isRandomQuestions = it.isRandomQuestions,
                     isRandomAnswers = it.isRandomAnswers,
+                    isTimeLimitEnabled = it.timeLimit > 0 || it.timeLimitQuestion > 0,
+                    timeLimitHours = timeLimitHours,
+                    timeLimitMinutes = timeLimitMinutes,
+                    timeLimitQuestionHours = timeLimitQuestionHours,
+                    timeLimitQuestionMinutes = timeLimitQuestionMinutes,
                     questionsNum = it.questionsNum,
                 )
                 if (isUpdated) screenState = screenState.copy(testUpdated = screenState.toDomain())

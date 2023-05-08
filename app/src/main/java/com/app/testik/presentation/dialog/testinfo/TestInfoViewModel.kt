@@ -80,6 +80,9 @@ class TestInfoViewModel @Inject constructor(
 
         viewModelScope.launch {
             getTestInfoUseCase(testId = screenUIState.id, source = source).onSuccess {
+                val isTimeLimitQuestion = it.timeLimitQuestion > 0 && !it.isNavigationEnabled
+                val timeLimit = if (isTimeLimitQuestion) it.timeLimitQuestion else it.timeLimit
+
                 val screenState = screenUIState.copy(
                     image = it.image,
                     title = it.title,
@@ -88,6 +91,8 @@ class TestInfoViewModel @Inject constructor(
                     category = it.category,
                     questionsNum = it.questionsNum,
                     pointsMax = it.pointsMax,
+                    timeLimit = timeLimit,
+                    isTimeLimitQuestion = isTimeLimitQuestion,
                     isOpen = it.isOpen,
                     isPasswordEnabled = it.isPasswordEnabled
                 )

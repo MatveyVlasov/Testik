@@ -48,6 +48,8 @@ fun TestModel.toDto() =
         isNavigationEnabled = isNavigationEnabled,
         isRandomQuestions = isRandomQuestions,
         isRandomAnswers = isRandomAnswers,
+        timeLimit = timeLimit,
+        timeLimitQuestion = timeLimitQuestion,
         questionsNum = questionsNum,
         pointsMax = pointsMax
     )

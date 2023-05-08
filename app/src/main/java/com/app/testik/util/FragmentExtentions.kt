@@ -88,7 +88,7 @@ fun Fragment.showToast(
 fun Fragment.showAlert(
     title: String,
     message: String,
-    positive: String,
+    positive: String = "",
     negative: String = "",
     onPositiveClick: () -> Unit = {},
     onNegativeClick: () -> Unit = {},
@@ -106,7 +106,7 @@ fun Fragment.showAlert(
 fun Fragment.showAlert(
     @StringRes title: Int,
     @StringRes message: Int,
-    @StringRes positive: Int,
+    @StringRes positive: Int = R.string.empty,
     @StringRes negative: Int = R.string.empty,
     onPositiveClick: () -> Unit = {},
     onNegativeClick: () -> Unit = {},

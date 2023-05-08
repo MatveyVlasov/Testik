@@ -80,18 +80,49 @@ fun String.loadedFromServer() = startsWith("http")
 fun Int.toPx() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 fun Long.toDate(): String {
-    SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault()).also {
+    return SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault()).format(this)
+}
+
+fun Long.toTime(): String {
+    SimpleDateFormat("HH:mm:ss", Locale.getDefault()).also {
+        it.timeZone = TimeZone.getTimeZone("UTC")
         return it.format(this)
     }
 }
 
 fun getTimeDifference(start: Long, end: Long): String {
-    val diff = end - start
-    val seconds = (diff / 1000) % 60
-    val minutes = (diff / 1000 / 60) % 60
-    val hours = diff / 1000 / 60 / 60
+    return (end - start).toTime()
+}
 
-    return String.format("%02d:%02d:%02d", hours, minutes, seconds)
+fun getHoursAndMinutes(millis: Long): Pair<Int, Int> {
+    val hours = millis / 1000 / 60 / 60
+    val minutes = (millis / 1000 / 60) % 60
+
+    return Pair(hours.toInt(), minutes.toInt())
+}
+
+fun getMillisFromHoursAndMinutes(hours: Int, minutes: Int): Long =
+    (hours * 60 + minutes) * 60 * 1000L
+
+fun getStringFromHoursAndMinutes(hours: Int, minutes: Int, resources: Resources): String =
+    buildString {
+        if (hours == 0 && minutes == 0) {
+            append(resources.getString(R.string.no_time_limit))
+            return@buildString
+        }
+        if (hours > 0) {
+            append(resources.getQuantityString(R.plurals.hours, hours, hours))
+            append(" ")
+        }
+        if (minutes > 0) {
+            append(resources.getQuantityString(R.plurals.minutes, minutes, minutes))
+            append(" ")
+        }
+    }
+
+fun getStringFromMillis(millis: Long, resources: Resources): String {
+    val (hours, minutes) = getHoursAndMinutes(millis = millis)
+    return getStringFromHoursAndMinutes(hours = hours, minutes = minutes, resources = resources)
 }
 
 fun Context.setAppLocale(language: String): Context {

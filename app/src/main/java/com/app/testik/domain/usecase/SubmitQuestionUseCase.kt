@@ -12,13 +12,19 @@ class SubmitQuestionUseCase @Inject constructor(
     private val testPassedRepository: TestPassedRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(recordId: String, question: QuestionModel, num: Int): Result<AnswerResultsModel> {
+    suspend operator fun invoke(
+        recordId: String,
+        question: QuestionModel,
+        num: Int,
+        isTimerFinished: Boolean
+    ): Result<AnswerResultsModel> {
         return wrap(
             block = {
                 testPassedRepository.submitQuestion(
                     recordId = recordId,
                     question = question.toDto(),
-                    num = num
+                    num = num,
+                    isTimerFinished = isTimerFinished
                 )
             },
             mapper = { it!!.toDomain() }

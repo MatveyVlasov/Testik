@@ -52,6 +52,8 @@
     <string name="incorrect_questions_number">An error occurred (#100)</string>
     <string name="invalid_data_type">An error occurred (#101)</string>
     <string name="incorrect_question_number">An error occurred (#102)</string>
+    <string name="too_late">An error occurred (#103)</string>
+    <string name="too_late_not_accepted">Answer is not accepted: time is up</string>
     <string name="question_unanswered">Question #%d should be answered</string>
     <string name="question_unanswered_current">This question should be answered</string>
 
@@ -166,6 +168,21 @@
     <string name="navigation_between_questions">Navigation between questions</string>
     <string name="random_question_order">Random question order</string>
     <string name="random_answer_order">Random answer order</string>
+
+    <string name="time_limit">Time limit</string>
+    <string name="time_limit_info">Time limit sets the time limit for the test. When the time is up, the test is automatically finished\n\nNotice: if a user minimizes the app and do not open it again or open it too late, the points are calculated based on the previously submitted answers (or saved with \"Save draft\" button) only\n\nTime limit per question sets the time limit for each question (not applied when navigation is enabled). When the time is up, the answer is automatically submitted\n\nNotice: some required questions might remain unanswered if the time is up\n\nIf both limits are set, limit per question is applied</string>
+    <string name="time_limit_question">Time limit per question</string>
+    <string name="time_limit_per_question">for each question</string>
+    <string name="no_time_limit">No time limit</string>
+    <plurals name="hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
     <string name="create_test_success">Test successfully created</string>
     <string name="edit_questions">Edit questions</string>
     <string name="edit_grading_system">Edit grading system</string>
@@ -271,6 +288,9 @@
 
     <string name="exit_test">Exit test</string>
     <string name="exit_test_confirmation">Do you really want to exit test? You will not be able to proceed</string>
+    <string name="calculating_points">Calculating points…</string>
+    <string name="no_time_left">Time is up</string>
+    <string name="no_time_left_description">There is no time left</string>
     <string name="time_left">Time left</string>
     <string name="finish">Finish</string>
     <string name="finish_test">Finish test</string>
@@ -299,6 +319,7 @@
     <string name="points_title">Points:</string>
     <string name="points_earned" translatable="false">%d/%d</string>
     <string name="points_unavailable">The author of the test asked us not to reveal the number of points you have earned\nIf he changes his mind, we will let you know :)</string>
+    <string name="points_error">Points cannot be calculated due to an error. Please contact support to find out more</string>
     <string name="test_not_finished_detail">Test was not finished. Points were calculated based on the answers you submitted</string>
 
     <string name="correct_answer">Correct answer</string>

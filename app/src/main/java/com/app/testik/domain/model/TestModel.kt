@@ -23,6 +23,8 @@ data class TestModel(
     val isNavigationEnabled: Boolean = true,
     val isRandomQuestions: Boolean = false,
     val isRandomAnswers: Boolean = false,
+    val timeLimit: Long = 0L,
+    val timeLimitQuestion: Long = 0L,
     val questionsNum: Int = 0,
     val pointsMax: Int = 0
 ) : Parcelable

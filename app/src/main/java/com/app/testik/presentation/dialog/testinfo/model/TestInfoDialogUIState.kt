@@ -12,6 +12,8 @@ data class TestInfoDialogUIState(
     val description: String = "",
     val questionsNum: Int = 0,
     val pointsMax: Int = 0,
+    val timeLimit: Long = 0L,
+    val isTimeLimitQuestion: Boolean = false,
     val isDemo: Boolean = false,
     val isOpen: Boolean = false,
     val isPasswordEnabled: Boolean = false,

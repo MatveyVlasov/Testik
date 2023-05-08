@@ -128,6 +128,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="11 points max" />
 
+        <ImageView
+            android:id="@+id/ivTimeLimitIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/margin_horizontal"
+            android:src="@drawable/ic_time"
+            android:importantForAccessibility="no"
+            app:layout_constraintTop_toBottomOf="@id/ivPointsIcon"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTimeLimit"
+            style="@style/CustomTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="@dimen/margin_horizontal"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@id/ivTimeLimitIcon"
+            app:layout_constraintStart_toEndOf="@id/ivTimeLimitIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="3 minutes per question" />
+
         <TextView
             android:id="@+id/tvDescriptionTitle"
             style="@style/TitleTextView"
@@ -139,7 +163,7 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvPointsNum" />
+            app:layout_constraintTop_toBottomOf="@id/tvTimeLimit" />
 
         <TextView
             android:id="@+id/tvDescription"

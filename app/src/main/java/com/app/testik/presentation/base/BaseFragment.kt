@@ -67,7 +67,7 @@ abstract class BaseFragment<T: ViewBinding> : Fragment() {
         navController.previousBackStackEntry?.savedStateHandle?.set(key, result)
     }
 
-    protected fun setLoadingState(isLoading: Boolean) {
+    protected open fun setLoadingState(isLoading: Boolean) {
         (activity as? MainActivity)?.setLoadingState(isLoading)
     }
 

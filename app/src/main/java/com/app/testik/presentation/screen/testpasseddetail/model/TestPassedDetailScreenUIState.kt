@@ -16,6 +16,7 @@ data class TestPassedDetailScreenUIState(
     val pointsMax: Int = 0,
     val pointsEarned: Int = 0,
     val pointsCalculated: Boolean = false,
+    val pointsHasError: Boolean = false,
     val gradeEarned: String = "",
     val questions: List<DelegateAdapterItem> = emptyList(),
     val results: ResultsModel? = null

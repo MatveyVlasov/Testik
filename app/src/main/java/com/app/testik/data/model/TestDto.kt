@@ -32,6 +32,8 @@ data class TestDto(
     val isRandomQuestions: Boolean = false,
     @get:PropertyName("isRandomAnswers")
     val isRandomAnswers: Boolean = false,
+    val timeLimit: Long = 0L,
+    val timeLimitQuestion: Long = 0L,
     val questionsNum: Int = 0,
     val pointsMax: Int = 0,
     @get:PropertyName("isGradesEnabled")

@@ -119,11 +119,13 @@ class TestPassedDetailFragment : BaseFragment<FragmentTestPassedDetailBinding>()
             tvQuestionList.isVisible = showPoints && data.questions.isNotEmpty()
             rvQuestions.isVisible = showPoints
 
+            if (data.pointsHasError) tvPointsUnavailable.text = getString(R.string.points_error)
+
             val showUser = data.username.isNotEmpty()
             tvUser.isVisible = showUser
             tvUsername.isVisible = showUser
 
-            tvNotFinished.isVisible = !data.isFinished
+            tvNotFinished.isVisible = !data.isFinished && !data.pointsHasError
         }
         loadImage(data.image)
         setLoadingState(false)

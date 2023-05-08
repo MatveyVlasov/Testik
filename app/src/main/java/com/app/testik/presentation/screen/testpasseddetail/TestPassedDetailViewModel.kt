@@ -150,6 +150,9 @@ class TestPassedDetailViewModel @Inject constructor(
             msg.contains("test already finished") -> {
                 emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.test_already_finished))
             }
+            msg.contains("too late calculate") -> {
+                updateScreenState(screenUIState.copy(pointsHasError = true))
+            }
             msg.contains("incorrect number") -> {
                 emitEvent(TestPassedDetailScreenEvent.ShowSnackbarByRes(R.string.incorrect_questions_number))
             }

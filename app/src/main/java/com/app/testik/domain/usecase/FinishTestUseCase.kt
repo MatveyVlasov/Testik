@@ -11,12 +11,13 @@ class FinishTestUseCase @Inject constructor(
     private val testPassedRepository: TestPassedRepository
 ) : ResultWrapper by ResultWrapperImpl() {
 
-    suspend operator fun invoke(recordId: String, questions: List<QuestionModel>): Result<Unit> {
+    suspend operator fun invoke(recordId: String, questions: List<QuestionModel>, isTimerFinished: Boolean): Result<Unit> {
         return wrap(
             block = {
                 testPassedRepository.finishTest(
                     recordId = recordId,
-                    questions = questions.map { it.toDto() }
+                    questions = questions.map { it.toDto() },
+                    isTimerFinished = isTimerFinished
                 )
             },
             mapper = { }

@@ -27,6 +27,8 @@ import com.app.testik.util.Constants.EXTRA_IMAGE_PATH
 import com.app.testik.util.Constants.UPDATE_TEST_RESULT_KEY
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.yanzhenjie.album.Album
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -84,6 +86,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             tvShowCorrectAnswers.addInfoIcon { navigateToInfo(getString(R.string.show_correct_answers_info)) }
             tvShowCorrectAnswersAfterQuestion.addInfoIcon { navigateToInfo(getString(R.string.show_correct_answers_after_question_info)) }
             tvRetaking.addInfoIcon { navigateToInfo(getString(R.string.retaking_info)) }
+            tvTimeLimit.addInfoIcon { navigateToInfo(getString(R.string.time_limit_info)) }
         }
     }
 
@@ -114,6 +117,10 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             switchNavigateBetweenQuestions.setOnCheckedChangeListener { _, isChecked -> viewModel.onNavigationEnabledChanged(isChecked) }
             switchRandomizeQuestions.setOnCheckedChangeListener { _, isChecked -> viewModel.onRandomQuestionsChanged(isChecked) }
             switchRandomizeAnswers.setOnCheckedChangeListener { _, isChecked -> viewModel.onRandomAnswersChanged(isChecked) }
+            switchTimeLimit.setOnCheckedChangeListener { _, isChecked -> viewModel.onTimeLimitChanged(isChecked) }
+
+            etTimeLimit.setOnClickListener { showSetTimeLimitDialog() }
+            etTimeLimitQuestion.setOnClickListener { showSetTimeLimitDialog(isLimitPerQuestion = true) }
 
             btnSave.setOnClickListener { viewModel.save() }
 
@@ -199,6 +206,22 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             llNavigateBetweenQuestions.isVisible = showMore
             llRandomizeQuestions.isVisible = showMore
             llRandomizeAnswers.isVisible = showMore
+            llTimeLimit.isVisible = showMore
+
+            tilTimeLimit.isVisible = showMore && data.isTimeLimitEnabled
+            tilTimeLimitQuestion.isVisible = showMore && data.isTimeLimitEnabled
+            val timeLimitData = getStringFromHoursAndMinutes(
+                hours = data.timeLimitHours,
+                minutes = data.timeLimitMinutes,
+                resources = resources
+            )
+            val timeLimitQuestionData = getStringFromHoursAndMinutes(
+                hours = data.timeLimitQuestionHours,
+                minutes = data.timeLimitQuestionMinutes,
+                resources = resources
+            )
+            etTimeLimit.setText(timeLimitData)
+            etTimeLimitQuestion.setText(timeLimitQuestionData)
 
             switchShowResults.isChecked = data.isResultsShown
             switchShowCorrectAnswers.isChecked = data.isCorrectAnswersShown
@@ -207,6 +230,7 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             switchNavigateBetweenQuestions.isChecked = data.isNavigationEnabled
             switchRandomizeQuestions.isChecked = data.isRandomQuestions
             switchRandomizeAnswers.isChecked = data.isRandomAnswers
+            switchTimeLimit.isChecked = data.isTimeLimitEnabled
 
             switchShowCorrectAnswers.isEnabled = data.isResultsShown
             switchShowCorrectAnswersAfterQuestion.isEnabled = data.isResultsShown && data.isCorrectAnswersShown && !data.isNavigationEnabled
@@ -350,6 +374,26 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
             negative = R.string.cancel,
             onPositiveClick = viewModel::deleteTest
         )
+    }
+
+    private fun showSetTimeLimitDialog(isLimitPerQuestion: Boolean = false) {
+        val data = viewModel.screenUIState
+        val hours = if (isLimitPerQuestion) data.timeLimitQuestionHours else data.timeLimitHours
+        val minutes = if (isLimitPerQuestion) data.timeLimitQuestionMinutes else data.timeLimitMinutes
+
+        MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(hours)
+            .setMinute(minutes)
+            .setTitleText(R.string.time_limit)
+            .build()
+            .also {
+                it.show(parentFragmentManager, tag)
+
+                it.addOnPositiveButtonClickListener { _ ->
+                    viewModel.onTimeLimitChanged(hours = it.hour, minutes = it.minute, isLimitPerQuestion = isLimitPerQuestion)
+                }
+            }
     }
 
     private fun navigate(action: () -> Unit) {

@@ -51,7 +51,6 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="4dp"
             android:textSize="24sp"
-            android:text="30:00"
             tools:text="30:00" />
 
         <Space
@@ -140,5 +139,11 @@
             android:contentDescription="@string/go_to_next_question" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

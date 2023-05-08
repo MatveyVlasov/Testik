@@ -9,5 +9,11 @@ data class QuestionMainScreenUIState(
     val isReviewMode: Boolean = false,
     val isReviewQuestionMode: Boolean = false,
     val startQuestion: Int = 0,
-    val currentQuestion: Int = 0
+    val currentQuestion: Int = 0,
+    val isTimerEnabled: Boolean = false,
+    val isTimerQuestionEnabled: Boolean = false,
+    val timeLimit: Long = 0L,
+    val isTimerFinishedHandled: Boolean = true,
+    val isNavigationToResultsAllowed: Boolean = true,
+    val navigateToResultsOnFinish: Boolean = false
 )

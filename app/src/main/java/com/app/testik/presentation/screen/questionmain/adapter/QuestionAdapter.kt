@@ -19,5 +19,5 @@ class QuestionAdapter(
 
     override fun createFragment(position: Int): Fragment = fragments[position]
 
-    fun getFragment(position: Int): QuestionFragment = fragments[position]
+    fun getFragment(position: Int): QuestionFragment? = fragments.getOrNull(position)
 }

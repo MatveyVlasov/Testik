@@ -69,11 +69,25 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
         addBackPressedCallback { onBackPressed() }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        if (!viewModel.screenUIState.isTimerFinishedHandled) {
+            handleEvent(QuestionMainScreenEvent.TimerFinished)
+        }
+    }
+
+    override fun setLoadingState(isLoading: Boolean) {
+        super.setLoadingState(isLoading)
+        binding.loading.isVisible = isLoading
+    }
 
     private fun initViews() {
 
         setupBottomNavigation(false)
         binding.apply {
+            loading.setOnClickListener { }
+
             rvQuestions.adapter = questionsNumAdapter
         }
     }
@@ -113,7 +127,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                 launch {
                     viewModel.uiState.collect {
                         it.onSuccess { data ->
-                            if (questionsAdapter == null) {
+                            if (questionsAdapter == null && data.questions.isNotEmpty()) {
                                 questionsAdapter = QuestionAdapter(
                                     fragment = this@QuestionMainFragment,
                                     questions = data.questions,
@@ -144,17 +158,26 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
                 launch {
                     viewModel.event.collect { handleEvent(it) }
                 }
+
+                launch {
+                    viewModel.timeLeft.collect { updateTimerText(it) }
+                }
             }
         }
     }
 
     private fun renderUIState(data: QuestionMainScreenUIState) {
         binding.apply {
-            llInfo.isVisible = !data.isReviewMode
-            btnSubmit.isVisible = !data.isReviewMode
-            btnGoBack.isVisible = data.isReviewMode
+            val isReviewMode = data.isReviewMode
+            llInfo.isVisible = !isReviewMode
+            btnSubmit.isVisible = !isReviewMode
+            btnGoBack.isVisible = isReviewMode
 
-            val isNavigationEnabled = data.test.isNavigationEnabled || data.isReviewMode
+            val showTimer = data.isTimerEnabled || data.isTimerQuestionEnabled
+            ivTimeIcon.isVisible = showTimer
+            tvTimeLeft.isVisible = showTimer
+
+            val isNavigationEnabled = data.test.isNavigationEnabled || isReviewMode
             pager.isUserInputEnabled = isNavigationEnabled
             rvQuestions.isVisible = isNavigationEnabled
             btnFinish.isVisible = isNavigationEnabled
@@ -173,13 +196,18 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
             is QuestionMainScreenEvent.ShowSnackbar -> showSnackbar(message = event.message)
             is QuestionMainScreenEvent.ShowSnackbarByRes -> showSnackbar(message = event.message)
             is QuestionMainScreenEvent.Loading -> Unit
-            is QuestionMainScreenEvent.NavigateToResults -> navigateToResults(event.recordId)
+            is QuestionMainScreenEvent.NavigateToResults -> navigateToResults()
             is QuestionMainScreenEvent.NavigateToQuestion -> goToQuestion(event.num)
             is QuestionMainScreenEvent.NavigateToTestsPassed -> navigateToTestsPassed()
             is QuestionMainScreenEvent.UnansweredQuestion -> {
                 goToQuestion(event.num)
                 showSnackbar(message = getString(R.string.question_unanswered, event.num + 1))
             }
+            is QuestionMainScreenEvent.TimerFinished -> {
+                viewModel.onTimerFinishedHandledChanged(isHandled = true)
+                showTimerFinishedDialog()
+            }
+            is QuestionMainScreenEvent.TooLate -> showTimerFinishedDialog(isTooLate = true)
         }
         setLoadingState(event is QuestionMainScreenEvent.Loading)
     }
@@ -214,7 +242,7 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
         if (viewModel.screenUIState.isReviewMode) return
         val adapter = questionsAdapter ?: return
 
-        adapter.getFragment(pos).also {
+        adapter.getFragment(pos)?.also {
             viewModel.updateAnswers(question = pos, answers = it.answers, enteredAnswer = it.enteredAnswer)
         }
     }
@@ -234,9 +262,14 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
         )
     }
 
-    private fun finishTest() {
+    private fun finishTest(isTimerFinished: Boolean = false) {
         updateAnswers(binding.pager.currentItem)
-        viewModel.finish()
+        viewModel.finish(isTimerFinished = isTimerFinished)
+    }
+
+    private fun submitQuestion(isTimerFinished: Boolean = false) {
+        updateAnswers(binding.pager.currentItem)
+        viewModel.submitQuestion(isTimerFinished = isTimerFinished)
     }
 
     private fun confirmExit() {
@@ -266,9 +299,35 @@ class QuestionMainFragment : BaseFragment<FragmentQuestionMainBinding>() {
         setNavbarItem(R.id.testsPassedFragment)
     }
 
-    private fun navigateToResults(recordId: String) {
+    private fun navigateToResults() {
+        if (!viewModel.screenUIState.isNavigationToResultsAllowed) {
+            viewModel.navigateToResultsOnFinish()
+            setLoadingState(true)
+            showSnackbar(message = R.string.calculating_points)
+            return
+        }
         navController.navigate(
-            QuestionMainFragmentDirections.toResults(recordId)
+            QuestionMainFragmentDirections.toResults(viewModel.screenUIState.test.recordId)
+        )
+    }
+
+    private fun updateTimerText(timeLeft: Long) {
+        binding.tvTimeLeft.text = timeLeft.toTime()
+    }
+
+    private fun showTimerFinishedDialog(isTooLate: Boolean = false) {
+        if (viewModel.screenUIState.isTimerQuestionEnabled) {
+            submitQuestion(isTimerFinished = true)
+            showSnackbar(R.string.no_time_left)
+            return
+        }
+        if (!isTooLate) finishTest(isTimerFinished = true)
+
+        showAlert(
+            title = R.string.no_time_left,
+            message = R.string.no_time_left_description,
+            positive = R.string.go_to_results,
+            onPositiveClick = { navigateToResults() }
         )
     }
 

@@ -2,6 +2,7 @@ package com.app.testik.presentation.screen.testedit.mapper
 
 import com.app.testik.domain.model.TestModel
 import com.app.testik.presentation.screen.testedit.model.TestEditScreenUIState
+import com.app.testik.util.getMillisFromHoursAndMinutes
 
 
 fun TestEditScreenUIState.toDomain() =
@@ -22,5 +23,7 @@ fun TestEditScreenUIState.toDomain() =
         isRetakingEnabled = isRetakingEnabled,
         isNavigationEnabled = isNavigationEnabled,
         isRandomQuestions = isRandomQuestions,
-        isRandomAnswers = isRandomAnswers
+        isRandomAnswers = isRandomAnswers,
+        timeLimit = if (isTimeLimitEnabled) getMillisFromHoursAndMinutes(timeLimitHours, timeLimitMinutes) else 0,
+        timeLimitQuestion = if (isTimeLimitEnabled) getMillisFromHoursAndMinutes(timeLimitQuestionHours, timeLimitQuestionMinutes) else 0
     )

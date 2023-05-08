@@ -10,11 +10,15 @@ sealed class QuestionMainScreenEvent {
 
     object Loading : QuestionMainScreenEvent()
 
-    data class NavigateToResults(val recordId: String) : QuestionMainScreenEvent()
+    object NavigateToResults : QuestionMainScreenEvent()
 
     data class NavigateToQuestion(val num: Int) : QuestionMainScreenEvent()
 
     object NavigateToTestsPassed : QuestionMainScreenEvent()
 
     data class UnansweredQuestion(val num: Int) : QuestionMainScreenEvent()
+
+    object TimerFinished : QuestionMainScreenEvent()
+
+    object TooLate : QuestionMainScreenEvent()
 }

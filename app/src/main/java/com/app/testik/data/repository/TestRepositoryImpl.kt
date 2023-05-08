@@ -79,6 +79,8 @@ class TestRepositoryImpl @Inject constructor(
                     "isNavigationEnabled" to isNavigationEnabled,
                     "isRandomQuestions" to isRandomQuestions,
                     "isRandomAnswers" to isRandomAnswers,
+                    "timeLimit" to timeLimit,
+                    "timeLimitQuestion" to timeLimitQuestion,
                     "lastUpdated" to timestamp
                 )
 
