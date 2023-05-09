@@ -419,25 +419,69 @@ describe("Tests passed collection", () => {
         await firebase.assertFails(doc.delete())
     })
 
-    it("Can't read my test record results", async () => {
+    it("Can read results of my test if they're available and test's finished", async () => {
         const admin = getAdminFirestore()
-        const setupDoc = admin.collection(COLLECTION).doc("recordId")
-        await setupDoc.set(MY_RECORD)
+
+        const setupDoc = admin.collection("tests").doc("testId")
+        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000, isCorrectAnswersShown: true })
+
+        const setupDoc2 = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc2.set({ user: myId, testId: "testId", title: "title", questions: "questions",
+        timeStarted: Date.now() - 15000, timeFinished: Date.now() - 10000, isFinished: true, pointsCalculated: false, pointsMax: 5, isDemo: false })
+
+        const setupDoc3 = admin.collection(COLLECTION).doc("recordId").collection("private").doc("results")
+        await setupDoc3.set({ testId: "testId", answersCorrect: "answers" })
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId").collection("private").doc("results")
+        await firebase.assertSucceeds(doc.get())
+    })
+
+    it("Can't read results of my test if they're available but test's not finished", async () => {
+        const admin = getAdminFirestore()
+
+        const setupDoc = admin.collection("tests").doc("testId")
+        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000, isCorrectAnswersShown: true })
+
+        const setupDoc2 = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc2.set({ user: myId, testId: "testId", title: "title", questions: "questions",
+        timeStarted: Date.now() - 15000, timeFinished: Date.now() - 10000, isFinished: false, pointsCalculated: false, pointsMax: 5, isDemo: false })
+
+        const setupDoc3 = admin.collection(COLLECTION).doc("recordId").collection("private").doc("results")
+        await setupDoc3.set({ testId: "testId", answersCorrect: "answers" })
 
         const db = getFirestore(myAuth)
         const doc = db.collection(COLLECTION).doc("recordId").collection("private").doc("results")
         await firebase.assertFails(doc.get())
     })
 
-    it("Can read results of my test", async () => {
+    it("Can't read results of my test if they're unavailable", async () => {
         const admin = getAdminFirestore()
 
         const setupDoc = admin.collection("tests").doc("testId")
-        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000})
+        await setupDoc.set({ author: theirId, title: "title", category: "category", lastUpdated: Date.now() - 10000, isResultsShown: false })
+
+        const setupDoc2 = admin.collection(COLLECTION).doc("recordId")
+        await setupDoc2.set({ user: myId, testId: "testId", title: "title", questions: "questions",
+        timeStarted: Date.now() - 15000, timeFinished: Date.now() - 10000, isFinished: false, pointsCalculated: false, pointsMax: 5, isDemo: false })
+
+        const setupDoc3 = admin.collection(COLLECTION).doc("recordId").collection("private").doc("results")
+        await setupDoc3.set({ testId: "testId", answersCorrect: "answers" })
+
+        const db = getFirestore(myAuth)
+        const doc = db.collection(COLLECTION).doc("recordId").collection("private").doc("results")
+        await firebase.assertFails(doc.get())
+    })
+
+    it("Can read their test results of my test", async () => {
+        const admin = getAdminFirestore()
+
+        const setupDoc = admin.collection("tests").doc("testId")
+        await setupDoc.set({ author: myId, title: "title", category: "category", lastUpdated: Date.now() - 10000, isResultsShown: false })
 
         const setupDoc2 = admin.collection(COLLECTION).doc("recordId")
         await setupDoc2.set({ user: theirId, testId: "testId", title: "title", questions: "questions",
-        timeStarted: Date.now() - 15000, timeFinished: Date.now() - 10000, isFinished: false, pointsMax: 5 })
+        timeStarted: Date.now() - 15000, timeFinished: Date.now() - 10000, isFinished: false, pointsCalculated: false, pointsMax: 5, isDemo: false })
 
         const setupDoc3 = admin.collection(COLLECTION).doc("recordId").collection("private").doc("results")
         await setupDoc3.set({ testId: "testId", answersCorrect: "answers" })
