@@ -75,8 +75,8 @@ exports.startTest = functions
                 const isNavigationEnabled = testData.isNavigationEnabled
                 const isRandomQuestions = testData.isRandomQuestions
                 const isRandomAnswers = testData.isRandomAnswers
-                const timeLimit = testData.timeLimit
-                const timeLimitQuestion = isNavigationEnabled? 0 : testData.timeLimitQuestion
+                const timeLimit = testData.timeLimit || 0
+                const timeLimitQuestion = isNavigationEnabled? 0 : (testData.timeLimitQuestion || 0)
 
                 testRef.collection("private").doc("password").get().then((docPassword) => {
                     const password = docPassword.data().password

@@ -106,7 +106,7 @@ service cloud.firestore {
 
             function canRead() {
                 let data = get(/databases/$(database)/documents/testsPassed/$(recordId)).data;
-                let isCorrectAnswersShown = get(/databases/$(database)/documents/tests/$(testId)).data.isCorrectAnswersShown;
+                let isCorrectAnswersShown = get(/databases/$(database)/documents/tests/$(data.testId)).data.isCorrectAnswersShown;
 
                 return (!data.isDemo && isOwner(getAuthor(data.testId))) || ((data.isFinished || data.pointsCalculated) && isCorrectAnswersShown);
             }
