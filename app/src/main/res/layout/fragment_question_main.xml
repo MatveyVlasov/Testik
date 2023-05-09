@@ -41,7 +41,9 @@
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:src="@drawable/ic_time"
-            android:contentDescription="@string/time_left" />
+            android:contentDescription="@string/time_left"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/tvTimeLeft"
@@ -51,6 +53,8 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="4dp"
             android:textSize="24sp"
+            android:visibility="gone"
+            tools:visibility="visible"
             tools:text="30:00" />
 
         <Space
@@ -66,7 +70,10 @@
             android:layout_marginHorizontal="8dp"
             android:paddingVertical="4dp"
             android:textSize="16sp"
-            android:text="@string/finish" />
+            android:text="@string/finish"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -105,7 +112,9 @@
             android:paddingStart="8dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_arrow_back"
-            android:contentDescription="@string/go_to_prev_question" />
+            android:contentDescription="@string/go_to_prev_question"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSubmit"
@@ -126,7 +135,7 @@
             android:layout_marginHorizontal="8dp"
             android:autoSizeTextType="uniform"
             android:text="@string/go_back_to_test_results"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/btnNext"
@@ -136,7 +145,9 @@
             android:paddingEnd="8dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_arrow_forward"
-            android:contentDescription="@string/go_to_next_question" />
+            android:contentDescription="@string/go_to_next_question"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
     </LinearLayout>
 

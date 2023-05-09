@@ -170,7 +170,7 @@
     <string name="random_answer_order">Random answer order</string>
 
     <string name="time_limit">Time limit</string>
-    <string name="time_limit_info">Time limit sets the time limit for the test. When the time is up, the test is automatically finished\n\nNotice: if a user minimizes the app and do not open it again or open it too late, the points are calculated based on the previously submitted answers (or saved with \"Save draft\" button) only\n\nTime limit per question sets the time limit for each question (not applied when navigation is enabled). When the time is up, the answer is automatically submitted\n\nNotice: some required questions might remain unanswered if the time is up\n\nIf both limits are set, limit per question is applied</string>
+    <string name="time_limit_info">Time limit sets the time limit for the test. When the time is up, the test is automatically finished\n\nNote: if a user minimizes the app and do not open it again or open it too late, the points are calculated based on the previously submitted answers (or saved with \"Save draft\" button) only\n\nTime limit per question sets the time limit for each question (not applied when navigation is enabled). When the time is up, the answer is automatically submitted\n\nNote: some required questions might remain unanswered if the time is up\n\nIf both limits are set, limit per question is applied</string>
     <string name="time_limit_question">Time limit per question</string>
     <string name="time_limit_per_question">for each question</string>
     <string name="no_time_limit">No time limit</string>
