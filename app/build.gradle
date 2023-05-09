@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.firebase.crashlytics'
     id 'com.google.gms.google-services'
 }
 
@@ -116,6 +117,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-appcheck-safetynet:16.1.0'
     implementation 'com.google.firebase:firebase-dynamic-links-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
 
     // Coroutines
