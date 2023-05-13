@@ -47,7 +47,7 @@ exports.startTest = functions
 
             const testId = data.testId || null
             const isDemo = data.isDemo
-            const passwordEntered = data.password
+            const passwordEntered = data.password || ""
 
             const testRef = db.collection("tests").doc(testId)
 
@@ -57,7 +57,7 @@ exports.startTest = functions
                 }
 
                 const testData = doc.data()
-                const isOpen = testData.isOpen || false
+                const isOpen = testData.isOpen || isDemo || false
 
                 if (!isOpen) {
                     return reject(new functions.https.HttpsError('failed-precondition', 'Test closed'))
@@ -79,7 +79,7 @@ exports.startTest = functions
                 const timeLimitQuestion = isNavigationEnabled? 0 : (testData.timeLimitQuestion || 0)
 
                 testRef.collection("private").doc("password").get().then((docPassword) => {
-                    const password = docPassword.data().password
+                    const password = docPassword.data().password || ""
 
                     if (password.length > 0 && password != passwordEntered) {
                         return reject(new functions.https.HttpsError('permission-denied', 'Incorrect password'))
