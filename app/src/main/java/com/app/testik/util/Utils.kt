@@ -292,3 +292,8 @@ fun EditText.setupSearchLayout() {
     params.updateMargins(left = params.marginStart - 36.toPx())
     updatePadding(left = paddingStart + 28.toPx())
 }
+
+fun EditText.setTextIfChanged(text: String) {
+    if (this.text.toString() == text) return
+    setText(text)
+}

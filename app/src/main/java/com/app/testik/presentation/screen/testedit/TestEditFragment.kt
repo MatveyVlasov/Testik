@@ -178,9 +178,9 @@ class TestEditFragment : BaseFragment<FragmentTestEditBinding>() {
     private fun renderUIState(data: TestEditScreenUIState) {
         binding.apply {
             viewModel.screenUIState.canSave.let {
-                if (!it || !etTitle.isFocused) etTitle.setText(data.title)
-                if (!it || !etDescription.isFocused) etDescription.setText(data.description)
-                if (!it || !etPassword.isFocused) etPassword.setText(data.password)
+                if (!it || !etTitle.isFocused) etTitle.setTextIfChanged(data.title)
+                if (!it || !etDescription.isFocused) etDescription.setTextIfChanged(data.description)
+                if (!it || !etPassword.isFocused) etPassword.setTextIfChanged(data.password)
                 if (!it || !etCategory.isFocused) etCategory.setText(data.category.description)
             }
 
