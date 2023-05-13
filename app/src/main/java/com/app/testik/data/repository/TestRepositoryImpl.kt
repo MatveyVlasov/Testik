@@ -36,11 +36,23 @@ class TestRepositoryImpl @Inject constructor(
                 val newData = mapOf(
                     "author" to author,
                     "title" to title,
-                    "image" to image,
                     "description" to description,
                     "category" to category,
+                    "image" to image,
                     "isPasswordEnabled" to isPasswordEnabled,
+                    "isOpen" to isOpen,
+                    "isPublished" to isPublished,
+                    "isLinkEnabled" to isLinkEnabled,
                     "link" to link,
+                    "isResultsShown" to isResultsShown,
+                    "isCorrectAnswersShown" to isCorrectAnswersShown,
+                    "isCorrectAnswersAfterQuestionShown" to isCorrectAnswersAfterQuestionShown,
+                    "isRetakingEnabled" to isRetakingEnabled,
+                    "isNavigationEnabled" to isNavigationEnabled,
+                    "isRandomQuestions" to isRandomQuestions,
+                    "isRandomAnswers" to isRandomAnswers,
+                    "timeLimit" to timeLimit,
+                    "timeLimitQuestion" to timeLimitQuestion,
                     "lastUpdated" to timestamp
                 )
 

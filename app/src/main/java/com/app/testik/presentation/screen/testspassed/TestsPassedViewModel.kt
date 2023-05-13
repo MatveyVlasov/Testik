@@ -43,6 +43,7 @@ class TestsPassedViewModel @Inject constructor(
 
     private var user: FirebaseUser? = null
     private var snapshot: QuerySnapshot? = null
+    private var testToInsert: TestPassedDelegateItem? = null
     private var job: Job? = null
 
     fun checkUser() {
@@ -73,7 +74,10 @@ class TestsPassedViewModel @Inject constructor(
     }
 
     fun addTestToList(test: TestPassedDelegateItem) {
-        if (snapshot == null) return
+        if (snapshot == null) {
+            if (test.isDemo) testToInsert = test
+            return
+        }
         val tests = screenUIState.tests.map { it }.toMutableList().also {
             it.add(0, test)
         }
@@ -87,6 +91,10 @@ class TestsPassedViewModel @Inject constructor(
             screenUIState.copy(
                 tests = screenUIState.tests.toMutableList().apply {
                     removeAll { it is LoadingItem || it is ErrorItem }
+                    testToInsert?.let {
+                        add(0, it)
+                        testToInsert = null
+                    }
                     addAll(data)
                 }
             )

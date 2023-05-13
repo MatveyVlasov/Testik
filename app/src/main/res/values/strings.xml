@@ -308,7 +308,7 @@
     <string name="go_home_to_take_test">You can choose a test to take on home screen</string>
     <string name="go_home">Go home</string>
     <string name="test_not_finished">Test was not finished. Click to see more</string>
-    <string name="test_demo">It is demo test. This record will be deleted soon</string>
+    <string name="test_demo">It is a demo test. This record will be deleted soon</string>
 
     <string name="test_results">Test Results</string>
     <string name="question_title">Question:</string>

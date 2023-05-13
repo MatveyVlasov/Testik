@@ -23,7 +23,7 @@ data class TestDto(
     @get:PropertyName("isCorrectAnswersShown")
     val isCorrectAnswersShown: Boolean = true,
     @get:PropertyName("isCorrectAnswersAfterQuestionShown")
-    val isCorrectAnswersAfterQuestionShown: Boolean = true,
+    val isCorrectAnswersAfterQuestionShown: Boolean = false,
     @get:PropertyName("isRetakingEnabled")
     val isRetakingEnabled: Boolean = true,
     @get:PropertyName("isNavigationEnabled")

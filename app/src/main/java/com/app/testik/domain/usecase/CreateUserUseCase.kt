@@ -33,6 +33,8 @@ class CreateUserUseCase @Inject constructor(
                 authRepository.deleteCurrentUser()
                 return Result.Error(it)
             }
+        }.onError {
+            return Result.Error(it)
         }
         return Result.Error("An error occurred")
     }

@@ -17,7 +17,7 @@ data class TestEditScreenUIState(
     val testLink: String = "",
     val isResultsShown: Boolean = true,
     val isCorrectAnswersShown: Boolean = true,
-    val isCorrectAnswersAfterQuestionShown: Boolean = true,
+    val isCorrectAnswersAfterQuestionShown: Boolean = false,
     val isRetakingEnabled: Boolean = true,
     val isNavigationEnabled: Boolean = true,
     val isRandomQuestions: Boolean = false,

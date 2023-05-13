@@ -165,7 +165,9 @@ class QuestionFragment(
 
             tvTitle.text = data.title
             tvDescription.text = data.description
+            tvDescription.isVisible = data.description.isNotEmpty()
             tvType.setText(data.type.instruction)
+            tvType.isVisible = tvType.text.isNotEmpty()
 
             val isShortAnswerType = data.type == QuestionType.SHORT_ANSWER
             val isNumberType = data.type == QuestionType.NUMBER
