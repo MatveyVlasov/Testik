@@ -47,7 +47,7 @@ exports.startTest = functions
 
             const testId = data.testId || null
             const isDemo = data.isDemo
-            const passwordEntered = data.password || ""
+            const passwordEntered = data.password
 
             const testRef = db.collection("tests").doc(testId)
 
@@ -72,14 +72,17 @@ exports.startTest = functions
                 const isResultsShown = testData.isResultsShown || false
                 const isCorrectAnswersAfterQuestionShown = testData.isCorrectAnswersAfterQuestionShown || false
                 const isRetakingEnabled = testData.isRetakingEnabled || false
-                const isNavigationEnabled = testData.isNavigationEnabled
-                const isRandomQuestions = testData.isRandomQuestions
-                const isRandomAnswers = testData.isRandomAnswers
+                const isNavigationEnabled = testData.isNavigationEnabled == undefined? true : testData.isNavigationEnabled
+                const isRandomQuestions = testData.isRandomQuestions || false
+                const isRandomAnswers = testData.isRandomAnswers || false
                 const timeLimit = testData.timeLimit || 0
                 const timeLimitQuestion = isNavigationEnabled? 0 : (testData.timeLimitQuestion || 0)
 
                 testRef.collection("private").doc("password").get().then((docPassword) => {
-                    const password = docPassword.data().password || ""
+                    let password = ""
+                    try {
+                        password = docPassword.data().password
+                    } catch (err) {}
 
                     if (password.length > 0 && password != passwordEntered) {
                         return reject(new functions.https.HttpsError('permission-denied', 'Incorrect password'))

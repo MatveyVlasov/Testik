@@ -26,6 +26,7 @@ module.exports = {
         "padded-blocks": 0,
         "require-jsdoc": 0,
         "no-constant-condition": 0,
+        "no-empty": 0,
         "operator-linebreak": 0,
         "guard-for-in": 1,
         "no-unused-vars": 1,
