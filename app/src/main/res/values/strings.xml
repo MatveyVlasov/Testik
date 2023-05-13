@@ -6,16 +6,16 @@
     <string name="select_translated" translatable="false">Select/Выбрать</string>
     <string name="cancel_translated" translatable="false">Cancel/Отмена</string>
 
-    <string name="email_badly_formatted">The email address is badly formatted</string>
-    <string name="email_already_taken">The email address is already taken</string>
-    <string name="password_too_short">The password should contain at least 6 characters</string>
+    <string name="email_badly_formatted">Email badly formatted</string>
+    <string name="email_already_taken">Email already taken</string>
+    <string name="password_too_short">Password should contain at least 6 characters</string>
     <string name="no_passwords_match">Passwords do not match</string>
-    <string name="username_already_taken">The username is already taken</string>
-    <string name="username_badly_formatted">The username should contain Latin lowercase letters and digits only</string>
-    <string name="username_too_short">The username should contain at least 3 characters</string>
+    <string name="username_already_taken">Username already taken</string>
+    <string name="username_badly_formatted">Username should contain Latin lowercase letters and digits only</string>
+    <string name="username_too_short">Username should contain at least 3 characters</string>
 
-    <string name="no_user">There is no user with this email</string>
-    <string name="incorrect_password">The password is incorrect</string>
+    <string name="no_user">No user with this email</string>
+    <string name="incorrect_password">Incorrect password</string>
     <string name="too_many_requests">You sent too many requests. Try again in a while</string>
 
     <string name="unsaved_changes">Unsaved changes</string>
@@ -27,7 +27,7 @@
     <string name="error_occurred">An error occurred</string>
     <string name="no_internet">No internet connection</string>
     <string name="error_while_saving_image">Error occurred while saving image</string>
-    <string name="error_while_saving_images">Some images were not saved dur to an error</string>
+    <string name="error_while_saving_images">Some images not saved due to an error</string>
     <string name="error_while_loading_results">Error occurred while loading results</string>
     <string name="blank_field_error">This field cannot be blank</string>
     <string name="empty" />
@@ -43,17 +43,17 @@
     <string name="enable_auto_time">Please enable automatic time to make sure the app works correctly</string>
     <string name="go_to_settings">Go to settings</string>
 
-    <string name="not_logged_in">You are not logged in</string>
+    <string name="not_logged_in">Not logged in</string>
     <string name="test_closed">Test is temporarily closed</string>
-    <string name="test_already_taken">You have already taken the test. Only one attempt is allowed</string>
+    <string name="test_already_taken">Test already taken. Only one attempt allowed</string>
     <string name="no_access">No access</string>
-    <string name="test_not_found">Test is not found</string>
-    <string name="test_already_finished">Test is already finished</string>
+    <string name="test_not_found">Test not found</string>
+    <string name="test_already_finished">Test already finished</string>
     <string name="incorrect_questions_number">An error occurred (#100)</string>
     <string name="invalid_data_type">An error occurred (#101)</string>
     <string name="incorrect_question_number">An error occurred (#102)</string>
     <string name="too_late">An error occurred (#103)</string>
-    <string name="too_late_not_accepted">Answer is not accepted: time is up</string>
+    <string name="too_late_not_accepted">Answer not accepted: time is up</string>
     <string name="question_unanswered">Question #%d should be answered</string>
     <string name="question_unanswered_current">This question should be answered</string>
 
@@ -77,7 +77,7 @@
 
     <string name="password_reset">Password Reset</string>
     <string name="reset_password">Reset</string>
-    <string name="follow_email_instructions">Follow the instructions sent to your email.\nif there\'s no mail, check your spam folder</string>
+    <string name="follow_email_instructions">Follow the instructions sent to your email\nif there\'s no mail, check your spam folder</string>
     <string name="profile">Profile</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
@@ -144,16 +144,16 @@
     <string name="select_category">Select category</string>
     <string name="select_question_type">Select type</string>
     <string name="publish">Publish</string>
-    <string name="publish_info">Your test will be visible on main page</string>
+    <string name="publish_info">Your test will be visible on the home page</string>
     <string name="open">Open</string>
     <string name="open_info">Users will be able to take the test</string>
     <string name="open_no_questions">Test with no questions cannot be opened</string>
     <string name="test_link">Test link</string>
-    <string name="test_link_info">You can share your test using generated link\n\nYou can disable the link for some time if necessary</string>
+    <string name="test_link_info">You can share your test using the generated link\n\nYou can disable the link for some time if necessary</string>
     <string name="test_link_copy">Copy test link</string>
     <string name="test_link_share">Share test link</string>
     <string name="test_link_copied">Test link copied to clipboard</string>
-    <string name="test_link_disabled">Test link is disabled</string>
+    <string name="test_link_disabled">Test link disabled</string>
     <string name="log_in_to_get_test">Please log in to get to the test</string>
     <string name="enable_test_link">Enable link in test settings</string>
     <string name="show_more_settings">Show more settings</string>
@@ -263,7 +263,7 @@
     <string name="matching_instruction">Match sentences on the right with the ones on the left:</string>
     <string name="ordering_instruction">Put in the correct order:</string>
     <string name="number_instruction">Enter number:</string>
-    <string name="true_false_instruction">True or False?</string>
+    <string name="true_false_instruction" />
 
     <string name="more_tests">More tests</string>
 
@@ -287,25 +287,25 @@
     <string name="test_password">Test is password-protected</string>
 
     <string name="exit_test">Exit test</string>
-    <string name="exit_test_confirmation">Do you really want to exit test? You will not be able to proceed</string>
+    <string name="exit_test_confirmation">Do you really want to exit the test? You will not be able to proceed</string>
     <string name="calculating_points">Calculating points…</string>
     <string name="no_time_left">Time is up</string>
     <string name="no_time_left_description">There is no time left</string>
     <string name="time_left">Time left</string>
     <string name="finish">Finish</string>
     <string name="finish_test">Finish test</string>
-    <string name="finish_test_confirmation">Do you really want to finish this test? You will not be able to edit your answers</string>
+    <string name="finish_test_confirmation">Do you really want to finish the test? You will not be able to edit your answers</string>
     <string name="submit">Submit</string>
     <string name="next">Next</string>
     <string name="save_draft">Save draft</string>
     <string name="draft_saved">Draft saved</string>
-    <string name="go_to_prev_question">Go to previous question</string>
-    <string name="go_to_next_question">Go to next question</string>
+    <string name="go_to_prev_question">Go to the previous question</string>
+    <string name="go_to_next_question">Go to the next question</string>
     <string name="cannot_go_to_prev_question">You are already on the first question</string>
     <string name="cannot_go_to_next_question">You are already on the last question</string>
     <string name="num" translatable="false">%d</string>
 
-    <string name="go_home_to_take_test">You can choose a test to take on home screen</string>
+    <string name="go_home_to_take_test">You can choose a test to take on the home page</string>
     <string name="go_home">Go home</string>
     <string name="test_not_finished">Test was not finished. Click to see more</string>
     <string name="test_demo">It is a demo test. This record will be deleted soon</string>

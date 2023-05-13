@@ -261,7 +261,7 @@
     <string name="matching_instruction">Соотнесите предложения справа с предложениями слева:</string>
     <string name="ordering_instruction">Расположите в правильной последовательности:</string>
     <string name="number_instruction">Введите число:</string>
-    <string name="true_false_instruction">Правда или ложь?</string>
+    <string name="true_false_instruction" />
 
     <string name="more_tests">Больше тестов</string>
 
