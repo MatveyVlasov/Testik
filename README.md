@@ -99,7 +99,7 @@ Testik - это приложение для создания и прохожде
 
 <p align="center">
     <img src="https://i.imgur.com/UTGPD1N.png" width="250"/> &nbsp;&nbsp;
-    <img src="https://i.imgur.com/1BnxDoT.png" width="250"/> &nbsp;&nbsp;
+    <img src="https://i.imgur.com/HAexFsS.png" width="250"/> &nbsp;&nbsp;
     <img src="https://i.imgur.com/fGizwSX.png" width="250"/>
 </p>
 
@@ -175,6 +175,6 @@ Testik - это приложение для создания и прохожде
 
 <p align="center">
     <img src="https://i.imgur.com/Wdpiher.png" width="250"/> &nbsp;&nbsp;
-    <img src="https://i.imgur.com/HwATbB7.png" width="250"/> &nbsp;&nbsp;
-    <img src="https://i.imgur.com/LtADcUl.png" width="250"/>
+    <img src="https://i.imgur.com/LtADcUl.png" width="250"/> &nbsp;&nbsp;
+    <img src="https://i.imgur.com/HwATbB7.png" width="250"/>
 </p>
